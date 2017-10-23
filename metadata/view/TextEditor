@@ -1,0 +1,187 @@
+{
+    "type": "Ext.window.Window",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "texteditor",
+        "designer|userClassName": "TextEditor",
+        "height": 600,
+        "itemId": "texteditor",
+        "layout": "fit",
+        "modal": true,
+        "title": "Text editor",
+        "width": 1000
+    },
+    "configAlternates": {
+        "designer|userAlias": "string",
+        "designer|userClassName": "string",
+        "height": "auto",
+        "itemId": "string",
+        "layout": "string",
+        "modal": "boolean",
+        "title": "string",
+        "width": "auto"
+    },
+    "name": "MyWindow",
+    "designerId": "752e4cf8-122e-4c15-9243-ff58d69331b0",
+    "viewControllerInstanceId": "5fb1df5b-2c06-440d-9a21-1e9b6095bbd8",
+    "viewModelInstanceId": "f3c11e2e-5ac3-4b4f-94b9-76e0921d5507",
+    "cn": [
+        {
+            "type": "Ext.form.field.HtmlEditor",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fieldLabel": "",
+                "itemId": "htmlEditor",
+                "reference": "htmlEditor"
+            },
+            "configAlternates": {
+                "fieldLabel": "string",
+                "itemId": "string",
+                "reference": "string"
+            },
+            "name": "MyHtmlEditor",
+            "designerId": "98cb8d49-077b-477d-81d4-70df8cb84f48"
+        },
+        {
+            "type": "Ext.toolbar.Toolbar",
+            "reference": {
+                "name": "dockedItems",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "container|pack": "center",
+                "designer|uiInterfaceName": "footer",
+                "dock": "bottom",
+                "ui": "footer"
+            },
+            "configAlternates": {
+                "container|pack": "string",
+                "designer|uiInterfaceName": "string",
+                "dock": "string",
+                "ui": "string"
+            },
+            "name": "MyToolbar1",
+            "designerId": "901d8117-a33f-4678-b79a-c2dc8586cdeb",
+            "cn": [
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "itemId": "btnSave",
+                        "layout|flex": null,
+                        "text": "Save"
+                    },
+                    "configAlternates": {
+                        "itemId": "string",
+                        "layout|flex": "number",
+                        "text": "string"
+                    },
+                    "name": "MyButton",
+                    "designerId": "c9ebfdf7-a359-4375-a37c-428ab9f9ea03",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "designer|viewControllerFn": "btnSaveHandler",
+                                "fn": "handler",
+                                "implHandler": [
+                                    "var me = this,",
+                                    "    refs = me.getReferences(),",
+                                    "    opts = me._opts;",
+                                    "",
+                                    "if(opts.callback.call(opts.scope, refs.htmlEditor.getValue())) {",
+                                    "    console.log('Blocking closing');",
+                                    "}",
+                                    "else {",
+                                    "    me.getView().close();",
+                                    "}"
+                                ]
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "designer|viewControllerFn": "string",
+                                "fn": "string",
+                                "implHandler": "code"
+                            },
+                            "name": "handler",
+                            "designerId": "01822452-5818-4fd8-a3d4-982e12d90456"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "itemId": "btnCancel",
+                        "layout|flex": null,
+                        "text": "Cancel"
+                    },
+                    "configAlternates": {
+                        "itemId": "string",
+                        "layout|flex": "number",
+                        "text": "string"
+                    },
+                    "name": "MyButton4",
+                    "designerId": "93348370-16d7-4a56-8871-7f5359764b89",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "designer|viewControllerFn": "btnCancelHandler",
+                                "fn": "handler",
+                                "implHandler": [
+                                    "var me = this;",
+                                    "",
+                                    "me.getView().close();"
+                                ]
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "designer|viewControllerFn": "string",
+                                "fn": "string",
+                                "implHandler": "code"
+                            },
+                            "name": "handler",
+                            "designerId": "b48dbeb7-f3cc-4662-8ea1-8b29e4781756"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

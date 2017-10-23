@@ -1,0 +1,71 @@
+{
+    "name": "eLearning",
+    "settings": {
+        "cmd": {
+            "license": "commercial",
+            "cmdVersion": "6.5.1.240",
+            "frameworkVersion": "6.5.0.775"
+        },
+        "canvasControls": {
+            "viewportSize": {
+                "name": "Auto Expand",
+                "builtIn": true,
+                "height": null,
+                "width": null
+            }
+        },
+        "urlPrefix": "http://localhost:1234/",
+        "exportPath": "",
+        "lockUrlPrefix": true,
+        "buildShouldOverwriteIndex": true,
+        "generateArchitectVersion": true,
+        "spacesToIndent": 4,
+        "lineEnding": "LF",
+        "genTimestamps": false,
+        "cacheBust": false,
+        "installStatus": "Not Installed",
+        "urlPrefixTemplate": "http://localhost:1234/",
+        "sdkPath": "",
+        "lastBuildSelection": {
+            "value": "webBuild",
+            "display": "Build web app",
+            "buildPlatform": false
+        }
+    },
+    "xdsVersion": "4.2.2",
+    "xdsBuild": 282,
+    "schemaVersion": 1,
+    "upgradeVersion": 310000000001,
+    "framework": "ext65",
+    "viewOrderMap": {
+        "view": [
+            "ccf11f1b-c72a-44fc-9803-344ace6f3349",
+            "f4941368-9963-4383-b809-d66d6516ffe3",
+            "4611ed12-d628-4ff4-91cd-baa29154d036",
+            "752e4cf8-122e-4c15-9243-ff58d69331b0",
+            "f3c11e2e-5ac3-4b4f-94b9-76e0921d5507",
+            "5fb1df5b-2c06-440d-9a21-1e9b6095bbd8",
+            "2df72cb6-398c-4fb4-a6f6-90282f8659e5",
+            "a4c01e9d-bc14-4f9d-aa65-03179536387b",
+            "fd4364a5-1e7b-4c05-9cb2-de79648c2469",
+            "4f1131cf-12f3-4f06-a269-23d0efb61610",
+            "a9cd166b-927f-4c23-93ac-d9e5655778bc",
+            "42521718-807e-4b60-aaa7-3542c08f97d4"
+        ],
+        "store": [],
+        "controller": [],
+        "model": [
+            "6ef1d73d-f30c-41ff-9f94-ee89ca8b070d",
+            "4242b633-1593-46be-a5b7-4056d0c44646"
+        ],
+        "resource": [
+            "ed1b2218-96e3-4f67-afee-45be463f92e9",
+            "b879178c-fc84-4884-b934-bcb78d02c77d",
+            "98fb3144-3565-436a-8267-a80378797a66",
+            "a2d45e2c-548a-4406-9a8d-e179277f4fe3"
+        ],
+        "app": [
+            "application"
+        ]
+    }
+}

@@ -1,0 +1,77 @@
+.red-bg {
+    background-color: red;
+}
+.green-bg {
+    background-color: green;
+}
+.blue-bg {
+    background-color: blue;
+}
+
+.slide {
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+.component {
+    background-repeat: no-repeat;
+    background-size: contain;
+    img {
+        height: 100%;
+        width: 100%;
+    }
+}
+
+.draggable {
+    border: solid 2px silver;
+    border-style: dashed;
+    cursor: move;
+
+    &.selected {
+        border-color: orange;
+    }
+}
+
+.edit {
+    .correct {
+        .x-form-cb-label {
+            font-weight: bold !important;
+        }
+    }
+}
+
+.preview {
+    .draggable {
+        border-color: transparent !important;
+    }
+}
+
+pre {
+    outline: 1px solid #ccc;
+    padding: 5px;
+    margin: 5px;
+}
+.string {
+    color: green;
+}
+.number {
+    color: darkorange;
+}
+.boolean {
+    color: blue;
+}
+.null {
+    color: magenta;
+}
+.key {
+    color: black;
+}
+#html-slide {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.html-component {
+    position: absolute;
+}

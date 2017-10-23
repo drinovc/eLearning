@@ -1,0 +1,37 @@
+{
+    "type": "Ext.app.ViewModel",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "selectioneditor",
+        "designer|userClassName": "SelectionEditorViewModel"
+    },
+    "configAlternates": {
+        "designer|userAlias": "string",
+        "designer|userClassName": "string"
+    },
+    "designerId": "a4c01e9d-bc14-4f9d-aa65-03179536387b",
+    "cn": [
+        {
+            "type": "Ext.data.Store",
+            "reference": {
+                "name": "stores",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "model": "Answer",
+                "name": "StoreAnswers"
+            },
+            "configAlternates": {
+                "model": "model",
+                "name": "string"
+            },
+            "name": "MyStore",
+            "designerId": "01009eab-0ea0-43c6-99f3-c36c768f2870"
+        }
+    ]
+}

@@ -1,0 +1,40 @@
+{
+    "type": "Ext.app.Application",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "models": [
+            "Slide",
+            "Answer"
+        ],
+        "name": "eLearning",
+        "views": [
+            "MainView",
+            "TextEditor",
+            "SelectionEditor",
+            "SourceView"
+        ]
+    },
+    "configAlternates": {
+        "name": "string",
+        "views": "typedarray",
+        "models": "typedarray"
+    },
+    "name": "Application",
+    "designerId": "application",
+    "cn": [
+        {
+            "type": "Ext.Loader",
+            "reference": {
+                "name": "loader",
+                "type": "object"
+            },
+            "codeClass": null,
+            "name": "Loader243",
+            "designerId": "c4853406-6a59-4b51-84be-bf6073c863c8"
+        }
+    ]
+}
