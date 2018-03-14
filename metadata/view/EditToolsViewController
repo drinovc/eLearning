@@ -1,0 +1,55 @@
+{
+    "type": "Ext.app.ViewController",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "edittools",
+        "designer|userClassName": "EditToolsViewController"
+    },
+    "configAlternates": {
+        "designer|userAlias": "string",
+        "designer|userClassName": "string"
+    },
+    "designerId": "093741d7-7ba2-4cf4-a2a4-dccbbf4730ac",
+    "cn": [
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "opts"
+                ],
+                "fn": "show",
+                "implHandler": [
+                    "opts = Ext.applyIf(opts || {}, {",
+                    "    component: null",
+                    "});",
+                    "",
+                    "var me = this,",
+                    "    view = me.getView();",
+                    "",
+                    "me._opts = opts;",
+                    "",
+                    "view.down('#nfScore').setValue(opts.component._opts.score || 0);",
+                    "view.down('#chRequired').setValue(opts.component._opts.required || false);",
+                    "",
+                    "view.showBy(opts.component, 'tl-tr?');"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "show",
+            "designerId": "f57492e7-847b-4468-b327-8f5cf6fb98a2"
+        }
+    ]
+}

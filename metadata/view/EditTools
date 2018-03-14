@@ -1,0 +1,280 @@
+{
+    "type": "Ext.window.Window",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "bodyPadding": 3,
+        "closeAction": "hide",
+        "defaults": [
+            "{",
+            "    anchor: '100%',",
+            "    margin: 2",
+            "}"
+        ],
+        "designer|userAlias": "edittools",
+        "designer|userClassName": "EditTools",
+        "header": false,
+        "layout": "anchor",
+        "title": "Component",
+        "width": 150
+    },
+    "configAlternates": {
+        "bodyPadding": "auto",
+        "closeAction": "string",
+        "defaults": "object",
+        "designer|userAlias": "string",
+        "designer|userClassName": "string",
+        "header": "boolean",
+        "layout": "string",
+        "title": "string",
+        "width": "auto"
+    },
+    "name": "MyWindow",
+    "designerId": "3b3afd49-502c-4a38-845a-ed5d1b76fe2e",
+    "viewControllerInstanceId": "093741d7-7ba2-4cf4-a2a4-dccbbf4730ac",
+    "viewModelInstanceId": "78d19b4a-00ad-46df-8906-dcec950f68c7",
+    "cn": [
+        {
+            "type": "Ext.button.Button",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "iconCls": "x-fa fa-edit",
+                "text": "Edit"
+            },
+            "configAlternates": {
+                "iconCls": "string",
+                "text": "string"
+            },
+            "name": "MyButton27",
+            "designerId": "c4b99f42-8ba6-49ed-9082-3a0fea832cd8",
+            "cn": [
+                {
+                    "type": "fixedfunction",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "designer|params": [
+                            "button",
+                            "e"
+                        ],
+                        "designer|viewControllerFn": "edit",
+                        "fn": "handler",
+                        "implHandler": [
+                            "this._opts.component.fireEvent('_edit');"
+                        ]
+                    },
+                    "configAlternates": {
+                        "designer|params": "typedarray",
+                        "designer|viewControllerFn": "string",
+                        "fn": "string",
+                        "implHandler": "code"
+                    },
+                    "name": "handler",
+                    "designerId": "c57e55d2-08b1-4f0a-b012-029a9f11b770"
+                }
+            ]
+        },
+        {
+            "type": "Ext.button.Button",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "iconCls": "x-fa fa-clone",
+                "text": "Duplicate"
+            },
+            "configAlternates": {
+                "iconCls": "string",
+                "text": "string"
+            },
+            "name": "MyButton25",
+            "designerId": "2c6052fe-c189-4f59-8ff0-709b55ad284c",
+            "cn": [
+                {
+                    "type": "fixedfunction",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "designer|params": [
+                            "button",
+                            "e"
+                        ],
+                        "designer|viewControllerFn": "duplicate",
+                        "fn": "handler",
+                        "implHandler": [
+                            "this._opts.component.fireEvent('_duplicate');"
+                        ]
+                    },
+                    "configAlternates": {
+                        "designer|params": "typedarray",
+                        "designer|viewControllerFn": "string",
+                        "fn": "string",
+                        "implHandler": "code"
+                    },
+                    "name": "handler",
+                    "designerId": "2794f123-d793-4068-99b6-fa570036c52b"
+                }
+            ]
+        },
+        {
+            "type": "Ext.button.Button",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "iconCls": "x-fa fa-trash-o",
+                "text": "Delete"
+            },
+            "configAlternates": {
+                "iconCls": "string",
+                "text": "string"
+            },
+            "name": "MyButton26",
+            "designerId": "a7b70fae-43b7-4db6-a3da-74f2c37e8e6f",
+            "cn": [
+                {
+                    "type": "fixedfunction",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "designer|params": [
+                            "button",
+                            "e"
+                        ],
+                        "designer|viewControllerFn": "delete",
+                        "fn": "handler",
+                        "implHandler": [
+                            "this._opts.component.fireEvent('_delete');"
+                        ]
+                    },
+                    "configAlternates": {
+                        "designer|params": "typedarray",
+                        "designer|viewControllerFn": "string",
+                        "fn": "string",
+                        "implHandler": "code"
+                    },
+                    "name": "handler",
+                    "designerId": "635550c5-5948-42d7-b415-2ece416dca05"
+                }
+            ]
+        },
+        {
+            "type": "Ext.form.field.Number",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fieldLabel": "Score",
+                "itemId": "nfScore",
+                "labelAlign": "top",
+                "labelWidth": 50,
+                "layout|anchor": "100%"
+            },
+            "configAlternates": {
+                "fieldLabel": "string",
+                "itemId": "string",
+                "labelAlign": "string",
+                "labelWidth": "number",
+                "layout|anchor": "string"
+            },
+            "name": "MyNumberField3",
+            "designerId": "0704fe94-85b5-4800-a610-8c8c57a65473",
+            "cn": [
+                {
+                    "type": "viewcontrollereventbinding",
+                    "reference": {
+                        "name": "listeners",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "fn": "onNfScoreChange",
+                        "implHandler": [
+                            "this._opts.component._opts.score = newValue;"
+                        ],
+                        "name": "change",
+                        "scope": "me"
+                    },
+                    "configAlternates": {
+                        "fn": "string",
+                        "implHandler": "code",
+                        "name": "string",
+                        "scope": "string"
+                    },
+                    "name": "onNfScoreChange",
+                    "designerId": "698e5c0b-5cc6-4bda-baed-3776f2f3fd41"
+                }
+            ]
+        },
+        {
+            "type": "Ext.form.field.Checkbox",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "boxLabel": "Required",
+                "fieldLabel": "",
+                "itemId": "chRequired",
+                "layout|anchor": "100%"
+            },
+            "configAlternates": {
+                "boxLabel": "string",
+                "fieldLabel": "string",
+                "itemId": "string",
+                "layout|anchor": "string"
+            },
+            "name": "MyCheckbox1",
+            "designerId": "981d3089-78eb-4acf-a9a6-3e9b4843501a",
+            "cn": [
+                {
+                    "type": "viewcontrollereventbinding",
+                    "reference": {
+                        "name": "listeners",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "fn": "onChRequiredChange",
+                        "implHandler": [
+                            "this._opts.component._opts.required = newValue;"
+                        ],
+                        "name": "change",
+                        "scope": "me"
+                    },
+                    "configAlternates": {
+                        "fn": "string",
+                        "implHandler": "code",
+                        "name": "string",
+                        "scope": "string"
+                    },
+                    "name": "onChRequiredChange",
+                    "designerId": "c08a1342-dbd1-4fbb-a23a-9dc6a3c53970"
+                }
+            ]
+        }
+    ]
+}

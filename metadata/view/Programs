@@ -1,0 +1,685 @@
+{
+    "type": "Ext.grid.Panel",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "programs",
+        "designer|userClassName": "Programs",
+        "itemId": "gridPrograms",
+        "store": [
+            "{StorePrograms}"
+        ],
+        "title": "Training Programs"
+    },
+    "configAlternates": {
+        "store": "binding",
+        "designer|userAlias": "string",
+        "designer|userClassName": "string",
+        "itemId": "string",
+        "reference": "string",
+        "title": "string"
+    },
+    "name": "MyGridPanel",
+    "designerId": "021f8bd2-ddcc-4d3c-8e48-905c69773429",
+    "viewControllerInstanceId": "7505be33-76ed-445e-9f35-0430bf2fbbee",
+    "viewModelInstanceId": "cb1c4559-680c-4a57-a5e2-fac805bf0d68",
+    "cn": [
+        {
+            "type": "Ext.view.Table",
+            "reference": {
+                "name": "viewConfig",
+                "type": "object"
+            },
+            "codeClass": null,
+            "name": "MyTable",
+            "designerId": "f9166ba0-e7a0-4187-b0c7-9cb8388ed603"
+        },
+        {
+            "type": "Ext.grid.column.Column",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "name",
+                "flex": 1,
+                "minWidth": 150,
+                "text": "Name"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "text": "string",
+                "flex": "number",
+                "minWidth": "number"
+            },
+            "name": "MyColumn3",
+            "designerId": "625f64b4-1c1a-46b5-a48c-a2af5a52fcec",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Text",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyTextField4",
+                    "designerId": "48d8c5f9-150c-46c2-8761-66e145f51fe0"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Number",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "categoryId",
+                "format": "00",
+                "minWidth": 150,
+                "text": "Category"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "format": "string",
+                "text": "string",
+                "minWidth": "number"
+            },
+            "name": "MyNumberColumn2",
+            "designerId": "68027162-69bf-47aa-89a0-dce35ed7418d",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Display",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "value": "Display Field"
+                    },
+                    "configAlternates": {
+                        "value": "string"
+                    },
+                    "name": "MyDisplayField1",
+                    "designerId": "a9e1debf-aed9-45f6-a63e-91536f82c679"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Column",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "description",
+                "flex": 2,
+                "minWidth": 200,
+                "text": "Description"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "text": "string",
+                "flex": "number",
+                "minWidth": "number"
+            },
+            "name": "MyColumn4",
+            "designerId": "f2d0d089-27b9-4b0d-8f4c-33eebaba1ae8",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Text",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyTextField3",
+                    "designerId": "c6268bb2-a702-42bd-afc4-380f13bd2ff5"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Date",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "validFrom",
+                "format": "m/j/Y",
+                "minWidth": 150,
+                "text": "Valid From"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "format": "string",
+                "text": "string",
+                "minWidth": "number"
+            },
+            "name": "MyDateColumn1",
+            "designerId": "20bbd578-fc8d-430b-82d6-05de681c4943",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Date",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyDateField",
+                    "designerId": "0aefe3d8-6778-4b49-9d02-76a48b6e4314"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Date",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "validTo",
+                "format": "m/j/Y",
+                "minWidth": 150,
+                "text": "Valid To"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "format": "string",
+                "text": "string",
+                "minWidth": "number"
+            },
+            "name": "MyDateColumn2",
+            "designerId": "2906ec75-c963-4fb5-aad5-4a74d3ba7a8f",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Date",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyDateField1",
+                    "designerId": "dabd7b3e-b711-40c9-87f9-9d68ca656465"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Number",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "completionTime",
+                "minWidth": 150,
+                "text": "Completion Time"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "text": "string",
+                "minWidth": "number"
+            },
+            "name": "MyNumberColumn3",
+            "designerId": "27c4beec-d23b-4c57-a26e-0354db34fb98",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Number",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyNumberField",
+                    "designerId": "fcedd0e5-e914-4f76-8c5c-c3124a38565b"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Number",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "maxAttemptsTrainingMode",
+                "format": "00",
+                "text": "Max Attempts Training Mode"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "format": "string",
+                "text": "string"
+            },
+            "name": "MyNumberColumn4",
+            "designerId": "93520924-35a4-4f30-9362-e511094427b4",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Number",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyNumberField1",
+                    "designerId": "f5ff5292-06e8-4c58-a0cc-dfcce2571308"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Number",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "maxAttemptsScoreMode",
+                "format": "00",
+                "text": "Max Attempts Score Mode"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "format": "string",
+                "text": "string"
+            },
+            "name": "MyNumberColumn5",
+            "designerId": "af165829-7cbd-4aa2-b0a9-82b9201521b7",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Number",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyNumberField2",
+                    "designerId": "5476f610-7988-4539-aa3f-442a663592ef"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Column",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "passScore",
+                "text": "Pass Score"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "text": "string"
+            },
+            "name": "MyColumn5",
+            "designerId": "425f5a1d-8cf2-4ee9-84ff-b7cea1606a28",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Text",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyTextField6",
+                    "designerId": "becf755d-2ba5-4809-aea2-04d6200a9701"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Column",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "certificateFileName",
+                "text": "Certificate"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "text": "string"
+            },
+            "name": "MyColumn6",
+            "designerId": "d7b87287-11b5-4a23-b347-fd10035bc5fa",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Text",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyTextField7",
+                    "designerId": "d51afcea-e92e-410a-86e5-804b84f5a540"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Check",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "active",
+                "text": "Active"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "text": "string"
+            },
+            "name": "MyCheck1",
+            "designerId": "014da150-a739-45d2-a09e-e78d9bf35fd0",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Checkbox",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyCheckbox",
+                    "designerId": "c70aaacb-34be-49b5-9102-336f40b1a281"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.plugin.RowEditing",
+            "reference": {
+                "name": "plugins",
+                "type": "array"
+            },
+            "codeClass": null,
+            "name": "MyRowEditingPlugin",
+            "designerId": "d2fca51d-9e3c-46a2-b1f5-76970e48d489"
+        },
+        {
+            "type": "Ext.toolbar.Toolbar",
+            "reference": {
+                "name": "dockedItems",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dock": "top"
+            },
+            "configAlternates": {
+                "dock": "string"
+            },
+            "name": "MyToolbar6",
+            "designerId": "ab67d5fb-cb03-4188-8fda-ff416e80bc52",
+            "cn": [
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "layout|flex": null,
+                        "text": "Add"
+                    },
+                    "configAlternates": {
+                        "layout|flex": "number",
+                        "text": "string"
+                    },
+                    "name": "MyButton19",
+                    "designerId": "50fd4d93-2052-4130-86e4-24075277f845",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "designer|viewControllerFn": "add",
+                                "fn": "handler",
+                                "implHandler": [
+                                    "var me = this,",
+                                    "    refs = me.getReferences(),",
+                                    "    data = {",
+                                    "        id: createGUID(),",
+                                    "        name: 'New Training Program',",
+                                    "        categoryId: -1,",
+                                    "        validFrom: new Date(),",
+                                    "        validTo: Ext.Date.add(new Date(), Ext.Date.YEAR, 1),",
+                                    "        completionTime: 60,",
+                                    "        maxAttemptsTrainingMode: 1,",
+                                    "        maxAttemptsScoreMode: 1,",
+                                    "        passScore: 75,",
+                                    "        active: true",
+                                    "    };",
+                                    "",
+                                    "me.getStore('StorePrograms').add(data);",
+                                    "me.saveState();"
+                                ]
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "designer|viewControllerFn": "string",
+                                "fn": "string",
+                                "implHandler": "code"
+                            },
+                            "name": "handler",
+                            "designerId": "fa986d19-33f1-4252-a361-61addd7d0eeb"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "layout|flex": null,
+                        "text": "Remove"
+                    },
+                    "configAlternates": {
+                        "layout|flex": "number",
+                        "text": "string"
+                    },
+                    "name": "MyButton21",
+                    "designerId": "95061cec-72c2-45ed-b4b4-6848a7e9e4ff",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "designer|viewControllerFn": "remove",
+                                "fn": "handler",
+                                "implHandler": [
+                                    "var me = this;",
+                                    "",
+                                    "me.getStore('StorePrograms').remove(me.getView().getSelection()[0]);",
+                                    "me.saveState();"
+                                ]
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "designer|viewControllerFn": "string",
+                                "fn": "string",
+                                "implHandler": "code"
+                            },
+                            "name": "handler",
+                            "designerId": "316dd8c4-7302-46ca-87dd-2abd7ec145c0"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.toolbar.Separator",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "layout|flex": null
+                    },
+                    "configAlternates": {
+                        "layout|flex": "number"
+                    },
+                    "name": "MySeparator2",
+                    "designerId": "611e29e4-b99d-4137-a74f-04f505f6ba6f"
+                },
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "layout|flex": null,
+                        "text": "Edit Slides"
+                    },
+                    "configAlternates": {
+                        "layout|flex": "number",
+                        "text": "string"
+                    },
+                    "name": "MyButton20",
+                    "designerId": "9c77c0ec-8184-4fc6-ad3e-51017caea8af",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "designer|viewControllerFn": "editSlides",
+                                "fn": "handler",
+                                "implHandler": [
+                                    "var me = this,",
+                                    "    view = me.getView(),",
+                                    "    selection = view.getSelection()[0],",
+                                    "    mainView = view.up('#mainView');",
+                                    "",
+                                    "me.saveState();",
+                                    "",
+                                    "mainView.setActiveItem('editSlides');",
+                                    "mainView.getController().load({ program: selection });"
+                                ]
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "designer|viewControllerFn": "string",
+                                "fn": "string",
+                                "implHandler": "code"
+                            },
+                            "name": "handler",
+                            "designerId": "daa71325-b580-464b-bf11-7039a8a27a78"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "Ext.panel.Tool",
+            "reference": {
+                "name": "tools",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "iconCls": "x-fa fa-close"
+            },
+            "configAlternates": {
+                "iconCls": "string"
+            },
+            "name": "MyTool",
+            "designerId": "96532c47-f408-4a2d-bdff-b85685c5c21b",
+            "cn": [
+                {
+                    "type": "fixedfunction",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "designer|params": [
+                            "owner",
+                            "tool",
+                            "event"
+                        ],
+                        "designer|viewControllerFn": "close",
+                        "fn": "callback",
+                        "implHandler": [
+                            "this.getView().up('#mainView').setActiveItem('homePage');"
+                        ]
+                    },
+                    "configAlternates": {
+                        "designer|params": "typedarray",
+                        "designer|viewControllerFn": "string",
+                        "fn": "string",
+                        "implHandler": "code"
+                    },
+                    "name": "callback",
+                    "designerId": "876290d6-c68f-49cb-bd65-8792d9621d2a"
+                }
+            ]
+        },
+        {
+            "type": "viewcontrollereventbinding",
+            "reference": {
+                "name": "listeners",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "onGridProgramsActivate",
+                "implHandler": [
+                    "this.load();"
+                ],
+                "name": "activate",
+                "scope": "me"
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code",
+                "name": "string",
+                "scope": "string"
+            },
+            "name": "onGridProgramsActivate",
+            "designerId": "3a80f2b1-3b5b-45d2-90f5-3c77be228f3a"
+        }
+    ]
+}

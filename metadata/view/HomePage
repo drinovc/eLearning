@@ -1,0 +1,254 @@
+{
+    "type": "Ext.container.Container",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "container|align": "center",
+        "container|pack": "center",
+        "defaults": [
+            "{ ",
+            "    width: 200,",
+            "    height: 50,",
+            "    margin: 5",
+            "}"
+        ],
+        "designer|userAlias": "homepage",
+        "designer|userClassName": "HomePage",
+        "itemId": "homePage",
+        "layout": "vbox"
+    },
+    "configAlternates": {
+        "container|align": "string",
+        "container|pack": "string",
+        "defaults": "object",
+        "designer|userAlias": "string",
+        "designer|userClassName": "string",
+        "itemId": "string",
+        "layout": "string"
+    },
+    "name": "MyContainer2",
+    "designerId": "fcc654c8-e279-40ad-a9c8-0460d1b03871",
+    "viewControllerInstanceId": "fab9b3e0-2e83-416b-805f-a20803425381",
+    "viewModelInstanceId": "6fedad12-3a69-42e9-87ce-d30ea9b5fdbd",
+    "cn": [
+        {
+            "type": "Ext.button.Button",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "text": "Training Programs"
+            },
+            "configAlternates": {
+                "text": "string"
+            },
+            "name": "MyButton17",
+            "designerId": "efe881b3-590b-40f5-a2ec-9156bb5ac41b",
+            "cn": [
+                {
+                    "type": "fixedfunction",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "designer|params": [
+                            "button",
+                            "e"
+                        ],
+                        "fn": "handler",
+                        "implHandler": [
+                            "this.up('#mainView').setActiveItem('gridPrograms');"
+                        ]
+                    },
+                    "configAlternates": {
+                        "designer|params": "typedarray",
+                        "fn": "string",
+                        "implHandler": "code"
+                    },
+                    "name": "handler",
+                    "designerId": "e5c1db1e-390e-47a9-ad1b-86c8d6a7d6da"
+                }
+            ]
+        },
+        {
+            "type": "Ext.button.Button",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "text": "Help"
+            },
+            "configAlternates": {
+                "text": "string"
+            },
+            "name": "MyButton23",
+            "designerId": "b83e2dc8-b6f0-4f44-a228-880a6f581858",
+            "cn": [
+                {
+                    "type": "fixedfunction",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "designer|params": [
+                            "button",
+                            "e"
+                        ],
+                        "fn": "handler",
+                        "implHandler": null
+                    },
+                    "configAlternates": {
+                        "designer|params": "typedarray",
+                        "fn": "string",
+                        "implHandler": "code"
+                    },
+                    "name": "handler",
+                    "designerId": "6d3b26b1-7ce1-4bb9-9510-b85a5392212a"
+                }
+            ]
+        },
+        {
+            "type": "Ext.container.Container",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "container|align": "stretch",
+                "defaults": [
+                    "{",
+                    "    flex: 1",
+                    "}"
+                ],
+                "height": 200,
+                "layout": "vbox"
+            },
+            "configAlternates": {
+                "container|align": "string",
+                "defaults": "object",
+                "height": "auto",
+                "layout": "string"
+            },
+            "name": "MyContainer2",
+            "designerId": "f585c66a-250d-45ce-84cd-c59321bf93aa",
+            "cn": [
+                {
+                    "type": "Ext.form.Label",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "height": 20,
+                        "layout|flex": 0,
+                        "text": "DEV / DEBUG / TEST"
+                    },
+                    "configAlternates": {
+                        "height": "auto",
+                        "layout|flex": "number",
+                        "text": "string"
+                    },
+                    "name": "MyLabel",
+                    "designerId": "9ee6590f-b73a-45dd-b1ad-9a550353f522"
+                },
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "text": "Edit Slides"
+                    },
+                    "configAlternates": {
+                        "text": "string"
+                    },
+                    "name": "MyButton18",
+                    "designerId": "96d3229a-2a4d-4e5f-8cd1-82885c6e3528",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "fn": "handler",
+                                "implHandler": [
+                                    "this.up('#mainView').setActiveItem('editSlides');"
+                                ]
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "fn": "string",
+                                "implHandler": "code"
+                            },
+                            "name": "handler",
+                            "designerId": "07ef4a90-5a43-495d-9458-e591bd8f0c6c"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "text": "Test"
+                    },
+                    "configAlternates": {
+                        "text": "string"
+                    },
+                    "name": "MyButton22",
+                    "designerId": "2892474e-65a0-4d76-97ad-0f710164ff88",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "fn": "handler",
+                                "implHandler": null
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "fn": "string",
+                                "implHandler": "code"
+                            },
+                            "name": "handler",
+                            "designerId": "617c4d47-dea9-4f4d-8291-67e5322948e2"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

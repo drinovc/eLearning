@@ -1,0 +1,118 @@
+{
+    "type": "Ext.app.ViewController",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "programs",
+        "designer|userClassName": "ProgramsViewController"
+    },
+    "configAlternates": {
+        "designer|userAlias": "string",
+        "designer|userClassName": "string"
+    },
+    "designerId": "7505be33-76ed-445e-9f35-0430bf2fbbee",
+    "cn": [
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "load",
+                "implHandler": [
+                    "var me = this;",
+                    "",
+                    "me.loadState();"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "load",
+            "designerId": "ddd2ccd5-bf92-4c21-9a78-77456a8020f1"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "getCurrentState",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    store = me.getStore('StorePrograms'),",
+                    "    data = Ext.clone(Ext.pluck(store.getRange(), 'data'));",
+                    "",
+                    "return data;"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "getCurrentState",
+            "designerId": "afc753bc-be30-4331-b028-ef4d4b315cb1"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "loadState",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    store = me.getStore('StorePrograms'),",
+                    "    data = localStorage.getItem('mxp_elearning_programs');",
+                    "",
+                    "if(data) {",
+                    "    data = Ext.decode(data);",
+                    "    store.setData(data);",
+                    "}"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "loadState",
+            "designerId": "1366313d-6d5b-4603-b8b2-a57099afc455"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "saveState",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    data = me.getCurrentState();",
+                    "",
+                    "localStorage.setItem('mxp_elearning_programs', Ext.encode(data));"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "saveState",
+            "designerId": "89f60217-9afa-494b-8f45-b336c4795b47"
+        }
+    ]
+}
