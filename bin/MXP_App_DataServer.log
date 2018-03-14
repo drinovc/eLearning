@@ -1,0 +1,104 @@
+[1] 3/14/2018 2:20:20 PM # LOADING dll: C:\Work\Projekti\eLearning\bin\MXP_App_Worker.dll
+[2] 3/14/2018 2:20:35 PM #  [127.0.0.1] /
+[3] 3/14/2018 2:20:36 PM #  [127.0.0.1] /favicon.ico
+[1] 3/14/2018 2:20:51 PM # LOADING dll: C:\Work\Projekti\eLearning\bin\MXP_App_Worker.dll
+[2] 3/14/2018 2:20:53 PM #  [127.0.0.1] /
+[3] 3/14/2018 2:20:53 PM #  [127.0.0.1] /favicon.ico
+[4] 3/14/2018 2:20:54 PM #  [127.0.0.1] /
+[5] 3/14/2018 2:20:54 PM #  [127.0.0.1] /favicon.ico
+[6] 3/14/2018 2:20:55 PM #  [127.0.0.1] /
+[7] 3/14/2018 2:20:56 PM #  [127.0.0.1] /favicon.ico
+[1] 3/14/2018 2:21:11 PM # LOADING dll: C:\Work\Projekti\eLearning\bin\MXP_App_Worker.dll
+[2] 3/14/2018 2:21:13 PM #  [127.0.0.1] /
+[3] 3/14/2018 2:21:13 PM #  [127.0.0.1] /bootstrap.js
+[4] 3/14/2018 2:21:13 PM #  [127.0.0.1] /bootstrap.json
+[5] 3/14/2018 2:21:13 PM #  [127.0.0.1] /build/development/eLearning/resources/eLearning-all_1.css
+[6] 3/14/2018 2:21:13 PM #  [127.0.0.1] /build/development/eLearning/resources/eLearning-all_2.css
+[7] 3/14/2018 2:21:13 PM #  [127.0.0.1] /ext/build/ext-all-rtl-debug.js
+[8] 3/14/2018 2:21:13 PM #  [127.0.0.1] /ext/classic/theme-neptune/overrides/form/field/HtmlEditor.js
+[9] 3/14/2018 2:21:13 PM #  [127.0.0.1] /ext/classic/theme-neptune/overrides/container/ButtonGroup.js
+[10] 3/14/2018 2:21:13 PM #  [127.0.0.1] /ext/classic/theme-neptune/overrides/grid/RowEditor.js
+[11] 3/14/2018 2:21:13 PM #  [127.0.0.1] /ext/classic/theme-neptune/overrides/Component.js
+[12] 3/14/2018 2:21:13 PM #  [127.0.0.1] /ext/classic/theme-neptune/overrides/grid/column/RowNumberer.js
+[13] 3/14/2018 2:21:13 PM #  [127.0.0.1] /ext/classic/theme-neptune/overrides/layout/component/Dock.js
+[14] 3/14/2018 2:21:13 PM #  [127.0.0.1] /ext/classic/theme-neptune/overrides/menu/Menu.js
+[15] 3/14/2018 2:21:13 PM #  [127.0.0.1] /ext/classic/theme-neptune/overrides/menu/Separator.js
+[16] 3/14/2018 2:21:13 PM #  [127.0.0.1] /ext/classic/theme-neptune/overrides/panel/Panel.js
+[17] 3/14/2018 2:21:13 PM #  [127.0.0.1] /ext/classic/theme-neptune/overrides/panel/Table.js
+[18] 3/14/2018 2:21:13 PM #  [127.0.0.1] /ext/classic/theme-neptune/overrides/picker/Month.js
+[19] 3/14/2018 2:21:13 PM #  [127.0.0.1] /ext/classic/theme-neptune/overrides/resizer/Splitter.js
+[20] 3/14/2018 2:21:13 PM #  [127.0.0.1] /ext/classic/theme-neptune/overrides/toolbar/Paging.js
+[21] 3/14/2018 2:21:14 PM #  [127.0.0.1] /ext/classic/theme-neptune/overrides/toolbar/Toolbar.js
+[22] 3/14/2018 2:21:14 PM #  [127.0.0.1] /ext/classic/theme-triton/overrides/Component.js
+[23] 3/14/2018 2:21:14 PM #  [127.0.0.1] /ext/classic/theme-triton/overrides/form/field/Checkbox.js
+[24] 3/14/2018 2:21:14 PM #  [127.0.0.1] /ext/classic/theme-triton/overrides/grid/column/Check.js
+[25] 3/14/2018 2:21:14 PM #  [127.0.0.1] /ext/classic/theme-triton/overrides/grid/column/Column.js
+[26] 3/14/2018 2:21:14 PM #  [127.0.0.1] /ext/classic/theme-triton/overrides/grid/column/RowNumberer.js
+[27] 3/14/2018 2:21:14 PM #  [127.0.0.1] /ext/classic/theme-triton/overrides/grid/plugin/RowExpander.js
+[28] 3/14/2018 2:21:14 PM #  [127.0.0.1] /ext/classic/theme-triton/overrides/menu/Item.js
+[29] 3/14/2018 2:21:14 PM #  [127.0.0.1] /ext/classic/theme-triton/overrides/list/TreeItem.js
+[30] 3/14/2018 2:21:14 PM #  [127.0.0.1] /ext/classic/theme-triton/overrides/menu/Menu.js
+[31] 3/14/2018 2:21:14 PM #  [127.0.0.1] /ext/classic/theme-triton/overrides/picker/Date.js
+[32] 3/14/2018 2:21:14 PM #  [127.0.0.1] /ext/classic/theme-triton/overrides/picker/Month.js
+[33] 3/14/2018 2:21:14 PM #  [127.0.0.1] /ext/classic/theme-triton/overrides/resizer/Splitter.js
+[34] 3/14/2018 2:21:14 PM #  [127.0.0.1] /ext/classic/theme-triton/overrides/selection/CheckboxModel.js
+[35] 3/14/2018 2:21:14 PM #  [127.0.0.1] /ext/classic/theme-triton/overrides/selection/SpreadsheetModel.js
+[36] 3/14/2018 2:21:14 PM #  [127.0.0.1] /ext/classic/theme-triton/overrides/toolbar/Paging.js
+[37] 3/14/2018 2:21:14 PM #  [127.0.0.1] /packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/overrides/init.js
+[38] 3/14/2018 2:21:14 PM #  [127.0.0.1] /overrides.js
+[39] 3/14/2018 2:21:14 PM #  [127.0.0.1] /functions.js
+[40] 3/14/2018 2:21:14 PM #  [127.0.0.1] /database.js
+[41] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/model/Lookup.js
+[42] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/model/Option.js
+[43] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/model/Program.js
+[44] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/model/Slide.js
+[45] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/EditToolsViewModel.js
+[46] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/EditToolsViewController.js
+[47] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/EditTools.js
+[48] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/FileUploadViewModel.js
+[49] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/FileUploadViewController.js
+[50] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/FileUpload.js
+[51] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/HomePageViewModel.js
+[52] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/HomePageViewController.js
+[53] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/HomePage.js
+[54] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/MainViewViewModel.js
+[55] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/MainViewViewController.js
+[56] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/ProgramsViewModel.js
+[57] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/ProgramsViewController.js
+[58] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/Programs.js
+[59] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/MainView.js
+[60] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/SelectionEditorViewModel.js
+[61] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/SelectionEditorViewController.js
+[62] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/SelectionEditor.js
+[63] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/SettingsViewModel.js
+[64] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/SettingsViewController.js
+[65] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/Settings.js
+[66] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/SourceViewViewModel.js
+[67] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/SourceViewViewController.js
+[68] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/SourceView.js
+[69] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/TemplatesViewModel.js
+[70] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/Templates.js
+[71] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/TextEditorViewModel.js
+[72] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/TextEditorViewController.js
+[73] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app/view/TextEditor.js
+[74] 3/14/2018 2:21:14 PM #  [127.0.0.1] /app.js
+[75] 3/14/2018 2:21:14 PM #  [127.0.0.1] /build/development/eLearning/resources/fonts/OpenSans-Regular.ttf
+[76] 3/14/2018 2:21:14 PM #  [127.0.0.1] /build/development/eLearning/resources/font-awesome/fonts/fontawesome-webfont.woff2
+[77] 3/14/2018 2:21:14 PM #  [127.0.0.1] /build/development/eLearning/resources/fonts/OpenSans-Light.ttf
+[78] 3/14/2018 2:21:14 PM #  [127.0.0.1] /favicon.ico
+[1] 3/14/2018 2:33:17 PM # LOADING dll: C:\Work\Projekti\eLearning\bin\MXP_App_Worker.dll
+[2] 3/14/2018 2:33:54 PM #  [127.0.0.1] /MXP_App.ISAPI.dll/Pub/Ping
+[3] 3/14/2018 2:33:55 PM #  -> Response size: 382
+[4] 3/14/2018 2:33:56 PM #  [127.0.0.1] /favicon.ico
+[5] 3/14/2018 2:40:29 PM #  [127.0.0.1] /MXP_App.ISAPI.dll/Lookups/TrainingProgramStatus
+[6] 3/14/2018 2:40:29 PM #  -> Response size: 390
+[7] 3/14/2018 2:40:30 PM #  [127.0.0.1] /favicon.ico
+[8] 3/14/2018 2:40:58 PM #  [127.0.0.1] /MXP_App.ISAPI.dll/Lookups/TrainingProgramCategories
+[9] 3/14/2018 2:40:58 PM #  -> Response size: 45
+[10] 3/14/2018 2:40:59 PM #  [127.0.0.1] /favicon.ico
+[11] 3/14/2018 2:41:05 PM #  [127.0.0.1] /MXP_App.ISAPI.dll/Lookups/TrainingProgramPageCategories
+[12] 3/14/2018 2:41:05 PM #  -> Response size: 177
+[13] 3/14/2018 2:41:05 PM #  [127.0.0.1] /favicon.ico
+[14] 3/14/2018 2:41:14 PM #  [127.0.0.1] /MXP_App.ISAPI.dll/Lookups/CoursesAndCertificates
+[15] 3/14/2018 2:41:14 PM #  -> Response size: 6993
+[16] 3/14/2018 2:41:14 PM #  [127.0.0.1] /favicon.ico

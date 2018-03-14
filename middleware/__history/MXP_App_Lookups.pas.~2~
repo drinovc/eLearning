@@ -1,0 +1,26 @@
+unit MXP_App_Lookups;
+
+interface
+
+uses
+  SysUtils, Classes;
+
+type
+  TLookups = class(TDataModule)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Lookups: TLookups;
+
+implementation
+
+{$R *.dfm}
+
+initialization
+  RegisterClass(TLookups);
+
+end.

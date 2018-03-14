@@ -1,0 +1,72 @@
+﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+		<PropertyGroup>
+			<ProjectGuid>{4F29C135-F5E9-44B2-AA4E-38607DADBCD6}</ProjectGuid>
+		</PropertyGroup>
+		<ItemGroup>
+			<Projects Include="MxADOpack.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="MXP_App_Worker.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="MXP_App_DataServer.dproj">
+				<Dependencies/>
+			</Projects>
+			<Projects Include="MXP_App_ISAPI.dproj">
+				<Dependencies/>
+			</Projects>
+		</ItemGroup>
+		<ProjectExtensions>
+			<Borland.Personality>Default.Personality.12</Borland.Personality>
+			<Borland.ProjectType/>
+			<BorlandProject>
+				<Default.Personality/>
+			</BorlandProject>
+		</ProjectExtensions>
+		<Target Name="MxADOpack">
+			<MSBuild Projects="MxADOpack.dproj"/>
+		</Target>
+		<Target Name="MxADOpack:Clean">
+			<MSBuild Targets="Clean" Projects="MxADOpack.dproj"/>
+		</Target>
+		<Target Name="MxADOpack:Make">
+			<MSBuild Targets="Make" Projects="MxADOpack.dproj"/>
+		</Target>
+		<Target Name="MXP_App_Worker">
+			<MSBuild Projects="MXP_App_Worker.dproj"/>
+		</Target>
+		<Target Name="MXP_App_Worker:Clean">
+			<MSBuild Targets="Clean" Projects="MXP_App_Worker.dproj"/>
+		</Target>
+		<Target Name="MXP_App_Worker:Make">
+			<MSBuild Targets="Make" Projects="MXP_App_Worker.dproj"/>
+		</Target>
+		<Target Name="MXP_App_DataServer">
+			<MSBuild Projects="MXP_App_DataServer.dproj"/>
+		</Target>
+		<Target Name="MXP_App_DataServer:Clean">
+			<MSBuild Targets="Clean" Projects="MXP_App_DataServer.dproj"/>
+		</Target>
+		<Target Name="MXP_App_DataServer:Make">
+			<MSBuild Targets="Make" Projects="MXP_App_DataServer.dproj"/>
+		</Target>
+		<Target Name="MXP_App_ISAPI">
+			<MSBuild Projects="MXP_App_ISAPI.dproj"/>
+		</Target>
+		<Target Name="MXP_App_ISAPI:Clean">
+			<MSBuild Targets="Clean" Projects="MXP_App_ISAPI.dproj"/>
+		</Target>
+		<Target Name="MXP_App_ISAPI:Make">
+			<MSBuild Targets="Make" Projects="MXP_App_ISAPI.dproj"/>
+		</Target>
+		<Target Name="Build">
+			<CallTarget Targets="MxADOpack;MXP_App_Worker;MXP_App_DataServer;MXP_App_ISAPI"/>
+		</Target>
+		<Target Name="Clean">
+			<CallTarget Targets="MxADOpack:Clean;MXP_App_Worker:Clean;MXP_App_DataServer:Clean;MXP_App_ISAPI:Clean"/>
+		</Target>
+		<Target Name="Make">
+			<CallTarget Targets="MxADOpack:Make;MXP_App_Worker:Make;MXP_App_DataServer:Make;MXP_App_ISAPI:Make"/>
+		</Target>
+		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+	</Project>
