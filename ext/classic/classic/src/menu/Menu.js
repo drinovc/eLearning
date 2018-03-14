@@ -173,6 +173,7 @@ Ext.define('Ext.menu.Menu', {
      */
     
     /**
+     * @cfg focusOnToFront
      * @inheritdoc
      */
     focusOnToFront: false,

@@ -38,13 +38,20 @@ Ext.define('Ext.grid.menu.Columns', {
     onBeforeShowColumnsMenu: function (menu) {
         var me = this,
             grid = me.grid,
-            columns = grid.getHeaderContainer().getColumns('[isLeafHeader]'),
+            columns = grid.getHeaderContainer().items.items,
             items = [],
             len = columns.length,
             i, column;
 
         for (i = 0; i < len; ++i) {
             column = columns[i];
+
+            // If the column has the ability to hide, add it to the menu.
+            // The item itself enables/disables depending on whether it is
+            // contextually hideable. That means that there are other
+            // menu offering columns still visible.
+            // See HeaderContainer#updateMenuDisabledState for keeping this
+            // synched while hiding and showing columns.
             if (column.getHideable()) {
                 items.push(column.getHideShowMenuItem());
             }
@@ -57,30 +64,6 @@ Ext.define('Ext.grid.menu.Columns', {
     },
 
     onCheckItem: function (menuItem, checked) {
-        var items = this.getMenu().items.items,
-            len = items.length,
-            i, item, checkedItem, enable;
-
         menuItem.column.setHidden(!checked);
-
-        for (i = 0; i < len; ++i) {
-            item = items[i];
-            if (item.getChecked()) {
-                if (checkedItem) {
-                    enable = true;
-                    break;
-                }
-                checkedItem = item;
-            }
-        }
-
-        if (enable) {
-            for (i = 0; i < len; ++i) {
-                items[i].enable();
-            }
-
-        } else if (checkedItem) {
-            checkedItem.disable();
-        }
     }
 });

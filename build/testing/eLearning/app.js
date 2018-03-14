@@ -44756,6 +44756,606 @@ pinchZoom:true, doubleTapZoom:true}, {panX:true, panY:true, pinchZoom:true, doub
     dom.setAttribute(attributeName, flags);
   }
 }});
+Ext.define('Ext.drag.Constraint', {alias:'drag.constraint.base', mixins:[Ext.mixin.Factoryable], factoryConfig:{defaultType:'base', type:'drag.constraint'}, config:{element:null, horizontal:null, region:null, snap:null, source:null, vertical:null, x:null, y:null}, constructor:function(config) {
+  this.initConfig(config);
+}, applyElement:function(element) {
+  if (element && typeof element !== 'boolean') {
+    element = Ext.get(element);
+  }
+  return element || null;
+}, applySnap:function(snap) {
+  if (typeof snap === 'number') {
+    snap = {x:snap, y:snap};
+  }
+  return snap;
+}, constrain:function(xy, info) {
+  var me = this, x = xy[0], y = xy[1], constrainInfo = me.constrainInfo, initial = constrainInfo.initial, constrainX = constrainInfo.x, constrainY = constrainInfo.y, snap = constrainInfo.snap, min, max;
+  if (!constrainInfo.vertical) {
+    if (snap && snap.x) {
+      if (snap.xFn) {
+        x = snap.x.call(me, info, x);
+      } else {
+        x = me.doSnap(x, initial.x, snap.x);
+      }
+    }
+    if (constrainX) {
+      min = constrainX[0];
+      max = constrainX[1];
+      if (min !== null && x < min) {
+        x = min;
+      }
+      if (max !== null && x > max) {
+        x = max;
+      }
+    }
+  } else {
+    x = initial.x;
+  }
+  if (!constrainInfo.horizontal) {
+    if (snap && snap.y) {
+      if (snap.yFn) {
+        y = snap.y.call(me, info, y);
+      } else {
+        y = me.doSnap(y, initial.y, snap.y);
+      }
+    }
+    if (constrainY) {
+      min = constrainY[0];
+      max = constrainY[1];
+      if (min !== null && y < min) {
+        y = min;
+      }
+      if (max !== null && y > max) {
+        y = max;
+      }
+    }
+  } else {
+    y = initial.y;
+  }
+  return [x, y];
+}, destroy:function() {
+  this.setSource(null);
+  this.setElement(null);
+  this.callParent();
+}, privates:{constrainValue:function(a, b, resolver) {
+  var val = null, aNull = a === null, bNull = b === null;
+  if (!(aNull && bNull)) {
+    if (aNull) {
+      val = b;
+    } else {
+      if (bNull) {
+        val = a;
+      } else {
+        val = resolver(a, b);
+      }
+    }
+  }
+  return val;
+}, doSnap:function(position, initial, snap) {
+  if (!snap) {
+    return position;
+  }
+  var ratio = (position - initial) / snap, floor = Math.floor(ratio);
+  if (ratio - floor <= 0.5) {
+    ratio = floor;
+  } else {
+    ratio = floor + 1;
+  }
+  return initial + snap * ratio;
+}, onDragStart:function(info) {
+  var me = this, snap = me.getSnap(), vertical = !!me.getVertical(), horizontal = !!me.getHorizontal(), element = me.getElement(), region = me.getRegion(), proxy = info.proxy, proxyEl = proxy.element, x = me.getX(), y = me.getY(), minX = null, maxX = null, minY = null, maxY = null, rminX = null, rmaxX = null, rminY = null, rmaxY = null, pos, size;
+  if (element) {
+    if (typeof element === 'boolean') {
+      element = me.getSource().getElement().parent();
+    }
+    if (info.local) {
+      pos = element.getStyle('position');
+      if (pos === 'relative' || pos === 'absolute') {
+        size = element.getSize();
+        region = new Ext.util.Region(0, size.width, size.height, 0);
+      } else {
+        region = element.getRegion(true, true);
+      }
+    } else {
+      region = element.getRegion(true);
+    }
+  }
+  if (region) {
+    if (!vertical) {
+      rminX = region.left;
+      rmaxX = region.right - (proxyEl ? proxy.width : 0);
+    }
+    if (!horizontal) {
+      rminY = region.top;
+      rmaxY = region.bottom - (proxyEl ? proxy.height : 0);
+    }
+  }
+  if (!vertical && (region || x)) {
+    if (x) {
+      minX = x[0];
+      maxX = x[1];
+    }
+    if (minX !== null || maxX !== null || rminX !== null || rmaxX !== null) {
+      minX = me.constrainValue(minX, rminX, Math.max);
+      maxX = me.constrainValue(maxX, rmaxX, Math.min);
+      x = [minX, maxX];
+    }
+  }
+  if (!horizontal && (region || y)) {
+    if (y) {
+      minY = y[0];
+      maxY = y[1];
+    }
+    if (minY !== null || maxY !== null || rminY !== null || rmaxY !== null) {
+      minY = me.constrainValue(minY, rminY, Math.max);
+      maxY = me.constrainValue(maxY, rmaxY, Math.min);
+      y = [minY, maxY];
+    }
+  }
+  if (snap) {
+    snap = {x:snap.x, xFn:typeof snap.x === 'function', y:snap.y, yFn:typeof snap.y === 'function'};
+  }
+  me.constrainInfo = {initial:info.element.initial, vertical:vertical, horizontal:horizontal, x:x, y:y, snap:snap};
+}}});
+Ext.define('Ext.drag.Info', {constructor:function(source, e) {
+  if (!source) {
+    return;
+  }
+  var me = this, local = source.getLocal(), el, proxyEl, proxy, x, xy, y, pageXY, elPageXY;
+  me.source = source;
+  me.local = local;
+  xy = me.getEventXY(e);
+  pageXY = e.getXY();
+  el = source.getElement();
+  elPageXY = el.getXY();
+  xy = local ? el.getLocalXY() : elPageXY;
+  x = xy[0];
+  y = xy[1];
+  me.initialEvent = e;
+  me.eventTarget = e.target;
+  me.cursor = {current:{x:x, y:y}, delta:{x:0, y:0}, initial:{x:pageXY[0], y:pageXY[1]}, offset:{x:pageXY[0] - elPageXY[0], y:pageXY[1] - elPageXY[1]}};
+  me.element = {current:{x:x, y:y}, delta:{x:0, y:0}, initial:{x:x, y:y}};
+  me.proxy = {instance:source.getProxy(), current:{x:x, y:y}, delta:{x:0, y:0}, initial:{x:x, y:y}, element:el, isUnderCursor:false, isElement:true};
+  me.types = [];
+  me.data = {};
+  source.describe(me);
+  proxy = me.proxy;
+  proxyEl = proxy.instance.setupElement(me);
+  proxy.isElement = proxyEl === source.getElement();
+  proxy.element = proxyEl;
+  if (proxyEl) {
+    proxy.width = proxyEl.getWidth();
+    proxy.height = proxyEl.getHeight();
+  }
+  if (proxy.isElement) {
+    el = me.element;
+    el.current = proxy.current;
+    el.delta = proxy.delta;
+  }
+  me.needsCursorCheck = proxy.element && source.manager && source.manager.pointerBug;
+}, cursor:null, element:null, eventTarget:null, files:null, isNative:false, proxy:null, source:null, target:null, types:null, valid:false, clearData:function(type) {
+  Ext.Array.remove(this.types, type);
+  delete this.data[type];
+}, clone:function() {
+  var me = this, ret = new Ext.drag.Info;
+  ret.cursor = Ext.merge({}, me.cursor);
+  ret.data = Ext.apply({}, me.data);
+  ret.element = Ext.merge({}, me.element);
+  ret.eventTarget = me.eventTarget;
+  ret.proxy = Ext.merge({}, me.proxy);
+  ret.source = me.source;
+  ret.target = me.target;
+  ret.types = Ext.Array.clone(me.types);
+  ret.valid = me.valid;
+  return ret;
+}, getData:function(type) {
+  var me = this, data = me.data, dt = me.dataTransfer, ret;
+  if (dt) {
+    ret = dt.getData(type);
+  } else {
+    if (!me.finalized) {
+      Ext.raise('Unable to call getData until the drop is complete');
+    }
+    ret = data[type];
+    if (typeof ret === 'function') {
+      data[type] = ret = ret.call(me.source, me);
+    }
+    if (!ret && ret !== 0) {
+      ret = '';
+    }
+  }
+  return Ext.Promise.resolve(ret);
+}, setData:function(type, value) {
+  Ext.Array.include(this.types, type);
+  this.data[type] = value;
+}, destroy:function() {
+  var me = this;
+  me.eventTarget = me.data = me.proxy = me.targetMap = me.targetMap = me.types = me.elementMap = me.possibleTargets = me.target = null;
+  me.callParent();
+}, privates:{data:null, dataTransfer:null, elementMap:null, possibleTargets:null, targetMap:null, copyNativeData:function(target, e) {
+  var dt = e.browserEvent.dataTransfer;
+  this.target = target;
+  this.dataTransfer = dt;
+  this.files = dt.files;
+}, finalize:function() {
+  var me = this, target = me.target;
+  me.finalized = true;
+  if (target) {
+    target.info = null;
+    target.handleDrop(me);
+  }
+}, getAlignXY:function(x, y) {
+  var me = this, source = me.source, cursorOffset = me.cursor.offset, proxy = source.getProxy(), proxyEl = me.proxy.element, constrain = source.getConstrain(), xy = [x, y];
+  if (proxyEl) {
+    if (me.proxy.isElement) {
+      xy[0] -= cursorOffset.x;
+      xy[1] -= cursorOffset.y;
+    } else {
+      xy = proxy.adjustCursorOffset(me, xy);
+    }
+    if (constrain) {
+      xy = constrain.constrain(xy, me);
+    }
+  }
+  return xy;
+}, getEventXY:function(e) {
+  var xy = e.getXY(), source = this.source;
+  if (this.local) {
+    xy = source.convertToLocalXY(xy);
+  }
+  return xy;
+}, onNativeDragEnter:function(target, e) {
+  var me = this;
+  me.valid = target.accepts(me);
+  target.info = me;
+  me.copyNativeData(target, e);
+}, onNativeDragLeave:function(target, e) {
+  var me = this;
+  if (me.target === target) {
+    target.info = null;
+    me.valid = false;
+    me.target = me.dataTransfer = me.files = null;
+  }
+}, onNativeDragMove:function(target, e) {
+  this.copyNativeData(target, e);
+}, onNativeDrop:function(target, e) {
+  this.copyNativeData(target, e);
+  target.info = null;
+}, setActive:function(target) {
+  var me = this, source = me.source, current = me.target, changed = current !== target;
+  if (current && changed) {
+    current.handleDragLeave(me);
+    current.info = null;
+  }
+  me.target = target;
+  if (target) {
+    if (changed) {
+      me.valid = !!me.possibleTargets[target.getId()] && target.accepts(me) !== false;
+      target.handleDragEnter(me);
+      target.info = me;
+    }
+    target.handleDragMove(me);
+  } else {
+    me.valid = false;
+  }
+  if (changed) {
+    source.getProxy().update(me);
+  }
+}, update:function(event, beforeStart) {
+  var me = this, xy = me.getEventXY(event), x = xy[0], y = xy[1], alignXY = me.getAlignXY(x, y), alignX = alignXY[0], alignY = alignXY[1], proxyData = me.proxy, cursor = me.cursor, current = cursor.current, delta = cursor.delta, initial = cursor.initial, proxy = proxyData.instance;
+  current.x = x;
+  current.y = y;
+  delta.x = x - initial.x;
+  delta.y = y - initial.y;
+  current = proxyData.current;
+  delta = proxyData.delta;
+  initial = proxyData.initial;
+  current.x = alignX;
+  current.y = alignY;
+  delta.x = alignX - initial.x;
+  delta.y = alignY - initial.y;
+  if (me.needsCursorCheck) {
+    proxyData.isUnderCursor = !(x < alignX || y < alignY || x > proxyData.width + alignX || y > proxyData.height + alignY);
+  }
+  if (!beforeStart && proxy) {
+    proxy.setXY(me, alignXY);
+  }
+}}});
+Ext.define('Ext.drag.Item', {mixins:[Ext.mixin.Observable, Ext.mixin.Identifiable], config:{autoDestroy:true, component:null, element:null, groups:null}, constructor:function(config) {
+  this.mixins.observable.constructor.call(this, config);
+}, isDisabled:function() {
+  return this.disabled;
+}, disable:function() {
+  this.disabled = true;
+}, enable:function() {
+  this.disabled = false;
+}, updateComponent:function(comp, was) {
+  var el;
+  if (comp) {
+    el = comp.el;
+  } else {
+    if (was && was.el === this.getElement()) {
+      el = null;
+    } else {
+      return;
+    }
+  }
+  this.setElement(el);
+}, applyElement:function(element) {
+  return element ? Ext.get(element) : null;
+}, updateElement:function() {
+  this.setupListeners();
+}, applyGroups:function(group) {
+  if (typeof group === 'string') {
+    group = [group];
+  }
+  return group;
+}, destroy:function() {
+  var me = this, el = me.getElement();
+  me.destroying = true;
+  me.setElement(null);
+  if (el && me.getAutoDestroy()) {
+    el.destroy();
+  }
+  me.callParent();
+  me.destroying = false;
+}, privates:{disabled:false, convertToLocalXY:function(xy) {
+  var c = this.getComponent();
+  if (c) {
+    xy = c.convertToLocalXY(xy);
+  } else {
+    xy = this.getElement().translateXY(xy[0], xy[1]);
+    xy = [xy.x, xy.y];
+  }
+  return xy;
+}, getElListeners:Ext.privateFn, setupListeners:function(element) {
+  var me = this, elListeners = me.elListeners;
+  element = element || me.getElement();
+  if (elListeners) {
+    elListeners.destroy();
+    me.elListeners = null;
+  }
+  if (element) {
+    me.elListeners = element.on(Ext.apply({scope:me, destroyable:true}, me.getElListeners()));
+  }
+}}});
+Ext.define('Ext.drag.Source', {extend:Ext.drag.Item, defaultIdPrefix:'source-', config:{activateOnLongPress:false, activeCls:null, constrain:null, handle:null, local:null, proxy:'original', revert:false}, dragging:false, constructor:function(config) {
+  var describe = config && config.describe;
+  if (describe) {
+    this.describe = describe;
+    config = Ext.apply({}, config);
+    delete config.describe;
+  }
+  this.callParent([config]);
+  this.manager = Ext.drag['Manager'];
+}, describe:Ext.emptyFn, isDragging:function() {
+  return this.dragging;
+}, beforeDragStart:Ext.emptyFn, onDragCancel:Ext.emptyFn, onDragEnd:Ext.emptyFn, onDragMove:Ext.emptyFn, onDragStart:Ext.emptyFn, applyActivateOnLongPress:function(activateOnLongPress) {
+  if (typeof activateOnLongPress === 'string') {
+    activateOnLongPress = [activateOnLongPress];
+  }
+  return activateOnLongPress;
+}, updateActivateOnLongPress:function(activateOnLongPress) {
+  if (!this.isConfiguring) {
+    this.setupListeners();
+  }
+}, updateActiveCls:function(cls, oldCls) {
+  if (this.dragging) {
+    var el = this.getElement();
+    el.replaceCls(oldCls, cls);
+  }
+}, applyConstrain:function(constrain) {
+  if (constrain && !constrain.$isClass) {
+    if (constrain.isRegion) {
+      constrain = {region:constrain};
+    } else {
+      if (constrain.isElement || !Ext.isObject(constrain)) {
+        constrain = {element:constrain};
+      }
+    }
+    constrain = Ext.apply({source:this}, constrain);
+    constrain = Ext.Factory.dragConstraint(constrain);
+  }
+  return constrain;
+}, updateElement:function(element, oldElement) {
+  if (oldElement && !oldElement.destroyed) {
+    oldElement.un('dragstart', 'stopNativeDrag', this);
+  }
+  if (element && !this.getHandle()) {
+    element.setTouchAction({panX:false, panY:false});
+    element.on('dragstart', 'stopNativeDrag', this, {translate:false});
+  }
+  this.callParent([element, oldElement]);
+}, updateHandle:function() {
+  if (!this.isConfiguring) {
+    this.setupListeners();
+  }
+}, applyProxy:function(proxy) {
+  if (proxy) {
+    proxy = Ext.Factory.dragproxy(proxy);
+  }
+  return proxy;
+}, updateProxy:function(proxy, oldProxy) {
+  if (oldProxy) {
+    oldProxy.destroy();
+  }
+  if (proxy) {
+    proxy.setSource(this);
+  }
+}, resolveListenerScope:function() {
+  var ownerCmp = this.ownerCmp, a = arguments;
+  if (ownerCmp) {
+    return ownerCmp.resolveListenerScope.apply(ownerCmp, a);
+  }
+  return this.callParent(a);
+}, destroy:function() {
+  var me = this;
+  me.manager = me.initialEvent = null;
+  me.setConstrain(null);
+  me.setProxy(null);
+  me.callParent();
+}, privates:{draggingCls:Ext.baseCSSPrefix + 'drag-dragging', info:null, revertCls:Ext.baseCSSPrefix + 'drag-revert', canActivateOnLongPress:function(e) {
+  var activate = this.getActivateOnLongPress();
+  return !!(activate && (activate === true || Ext.Array.contains(activate, e.pointerType)));
+}, dragCleanup:function(info) {
+  var me = this, cls = me.getActiveCls(), proxy = me.getProxy(), el = me.getElement(), proxyEl = info ? info.proxy.element : null;
+  if (cls) {
+    el.removeCls(cls);
+  }
+  if (proxyEl) {
+    proxyEl.removeCls(me.draggingCls);
+  }
+  proxy.cleanup(info);
+  me.dragging = false;
+  me.initialEvent = me.info = null;
+}, getElListeners:function() {
+  var o = {touchstart:'handleTouchStart', dragstart:'handleDragStart', drag:'handleDragMove', dragend:'handleDragEnd', dragcancel:'handleDragCancel'}, handle = this.getHandle();
+  if (handle) {
+    o.dragstart = {fn:o.dragstart, delegate:handle};
+  }
+  if (this.getActivateOnLongPress()) {
+    o.longpress = 'handleLongPress';
+  }
+  return o;
+}, handleDragCancel:function(e) {
+  var me = this, info = me.info, manager = me.manager;
+  if (manager) {
+    manager.onDragCancel(info, e);
+  }
+  me.onDragCancel(info);
+  if (me.hasListeners.dragcancel) {
+    me.fireEvent('dragcancel', me, info, e);
+  }
+  Ext.fireEvent('dragcancel', me, info, e);
+  me.dragCleanup(info);
+}, handleDragEnd:function(e) {
+  if (!this.dragging) {
+    return;
+  }
+  var me = this, manager = me.manager, revert = me.getRevert(), info = me.info, proxy = info.proxy;
+  info.update(e);
+  if (manager) {
+    manager.onDragEnd(info, e);
+  }
+  me.onDragEnd(info);
+  if (me.hasListeners.dragend) {
+    me.fireEvent('dragend', me, info, e);
+  }
+  Ext.fireEvent('dragend', me, info, e);
+  proxy = proxy.instance;
+  if (revert && proxy) {
+    proxy.dragRevert(info, me.revertCls, revert, function() {
+      me.dragCleanup(info);
+    });
+  } else {
+    me.dragCleanup(info);
+  }
+}, handleDragMove:function(e) {
+  var me = this, info = me.info, manager = me.manager;
+  if (!me.dragging) {
+    return;
+  }
+  e.stopPropagation();
+  e.claimGesture();
+  info.update(e);
+  if (manager) {
+    manager.onDragMove(info, e);
+  }
+  me.onDragMove(info);
+  if (me.hasListeners.dragmove) {
+    me.fireEvent('dragmove', me, info, e);
+  }
+}, handleDragStart:function(e) {
+  var me = this, hasListeners = me.hasListeners, manager = me.manager, constrain = me.getConstrain(), initialEvent = me.initialEvent, el, cls, info, cancel, proxyEl;
+  if (me.preventStart(e)) {
+    return false;
+  }
+  if (hasListeners.initdragconstraints) {
+    me.fireEvent('initdragconstraints', me, e);
+  }
+  me.info = info = new Ext.drag.Info(me, initialEvent);
+  me.setup(info);
+  if (constrain) {
+    constrain.onDragStart(info);
+  }
+  info.update(e, true);
+  cancel = me.beforeDragStart(info) === false;
+  if (!cancel && hasListeners.beforedragstart) {
+    cancel = me.fireEvent('beforedragstart', me, info, e) === false;
+  }
+  if (cancel) {
+    me.dragCleanup();
+    return false;
+  }
+  e.claimGesture();
+  me.dragging = true;
+  cls = me.getActiveCls();
+  el = me.getElement();
+  if (cls) {
+    el.addCls(cls);
+  }
+  proxyEl = info.proxy.element;
+  if (proxyEl) {
+    proxyEl.addCls(me.draggingCls);
+  }
+  info.update(e);
+  if (manager) {
+    manager.onDragStart(info, e);
+  }
+  me.onDragStart(info);
+  if (hasListeners.dragstart) {
+    me.fireEvent('dragstart', me, info, e);
+  }
+  Ext.fireEvent('dragstart', me, info, e);
+}, handleLongPress:function(e) {
+  if (!this.isDisabled() && this.canActivateOnLongPress(e)) {
+    this.initialEvent = e;
+    e.startDrag();
+  }
+}, handleTouchStart:function(e) {
+  if (!this.isDisabled()) {
+    this.initialEvent = e;
+  }
+}, preventStart:function(e) {
+  return this.isDisabled() || !e.longpress && this.canActivateOnLongPress(e);
+}, setup:Ext.privateFn, stopNativeDrag:function(e) {
+  e.preventDefault();
+}}});
+Ext.define('Ext.drag.proxy.None', {mixins:[Ext.mixin.Factoryable], alias:'drag.proxy.none', factoryConfig:{aliasPrefix:'drag.proxy.', type:'dragproxy'}, config:{source:null}, constructor:function(config) {
+  var getElement = config && config.getElement;
+  if (getElement) {
+    this.getElement = getElement;
+    config = Ext.apply({}, config);
+    delete config.getElement;
+  }
+  this.initConfig(config);
+}, cleanup:Ext.emptyFn, dragRevert:function(info, revertCls, options, callback) {
+  var positionable = this.getPositionable(info), initial = info.proxy.initial;
+  positionable.addCls(revertCls);
+  positionable.setXY([initial.x, initial.y], Ext.apply({callback:function() {
+    positionable.removeCls(revertCls);
+    callback();
+  }}, options));
+}, getElement:function() {
+  return null;
+}, getPositionable:function() {
+  return this.element;
+}, setXY:function(info, xy, animation) {
+  var positionable = this.getPositionable(info);
+  if (positionable) {
+    positionable.setXY(xy, animation);
+  }
+}, update:Ext.emptyFn, privates:{setupElement:function(info) {
+  return this.element = this.getElement(info);
+}, adjustCursorOffset:function(info, pos) {
+  return pos;
+}}});
+Ext.define('Ext.drag.proxy.Original', {extend:Ext.drag.proxy.None, alias:'drag.proxy.original', getElement:function(info) {
+  return info.source.getElement();
+}, getPositionable:function(info) {
+  var source = info.source;
+  return source.getComponent() || source.getElement();
+}});
 Ext.define('Ext.event.gesture.Recognizer', {mixins:[Ext.mixin.Identifiable], priority:0, handledEvents:[], isStarted:false, config:{onRecognized:Ext.emptyFn, callbackScope:null}, constructor:function(config) {
   this.initConfig(config);
   Ext.event.publisher.Gesture.instance.registerRecognizer(this);
@@ -60920,270 +61520,6 @@ Ext.define('Ext.form.FieldContainer', {extend:Ext.container.Container, mixins:{l
   }
   return me.callParent();
 }}});
-Ext.define('Ext.layout.container.CheckboxGroup', {extend:Ext.layout.container.Container, alias:['layout.checkboxgroup'], autoFlex:true, type:'checkboxgroup', createsInnerCt:true, childEls:['innerCt'], renderTpl:'\x3ctable id\x3d"{ownerId}-innerCt" data-ref\x3d"innerCt" class\x3d"' + Ext.baseCSSPrefix + 'table-plain" cellpadding\x3d"0"' + 'role\x3d"presentation" style\x3d"{tableStyle}"\x3e' + '\x3ctbody role\x3d"presentation"\x3e' + '\x3ctr role\x3d"presentation"\x3e' + '\x3ctpl for\x3d"columns"\x3e' + 
-'\x3ctd class\x3d"{parent.colCls}" valign\x3d"top" style\x3d"{style}" role\x3d"presentation"\x3e' + '{% this.renderColumn(out,parent,xindex-1) %}' + '\x3c/td\x3e' + '\x3c/tpl\x3e' + '\x3c/tr\x3e' + '\x3c/tbody\x3e' + '\x3c/table\x3e', lastOwnerItemsGeneration:null, initLayout:function() {
-  var me = this, owner = me.owner;
-  me.columnsArray = Ext.isArray(owner.columns);
-  me.autoColumns = !owner.columns || owner.columns === 'auto';
-  if (!me.autoColumns) {
-    me.vertical = owner.vertical || (owner.columns === 1 || owner.columns.length === 1);
-  }
-  me.callParent();
-}, beginLayout:function(ownerContext) {
-  var me = this, columns, numCols, i, width, cwidth, totalFlex = 0, flexedCols = 0, autoFlex = me.autoFlex, innerCtStyle = me.innerCt.dom.style;
-  me.callParent(arguments);
-  columns = me.rowNodes[0].children;
-  ownerContext.innerCtContext = ownerContext.getEl('innerCt', me);
-  if (!ownerContext.widthModel.shrinkWrap) {
-    numCols = columns.length;
-    if (me.columnsArray) {
-      for (i = 0; i < numCols; i++) {
-        width = me.owner.columns[i];
-        if (width < 1) {
-          totalFlex += width;
-          flexedCols++;
-        }
-      }
-      for (i = 0; i < numCols; i++) {
-        width = me.owner.columns[i];
-        if (width < 1) {
-          cwidth = width / totalFlex * 100 + '%';
-        } else {
-          cwidth = width + 'px';
-        }
-        columns[i].style.width = cwidth;
-      }
-    } else {
-      for (i = 0; i < numCols; i++) {
-        cwidth = autoFlex ? 1 / numCols * 100 + '%' : '';
-        columns[i].style.width = cwidth;
-        flexedCols++;
-      }
-    }
-    if (!flexedCols) {
-      innerCtStyle.tableLayout = 'fixed';
-      innerCtStyle.width = '';
-    } else {
-      if (flexedCols < numCols) {
-        innerCtStyle.tableLayout = 'fixed';
-        innerCtStyle.width = '100%';
-      } else {
-        innerCtStyle.tableLayout = 'auto';
-        if (autoFlex) {
-          innerCtStyle.width = '100%';
-        } else {
-          innerCtStyle.width = '';
-        }
-      }
-    }
-  } else {
-    innerCtStyle.tableLayout = 'auto';
-    innerCtStyle.width = '';
-  }
-}, cacheElements:function() {
-  var me = this;
-  me.callParent();
-  me.rowNodes = me.innerCt.query('tr', true);
-  me.tBodyNode = me.rowNodes[0].parentNode;
-}, calculate:function(ownerContext) {
-  var me = this, targetContext, widthShrinkWrap, heightShrinkWrap, shrinkWrap, table, targetPadding;
-  if (!ownerContext.getDomProp('containerChildrenSizeDone')) {
-    me.done = false;
-  } else {
-    targetContext = ownerContext.innerCtContext;
-    widthShrinkWrap = ownerContext.widthModel.shrinkWrap;
-    heightShrinkWrap = ownerContext.heightModel.shrinkWrap;
-    shrinkWrap = heightShrinkWrap || widthShrinkWrap;
-    table = targetContext.el.dom;
-    targetPadding = shrinkWrap && targetContext.getPaddingInfo();
-    if (widthShrinkWrap) {
-      ownerContext.setContentWidth(table.offsetWidth + targetPadding.width, true);
-    }
-    if (heightShrinkWrap) {
-      ownerContext.setContentHeight(table.offsetHeight + targetPadding.height, true);
-    }
-  }
-}, doRenderColumn:function(out, renderData, columnIndex) {
-  var me = renderData.$layout, owner = me.owner, columnCount = renderData.columnCount, items = owner.items.items, itemCount = items.length, item, itemIndex, rowCount, increment, tree;
-  if (owner.vertical) {
-    rowCount = Math.ceil(itemCount / columnCount);
-    itemIndex = columnIndex * rowCount;
-    itemCount = Math.min(itemCount, itemIndex + rowCount);
-    increment = 1;
-  } else {
-    itemIndex = columnIndex;
-    increment = columnCount;
-  }
-  for (; itemIndex < itemCount; itemIndex += increment) {
-    item = items[itemIndex];
-    me.configureItem(item);
-    tree = item.getRenderTree();
-    Ext.DomHelper.generateMarkup(tree, out);
-  }
-}, getColumnCount:function() {
-  var me = this, owner = me.owner, ownerColumns = owner.columns;
-  if (me.columnsArray) {
-    return ownerColumns.length;
-  }
-  if (Ext.isNumber(ownerColumns)) {
-    return ownerColumns;
-  }
-  return owner.items.length;
-}, getItemSizePolicy:function(item) {
-  return this.autoSizePolicy;
-}, getRenderData:function() {
-  var me = this, data = me.callParent(), owner = me.owner, i, columns = me.getColumnCount(), width, column, cwidth, autoFlex = me.autoFlex, totalFlex = 0, flexedCols = 0;
-  if (me.columnsArray) {
-    for (i = 0; i < columns; i++) {
-      width = me.owner.columns[i];
-      if (width < 1) {
-        totalFlex += width;
-        flexedCols++;
-      }
-    }
-  }
-  data.colCls = owner.groupCls;
-  data.columnCount = columns;
-  data.columns = [];
-  for (i = 0; i < columns; i++) {
-    column = data.columns[i] = {};
-    if (me.columnsArray) {
-      width = me.owner.columns[i];
-      if (width < 1) {
-        cwidth = width / totalFlex * 100 + '%';
-      } else {
-        cwidth = width + 'px';
-      }
-      column.style = 'width:' + cwidth;
-    } else {
-      column.style = 'width:' + 1 / columns * 100 + '%';
-      flexedCols++;
-    }
-  }
-  data.tableStyle = !flexedCols ? 'table-layout:fixed;' : flexedCols < columns ? 'table-layout:fixed;width:100%' : autoFlex ? 'table-layout:auto;width:100%' : 'table-layout:auto;';
-  return data;
-}, isValidParent:Ext.returnTrue, setupRenderTpl:function(renderTpl) {
-  this.callParent(arguments);
-  renderTpl.renderColumn = this.doRenderColumn;
-}, renderChildren:function() {
-  var me = this, generation = me.owner.items.generation;
-  if (me.lastOwnerItemsGeneration !== generation) {
-    me.lastOwnerItemsGeneration = generation;
-    me.renderItems(me.getLayoutItems());
-  }
-}, renderItems:function(items) {
-  var me = this, itemCount = items.length, item, rowCount, columnCount, rowIndex, columnIndex, i;
-  if (itemCount) {
-    Ext.suspendLayouts();
-    if (me.autoColumns) {
-      columnCount = itemCount;
-      rowCount = 1;
-    } else {
-      columnCount = me.columnsArray ? me.owner.columns.length : me.owner.columns;
-      rowCount = Math.ceil(itemCount / columnCount);
-    }
-    for (i = 0; i < itemCount; i++) {
-      item = items[i];
-      rowIndex = me.getRenderRowIndex(i, rowCount, columnCount);
-      columnIndex = me.getRenderColumnIndex(i, rowCount, columnCount);
-      if (!item.rendered) {
-        me.renderItem(item, rowIndex, columnIndex);
-      } else {
-        if (!me.isItemAtPosition(item, rowIndex, columnIndex)) {
-          me.moveItem(item, rowIndex, columnIndex);
-        }
-      }
-    }
-    me.pruneRows(rowCount, columnCount);
-    Ext.resumeLayouts(true);
-  }
-}, isItemAtPosition:function(item, rowIndex, columnIndex) {
-  return item.el.dom === this.getItemNodeAt(rowIndex, columnIndex);
-}, getRenderColumnIndex:function(itemIndex, rowCount, columnCount) {
-  if (this.vertical) {
-    return Math.floor(itemIndex / rowCount);
-  } else {
-    return itemIndex % columnCount;
-  }
-}, getRenderRowIndex:function(itemIndex, rowCount, columnCount) {
-  if (this.vertical) {
-    return itemIndex % rowCount;
-  } else {
-    return Math.floor(itemIndex / columnCount);
-  }
-}, getItemNodeAt:function(rowIndex, columnIndex) {
-  var column = this.getColumnNodeAt(rowIndex, columnIndex);
-  return this.vertical ? column.children[rowIndex] : column.children[0];
-}, getRowNodeAt:function(rowIndex) {
-  var me = this, row;
-  rowIndex = me.vertical ? 0 : rowIndex;
-  row = me.rowNodes[rowIndex];
-  if (!row) {
-    row = me.rowNodes[rowIndex] = document.createElement('tr');
-    row.role = 'presentation';
-    me.tBodyNode.appendChild(row);
-  }
-  return row;
-}, getColumnNodeAt:function(rowIndex, columnIndex, row) {
-  var column;
-  row = row || this.getRowNodeAt(rowIndex);
-  column = row.children[columnIndex];
-  if (!column) {
-    column = Ext.fly(row).appendChild({tag:'td', cls:this.owner.groupCls, vAlign:'top', role:'presentation'}, true);
-  }
-  return column;
-}, pruneRows:function(rowCount, columnCount) {
-  var me = this, rows = me.tBodyNode.children, columns, row, column, i, j;
-  rowCount = me.vertical ? 1 : rowCount;
-  while (rows.length > rowCount) {
-    row = rows[rows.length - 1];
-    while (row.children.length) {
-      Ext.get(row.children[0]).destroy();
-    }
-    row.parentNode.removeChild(row);
-  }
-  for (i = rowCount - 1; i >= 0; i--) {
-    row = rows[i];
-    columns = row.children;
-    while (columns.length > columnCount) {
-      column = columns[columns.length - 1];
-      Ext.get(column).destroy();
-    }
-    if (i > 0) {
-      for (j = columns.length - 1; j >= 0; j--) {
-        column = columns[j];
-        if (column.children.length === 0) {
-          Ext.get(column).destroy();
-        } else {
-          break;
-        }
-      }
-    }
-  }
-}, renderItem:function(item, rowIndex, columnIndex) {
-  var me = this, column, itemIndex;
-  me.configureItem(item);
-  itemIndex = me.vertical ? rowIndex : 0;
-  column = Ext.get(me.getColumnNodeAt(rowIndex, columnIndex));
-  item.render(column, itemIndex);
-}, moveItem:function(item, rowIndex, columnIndex) {
-  var me = this, column, itemIndex, targetNode;
-  itemIndex = me.vertical ? rowIndex : 0;
-  column = me.getColumnNodeAt(rowIndex, columnIndex);
-  targetNode = column.children[itemIndex];
-  column.insertBefore(item.el.dom, targetNode || null);
-}, destroy:function() {
-  if (this.owner.rendered) {
-    var target = this.getRenderTarget(), cells, i, len;
-    if (target) {
-      cells = target.query('.' + this.owner.groupCls, false);
-      for (i = 0, len = cells.length; i < len; i++) {
-        cells[i].destroy();
-      }
-    }
-  }
-  this.callParent();
-}});
 Ext.define('Ext.form.CheckboxManager', {extend:Ext.util.MixedCollection, singleton:true, getByName:function(name, formId) {
   return this.filterBy(function(item) {
     return item.name === name && item.getFormId() === formId;
@@ -61390,333 +61726,6 @@ Ext.define('Ext.theme.triton.form.field.Checkbox', {override:'Ext.form.field.Che
     this.getFocusClsEl().syncRepaint();
   }
 }});
-Ext.define('Ext.form.CheckboxGroup', {extend:Ext.form.FieldContainer, xtype:'checkboxgroup', isCheckboxGroup:true, mixins:{field:Ext.form.field.Field}, columns:'auto', vertical:false, allowBlank:true, blankText:'You must select at least one item in this group', defaultType:'checkboxfield', defaultBindProperty:'value', groupCls:Ext.baseCSSPrefix + 'form-check-group', extraFieldBodyCls:Ext.baseCSSPrefix + 'form-checkboxgroup-body', layout:'checkboxgroup', componentCls:Ext.baseCSSPrefix + 'form-checkboxgroup', 
-ariaRole:'group', ariaEl:'containerEl', skipLabelForAttribute:true, ariaRenderAttributes:{'aria-invalid':false}, initComponent:function() {
-  var me = this;
-  me.name = me.name || me.id;
-  me.callParent();
-  me.initField();
-}, initRenderData:function() {
-  var me = this, data, ariaAttr, boxes, i, len, ids;
-  data = me.callParent();
-  data.inputId = me.id + '-' + me.ariaEl;
-  ariaAttr = data.ariaAttributes;
-  if (ariaAttr) {
-    if (!ariaAttr['aria-labelledby']) {
-      ariaAttr['aria-labelledby'] = me.id + '-labelTextEl';
-    }
-  }
-  return data;
-}, initValue:function() {
-  var me = this, valueCfg = me.value;
-  me.originalValue = me.lastValue = valueCfg || me.getValue();
-  if (valueCfg) {
-    me.setValue(valueCfg);
-  }
-}, onAdd:function(field) {
-  var me = this, items, len, i;
-  if (field.isCheckbox) {
-    if (field.name == null) {
-      field.name = me.name;
-    }
-    me.mon(field, 'change', me.checkChange, me);
-  } else {
-    if (field.isContainer) {
-      items = field.items.items;
-      for (i = 0, len = items.length; i < len; i++) {
-        me.onAdd(items[i]);
-      }
-    }
-  }
-  me.callParent(arguments);
-}, onRemove:function(item) {
-  var me = this, items, len, i;
-  if (item.isCheckbox) {
-    me.mun(item, 'change', me.checkChange, me);
-  } else {
-    if (item.isContainer) {
-      items = item.items.items;
-      for (i = 0, len = items.length; i < len; i++) {
-        me.onRemove(items[i]);
-      }
-    }
-  }
-  me.callParent(arguments);
-}, isEqual:function(value1, value2) {
-  var toQueryString = Ext.Object.toQueryString;
-  return toQueryString(value1) === toQueryString(value2);
-}, getErrors:function() {
-  var errors = [];
-  if (!this.allowBlank && Ext.isEmpty(this.getChecked())) {
-    errors.push(this.blankText);
-  }
-  return errors;
-}, getBoxes:function(query) {
-  return this.query('[isCheckbox]' + (query || ''));
-}, eachBox:function(fn, scope) {
-  Ext.Array.forEach(this.getBoxes(), fn, scope || this);
-}, getChecked:function() {
-  return this.getBoxes('[checked]');
-}, isDirty:function() {
-  var boxes = this.getBoxes(), b, bLen = boxes.length;
-  for (b = 0; b < bLen; b++) {
-    if (boxes[b].isDirty()) {
-      return true;
-    }
-  }
-}, setReadOnly:function(readOnly) {
-  var boxes = this.getBoxes(), b, bLen = boxes.length;
-  for (b = 0; b < bLen; b++) {
-    boxes[b].setReadOnly(readOnly);
-  }
-  this.readOnly = readOnly;
-}, reset:function() {
-  var me = this, hadError = me.hasActiveError(), preventMark = me.preventMark;
-  me.preventMark = true;
-  me.batchChanges(function() {
-    var boxes = me.getBoxes(), b, bLen = boxes.length;
-    for (b = 0; b < bLen; b++) {
-      boxes[b].reset();
-    }
-  });
-  me.preventMark = preventMark;
-  me.unsetActiveError();
-  if (hadError) {
-    me.updateLayout();
-  }
-}, resetOriginalValue:function() {
-  var me = this, boxes = me.getBoxes(), b, bLen = boxes.length;
-  for (b = 0; b < bLen; b++) {
-    boxes[b].resetOriginalValue();
-  }
-  me.originalValue = me.getValue();
-  me.checkDirty();
-}, setValue:function(value) {
-  var me = this, boxes = me.getBoxes(), b, bLen = boxes.length, box, name, cbValue;
-  me.batchChanges(function() {
-    Ext.suspendLayouts();
-    for (b = 0; b < bLen; b++) {
-      box = boxes[b];
-      name = box.getName();
-      cbValue = false;
-      if (value) {
-        if (Ext.isArray(value[name])) {
-          cbValue = Ext.Array.contains(value[name], box.inputValue);
-        } else {
-          cbValue = value[name];
-        }
-      }
-      box.setValue(cbValue);
-    }
-    Ext.resumeLayouts(true);
-  });
-  return me;
-}, getValue:function() {
-  var values = {}, boxes = this.getBoxes(), b, bLen = boxes.length, box, name, inputValue, bucket;
-  for (b = 0; b < bLen; b++) {
-    box = boxes[b];
-    name = box.getName();
-    inputValue = box.inputValue;
-    if (box.getValue()) {
-      if (values.hasOwnProperty(name)) {
-        bucket = values[name];
-        if (!Ext.isArray(bucket)) {
-          bucket = values[name] = [bucket];
-        }
-        bucket.push(inputValue);
-      } else {
-        values[name] = inputValue;
-      }
-    }
-  }
-  return values;
-}, getSubmitData:function() {
-  return null;
-}, getModelData:function() {
-  return null;
-}, validate:function() {
-  var me = this, errors, isValid, wasValid;
-  if (me.disabled) {
-    isValid = true;
-  } else {
-    errors = me.getErrors();
-    isValid = Ext.isEmpty(errors);
-    wasValid = me.wasValid;
-    if (isValid) {
-      me.unsetActiveError();
-    } else {
-      me.setActiveError(errors);
-    }
-  }
-  if (isValid !== wasValid) {
-    me.wasValid = isValid;
-    me.fireEvent('validitychange', me, isValid);
-    me.updateLayout();
-  }
-  return isValid;
-}}, function() {
-  this.borrow(Ext.form.field.Base, ['markInvalid', 'clearInvalid', 'setError']);
-});
-Ext.define('Ext.form.RadioManager', {extend:Ext.util.MixedCollection, singleton:true, getByName:function(name, formId) {
-  return this.filterBy(function(item) {
-    return item.name === name && item.getFormId() === formId;
-  });
-}, getWithValue:function(name, value, formId) {
-  return this.filterBy(function(item) {
-    return item.name === name && item.inputValue == value && item.getFormId() === formId;
-  });
-}, getChecked:function(name, formId) {
-  return this.findBy(function(item) {
-    return item.name === name && item.checked && item.getFormId() === formId;
-  });
-}});
-Ext.define('Ext.form.field.Radio', {extend:Ext.form.field.Checkbox, alias:['widget.radiofield', 'widget.radio'], alternateClassName:'Ext.form.Radio', isRadio:true, inputType:'radio', formId:null, modelValue:undefined, modelValueUnchecked:null, initComponent:function() {
-  var me = this;
-  if (me.modelValue === undefined) {
-    me.modelValue = me.inputValue;
-  }
-  me.callParent();
-}, getGroupValue:function() {
-  var selected = this.getManager().getChecked(this.name, this.getFormId());
-  return selected ? selected.inputValue : null;
-}, onRemoved:function() {
-  this.callParent(arguments);
-  this.formId = null;
-}, setValue:function(value) {
-  var me = this, active;
-  if (Ext.isBoolean(value)) {
-    me.callParent(arguments);
-  } else {
-    active = me.getManager().getWithValue(me.name, value, me.getFormId()).getAt(0);
-    if (active) {
-      active.setValue(true);
-    }
-  }
-  return me;
-}, getSubmitValue:function() {
-  return this.checked ? this.inputValue : null;
-}, onChange:function(newVal, oldVal) {
-  var me = this, ownerCt = me.ownerCt, r, rLen, radio, radios;
-  me.callParent(arguments);
-  if (newVal) {
-    radios = me.getManager().getByName(me.name, me.getFormId()).items;
-    rLen = radios.length;
-    for (r = 0; r < rLen; r++) {
-      radio = radios[r];
-      if (radio !== me) {
-        radio.updateValueFromDom();
-      }
-    }
-  }
-  if (ownerCt && ownerCt.isRadioGroup && ownerCt.simpleValue) {
-    ownerCt.checkChange();
-  }
-}, getManager:function() {
-  return Ext.form.RadioManager;
-}});
-Ext.define('Ext.form.RadioGroup', {extend:Ext.form.CheckboxGroup, xtype:'radiogroup', isRadioGroup:true, allowBlank:true, blankText:'You must select one item in this group', defaultType:'radiofield', local:false, simpleValue:false, defaultBindProperty:'value', groupCls:Ext.baseCSSPrefix + 'form-radio-group', ariaRole:'radiogroup', initRenderData:function() {
-  var me = this, data, ariaAttr;
-  data = me.callParent();
-  ariaAttr = data.ariaAttributes;
-  if (ariaAttr) {
-    ariaAttr['aria-required'] = !me.allowBlank;
-    ariaAttr['aria-invalid'] = false;
-  }
-  return data;
-}, lookupComponent:function(config) {
-  var result = this.callParent([config]);
-  if (this.local) {
-    result.formId = this.getId();
-  }
-  return result;
-}, getBoxes:function(query, root) {
-  return (root || this).query('[isRadio]' + (query || ''));
-}, checkChange:function() {
-  var me = this, value, key;
-  value = me.getValue();
-  key = typeof value === 'object' && Ext.Object.getKeys(value)[0];
-  if (me.simpleValue || key && !Ext.isArray(value[key])) {
-    me.callParent(arguments);
-  }
-}, isEqual:function(value1, value2) {
-  if (this.simpleValue) {
-    return value1 === value2;
-  }
-  return this.callParent([value1, value2]);
-}, getValue:function() {
-  var me = this, items = me.items.items, i, item, ret;
-  if (me.simpleValue) {
-    for (i = items.length; i-- > 0;) {
-      item = items[i];
-      if (item.checked) {
-        ret = item.inputValue;
-        break;
-      }
-    }
-  } else {
-    ret = me.callParent();
-  }
-  return ret;
-}, setValue:function(value) {
-  var items = this.items, cbValue, cmp, formId, radios, i, len, name;
-  Ext.suspendLayouts();
-  if (this.simpleValue) {
-    for (i = 0, len = items.length; i < len; ++i) {
-      cmp = items.items[i];
-      if (cmp.inputValue === value) {
-        cmp.setValue(true);
-        break;
-      }
-    }
-  } else {
-    if (Ext.isObject(value)) {
-      cmp = items.first();
-      formId = cmp ? cmp.getFormId() : null;
-      for (name in value) {
-        cbValue = value[name];
-        radios = Ext.form.RadioManager.getWithValue(name, cbValue, formId).items;
-        len = radios.length;
-        for (i = 0; i < len; ++i) {
-          radios[i].setValue(true);
-        }
-      }
-    }
-  }
-  Ext.resumeLayouts(true);
-  return this;
-}, markInvalid:function(errors) {
-  var ariaDom = this.ariaEl.dom;
-  this.callParent([errors]);
-  if (ariaDom) {
-    ariaDom.setAttribute('aria-invalid', true);
-  }
-}, clearInvalid:function() {
-  var ariaDom = this.ariaEl.dom;
-  this.callParent();
-  if (ariaDom) {
-    ariaDom.setAttribute('aria-invalid', false);
-  }
-}}, function() {
-  if (Ext.isGecko) {
-    this.override({onFocusEnter:function(e) {
-      var target = e.toComponent, radios, i, len;
-      if (target.isRadio) {
-        radios = target.getManager().getByName(target.name, target.getFormId()).items;
-        for (i = 0, len = radios.length; i < len; i++) {
-          radios[i].disableTabbing();
-        }
-      }
-    }, onFocusLeave:function(e) {
-      var target = e.fromComponent, radios, i, len;
-      if (target.isRadio) {
-        radios = target.getManager().getByName(target.name, target.getFormId()).items;
-        for (i = 0, len = radios.length; i < len; i++) {
-          radios[i].enableTabbing();
-        }
-      }
-    }});
-  }
-});
 Ext.define('Ext.selection.Model', {extend:Ext.mixin.Observable, alternateClassName:'Ext.AbstractSelectionModel', alias:'selection.abstract', mixins:[Ext.util.StoreHolder, Ext.mixin.Factoryable], factoryConfig:{defaultType:'dataviewmodel'}, $configPrefixed:false, $configStrict:false, config:{store:null, selected:{}}, isSelectionModel:true, allowDeselect:undefined, toggleOnClick:true, ordered:false, selected:null, pruneRemoved:true, suspendChange:0, ignoreRightMouseSelection:false, constructor:function(cfg) {
   var me = this;
   me.modes = {SINGLE:true, SIMPLE:true, MULTI:true};
@@ -77047,72 +77056,6 @@ Ext.define('Ext.layout.Context', {remainingLayouts:0, state:0, cycleWatchDog:200
   me.timesByType[type] = (me.timesByType[type] || 0) + time;
   return ret;
 }}});
-Ext.define('Ext.layout.container.Absolute', {alias:'layout.absolute', extend:Ext.layout.container.Anchor, alternateClassName:'Ext.layout.AbsoluteLayout', targetCls:Ext.baseCSSPrefix + 'abs-layout-ct', itemCls:Ext.baseCSSPrefix + 'abs-layout-item', type:'absolute', adjustWidthAnchor:function(width, childContext) {
-  var padding = this.targetPadding, x = childContext.getStyle('left');
-  return width - x + padding.left;
-}, adjustHeightAnchor:function(height, childContext) {
-  var padding = this.targetPadding, y = childContext.getStyle('top');
-  return height - y + padding.top;
-}, isItemShrinkWrap:function(item) {
-  return true;
-}, onContentChange:function(comp, context) {
-  var ret = false;
-  if (comp.anchor && context && context.show) {
-    ret = this.callParent([comp, context]);
-  }
-  return ret;
-}, beginLayout:function(ownerContext) {
-  var me = this, target = me.getTarget();
-  me.callParent([ownerContext]);
-  if (target.dom !== document.body) {
-    target.position();
-  }
-  me.targetPadding = ownerContext.targetContext.getPaddingInfo();
-}, isItemBoxParent:function(itemContext) {
-  return true;
-}, calculateContentSize:function(ownerContext, dimensions) {
-  var me = this, containerDimensions = (dimensions || 0) | ((ownerContext.widthModel.shrinkWrap ? 1 : 0) | (ownerContext.heightModel.shrinkWrap ? 2 : 0)), calcWidth = containerDimensions & 1 || undefined, calcHeight = containerDimensions & 2 || undefined, childItems = ownerContext.childItems, length = childItems.length, contentHeight = 0, contentWidth = 0, needed = 0, props = ownerContext.props, targetPadding, child, childContext, height, i, margins, width;
-  if (calcWidth) {
-    if (isNaN(props.contentWidth)) {
-      ++needed;
-    } else {
-      calcWidth = undefined;
-    }
-  }
-  if (calcHeight) {
-    if (isNaN(props.contentHeight)) {
-      ++needed;
-    } else {
-      calcHeight = undefined;
-    }
-  }
-  if (needed) {
-    for (i = 0; i < length; ++i) {
-      childContext = childItems[i];
-      child = childContext.target;
-      height = calcHeight && childContext.getProp('height');
-      width = calcWidth && childContext.getProp('width');
-      margins = childContext.getMarginInfo();
-      height += margins.bottom;
-      width += margins.right;
-      contentHeight = Math.max(contentHeight, (child.y || 0) + height);
-      contentWidth = Math.max(contentWidth, (child.x || 0) + width);
-      if (isNaN(contentHeight) && isNaN(contentWidth)) {
-        me.done = false;
-        return;
-      }
-    }
-    if (calcWidth || calcHeight) {
-      targetPadding = ownerContext.targetContext.getPaddingInfo();
-    }
-    if (calcWidth && !ownerContext.setContentWidth(contentWidth + targetPadding.width)) {
-      me.done = false;
-    }
-    if (calcHeight && !ownerContext.setContentHeight(contentHeight + targetPadding.height)) {
-      me.done = false;
-    }
-  }
-}});
 Ext.define('Ext.resizer.BorderSplitter', {extend:Ext.resizer.Splitter, alias:'widget.bordersplitter', collapseTarget:null, getTrackerConfig:function() {
   var trackerConfig = this.callParent();
   trackerConfig.xclass = 'Ext.resizer.BorderSplitterTracker';
@@ -78639,9 +78582,9 @@ Ext.define('eLearning.view.MainViewViewController', {extend:Ext.app.ViewControll
     refs.gridSlides.setSelection(refs.gridSlides.store.getAt(0));
   }
 }, getFreePosition:function() {
-  var me = this, refs = me.getReferences(), pos = {x:50, y:50, width:refs.panelContent.el.getWidth() - 2 * 50, height:0};
-  Ext.each(refs.panelContent.items.items, function(component) {
-    pos.y = Math.max(pos.y, component.y + component.el.getHeight() + 20);
+  var me = this, refs = me.getReferences(), snap = me._pageSetup.snap, pos = {x:snap * 2, y:snap * 2, width:me.round(refs.panelContent.el.getWidth() - 2 * snap * 2), height:snap * 2};
+  Ext.each(refs.panelContent.el.query('.html-component'), function(component) {
+    pos.y = me.round(Math.max(pos.y, component.y + component.height + snap));
   });
   return pos;
 }, saveState:function(slide) {
@@ -78654,56 +78597,102 @@ Ext.define('eLearning.view.MainViewViewController', {extend:Ext.app.ViewControll
       if (layout) {
         delete layout.owner;
       }
-      var item = {xtype:cmp.xtype, draggable:cmp.draggable, resizable:cmp.resizable, cls:cmp.cls, width:cmp.width, height:cmp.height, x:cmp.x, y:cmp.y, style:cmp.style, html:cmp._html, layout:layout || undefined, items:items || undefined};
+      var item = {xtype:cmp.xtype, draggable:cmp.draggable, resizable:cmp.resizable, cls:cmp.cls, width:cmp.width, height:cmp.height, x:cmp.x, y:cmp.y, style:cmp.style, html:cmp._html, layout:layout || undefined, items:items || undefined, type:cmp._type};
       components.push(item);
     });
     slide.set('content', Ext.encode(components));
   }
-}, insertComponent:function(opts) {
-  opts = Ext.applyIf(opts || {}, {height:null, width:null, x:null, y:null, html:'', style:null});
-  var me = this, refs = me.getReferences(), pos = me.getFreePosition(), component = {xtype:'container', cls:['component', 'draggable'], draggable:true, resizable:true, height:opts.height || pos.height, width:opts.width || pos.width, x:opts.x || pos.x, y:opts.y || pos.y, html:opts.html, style:opts.style, _html:opts.html};
-  if (!me.getCurrentSlide()) {
-    me.newSlide();
-  }
-  var cmp = refs.panelContent.add(component);
-  me.addComponentListeners(cmp);
-  cmp.el.fireEvent('click', cmp);
 }, addComponentListeners:function(item) {
-  var me = this;
-  item.el.on('click', function(e, t) {
+  var me = this, item = Ext.get(item);
+  item.on('click', function(e, t) {
     if (me._selectedComponent) {
       me._selectedComponent.removeCls('selected');
     }
     me._selectedComponent = item;
     me._selectedComponent.addCls('selected');
   });
-  item.el.on('dblclick', function(e, t) {
+  item.on('dblclick', function(e, t) {
     me.editComponent();
   });
+}, insertComponent:function(opts) {
+  this.insertHTMLComponent(opts);
+}, insertHTMLComponent:function(opts) {
+  opts = Ext.applyIf(opts || {}, {type:'text', height:null, width:null, x:null, y:null, html:'', src:'', style:null});
+  if (opts.type) {
+    var snap = 25;
+  }
+  var me = this, refs = me.getReferences(), pos = me.getFreePosition(), parentEl = refs.panelContent.el.down('#html-slide');
+  if (!me.getCurrentSlide()) {
+    me.newSlide();
+  }
+  var cmp = document.createElement('div');
+  cmp.classList.add('html-component');
+  if (opts.type == 'image' && opts.src) {
+    var img = new Image;
+    img.onload = function() {
+      cmp.width = me.round(opts.width || img.width);
+      cmp.height = me.round(opts.height || img.height);
+      cmp.style.width = cmp.width + 'px';
+      cmp.style.height = cmp.height + 'px';
+    };
+    img.src = opts.src;
+    cmp.style.backgroundImage = 'url(' + opts.src + ')';
+  } else {
+    cmp.width = me.round(opts.width || pos.width);
+    cmp.height = me.round(opts.height || pos.height);
+    cmp.style.width = cmp.width + 'px';
+    cmp.style.height = cmp.height + 'px';
+  }
+  cmp.x = opts.x || pos.x;
+  cmp.y = opts.y || pos.y;
+  cmp.style.left = cmp.x + 'px';
+  cmp.style.top = cmp.y + 'px';
+  cmp.innerHTML = opts.html;
+  cmp = parentEl.dom.appendChild(cmp);
+  cmp._dragger = new Ext.drag.Source({element:Ext.get(cmp), constrain:{snap:{x:snap, y:snap}}, listeners:{beforedragstart:function(component, info, event, eOpts) {
+    if (info.eventTarget.classList.contains('x-resizable-handle')) {
+      return false;
+    }
+  }, dragcancel:function(component, info, event, eOpts) {
+    console.log('dragcancel', arguments);
+  }, dragend:function(component, info, event, eOpts) {
+    console.log('dragend', arguments);
+  }, dragmove:function(component, info, event, eOpts) {
+    var pos = info.element.current, msg = Ext.String.format('X: {0}, Y: {1}', pos.x, pos.y);
+    console.log(msg);
+  }, dragstart:function(component, info, event, eOpts) {
+    console.log('dragstart', arguments);
+  }}});
+  cmp._resizer = Ext.create('Ext.create', 'Ext.resizer.Resizer', {target:Ext.get(cmp), minWidth:snap, minHeight:snap, heightIncrement:snap, widthIncrement:snap, preserveRatio:false, dynamic:true, transparent:false, handles:'all', listeners:{resize:function(component, width, height, e, eOpts) {
+    var msg = Ext.String.format('W: {0}, H: {1}', width, height);
+    console.log(msg);
+    cmp.width = width;
+    cmp.height = height;
+  }}});
+  me.addComponentListeners(cmp);
 }, editComponent:function(component) {
   var me = this, refs = me.getReferences(), wnd = me.getView().add({xtype:'texteditor'});
   component = component || me._selectedComponent;
   if (component) {
-    wnd.getController().show({value:component._html, callback:function(value) {
-      component._html = value;
-      component.update(value);
+    wnd.getController().show({value:component.getHtml(), callback:function(value) {
+      component.setHtml(value);
     }, scope:me});
   }
 }, deleteComponent:function() {
   var me = this, refs = this.getReferences();
   if (me._selectedComponent) {
-    refs.panelContent.remove(me._selectedComponent);
+    me._selectedComponent.destroy();
     me._selectedComponent = null;
   }
 }, insertTitle:function() {
   var me = this;
-  me.insertComponent({html:'\x3cfont face\x3d"tahoma" size\x3d"6"\x3eTitle\x3c/font\x3e', height:50});
+  me.insertComponent({type:'title', html:'\x3cfont face\x3d"tahoma" size\x3d"6"\x3eTitle\x3c/font\x3e', height:50});
 }, insertText:function() {
   var me = this;
-  me.insertComponent({html:'\x3cfont face\x3d"tahoma" size\x3d"4"\x3eText\x3c/font\x3e', height:100});
+  me.insertComponent({type:'text', html:'\x3cfont face\x3d"tahoma" size\x3d"4"\x3eText\x3c/font\x3e', height:100});
 }, insertImage:function() {
   var me = this;
-  me.insertComponent({html:'', style:'background-image:url(resources/images/example.jpg);', height:275});
+  me.insertComponent({type:'image', html:'', src:'resources/images/example.jpg', height:275});
 }, insertSelection:function(opts) {
   opts = Ext.applyIf(opts || {}, {multi:false});
   var me = this, refs = me.getReferences(), pos = me.getFreePosition(), wnd = me.getView().add({xtype:'selectioneditor'});
@@ -78732,6 +78721,12 @@ Ext.define('eLearning.view.MainViewViewController', {extend:Ext.app.ViewControll
     me.addComponentListeners(cmp);
     cmp.el.fireEvent('click', cmp);
   }, scope:me});
+}, round:function(value) {
+  var snap = this._pageSetup.snap;
+  return Math.round(value / snap) * snap;
+}, ceil:function() {
+  var snap = this._pageSetup.snap;
+  return Math.ceil(value / snap) * snap;
 }, onGridSlidesDeselect:function(rowmodel, record, index, eOpts) {
   var me = this;
   me.saveState(record);
@@ -78749,6 +78744,7 @@ Ext.define('eLearning.view.MainViewViewController', {extend:Ext.app.ViewControll
 }, onMainViewBoxReady:function(component, width, height, eOpts) {
   var me = this, refs = me.getReferences();
   me._selectedComponent = null;
+  me._pageSetup = {snap:25, width:800, height:600, headerHeight:50, footerHeight:50, padding:50};
   refs.panelContent.removeAll();
   refs.toolbarPreview.hide();
 }});
@@ -78806,12 +78802,11 @@ Ext.define('eLearning.view.MainView', {extend:Ext.container.Viewport, alias:'wid
   this.up('#mainView').getController().nextSlide();
 }, itemId:'btnNextSlide', minWidth:120, text:'Next slide'}, {xtype:'tbspacer', flex:1}, {xtype:'button', handler:function(button, e) {
   this.up('#mainView').getController().togglePreview(false);
-}, itemId:'btnClosePreview', minWidth:120, text:'Close preview'}]}]}, {xtype:'panel', region:'west', split:true, reference:'panelMenu', itemId:'panelMenu', margin:'10 0 10 10', padding:0, width:300, collapseDirection:'left', title:'', items:[{xtype:'gridpanel', reference:'gridSlides', itemId:'gridSlides', padding:10, hideCollapseTool:true, title:'', emptyText:'No slides to show.\x3cbr\x3eCreate new with button \x3ci\x3eNew slide\x3c/i\x3e.', hideHeaders:true, rowLines:false, bind:{store:'{StoreSlides}'}, 
-columns:[{xtype:'rownumberer'}, {xtype:'gridcolumn', flex:1, dataIndex:'title', text:'String', editor:{xtype:'textfield'}}, {xtype:'actioncolumn', width:30, align:'center', items:[{handler:function(view, rowIndex, colIndex, item, e, record, row) {
+}, itemId:'btnClosePreview', minWidth:120, text:'Close preview'}]}]}, {xtype:'panel', region:'west', split:true, reference:'panelMenu', itemId:'panelMenu', margin:'10 0 10 10', padding:0, width:300, collapseDirection:'left', title:'', items:[{xtype:'gridpanel', reference:'gridSlides', itemId:'gridSlides', padding:10, hideCollapseTool:true, title:'', emptyText:'No slides to show.\x3cbr\x3eCreate new with button \x3ci\x3eNew slide\x3c/i\x3e.\x3cbr\x3e\x3cbr\x3eDouble click on slide name to rename it.', 
+hideHeaders:true, rowLines:false, bind:{store:'{StoreSlides}'}, columns:[{xtype:'rownumberer'}, {xtype:'gridcolumn', flex:1, dataIndex:'title', text:'String', editor:{xtype:'textfield'}}, {xtype:'actioncolumn', width:30, align:'center', items:[{handler:function(view, rowIndex, colIndex, item, e, record, row) {
   this.up('#mainView').getController().deleteSlide(record);
-}, iconCls:'x-fa fa-times', tooltip:'Delete slide'}]}], viewConfig:{stripeRows:false, plugins:[{ptype:'gridviewdragdrop'}]}, plugins:[{ptype:'cellediting'}], listeners:{deselect:'onGridSlidesDeselect', select:'onGridSlidesSelect'}}]}, {xtype:'panel', region:'center', reference:'panelSlide', itemId:'panelSlide', margin:'10 10 10 0', layout:'fit', title:'', items:[{xtype:'container', reference:'panelContent', cls:['edit', 'slide'], id:'panelContent', itemId:'panelContent', margin:0, layout:'absolute', 
-items:[{xtype:'container', x:100, y:100, cls:'draggable', draggable:true, height:200, html:'Sample Text', resizable:true, width:200}, {xtype:'container', x:350, y:100, cls:'draggable', draggable:true, height:200, html:'Sample Text', resizable:true, width:200}, {xtype:'container', x:600, y:100, cls:'draggable', draggable:true, height:200, html:'Sample Text', resizable:true, width:200}, {xtype:'radiogroup', x:100, y:350, cls:'draggable', draggable:true, resizable:true, width:700, fieldLabel:'', layout:{type:'vbox', 
-align:'stretch'}, items:[{xtype:'radiofield', boxLabel:'Answer 1'}, {xtype:'radiofield', boxLabel:'Answer 2'}, {xtype:'radiofield', boxLabel:'Answer 3'}]}, {xtype:'checkboxgroup', x:100, y:500, cls:'draggable', draggable:true, resizable:true, width:700, fieldLabel:'', layout:{type:'vbox', align:'stretch'}, items:[{xtype:'checkboxfield', boxLabel:'Answer 1'}, {xtype:'checkboxfield', boxLabel:'Answer 2'}, {xtype:'checkboxfield', boxLabel:'Answer 3'}]}]}]}], listeners:{boxready:'onMainViewBoxReady'}});
+}, iconCls:'x-fa fa-times', tooltip:'Delete slide'}]}], viewConfig:{stripeRows:false, plugins:[{ptype:'gridviewdragdrop'}]}, plugins:[{ptype:'cellediting'}], listeners:{deselect:'onGridSlidesDeselect', select:'onGridSlidesSelect'}}]}, {xtype:'container', region:'center', reference:'panelSlide', cls:'slide-container', itemId:'panelSlide', margin:'10 10 10 0', items:[{xtype:'container', reference:'panelContent', cls:['edit', 'slide'], height:600, html:'\x3cdiv id\x3d"html-slide"\x3e\x3c/div\x3e', id:'panelContent', 
+itemId:'panelContent', width:800}]}], listeners:{boxready:'onMainViewBoxReady'}});
 Ext.define('eLearning.view.SelectionEditorViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.selectioneditor', stores:{StoreAnswers:{model:'eLearning.model.Answer'}}});
 Ext.define('eLearning.view.SelectionEditorViewController', {extend:Ext.app.ViewController, alias:'controller.selectioneditor', show:function(opts) {
   opts = Ext.applyIf(opts, {callback:function(value) {
@@ -78821,7 +78816,7 @@ Ext.define('eLearning.view.SelectionEditorViewController', {extend:Ext.app.ViewC
   me._opts = opts;
   view.show();
 }, btnSaveHandler:function(button, e) {
-  var me = this, refs = me.getReferences(), opts = me._opts, answers = refs.grid.store.data.items, reason = opts.callback.call(opts.scope, Ext.pluck(answers, 'data'));
+  var me = this, refs = me.getReferences(), opts = me._opts, answers = refs.grid.store.data.items, text = refs.text.getValue(), reason = opts.callback.call(opts.scope, Ext.pluck(answers, 'data'), text);
   if (reason) {
     Ext.Msg.alert('Note', reason);
   } else {
@@ -78838,9 +78833,9 @@ Ext.define('eLearning.view.SelectionEditorViewController', {extend:Ext.app.ViewC
   var me = this, refs = me.getReferences(), rec = refs.grid.getSelection()[0];
   refs.grid.store.remove(rec);
 }});
-Ext.define('eLearning.view.SelectionEditor', {extend:Ext.window.Window, alias:'widget.selectioneditor', controller:'selectioneditor', viewModel:{type:'selectioneditor'}, modal:true, height:600, itemId:'selectioneditor', width:1000, layout:'fit', title:'Selection editor', dockedItems:[{xtype:'toolbar', dock:'bottom', ui:'footer', layout:{type:'hbox', pack:'center'}, items:[{xtype:'button', handler:'btnSaveHandler', itemId:'btnSave', text:'Save'}, {xtype:'button', handler:'btnCancelHandler', itemId:'btnCancel', 
-text:'Cancel'}]}], items:[{xtype:'gridpanel', reference:'grid', itemId:'grid', title:'', bind:{store:'{StoreAnswers}'}, columns:[{xtype:'rownumberer'}, {xtype:'gridcolumn', flex:1, cellWrap:true, dataIndex:'text', text:'Answer text', editor:{xtype:'textfield'}}, {xtype:'checkcolumn', dataIndex:'correct', text:'Correct'}], viewConfig:{plugins:[{ptype:'gridviewdragdrop'}]}, plugins:[{ptype:'cellediting', clicksToEdit:1}], dockedItems:[{xtype:'toolbar', dock:'top', items:[{xtype:'button', handler:'btnAddHandler', 
-itemId:'btnAdd', text:'Add'}, {xtype:'button', handler:'btnRemoveHandler', itemId:'btnRemove', text:'Remove'}]}]}]});
+Ext.define('eLearning.view.SelectionEditor', {extend:Ext.window.Window, alias:'widget.selectioneditor', controller:'selectioneditor', viewModel:{type:'selectioneditor'}, modal:true, height:600, itemId:'selectioneditor', width:1000, layout:'border', title:'Selection editor', dockedItems:[{xtype:'toolbar', dock:'bottom', ui:'footer', layout:{type:'hbox', pack:'center'}, items:[{xtype:'button', handler:'btnSaveHandler', itemId:'btnSave', text:'Save'}, {xtype:'button', handler:'btnCancelHandler', itemId:'btnCancel', 
+text:'Cancel'}]}], items:[{xtype:'textareafield', region:'north', split:true, reference:'text', flex:1, margin:'0 10', fieldLabel:'Question', labelAlign:'top'}, {xtype:'gridpanel', flex:3, region:'center', reference:'grid', itemId:'grid', title:'', bind:{store:'{StoreAnswers}'}, columns:[{xtype:'rownumberer'}, {xtype:'gridcolumn', flex:1, cellWrap:true, dataIndex:'text', text:'Answer text', editor:{xtype:'textfield'}}, {xtype:'checkcolumn', dataIndex:'correct', text:'Correct'}], viewConfig:{plugins:[{ptype:'gridviewdragdrop'}]}, 
+plugins:[{ptype:'cellediting', clicksToEdit:1}], dockedItems:[{xtype:'toolbar', dock:'top', items:[{xtype:'button', handler:'btnAddHandler', itemId:'btnAdd', text:'Add'}, {xtype:'button', handler:'btnRemoveHandler', itemId:'btnRemove', text:'Remove'}]}]}]});
 Ext.define('eLearning.view.SourceViewViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.sourceview'});
 Ext.define('eLearning.view.SourceViewViewController', {extend:Ext.app.ViewController, alias:'controller.sourceview', show:function(opts) {
   opts = Ext.applyIf(opts, {value:'', callback:function(value) {

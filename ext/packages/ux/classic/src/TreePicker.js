@@ -135,8 +135,11 @@ Ext.define('Ext.ux.TreePicker', {
     /**
      * Handles a keypress event on the picker element
      * @private
+     * @param {Ext.tree.View} treeView
+     * @param {Ext.data.Model} record
+     * @param {HTMLElement} item
+     * @param {Number} index
      * @param {Ext.event.Event} e
-     * @param {HTMLElement} el
      */
     onPickerKeyDown: function(treeView, record, item, index, e) {
         var key = e.getKey();

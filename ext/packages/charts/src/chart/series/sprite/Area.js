@@ -17,6 +17,7 @@ Ext.define('Ext.chart.series.sprite.Area', {
                 step: 'bool'
             },
             defaults: {
+                selectionTolerance: 0,
                 step: false
             }
         }

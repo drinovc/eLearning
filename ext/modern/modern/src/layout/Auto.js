@@ -456,19 +456,20 @@ Ext.define('Ext.layout.Auto', {
     },
 
     handleDockedItemBorders: function(force) {
-        var me     = this,
-            edges  = 0,
-            maskT  = 8,
-            maskR  = 4,
-            maskB  = 2,
-            maskL  = 1,
-            container  = me.getContainer(),
+        var me = this,
+            edges = 0,
+            maskT = 8,
+            maskR = 4,
+            maskB = 2,
+            maskL = 1,
+            container = me.getContainer(),
             bodyBorder = container.getBodyBorder && container.getBodyBorder(),
             containerBorder = container.getBorder(),
-            collapsed   = me.collapsed,
-            edgeMasks   = me.edgeMasks,
+            collapsed = me.collapsed,
+            edgeMasks = me.edgeMasks,
             noBorderCls = me.noBorderClassTable,
             dockedItemsGen = container.items.generation,
+            bodyClsEl = container.boxScrollerElement || container.bodyElement,
             b, borderCls, docked, edgesTouched, i, ln, item, dock, lastValue, mask,
             addCls, removeCls, header;
 
@@ -664,11 +665,11 @@ Ext.define('Ext.layout.Auto', {
             }
         }
 
-        if (removeCls.length && container.removeBodyCls) {
-            container.removeBodyCls(removeCls);
+        if (removeCls.length) {
+            bodyClsEl.removeCls(removeCls);
         }
-        if (addCls.length && container.addBodyCls) {
-            container.addBodyCls(addCls);
+        if (addCls.length) {
+            bodyClsEl.addCls(addCls);
         }
     },
 

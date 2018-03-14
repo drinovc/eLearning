@@ -98,25 +98,11 @@ Ext.define('Ext.chart.series.Scatter', {
     ],
 
     config: {
-        itemInstancing: {
-            animation: {
-                customDurations: {
-                    translationX: 0,
-                    translationY: 0
-                }
-            }
-        }
+        itemInstancing: null
     },
 
     themeMarkerCount: function() {
         return 1;
-    },
-
-    applyMarker: function (marker, oldMarker) {
-        this.getItemInstancing();
-        this.setItemInstancing(marker);
-
-        return this.callParent(arguments);
     },
 
     provideLegendInfo: function (target) {

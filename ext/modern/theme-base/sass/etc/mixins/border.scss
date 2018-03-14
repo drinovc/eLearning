@@ -19,7 +19,11 @@
  *
  * @private
  */
-@mixin border($width: null, $style: null, $color: null) {
+@mixin border(
+    $width: null,
+    $style: null,
+    $color: null
+) {
     @if $width != null and $style != null and $color != null and
             length($width) == 1 and length($style) == 1 and length($color) == 1 {
         border: $width $style $color;
@@ -68,7 +72,11 @@
  *
  * @private
  */
-@mixin border-top($width: null, $style: null, $color: null) {
+@mixin border-top(
+    $width: null,
+    $style: null,
+    $color: null
+) {
     @include border-side(top, $width, $style, $color);
 }
 
@@ -87,7 +95,11 @@
  *
  * @private
  */
-@mixin border-right($width: null, $style: null, $color: null) {
+@mixin border-right(
+    $width: null,
+    $style: null,
+    $color: null
+) {
     @include border-side(right, $width, $style, $color);
 }
 
@@ -106,7 +118,11 @@
  *
  * @private
  */
-@mixin border-bottom($width: null, $style: null, $color: null) {
+@mixin border-bottom(
+    $width: null,
+    $style: null,
+    $color: null
+) {
     @include border-side(bottom, $width, $style, $color);
 }
 
@@ -125,7 +141,11 @@
  *
  * @private
  */
-@mixin border-left($width: null, $style: null, $color: null) {
+@mixin border-left(
+    $width: null,
+    $style: null,
+    $color: null
+) {
     @include border-side(left, $width, $style, $color);
 }
 
@@ -133,7 +153,12 @@
  * Convenience mixin for border-top, border-right, border-bottom, and border-left
  * @private
  */
-@mixin border-side($side, $width: null, $style: null, $color: null) {
+@mixin border-side(
+    $side,
+    $width: null,
+    $style: null,
+    $color: null
+) {
     @if $width != null and $style != null and $color != null {
         border-#{$side}: $width $style $color;
     } @else {

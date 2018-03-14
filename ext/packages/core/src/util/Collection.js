@@ -166,7 +166,7 @@ Ext.define('Ext.util.Collection', {
          *
          * Individual filters can be specified as an `Ext.util.Filter` instance, a config
          * object for `Ext.util.Filter` or simply a function that will be wrapped in a
-         * instance with its {@Ext.util.Filter#filterFn filterFn} set.
+         * instance with its {@link Ext.util.Filter#filterFn filterFn} set.
          *
          * For fine grain control of the filters collection, call `getFilters` to return
          * the `Ext.util.Collection` instance that holds this collection's filters.
@@ -215,8 +215,9 @@ Ext.define('Ext.util.Collection', {
         groups: null,
 
         /**
-         * @cfg {Object} A default configuration to be passed to any groups created by
-         * the {@link Ext.util.GroupCollection}. See {@link #groups}.
+         * @cfg {Object} groupConfig
+         * A default configuration to be passed to any groups created by the
+         * {@link Ext.util.GroupCollection}. See {@link #groups}.
          *
          * @private
          * @since 6.5.0
@@ -460,6 +461,11 @@ Ext.define('Ext.util.Collection', {
      * `item` has changed. That is, the item was previously filtered out and is no longer
      * or the opposite.
      *
+     * @param {Ext.util.Group} details.group The group containing the `item`. **(since 6.5.1)**
+     *
+     * @param {Boolean} details.groupChanged This is `true` if the item is moving between
+     * groups. See also the `group` and `oldGroup` properties. **(since 6.5.1)**
+     *
      * @param {Boolean} details.keyChanged This is `true` if the item has changed keys. If
      * so, check `oldKey` for the old key. An `updatekey` event will follow.
      *
@@ -476,6 +482,9 @@ Ext.define('Ext.util.Collection', {
      * @param {Number} [details.index] The new index in the collection for the item if
      * the item is being moved (see `indexChanged`). If the item is being removed due to
      * filtering, this will be -1.
+     *
+     * @param {Ext.util.Group} details.oldGroup The group that previously contained the
+     * `item`. **(since 6.5.1)**
      *
      * @param {Number} [details.oldIndex] The old index in the collection for the item if
      * the item is being moved (see `indexChanged`). If the item was being removed due to
@@ -508,6 +517,11 @@ Ext.define('Ext.util.Collection', {
      * `item` has changed. That is, the item was previously filtered out and is no longer
      * or the opposite.
      *
+     * @param {Ext.util.Group} details.group The group containing the `item`. **(since 6.5.1)**
+     *
+     * @param {Boolean} details.groupChanged This is `true` if the item is moving between
+     * groups. See also the `group` and `oldGroup` properties. **(since 6.5.1)**
+     *
      * @param {Object} details.keyChanged This is `true` if the item has changed keys. If
      * so, check `oldKey` for the old key. An `updatekey` event will have been sent.
      *
@@ -524,6 +538,9 @@ Ext.define('Ext.util.Collection', {
      * @param {Number} [details.index] The new index in the collection for the item if
      * the item has been moved (see `indexChanged`). If the item is removed due to
      * filtering, this will be -1.
+     *
+     * @param {Ext.util.Group} details.oldGroup The group that previously contained the
+     * `item`. **(since 6.5.1)**
      *
      * @param {Number} [details.oldIndex] The old index in the collection for the item if
      * the item has been moved (see `indexChanged`). If the item was being removed due to
@@ -1052,8 +1069,8 @@ Ext.define('Ext.util.Collection', {
 
     /**
      * Returns true if the collection contains the passed Object as an item.
-     * @param {Object} item The Object to look for in the collection.
-     * @return {Boolean} `true` if the collection contains the Object as an item.
+     * @param {Object} item The item to look for in the collection.
+     * @return {Boolean} `true` if the collection contains the item.
      * @since 5.0.0
      */
     contains: function (item) {
@@ -1066,6 +1083,28 @@ Ext.define('Ext.util.Collection', {
         }
 
         return ret;
+    },
+
+    /**
+     * Returns true if the collection contains all the passed items. If the first argument
+     * is an array, then the items in that array are checked. Otherwise, all arguments
+     * passed to this method are checked.
+     *
+     * @param {Object.../Object[]} items The item(s) that must be in the collection.
+     * @return {Boolean} `true` if the collection contains all the items.
+     * @since 6.5.2
+     */
+    containsAll: function (items) {
+        var all = Ext.isArray(items) ? items : arguments,
+            i;
+
+        for (i = all.length; i-- > 0; ) {
+            if (!this.contains(all[i])) {
+                return false;
+            }
+        }
+
+        return true;
     },
 
     /**
@@ -1194,8 +1233,7 @@ Ext.define('Ext.util.Collection', {
      * @param {Object} scope (optional) The scope (<code>this</code> reference) in
      * which the function is executed. Defaults to this Collection.
      * @return {Ext.util.Collection} The new filtered collection
-     * @since 5.0.0
-     * @deprecated
+     * @deprecated 5.0.0 This method is deprecated.
      */
     filterBy: function(fn, scope) {
         return this.createFiltered(fn, scope);
@@ -1531,7 +1569,6 @@ Ext.define('Ext.util.Collection', {
      * @param {String} [root] 'root' property to extract the first argument from. This is
      * used mainly when operating on fields in records, where the fields are all stored
      * inside the 'data' object.
-     * @return {Array} The values.
      * @param {Number} [start=0] The index of the first item to include.
      * @param {Number} [end] The index at which to stop getting values. The value of this
      * item is *not* included.
@@ -1620,9 +1657,10 @@ Ext.define('Ext.util.Collection', {
      * @param {Object} item The item that was modified.
      * @param {String[]} [modified] The names of the modified properties of the item.
      * @param {String/Number} [oldKey] Passed if the item's key was also modified.
+     * @param {Object} meta (private)
      * @since 5.0.0
      */
-    itemChanged: function (item, modified, oldKey, /* private */ meta) {
+    itemChanged: function (item, modified, oldKey, meta) {
         var me = this,
             keyChanged = oldKey !== undefined,
             filtered = me.filtered && me.getAutoFilter(),
@@ -2272,6 +2310,7 @@ Ext.define('Ext.util.Collection', {
      * @param {Object} item The item whose key has changed. The `item` should be a member
      * of this collection.
      * @param {String} oldKey The old key for the `item`.
+     * @param details
      * @since 5.0.0
      */
     updateKey: function (item, oldKey, details) {
@@ -3187,9 +3226,14 @@ Ext.define('Ext.util.Collection', {
 
             me.setSource(source);
             me.autoSource = source;
-        } else if (source.length || me.length) {
-            // if both us and the source are empty then we can skip this
-            me.onCollectionRefresh(source);
+        } else {
+            if (source.destroyed) {
+                return;
+            }
+            if (source.length || me.length) {
+                // if both us and the source are empty then we can skip this
+                me.onCollectionRefresh(source);
+            }
         }
         me.notify('filter');
     },
@@ -3397,14 +3441,14 @@ Ext.define('Ext.util.Collection', {
 
     /**
      * Sorts the collection by a single sorter function
-     * @param {Function} sorterFn The function to sort by
-     * @deprecated
+     * @param {Function} sortFn The function to sort by
+     * @deprecated 6.5.0 This method is deprecated.
      */
     sortBy: function(sortFn) {
         return this.sortItems(sortFn);
     },
 
-    /*
+    /**
      * @private
      * Can be called to find the insertion index of a passed object in this collection.
      * Or can be passed an items array to search in, and may be passed a comparator
@@ -3555,6 +3599,7 @@ Ext.define('Ext.util.Collection', {
      * We take advantage of the nature of this process to generate add events as ranges.
      *
      * @param {Object[]} newItems
+     * @param {Object[]} newKeys
      * @private
      * @since 5.0.0
      */

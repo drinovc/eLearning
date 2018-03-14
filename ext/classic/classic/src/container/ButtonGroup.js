@@ -56,23 +56,27 @@ Ext.define('Ext.container.ButtonGroup', {
      */
 
     /**
-     * @cfg {String} baseCls
+     * @cfg baseCls
      * @inheritdoc
      */
     baseCls: Ext.baseCSSPrefix + 'btn-group',
 
     /**
-     * @cfg {Ext.enums.Layout/Object} layout
+     * @cfg layout
      * @inheritdoc
      */
     layout: {
         type: 'table'
     },
 
+    /**
+     * @cfg defaultType
+     * @inheritdoc
+     */
     defaultType: 'button',
 
     /**
-     * @cfg {Boolean} frame
+     * @cfg frame
      * @inheritdoc
      */
     frame: true,
@@ -82,6 +86,10 @@ Ext.define('Ext.container.ButtonGroup', {
      * A default {@link Ext.Component#ui ui} to use for {@link Ext.button.Button Button} items
      */
 
+    /**
+     * @cfg frameHeader
+     * @inheritdoc
+     */
     frameHeader: false,
 
     /**
@@ -93,7 +101,17 @@ Ext.define('Ext.container.ButtonGroup', {
     noTitleCls: 'notitle',
     
     bodyAriaRole: 'toolbar',
+    
+    /**
+     * @property focusableContainerEl
+     * @inheritdoc
+     */
     focusableContainerEl: 'body',
+    
+    /**
+     * @cfg focusableContainer
+     * @inheritdoc
+     */
     focusableContainer: true,
 
     initComponent: function() {

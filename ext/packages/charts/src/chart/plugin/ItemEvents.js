@@ -13,10 +13,11 @@
  * For example:
  *
  *     Ext.create('Ext.chart.CartesianChart', {
- *         plugins: [{
- *             ptype: 'chartitemevents',
- *             moveEvents: true
- *         }],
+ *         plugins: {
+ *             chartitemevents: {
+ *                 moveEvents: true
+ *             }
+ *         },
  *         store: {
  *             fields: ['pet', 'households', 'total'],
  *             data: [

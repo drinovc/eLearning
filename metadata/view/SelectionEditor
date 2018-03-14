@@ -10,7 +10,7 @@
         "designer|userClassName": "SelectionEditor",
         "height": 600,
         "itemId": "selectioneditor",
-        "layout": "fit",
+        "layout": "border",
         "modal": true,
         "title": "Selection editor",
         "width": 1000
@@ -90,8 +90,9 @@
                                     "var me = this,",
                                     "    refs = me.getReferences(),",
                                     "    opts = me._opts,",
-                                    "    answers = refs.grid.store.data.items,",
-                                    "    reason = opts.callback.call(opts.scope, Ext.pluck(answers, 'data'));",
+                                    "    options = refs.grid.store.data.items,",
+                                    "    text = refs.text.getValue(),",
+                                    "    reason = opts.callback.call(opts.scope, text, Ext.pluck(options, 'data'));",
                                     "",
                                     "if(reason) {",
                                     "    Ext.Msg.alert('Note', reason);",
@@ -166,6 +167,36 @@
             ]
         },
         {
+            "type": "Ext.form.field.TextArea",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dock": null,
+                "fieldLabel": "Question",
+                "flex": 1,
+                "labelAlign": "top",
+                "layout|region": "north",
+                "layout|split": true,
+                "margin": "0 10",
+                "reference": "text"
+            },
+            "configAlternates": {
+                "dock": "string",
+                "fieldLabel": "string",
+                "flex": "number",
+                "labelAlign": "string",
+                "layout|region": "string",
+                "layout|split": "boolean",
+                "margin": "auto",
+                "reference": "string"
+            },
+            "name": "MyTextArea",
+            "designerId": "db08c6f3-1c6a-4762-8fd3-e13164c4c0d9"
+        },
+        {
             "type": "Ext.grid.Panel",
             "reference": {
                 "name": "items",
@@ -174,9 +205,11 @@
             "codeClass": null,
             "userConfig": {
                 "itemId": "grid",
+                "layout|flex": 3,
+                "layout|region": "center",
                 "reference": "grid",
                 "store": [
-                    "{StoreAnswers}"
+                    "{StoreOptions}"
                 ],
                 "title": ""
             },
@@ -184,7 +217,9 @@
                 "store": "binding",
                 "itemId": "string",
                 "reference": "string",
-                "title": "string"
+                "title": "string",
+                "layout|flex": "number",
+                "layout|region": "string"
             },
             "name": "MyGridPanel1",
             "designerId": "a53dd691-b047-4c6e-9129-247d8877641c",

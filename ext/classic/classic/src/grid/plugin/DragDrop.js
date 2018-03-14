@@ -60,10 +60,11 @@
  *             flex: true
  *         }],
  *         viewConfig: {
- *             plugins: [{
- *                 ptype: 'gridviewdragdrop',
- *                 dragText: 'Drag and drop to reorganize'
- *             }]
+ *             plugins: {
+ *                 gridviewdragdrop: {
+ *                     dragText: 'Drag and drop to reorganize'
+ *                 }
+ *             }
  *         },
  *         height: 200,
  *         width: 400,

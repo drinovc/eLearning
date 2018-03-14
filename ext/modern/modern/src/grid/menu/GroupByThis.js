@@ -3,12 +3,11 @@
  * @since 6.5.0
  */
 Ext.define('Ext.grid.menu.GroupByThis', {
-    extend: 'Ext.menu.CheckItem',
+    extend: 'Ext.menu.Item',
 
     xtype: 'gridgroupbythismenuitem',
 
-    hideOnClick: true,
-    iconCls: Ext.baseCSSPrefix + 'group-by-icon',
+    iconCls: Ext.baseCSSPrefix + 'headermenu-group-by-this',
 
     /**
      * @cfg {String} text

@@ -883,18 +883,8 @@ topSuite("Ext.panel.Resizable", [
                                     });
                                     var el = panel.element;
 
-                                    expect(el).toHaveCls('x-panel-split-' + edge);
+                                    expect(el).toHaveCls('x-split-' + edge);
                                     expect(el.getPadding(dir.offsetKey[0])).toBe(measured);
-                                });
-
-                                it("should add the ui cls", function() {
-                                    createPanel({
-                                        split: true,
-                                        edges: edge
-                                    }, {
-                                        ui: 'foo'
-                                    });
-                                    expect(panel.element).toHaveCls('x-panel-foo-split-' + edge);
                                 });
                             });
                         }
@@ -934,8 +924,7 @@ topSuite("Ext.panel.Resizable", [
 
                 describe("changing split edges", function() {
                     function makeSplitSuite(start, others) {
-                        var base = 'x-panel-split-',
-                            uiBase = 'x-panel-foo-split-',
+                        var base = 'x-split-',
                             startItem = edgeInfo[start],
                             startDir = startItem.horz || startItem.vert;
 
@@ -958,19 +947,6 @@ topSuite("Ext.panel.Resizable", [
                                         expect(el.getPadding(otherDir.offsetKey[0])).toBe(measured);
                                         expect(el).not.toHaveCls(base + start);
                                         expect(el.getPadding(startDir.offsetKey[0])).toBe(0);
-                                    });
-
-                                    it("should use a ui", function() {
-                                        createPanel({
-                                            split: true,
-                                            edges: start
-                                        }, {
-                                            ui: 'foo'
-                                        });
-
-                                        resizable.setEdges(other);
-                                        expect(panel.element).toHaveCls(uiBase + other);
-                                        expect(panel.element).not.toHaveCls(uiBase + start);
                                     });
                                 });
                             });

@@ -69,6 +69,7 @@ Ext.define('Ext.mixin.Toolable', {
                 up: 80,
 
                 refresh: 90,
+                disclosure: 100, // was originally defined in ListItem
                 plus: 100,
                 minus: 110,
                 search: 120,
@@ -324,8 +325,7 @@ Ext.define('Ext.mixin.Toolable', {
                 zonePropName = me._toolZoneNames[zoneName],
                 zone = me[zonePropName],
                 dockWrapName = '_toolDockWrap',
-                anchorElement, startZoneConfig, endZoneConfig,
-                uiReferences, baseCls, classClsList, cls, i, ln;
+                anchorElement;
 
             //<debug>
             if (!zonePropName) {

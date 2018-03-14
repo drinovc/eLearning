@@ -195,7 +195,7 @@ return {
          * The public API's to use instead of this method are `{@link Ext.Promise#resolve}`
          * and `{@link Ext.Deferred#resolved}`.
          *
-         * @param {Mixed} promiseOrValue A Promise (or third-party Promise or then()-able)
+         * @param {Mixed} value A Promise (or third-party Promise or then()-able)
          * or value.
          * @return {Ext.Promise} A Promise of the specified Promise or value.
          *
@@ -263,15 +263,15 @@ return {
 
         if (scope) {
             if (onFulfilled) {
-                onFulfilled = Ext.Function.bind(onFulfilled, scope);
+                onFulfilled = onFulfilled.bind(scope);
             }
             
             if (onRejected) {
-                onRejected = Ext.Function.bind(onRejected, scope);
+                onRejected = onRejected.bind(scope);
             }
             
             if (onProgress) {
-                onProgress = Ext.Function.bind(onProgress, scope);
+                onProgress = onProgress.bind(scope);
             }
         }
 
@@ -302,7 +302,7 @@ return {
         }
 
         if (scope != null) {
-            onRejected = Ext.Function.bind(onRejected, scope);
+            onRejected = onRejected.bind(scope);
         }
 
         return this.owner.then(null, onRejected);
@@ -340,7 +340,7 @@ return {
         }
 
         if (scope != null) {
-            onCompleted = Ext.Function.bind(onCompleted, scope);
+            onCompleted = onCompleted.bind(scope);
         }
 
         return this.owner.then(function (value) {

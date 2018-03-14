@@ -195,6 +195,7 @@ Ext.define('Ext.layout.ContextItem', {
      *
      * @param {Boolean} full True if all properties are to be invalidated, false to keep
      * those calculated by the ownerCt.
+     * @param {Object} options
      * @return {Mixed} A value to pass as the first argument to {@link #initContinue}.
      * @private
      */
@@ -788,7 +789,7 @@ Ext.define('Ext.layout.ContextItem', {
         var me = this,
             animateFrom = me.previousSize,
             target, animQueue, targetAnim, duration, animateProps, anim,
-            changeCount, j, propsLen, propName, oldValue, newValue;
+            changeCount, j, propsLen, propName, oldValue, newValue, flag;
 
         // Only animate if the Component has been previously layed out: first layout should not animate
         if (animateFrom) {
@@ -809,7 +810,7 @@ Ext.define('Ext.layout.ContextItem', {
                 propName = animateProps[j];
                 oldValue = animateFrom[propName];
                 newValue = me.peek(propName);
-                
+
                 if (oldValue !== newValue && newValue != null) {
                     propName = me.translateProps[propName]||propName;
                     anim.from[propName] = oldValue;
@@ -837,17 +838,18 @@ Ext.define('Ext.layout.ContextItem', {
                 anim.on({
                     afteranimate: function() {
                         delete target.$layoutAnim;
-                        
+
                         // afteranimate can fire when the target is being destroyed
                         // and the animation queue is being stopped.
                         if (target.destroying || target.destroyed) {
                             return;
                         }
-                        
-                        if (me.isCollapsingOrExpanding === 1) {
+
+                        var flag = me.isCollapsingOrExpanding;
+                        if (flag === 1) {
                             target.componentLayout.redoLayout(me);
                             target.afterCollapse(true);
-                        } else if (me.isCollapsingOrExpanding === 2) {
+                        } else if (flag === 2) {
                             target.afterExpand(true);
                         }
 
@@ -862,7 +864,10 @@ Ext.define('Ext.layout.ContextItem', {
             // the proper expanded size. In such case we can't run the animation
             // but still have to finish the expand sequence.
             else {
-                if (me.isCollapsingOrExpanding === 2) {
+                flag = me.isCollapsingOrExpanding;
+                if (flag === 1) {
+                    target.afterCollapse(true);
+                } else if (flag === 2) {
                     target.afterExpand(true);
                 }
             }

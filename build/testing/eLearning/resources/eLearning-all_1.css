@@ -429,6 +429,21 @@
 .x-touch-action-pan-x {
     overflow-y: hidden !important;
 }
+/* C:/Work/Projekti/eLearning/ext/packages/core/sass/src/drag/Source.scss:4 */
+.x-drag-body {
+    cursor: default;
+}
+/* C:/Work/Projekti/eLearning/ext/packages/core/sass/src/drag/Source.scss:6 */
+.x-drag-body * {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+/* C:/Work/Projekti/eLearning/ext/packages/core/sass/src/drag/Source.scss:11 */
+.x-drag-dragging {
+    z-index: 1000000!important;
+    pointer-events: none;
+}
 /* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/src/Component.scss:14 */
 .x-body {
     margin: 0;
@@ -1973,14 +1988,6 @@ the height of a multi-line element */
 .x-grid-editor .x-form-cb {
     position: static;
     display: inline-block;
-}
-/* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/src/layout/container/Absolute.scss:1 */
-.x-abs-layout-ct {
-    position: relative;
-}
-/* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/src/layout/container/Absolute.scss:5 */
-.x-abs-layout-item {
-    position: absolute !important;
 }
 /* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/src/layout/container/Border.scss:1 */
 .x-border-layout-ct {
@@ -8704,16 +8711,6 @@ body > .x-mask {
     padding-top: 0px;
     padding-bottom: 0px;
 }
-/* C:/Work/Projekti/eLearning/ext/classic/theme-neutral/sass/src/form/CheckboxGroup.scss:44 */
-.x-form-item-body-default.x-form-checkboxgroup-body {
-    padding: 0 4px;
-}
-/* C:/Work/Projekti/eLearning/ext/classic/theme-neutral/sass/src/form/CheckboxGroup.scss:47 */
-.x-form-invalid .x-form-item-body-default.x-form-checkboxgroup-body {
-    border-width: 1px;
-    border-style: solid;
-    border-color: #cf4c35;
-}
 /* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-tip-default {
     -webkit-border-radius: 2px;
@@ -15420,4 +15417,8 @@ div.x-border-layout-ct {
 /* C:/Work/Projekti/eLearning/ext/packages/font-awesome/sass/etc/_icons.scss:475 */
 .fa-soundcloud:before {
     content: "\f1be" !important;
+}
+/* C:/Work/Projekti/eLearning/ext/packages/font-awesome/sass/etc/_icons.scss:476 */
+.fa-database:before {
+    content: "\f1c0" !important;
 }

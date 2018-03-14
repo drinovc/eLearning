@@ -34,15 +34,15 @@ Ext.define('Ext.chart.legend.SpriteLegend', {
 
     config: {
         /**
-         * @cfg {String} [docked='bottom']
+         * @cfg {'top'/'left'/'right'/'bottom'} docked
          * The position of the legend in the chart.
-         * Possible values: 'bottom' (default), 'top', 'left', 'right'.
          */
         docked: 'bottom',
 
         /**
          * @cfg {Ext.chart.legend.store.Store} store
          * The {@link Ext.chart.legend.store.Store} to bind this legend to.
+         * @private
          */
         store: null,
 
@@ -53,18 +53,21 @@ Ext.define('Ext.chart.legend.SpriteLegend', {
         chart: null,
 
         /**
-         * @protected
          * @cfg {Ext.draw.Surface} surface
          * The chart surface used to render legend sprites.
+         * @protected
          */
         surface: null,
 
         /**
-         * @readonly
+         * @cfg {Object} size
          * The size of the area occupied by the legend's sprites.
          * This is set by the legend itself and then used during chart layout
          * to make sure the 'legend' surface is big enough to accommodate
          * legend sprites.
+         * @cfg {Number} size.width
+         * @cfg {Number} size.height
+         * @readonly
          */
         size: {
             width: 0,
@@ -72,14 +75,14 @@ Ext.define('Ext.chart.legend.SpriteLegend', {
         },
 
         /**
-         * @cfg {Boolean} [toggleable=true]
+         * @cfg {Boolean} toggleable
          * `true` to allow series items to have their visibility
          * toggled by interaction with the legend items.
          */
         toggleable: true,
 
         /**
-         * @cfg {Number} [padding=10]
+         * @cfg {Number} padding
          * The padding amount between legend items and legend border.
          */
         padding: 10,
@@ -88,6 +91,13 @@ Ext.define('Ext.chart.legend.SpriteLegend', {
             preciseMeasurement: true
         },
 
+        /**
+         * The sprite to use as a legend item marker. By default a corresponding series
+         * marker is used. If the series has no marker, the `circle` sprite
+         * is used as a legend item marker, where its `fillStyle`, `strokeStyle` and
+         * `lineWidth` match that of the series. The size of a legend item marker is
+         * controlled by the `size` property, which to defaults to `10` (pixels).
+         */
         marker: {
         },
 
@@ -114,7 +124,8 @@ Ext.define('Ext.chart.legend.SpriteLegend', {
         },
 
         /**
-         * @cfg {Object} background Set the legend background.
+         * @cfg {Object} background
+         * Sets the legend background.
          * This can be a gradient object, image, or color. This config works similarly
          * to the {@link Ext.chart.AbstractChart#background} config.
          */
@@ -191,8 +202,9 @@ Ext.define('Ext.chart.legend.SpriteLegend', {
     },
 
     updateHidden: function (hidden) {
-        var chart = this.getChart(), // 'chart' updater will set the surface
-            surface = this.getSurface();
+        this.getChart(); // 'chart' updater will set the surface
+
+        var surface = this.getSurface();
 
         if (surface) {
             surface.setHidden(hidden);
@@ -592,10 +604,13 @@ Ext.define('Ext.chart.legend.SpriteLegend', {
 
         if (surface) {
             markerConfig = series.getMarkerStyleByIndex(data.index);
+            markerConfig.fillStyle = data.mark;
+            markerConfig.hidden = false;
             if (seriesMarker && seriesMarker.type) {
                 markerConfig.type = seriesMarker.type;
             }
             Ext.apply(markerConfig, me.getMarker());
+            markerConfig.surface = surface;
             labelConfig = me.getLabel();
 
             legendItemConfig = {
@@ -690,6 +705,8 @@ Ext.define('Ext.chart.legend.SpriteLegend', {
             });
 
             markerConfig = series.getMarkerStyleByIndex(data.index);
+            markerConfig.fillStyle = data.mark;
+            markerConfig.hidden = false;
             Ext.apply(markerConfig, this.getMarker());
             marker = sprite.getMarker();
             marker.setAttributes({
@@ -724,7 +741,7 @@ Ext.define('Ext.chart.legend.SpriteLegend', {
         }
     },
 
-    onClick: function (event, surface) {
+    onClick: function (event) {
         var chart = this.getChart(),
             surface = this.getSurface(),
             result, point;

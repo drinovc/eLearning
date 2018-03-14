@@ -151,20 +151,18 @@ Ext.define('Ext.chart.MarkerHolder', {
     },
 
     putMarker: function (name, attr, index, bypassNormalization, keepRevision) {
-        var marker = this.boundMarkers[name],
-            id = this.getId();
+        var marker = this.boundMarkers[name];
 
         if (marker) {
-            marker.putMarkerFor(id, attr, index, bypassNormalization, keepRevision);
+            marker.putMarkerFor(this.getId(), attr, index, bypassNormalization, keepRevision);
         }
     },
 
     getMarkerBBox: function (name, index, isWithoutTransform) {
-        var marker = this.boundMarkers[name],
-            id = this.getId();
+        var marker = this.boundMarkers[name];
 
         if (marker) {
-            return marker.getMarkerBBoxFor(id, index, isWithoutTransform);
+            return marker.getMarkerBBoxFor(this.getId(), index, isWithoutTransform);
         }
     },
 

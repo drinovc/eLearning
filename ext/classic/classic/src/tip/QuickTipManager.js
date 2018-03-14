@@ -247,7 +247,8 @@ Ext.define('Ext.tip.QuickTipManager', {
     },
 
     /**
-     * @inheritdoc Ext.tip.QuickTip#register
+     * @method register
+     * @inheritdoc Ext.tip.QuickTip#method-register
      */
     register : function(){
         var tip = this.tip;
@@ -267,8 +268,9 @@ Ext.define('Ext.tip.QuickTipManager', {
     },
 
     /**
-     * Alias of {@link #register}.
-     * @inheritdoc Ext.tip.QuickTipManager#register
+     * @method tips
+     * Alias of {@link #method-register register}.
+     * @inheritdoc Ext.tip.QuickTipManager#method-register
      */
     tips : function(){
         var tip = this.tip;

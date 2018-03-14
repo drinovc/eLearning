@@ -1042,7 +1042,7 @@ topSuite('Ext.promise.Promise', ['Ext.Promise', 'Ext.Deferred', 'Ext.promise.*']
             var delayedPromise;
             
             afterEach(function() {
-                clearTimeout(delayedPromise.owner.timeoutId);
+                Ext.undefer(delayedPromise.owner.timeoutId);
             });
             
             it('Promise that resolves in 100 ms with a 50 ms timeout', function() {
@@ -1543,7 +1543,7 @@ topSuite('Ext.promise.Promise', ['Ext.Promise', 'Ext.Deferred', 'Ext.promise.*']
         
         afterEach(function() {
             for (var i = 0; i < promises.length; i++) {
-                clearTimeout(promises[i].owner.timeoutId);
+                Ext.undefer(promises[i].owner.timeoutId);
             }
             
             promises = null;
@@ -1552,8 +1552,8 @@ topSuite('Ext.promise.Promise', ['Ext.Promise', 'Ext.Deferred', 'Ext.promise.*']
         function makeTimeoutPromise(timeout, value, isResolve) {
             var deferred = new Deferred();
             
-            deferred.timeoutId = setTimeout(function() {
-                clearTimeout(deferred.timeoutId);
+            deferred.timeoutId = Ext.defer(function() {
+                Ext.undefer(deferred.timeoutId);
                 
                 if (isResolve) {
                     deferred.resolve(value);

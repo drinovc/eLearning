@@ -254,7 +254,7 @@ Ext.define('Ext.chart.interactions.ItemEdit', {
             isRtl = chart.getInherited().rtl,
             flipXY = chart.isCartesian && chart.getFlipXY(),
             item = chart.getHighlightItem(),
-            marker = item.sprite.getMarker('items'),
+            marker = item.sprite.getMarker('markers'),
             instance = marker.getMarkerFor(item.sprite.getId(), item.index),
             surface = item.sprite.getSurface(),
             surfaceRect = surface.getRect(),
@@ -263,7 +263,9 @@ Ext.define('Ext.chart.interactions.ItemEdit', {
             xAxis = item.series.getXAxis(),
             isEditableX = xAxis && xAxis.getLayout().isContinuous,
             renderer = me.getRenderer(),
-            style, changes, params, positionX, positionY;
+            style, changes, params,
+            positionX, positionY,
+            hintX, hintY;
 
         if (flipXY) {
             positionY = isRtl ? surfaceRect[2] - xy[0] : xy[0];
@@ -279,9 +281,22 @@ Ext.define('Ext.chart.interactions.ItemEdit', {
         } else {
             positionX = instance.translationX;
         }
+
+        if (isEditableX) {
+            hintX = xy[0];
+            hintY = xy[1];
+        } else {
+            if (flipXY) {
+                hintX = xy[0];
+                hintY = instance.translationY; // no change
+            } else {
+                hintX = instance.translationX;
+                hintY = xy[1]; // no change
+            }
+        }
         style = {
-            translationX: positionX,
-            translationY: positionY,
+            translationX: hintX,
+            translationY: hintY,
             scalingX: instance.scalingX,
             scalingY: instance.scalingY,
             r: instance.r,
@@ -312,7 +327,8 @@ Ext.define('Ext.chart.interactions.ItemEdit', {
         if (changes) {
             Ext.apply(style, changes);
         }
-        item.sprite.putMarker('items', style, 'itemedit');
+        // This marker acts as a visual hint while dragging.
+        item.sprite.putMarker('markers', style, 'itemedit');
 
         me.showTooltip(e, me.target, item);
         surface.renderFrame();

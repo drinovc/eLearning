@@ -32,10 +32,6 @@ topSuite("Ext.viewport.Default", function() {
     beforeEach(function() {
         addWindowListenerSpy = jasmine.createSpy();
     });
-    
-    afterEach(function() {
-        Ext.scroll.Scroller.viewport = Ext.destroy(Ext.scroll.Scroller.viewport);
-    });
 
     describe("constructor()", function() {
         var viewport;

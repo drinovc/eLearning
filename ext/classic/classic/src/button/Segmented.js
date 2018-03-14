@@ -38,20 +38,20 @@ Ext.define('Ext.button.Segmented', {
 
     config: {
         /**
-         * @cfg {Boolean}
+         * @cfg {Boolean} allowDepress
          * Allow toggling the pressed state of each button.
          * Only applicable when {@link #allowMultiple} is `false`.
          */
         allowDepress: false,
 
         /**
-         * @cfg {Boolean}
+         * @cfg {Boolean} allowMultiple
          * Allow multiple pressed buttons.
          */
         allowMultiple: false,
 
         /**
-         * @cfg {Boolean}
+         * @cfg {Boolean} forceSelection
          * If {@link #allowMultiple} is `true`, this config may be set to `true` to indicate that at least
          * one button in the set must remain pressed at all times.
          *
@@ -61,19 +61,19 @@ Ext.define('Ext.button.Segmented', {
         forceSelection: false,
 
         /**
-         * @cfg {Boolean}
+         * @cfg {Boolean} allowToggle
          * True to enable pressed/not pressed toggling.
          */
         allowToggle: true,
 
         /**
-         * @cfg {Boolean}
+         * @cfg {Boolean} vertical
          * True to align the buttons vertically
          */
         vertical: false,
 
         /**
-         * @cfg {String}
+         * @cfg {String} defaultUI
          * Default {@link Ext.Component#ui ui} to use for buttons in this segmented button.
          * Buttons can override this default by specifying their own UI
          */
@@ -82,10 +82,10 @@ Ext.define('Ext.button.Segmented', {
 
     beforeRenderConfig: {
         /**
-         * @cfg {String/Number/String[]/Number[]}
+         * @cfg {String/Number/String[]/Number[]} value
          * @accessor
          * The value of this button.  When {@link #allowMultiple} is `false`, value is a
-         * String or Number.  When {@link #allowMultiple is `true`, value is an array
+         * String or Number.  When {@link #allowMultiple} is `true`, value is an array
          * of values.  A value corresponds to a child button's {@link Ext.button.Button#value
          * value}, or its index if no child button values match the given value.
          *
@@ -142,19 +142,49 @@ Ext.define('Ext.button.Segmented', {
     },
 
     /**
+     * @property defaultBindProperty
      * @inheritdoc
      */
     defaultBindProperty: 'value',
 
+    /**
+     * @cfg publishes
+     * @inheritdoc
+     */
     publishes: ['value'],
+
+    /**
+     * @cfg twoWayBindable
+     * @inheritdoc
+     */
     twoWayBindable: ['value'],
 
+    /**
+     * @cfg layout
+     * @inheritdoc
+     */
     layout: 'segmentedbutton',
+    
+    /**
+     * @cfg defaultType
+     * @inheritdoc
+     */
     defaultType: 'button',
+    
+    /**
+     * @property maskOnDisable
+     * @inheritdoc
+     */
     maskOnDisable: false,
+
     isSegmentedButton: true,
 
+    /**
+     * @cfg baseCls
+     * @inheritdoc
+     */
     baseCls: Ext.baseCSSPrefix + 'segmented-button',
+
     itemCls: Ext.baseCSSPrefix + 'segmented-button-item',
 
     /**

@@ -958,12 +958,12 @@ topSuite("Ext.dataview.List_Grouping", [
             }]);
 
             var item = getDataItem(1),
-                h = item.element.getHeight(false, true);
+                h = item.element.measure('h');
 
             measured = {
                 item: h,
-                header: getDataItem(0).$header.element.getHeight(false, true),
-                footer: getDataItem(2).$footer.element.getHeight(false, true),
+                header: getDataItem(0).$header.element.measure('h'),
+                footer: getDataItem(2).$footer.element.measure('h'),
                 toFill: Math.ceil(defaultSize / h)
             };
 
@@ -1388,12 +1388,19 @@ topSuite("Ext.dataview.List_Grouping", [
             }));
 
             navModel.setLocation(0);
-            var location = navModel.getLocation();
 
-            jasmine.fireKeyEvent(location.sourceElement, 'keydown', Ext.event.Event.UP);
+            waitsFor(function() {
+                return list.containsFocus;
+            });
 
-            // Should not have moved. Should return immediately and not enter an infinite loop.
-            expect(navModel.getLocation()).toBe(location);
+            runs(function() {
+                var location = navModel.getLocation();
+
+                jasmine.fireKeyEvent(location.sourceElement, 'keydown', Ext.event.Event.UP);
+
+                // Should not have moved. Should return immediately and not enter an infinite loop.
+                expect(navModel.getLocation().equals(location)).toBe(true);
+            });
         });
     });
 });

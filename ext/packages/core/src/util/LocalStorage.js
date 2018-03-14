@@ -497,10 +497,7 @@ Ext.define('Ext.util.LocalStorage', {
             var me = this;
 
             if (!delay) {
-                if (me._timer) {
-                    clearTimeout(me._timer);
-                    me._timer = null;
-                }
+                me._timer = Ext.undefer(me._timer);
 
                 me.el.setAttribute('xdata', Ext.encode(me.data));
                 me.el.save(me.id);

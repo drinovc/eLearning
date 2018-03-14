@@ -49,6 +49,7 @@ Ext.define('Ext.chart.axis.layout.Discrete', {
     },
 
     /**
+     * @method calculateLayout
      * @inheritdoc
      */
     calculateLayout: function (context) {
@@ -57,6 +58,7 @@ Ext.define('Ext.chart.axis.layout.Discrete', {
     },
 
     /**
+     * @method calculateMajorTicks
      * @inheritdoc
      */
     calculateMajorTicks: function (context) {
@@ -76,6 +78,7 @@ Ext.define('Ext.chart.axis.layout.Discrete', {
     },
 
     /**
+     * @method snapEnds
      * @inheritdoc
      */
     snapEnds: function (context, min, max, estStepSize) {
@@ -102,6 +105,7 @@ Ext.define('Ext.chart.axis.layout.Discrete', {
     },
 
     /**
+     * @method trimByRange
      * @inheritdoc
      */
     trimByRange: function (context, out, trimMin, trimMax) {

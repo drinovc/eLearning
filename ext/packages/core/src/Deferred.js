@@ -163,11 +163,11 @@ return {
                 promiseOrValue = undefined;
             }
 
-            milliseconds = Math.max(milliseconds, 0);
+            milliseconds = Math.max(milliseconds, 1);
 
             deferred = new Deferred();
 
-            deferred.timeoutId = setTimeout(function () {
+            deferred.timeoutId = Ext.defer(function () {
                 delete deferred.timeoutId;
                 deferred.resolve(promiseOrValue);
             }, milliseconds);
@@ -576,18 +576,18 @@ return {
             var deferred = new Deferred(),
                 timeoutId;
 
-            timeoutId = setTimeout(function () {
+            timeoutId = Ext.defer(function () {
                 if (timeoutId) {
                     deferred.reject(new Error('Promise timed out.'));
                 }
             }, milliseconds);
 
             Deferred.resolved(promiseOrValue).then(function (value) {
-                clearTimeout(timeoutId);
+                Ext.undefer(timeoutId);
                 timeoutId = null;
                 deferred.resolve(value);
             }, function (reason) {
-                clearTimeout(timeoutId);
+                Ext.undefer(timeoutId);
                 timeoutId = null;
                 deferred.reject(reason);
             });

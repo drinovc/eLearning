@@ -41,7 +41,7 @@ Ext.define('Ext.grid.locking.RowSynchronizer', {
         for (name in els) {
             otherEl = otherEls[name];
 
-            // Partnet RowSynchronizer may not have the element.
+            // Partner RowSynchronizer may not have the element.
             // For example, group summary may not be wanted in locking side.
             otherHeight = otherEl ? otherEl.height : 0;
             delta = otherHeight - els[name].height;
@@ -72,12 +72,13 @@ Ext.define('Ext.grid.locking.RowSynchronizer', {
     measure: function () {
         var me = this,
             els = me.els,
+            grid = me.view.ownerGrid,
             name;
-
-        me.rowHeight = me.rowEl.offsetHeight;
+        
+        me.rowHeight = grid.getElementHeight(me.rowEl);
 
         for (name in els) {
-            els[name].height = els[name].el.offsetHeight;
+            els[name].height = grid.getElementHeight(els[name].el);
         }
     },
 

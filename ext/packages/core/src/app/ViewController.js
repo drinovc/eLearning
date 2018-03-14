@@ -3,110 +3,35 @@
  * instance so it can manage the view and its child components. Each instance of the view
  * will have a new view controller, so the instances are isolated.
  * 
- * When a controller is specified on a view, the view automatically becomes a {@link Ext.container.Container#referenceHolder},
- * so it will receive inline events declared on the view. Sample usage:
+ * When a view controller is specified on a view, events and other handlers that use strings as
+ * values will be automatically connected with the appropriate methods in the controller's class.
+ *
+ * Sample usage:
  * 
  *     @example
- *     Ext.define('User', {
- *        extend: 'Ext.data.Model',
- *        fields: ['name', 'phone']    
- *     });
- *
- *     Ext.define('UserListController', {
+ *     Ext.define('MyViewController', {
  *         extend : 'Ext.app.ViewController',
- *         alias: 'controller.userlist',
+ *         alias: 'controller.myview',
  *       
- *         init: function(view) {
- *             this.userCount = 0;
- *             var users = [],
- *                 i;
- *                 
- *             for (i = 0; i < 5; ++i) {
- *                 users.push(this.getUser());
- *             }  
- *             view.getStore().add(users);
- *         },
- *       
+ *         // This method is called as a "handler" for the Add button in our view
  *         onAddClick: function() {
- *             this.addUser();
- *         },
- *             
- *         onDeleteClick: function() {
- *             var view = this.getView(),
- *                 selected = view.getSelectionModel().getSelection()[0],
- *                 store = view.getStore();
- *               
- *             store.remove(selected);
- *         },
- *       
- *         onSelectionChange: function(selModel, selections) {
- *             this.lookupReference('delete').setDisabled(selections.length === 0);
- *         },
- *       
- *         getUser: function() {
- *             ++this.userCount;
- *             return {
- *                 name: 'User ' + this.userCount,
- *                 phone: this.generatePhone()
- *             };
- *         },
- *       
- *         addUser: function() {
- *             this.getView().getStore().add(this.getUser());    
- *         },
- *       
- *         generatePhone: function() {
- *             var num = '',
- *                 i;
- *               
- *             for (i = 0; i < 7; ++i) {
- *                 num += Ext.Number.randomInt(0, 9);
- *                 if (num.length === 3) {
- *                     num += '-';
- *                 }
- *             }    
- *             return num;
+ *             Ext.Msg.alert('Add', 'The Add button was clicked');
  *         }
  *     });
  *   
- *     Ext.define('UserList', {
- *         extend: 'Ext.grid.Panel',
- *         controller: 'userlist',
- *       
- *         tbar: [{
+ *     Ext.define('MyView', {
+ *         extend: 'Ext.Panel',
+ *         controller: 'myview',
+ *
+ *         items: [{
+ *             xtype: 'button',
  *             text: 'Add',
- *             listeners: {
- *                 click: 'onAddClick'
- *             }    
- *         }, {
- *             text: 'Delete',
- *             reference: 'delete',
- *             listeners: {
- *                 click: 'onDeleteClick'
- *             }
- *         }],
- *         store: {
- *             model: 'User'
- *         },
- *         selModel: {
- *             type: 'rowmodel',
- *             listeners: {
- *                 selectionchange: 'onSelectionChange'
- *             }    
- *         },
- *         columns: [{
- *             flex: 1,
- *             dataIndex: 'name',
- *             text: 'Name'
- *         }, {
- *             flex: 1,
- *             dataIndex: 'phone',
- *             text: 'Phone'
+ *             handler: 'onAddClick',  // calls MyViewController's onAddClick method
  *         }]
  *     });
  *   
  *     Ext.onReady(function() {
- *         new UserList({
+ *         new MyView({
  *             renderTo: Ext.getBody(),
  *             width: 400,
  *             height: 200
@@ -127,6 +52,10 @@ Ext.define('Ext.app.ViewController', {
     
     isViewController: true,
 
+    /**
+     * @property factoryConfig
+     * @inheritdoc
+     */
     factoryConfig: { // configure Factoryable
         type: 'controller'
     },
@@ -180,7 +109,7 @@ Ext.define('Ext.app.ViewController', {
     },
 
     /**
-     * @method
+     * @method beforeInit
      *
      * Called before the view initializes. This is called before the view's
      * initComponent method has been called.
@@ -190,7 +119,7 @@ Ext.define('Ext.app.ViewController', {
     beforeInit: Ext.emptyFn,
 
     /**
-     * @method
+     * @method init
      *
      * Called when the view initializes. This is called after the view's initComponent
      * method has been called.
@@ -200,7 +129,7 @@ Ext.define('Ext.app.ViewController', {
     init: Ext.emptyFn,
 
     /**
-     * @method
+     * @method initViewModel
      *
      * Called when the view model instance for an attached view is first created.
      * @param {Ext.app.ViewModel} viewModel The ViewModel
@@ -279,7 +208,8 @@ Ext.define('Ext.app.ViewController', {
     },
 
     /**
-     * @inheritdoc Ext.container.Container#getReferences
+     * @method getReferences
+     * @inheritdoc Ext.mixin.Container#method!getReferences
      * @since 5.0.0
      */
     getReferences: function () {

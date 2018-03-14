@@ -9,7 +9,9 @@
  *     Ext.Viewport.add({
  *          xtype: 'list',
  *          infinite: true,
- *          plugins: 'sortablelist',
+ *          plugins: {
+ *              sortablelist: true
+ *          },
  *          itemTpl: '<span class="myStyle ' + Ext.baseCSSPrefix + 'list-sortablehandle"></span>{text}',
  *          data: [{
  *              text: 'Item 1'
@@ -107,6 +109,8 @@ Ext.define('Ext.dataview.plugin.SortableList', {
         var list = this.getList(),
             item = list.mapToItem(info.initialEvent);
 
+        item.addCls(Ext.baseCSSPrefix + 'item-no-ripple');
+
         // Clear the translate since drag uses left/top
         item.translate(0, 0);
         info.item = item;
@@ -161,7 +165,7 @@ Ext.define('Ext.dataview.plugin.SortableList', {
                 item = list.mapToItem(rec);
                 list.fireEvent('dragsort', list, item, index);
             }
-
+            item.removeCls(Ext.baseCSSPrefix + 'item-no-ripple');
         }, me, {single: true});
 
         if (!compareItem) {

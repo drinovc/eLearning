@@ -1,16 +1,42 @@
-topSuite("Ext.util.TaskRunner", function() {
+topSuite("Ext.util.TaskRunner", [
+    'Ext.GlobalEvents'
+], function() {
     var spy, runner, task;
 
     describe("idle event", function() {
+        var calls;
+
+        function onIdle () {
+            var timer = Ext.Timer.firing;
+
+            if (timer && !timer.ours) {
+                var s = timer.creator;
+
+                if (timer.runner) {
+                    Ext.each(timer.runner.fired, function (task) {
+                        s += '\n-----------------------';
+                        s += 'Task:';
+                        s += task.creator;
+                        s += '\n-----------------------';
+                    });
+                }
+
+                expect(s).toBe('not running');
+            }
+            else {
+                expect(new Error().stack).toBe('not called');
+            }
+        }
+
         beforeEach(function() {
-            spy = jasmine.createSpy('idle');
-            
-            Ext.on('idle', spy);
+            Ext.on('idle', onIdle);
+            calls = [];
         });
-        
+
         afterEach(function() {
-            Ext.un('idle', spy);
-            
+            Ext.un('idle', onIdle);
+            calls = null;
+
             if (runner) {
                 runner.destroy();
             }
@@ -32,13 +58,18 @@ topSuite("Ext.util.TaskRunner", function() {
                 });
                 
                 task.start();
+
+                var timer = Ext.Timer.get(runner.timerId);
+                if (timer) {
+                    timer.ours = true;
+                }
             });
             
             // This should be enough to trip the event, happens fairly often in IE
             waits(300);
             
             runs(function() {
-                expect(spy).not.toHaveBeenCalled();
+                expect(calls).toEqual([]);
             });
         });
     });
@@ -61,7 +92,8 @@ topSuite("Ext.util.TaskRunner", function() {
             task = runner.newTask({
                 interval: 10,
                 run: spy,
-                args: ['Foo']
+                args: ['Foo'],
+                repeat: 1
             });
             
             task.start();
@@ -80,7 +112,8 @@ topSuite("Ext.util.TaskRunner", function() {
                 interval: 10,
                 run: spy,
                 addCountToArgs: true,
-                args: ['Foo']
+                args: ['Foo'],
+                repeat: 1
             });
             
             task.start();

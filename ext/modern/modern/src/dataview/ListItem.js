@@ -70,6 +70,7 @@ Ext.define('Ext.dataview.ListItem', {
     ],
 
     mixins: [
+        'Ext.dataview.Disclosable', // must come before Toolable
         'Ext.mixin.Toolable',
         'Ext.dataview.Pinnable'
     ],
@@ -81,40 +82,20 @@ Ext.define('Ext.dataview.ListItem', {
         Ext.baseCSSPrefix + 'container',
         Ext.baseCSSPrefix + 'component'
     ],
+
     classClsRoot: true,
 
     inheritUi: true,
 
     items: null,  // base class has one item by default
 
-    toolDefaults: {
-        ui: 'listitem'
-    },
-
-    toolAnchorName: 'innerElement',
-
-    tools: {
-        disclosure: {
-            weight: 100
-        }
-    },
-
-    getDisclosure: function () {
-        return this.lookupTool('disclosure');
-    },
-
     updateRecord: function(record) {
-        var me = this,
-            disclosure;
+        var me = this;
 
         if (!me.destroying && !me.destroyed) {
             me.callParent([record]);
             
-            disclosure = me.getDisclosure();
-
-            if (disclosure) {
-                disclosure.setHidden(me.parent.shouldHideDisclosure(record));
-            }
+            me.syncDisclosure(record);
         }
     },
 
@@ -124,18 +105,12 @@ Ext.define('Ext.dataview.ListItem', {
     },
 
     privates: {
-        invokeToolHandler: function (tool, handler, scope, args, ev) {
-            if (tool.type === 'disclosure' && !handler) {
-                var me = this,
-                    parent = me.parent;
-
-                if (parent && parent.onItemDisclosureTap) {
-                    parent.onItemDisclosureTap(ev);
-                    return false;
-                }
+        invokeToolHandler: function (tool, handler, scope, args, e) {
+            if (this.invokeDisclosure(tool, handler, e)) {
+                return false;
             }
 
-            return tool.invokeToolHandler(tool, handler, scope, args, ev);
+            return tool.invokeToolHandler(tool, handler, scope, args, e);
         }
     }
 });

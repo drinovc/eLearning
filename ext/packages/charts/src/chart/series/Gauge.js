@@ -236,6 +236,7 @@ Ext.define('Ext.chart.series.Gauge', {
             halfTotalAngle = wholeDisk ? Math.PI : this.getTotalAngle() / 2,
             donut = this.getDonut() / 100,
             width, height, radius;
+
         if (halfTotalAngle <= Math.PI / 2) {
             width = 2 * Math.sin(halfTotalAngle);
             height = 1 - donut * Math.cos(halfTotalAngle);
@@ -245,6 +246,7 @@ Ext.define('Ext.chart.series.Gauge', {
         }
 
         radius = Math.min(rect[2] / width, rect[3] / height);
+
         this.setRadius(radius);
         this.setCenter([rect[2] / 2, radius + (rect[3] - height * radius) / 2]);
     },
@@ -267,10 +269,11 @@ Ext.define('Ext.chart.series.Gauge', {
     },
 
     doUpdateShape: function (radius, donut) {
-        var endRhoArray,
-            sectors = this.getSectors(),
+        var me = this,
+            sectors = me.getSectors(),
             sectorCount = (sectors && sectors.length) || 0,
-            needleLength = this.getNeedleLength() / 100;
+            needleLength = me.getNeedleLength() / 100,
+            endRhoArray;
 
         // Initialize an array that contains the endRho for each sprite.
         // The first sprite is for the needle, the others for the gauge background sectors. 
@@ -280,11 +283,11 @@ Ext.define('Ext.chart.series.Gauge', {
             endRhoArray.push(radius);
         }
 
-        this.setSubStyle({
+        me.setSubStyle({
             endRho: endRhoArray,
             startRho: radius / 100 * donut
         });
-        this.doUpdateStyles();
+        me.doUpdateStyles();
     },
 
     updateRadius: function (radius) {
@@ -429,11 +432,12 @@ Ext.define('Ext.chart.series.Gauge', {
         var me = this,
             store = me.getStore(),
             value = me.getValue(),
+            label = me.getLabel(),
             i, ln;
 
         // The store must be initialized, or the value must be set
         if (!store && !Ext.isNumber(value)) {
-            return [];
+            return Ext.emptyArray;
         }
 
         // Return cached sprites
@@ -459,7 +463,7 @@ Ext.define('Ext.chart.series.Gauge', {
         };
 
         // Create needle sprite
-        sprite = me.createSprite();
+        me.needleSprite = sprite = me.createSprite();
         sprite.setAttributes({
             zIndex: 10
         }, true);
@@ -467,8 +471,10 @@ Ext.define('Ext.chart.series.Gauge', {
         sprite.setRendererIndex(spriteIndex++);
         lineWidths.push(me.getNeedleWidth());
 
+        if (label) {
+            label.getTemplate().setField(true); // Enable labels
+        }
         // Create background sprite(s)
-        me.getLabel().getTemplate().setField(true); // Enable labels
         sectors = me.normalizeSectors(me.getSectors());
         for (i = 0, ln = sectors.length; i < ln; i++) {
             attr = {
@@ -491,6 +497,19 @@ Ext.define('Ext.chart.series.Gauge', {
 
         me.doUpdateStyles();
         return sprites;
+    },
+
+    doUpdateStyles: function () {
+        var me = this;
+
+        me.callParent();
+
+        if (me.sprites.length) {
+            me.needleSprite.setAttributes({
+                startRho: me.getNeedle() ? 0 : (me.getRadius() / 100 * me.getDonut())
+            });
+        }
     }
+
 });
 

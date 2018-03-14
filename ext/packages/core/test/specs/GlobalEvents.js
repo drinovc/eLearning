@@ -164,6 +164,45 @@ function() {
         });
     });
     
+    TODO(Ext.isClassic).
+    describe("pressedComponent", function() {
+        var button;
+        
+        beforeEach(function() {
+            button = new Ext.Button({
+                renderTo: Ext.getBody(),
+                text: 'foo'
+            });
+        });
+        
+        afterEach(function() {
+            button = Ext.destroy(button);
+        });
+        
+        it("should capture the pressed component on mousedown", function() {
+            jasmine.fireMouseEvent(button.el, 'mousedown');
+            
+            expect(Ext.GlobalEvents.pressedComponent).toBe(button);
+            
+            jasmine.fireMouseEvent(button.el, 'mouseup');
+        });
+        
+        it("should call onRelease method when mouse is released", function() {
+            var event,
+                spy = spyOn(button, 'onRelease');
+            
+            spy.andCallFake(function(e) {
+                event = e;
+            });
+            
+            jasmine.fireMouseEvent(button.el, 'click');
+            
+            expect(spy).toHaveBeenCalled();
+            expect(event.type).toBe('mouseup');
+            expect(event.target).toBe(button.el.dom);
+        });
+    });
+    
     describe('scroll event', function() {
         var stretcher,
             scrollingPanel,
@@ -184,12 +223,12 @@ function() {
             
             stretcher.destroy();
             scrollingPanel.destroy();
-            
-            // Viewport scroller is going to poison subsequent tests
-            Ext.scroll.Scroller.viewport = Ext.destroy(Ext.scroll.Scroller.viewport);
         });
 
         it('should fire the global scroll event whenever anything scrolls', function() {
+            var viewportScrollEndSpy = jasmine.createSpy('viewport sceollend spy'),
+                panelScrollEndSpy = jasmine.createSpy('scrollingPanel scrollend spy');
+
             stretcher = Ext.getBody().createChild({
                 style: 'height:10000px'
             });
@@ -218,23 +257,31 @@ function() {
             });
             
             var viewportScroller = Ext.getViewportScroller();
+
+            viewportScroller.on({
+                scrollend: viewportScrollEndSpy
+            });
             
             viewportScroller.scrollBy(null, 100);
 
             // Wait for scroll events to fire (may be async)
-            waitsForEvent(viewportScroller, 'scrollend');
+            waitsForSpy(viewportScrollEndSpy);
             
             runs(function() {
                 expect(scrolledElements.length).toBe(1);
                 expect(scrolledElements[0]).toBe(Ext.scroll.Scroller.viewport.getElement());
             });
+
+            scrollingPanel.getScrollable().on({
+                scrollend: panelScrollEndSpy
+            });
             
             runs(function() {
                 scrollingPanel.getScrollable().scrollBy(null, 100);
             });
-            
+
             // Wait for scroll events to fire (may be async)
-            waitsForEvent(scrollingPanel.getScrollable(), 'scrollend');
+            waitsForSpy(panelScrollEndSpy);
 
             runs(function() {
                 expect(scrolledElements.length).toBe(2);

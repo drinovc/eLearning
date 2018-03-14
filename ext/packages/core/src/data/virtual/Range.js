@@ -299,6 +299,19 @@ Ext.define('Ext.data.virtual.Range', {
             me.lastEnd = end;
         },
 
+        onPageDestroy: function(page) {
+            var n = page.number,
+                activePages = this.activePages,
+                prefetchPages = this.prefetchPages;
+
+            if (activePages) {
+                delete activePages[n];
+            }
+            if (prefetchPages) {
+                delete prefetchPages[n];
+            }
+        },
+
         onPageLoad: function (page) {
             var me = this,
                 callback = me.callback,

@@ -13,6 +13,28 @@ Ext.define('Ext.grid.NavigationModel', {
     ],
 
     locationClass: 'Ext.grid.Location',
+    
+    statics: {
+        /**
+         * We should ignore keydown events for certain keys pressed in an input field
+         * e.g. while editing, to allow for native arrow key navigation, Home/End keys,
+         * etc. However we can't ignore all keydown events in input fields wholesale,
+         * that breaks Enter/Esc/Tab key processing.
+         * This map defines what key names should be ignored if target is an input field.
+         * @private
+         * @since 6.5.1
+         */
+        ignoreInputFieldKeys: {
+            PAGE_UP: true,
+            PAGE_DOWN: true,
+            END: true,
+            HOME: true,
+            LEFT: true,
+            UP: true,
+            RIGHT: true,
+            DOWN: true
+        }
+    },
 
     /**
      * Focuses the passed position, and optionally selects that position.
@@ -134,6 +156,10 @@ Ext.define('Ext.grid.NavigationModel', {
             var me = this,
                 view = me.getView(),
                 cell = view.mapToCell(e);
+            
+            if (Ext.fly(e.target).isInputField() && me.self.ignoreInputFieldKeys[e.getKeyName()]) {
+                return false;
+            }
 
             // We found our grid cell which contained the event.
             if (cell && cell.row.grid === view) {
@@ -149,9 +175,19 @@ Ext.define('Ext.grid.NavigationModel', {
             location.clone().activate();
         },
 
-        triggerActionable: function(actionable) {
-            // Request the Actionable to activate a *cell* Location based on the current location.
-            actionable.activateCell(this.location.clone());
+        triggerActionable: function(actionable, e) {
+            var actionLocation;
+
+            // Request the Actionable to activate a *cell* Location based on the event location.
+            actionLocation = actionable.activateCell(this.createLocation(e));
+
+            // If we successfully started actionable mode, set our location.
+            // Note that this may pass the already active location if the trigger
+            // event was inside the actionable, such as clicking in a cell editor.
+            // This will be a no-op, so harmless.
+            if (actionLocation) {
+                this.setLocation(actionLocation);
+            }
         },
 
         onChildTouchStart: function(view, location) {
@@ -203,12 +239,25 @@ Ext.define('Ext.grid.NavigationModel', {
         },
 
         onKeyLeft: function(e) {
-            if (!this.location.actionable) {
+            var location = this.location,
+                isSimpleTree = location.isLastColumn() && location.isFirstColumn();
+
+            if (!location.actionable) {
                 // Do not scroll
                 e.preventDefault();
 
+                // On an expanded non-leaf tree cell.
+                if (location.isTreeLocation && !location.record.isLeaf() && location.record.isExpanded()) {
+
+                    // If a simple Tree (just one column), or its a ctrl+RIGHT
+                    // expand the node.
+                    if (isSimpleTree === !e.ctrlKey) {
+                        return location.cell.collapse();
+                    }
+                }
+
                 // Do not allow SHIFT+(left|right) to wrap.
-                if (!(e.shiftKey && this.location.isFirstColumn())) {
+                if (!(e.shiftKey && location.isFirstColumn())) {
                     this.movePrevious({
                         event: e
                     });
@@ -221,12 +270,25 @@ Ext.define('Ext.grid.NavigationModel', {
         },
 
         onKeyRight: function(e) {
-            if (!this.location.actionable) {
+            var location = this.location,
+                isSimpleTree = location.isLastColumn() && location.isFirstColumn();
+
+            if (!location.actionable) {
                 // Do not scroll
                 e.preventDefault();
 
+                // On a collapsed non-leaf tree cell.
+                if (location.isTreeLocation && !location.record.isLeaf() && !location.record.isExpanded()) {
+
+                    // If a simple Tree (just one column), or its a ctrl+RIGHT
+                    // expand the node.
+                    if (isSimpleTree === !e.ctrlKey) {
+                        return location.cell.expand();
+                    }
+                }
+
                 // Do not allow SHIFT+(left|right) to wrap.
-                if (!(e.shiftKey && this.location.isLastColumn())) {
+                if (!(e.shiftKey && location.isLastColumn())) {
                     this.moveNext({
                         event: e
                     });
@@ -275,7 +337,7 @@ Ext.define('Ext.grid.NavigationModel', {
                     if (view.mapToItem(location.record)) {
                         navigate();
                     } else {
-                        setTimeout(navigate, 100);
+                        Ext.defer(navigate, 100);
                     }
                 });
             }
@@ -398,8 +460,7 @@ Ext.define('Ext.grid.NavigationModel', {
 
         onKeySpace: function(e) {
             var target = Ext.fly(e.target),
-                events,
-                focusables;
+                events, focusables, result;
 
             // SPACE hits up the Selection Model.
             // But also click the first focusable inner el.
@@ -414,7 +475,9 @@ Ext.define('Ext.grid.NavigationModel', {
             // In actionable mode, SPACE clicks the focused el
             // if it is not an input field.
             else {
-                if (!target.isInputField()) {
+                if (target.isInputField()) {
+                    result = true;
+                } else {
                     events = target.events;
                 }
             }
@@ -428,17 +491,25 @@ Ext.define('Ext.grid.NavigationModel', {
                     events.click.fire(e);
                 }
             }
+            return result;
         },
 
         // ENTER emulates an childtap event at the View level
         onKeyEnter: function(e) {
+            var l = this.location;
+
             // Stop the keydown event so that an ENTER keyup does not get delivered to
             // any element which focus is transferred to in a click handler.
             e.stopEvent();
 
             // Navigation mode drops into actionable mode
-            if (!this.location.actionable) {
-                this.activateCell(this.location);
+            if (!l.actionable) {
+                // Enter on a CheckNode, toggles it.
+                if (l.isTreeLocation && l.record.data.checked != null) {
+                    l.record.set('checked', !l.record.data.checked);
+                } else {
+                    this.activateCell(l);
+                }
             }
             // Actionable mode clicks the target, same as SPACE
             else {
@@ -447,7 +518,14 @@ Ext.define('Ext.grid.NavigationModel', {
         },
 
         onSelectAllKeyPress: function(e) {
-            this.onNavigate(e);
+            // Return true to not stop the event if it's in an input field
+            if (Ext.fly(e.target).isInputField()) {
+                return true;
+            }
+            // Superclass selects all
+            else {
+                return this.callParent([e]);
+            }
         },
 
         moveUp: function(e) {

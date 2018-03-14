@@ -87,30 +87,24 @@ Ext.define('Ext.chart.series.Cartesian', {
     },
 
     getItemForPoint: function (x, y) {
-        if (this.getSprites()) {
-            var me = this,
-                sprite = me.getSprites()[0],
-                store = me.getStore(),
-                item, index;
+        var me = this,
+            sprite = me.getSprites()[0],
+            store = me.getStore(),
+            point;
 
-            if (me.getHidden()) {
-                return null;
-            }
-            if (sprite) {
-                index = sprite.getIndexNearPoint(x, y);
-                if (index !== -1) {
-                    item = {
-                        series: me,
-                        index: index,
-                        category: me.getItemInstancing() ? 'items' : 'markers',
-                        record: store.getData().items[index],
-                        field: me.getYField(),
-                        sprite: sprite
-                    };
-                    return item;
-                }
-            }
+        if (sprite && !me.getHidden()) {
+            point = sprite.getNearestDataPoint(x, y);
         }
+
+        return point ? {
+            series: me,
+            sprite: sprite,
+            category: me.getItemInstancing() ? 'items' : 'markers',
+            index: point.index,
+            record: store.getData().items[point.index],
+            field: me.getYField(),
+            distance: point.distance
+        } : null;
     },
 
     createSprite: function () {
@@ -136,27 +130,16 @@ Ext.define('Ext.chart.series.Cartesian', {
     getSprites: function () {
         var me = this,
             chart = this.getChart(),
-            animation = me.getAnimation() || chart && chart.getAnimation(),
-            itemInstancing = me.getItemInstancing(),
-            sprites = me.sprites,
-            sprite;
+            sprites = me.sprites;
 
         if (!chart) {
-            return [];
+            return Ext.emptyArray;
         }
 
         if (!sprites.length) {
-            sprite = me.createSprite();
-        } else {
-            sprite = sprites[0];
+            me.createSprite();
         }
 
-        if (animation) {
-            if (itemInstancing) {
-                sprite.itemsMarker.getTemplate().setAnimation(animation);
-            }
-            sprite.setAnimation(animation);
-        }
         return sprites;
     },
 

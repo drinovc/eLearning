@@ -31,13 +31,15 @@ Ext.define('Ext.data.reader.Array', {
 
     // For Array Reader, methods in the base which use these properties must not see the defaults
     config: {
+
         /**
-         * @cfg
+         * @cfg totalProperty
          * @inheritdoc
          */
         totalProperty: undefined,
+
         /**
-         * @cfg
+         * @cfg successProperty
          * @inheritdoc
          */
         successProperty: undefined
@@ -49,6 +51,7 @@ Ext.define('Ext.data.reader.Array', {
     },
 
     /**
+     * @method constructor
      * @constructor
      * Create a new ArrayReader
      * @param {Object} meta Metadata configuration options.

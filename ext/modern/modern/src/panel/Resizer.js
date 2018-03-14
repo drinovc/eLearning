@@ -53,7 +53,7 @@ Ext.define('Ext.panel.Resizer', {
          * - `[null, 100]`, constrain only the height
          * - `[200, 300]`, constrain both.
          *
-         * **Note** If a {@link Ext.Component#cfg-maxWidth maxWidth} or {@link #Ext.Component#cfg-maxHeight maxHeight}
+         * **Note** If a {@link Ext.Component#cfg-maxWidth maxWidth} or {@link Ext.Component#cfg-maxHeight maxHeight}
          * is specified, it will take precedence.
          */
         maxSize: null,
@@ -66,7 +66,7 @@ Ext.define('Ext.panel.Resizer', {
          * - `[null, 100]`, constrain only the height
          * - `[200, 300]`, constrain both.
          *
-         * **Note** If a {@link Ext.Component#cfg-minWidth minWidth} or {@link #Ext.Component#cfg-minHeight minHeight}
+         * **Note** If a {@link Ext.Component#cfg-minWidth minWidth} or {@link Ext.Component#cfg-minHeight minHeight}
          * is specified, it will take precedence.
          */
         minSize: null,
@@ -163,7 +163,8 @@ Ext.define('Ext.panel.Resizer', {
             disabled = me.disabled,
             firstCorner = me.firstCorner,
             el = me.getTarget().element,
-            edgeEl, key, len, i, edge, splitBaseCls;
+            splitPrefix = me.splitPrefix,
+            edgeEl, key, len, i, edge;
 
         if (edges) {
             for (i = 0, len = edges.length; i < len; ++i) {
@@ -180,10 +181,7 @@ Ext.define('Ext.panel.Resizer', {
                     }
                     edgeEl.destroy();
                     if (split && key in splitEdges) {
-                        splitBaseCls = splitBaseCls || me.constructPanelSplitBase();
-                        for (i = 0, len = splitBaseCls.length; i < len; ++i) {
-                            el.removeCls(splitBaseCls + key);
-                        }
+                        el.removeCls(splitPrefix + key);
                     }
                 }
             }
@@ -201,10 +199,7 @@ Ext.define('Ext.panel.Resizer', {
                     edge.addCls(me.splitterCls);
 
                     if (key in splitEdges) {
-                        splitBaseCls = splitBaseCls || me.constructPanelSplitBase();
-                        for (i = 0, len = splitBaseCls.length; i < len; ++i) {
-                            el.addCls(splitBaseCls + key);
-                        }
+                        el.addCls(splitPrefix + key);
                     }
                 } else {
                     edge.addCls(me.handleCls);
@@ -239,7 +234,8 @@ Ext.define('Ext.panel.Resizer', {
         var me = this,
             map = me.edgeMap,
             splitEdges = me.splitEdges,
-            key, el, splitBaseCls, i, len, target;
+            splitPrefix = me.splitPrefix,
+            key, el, i, len, target;
 
         if (me.isConfiguring) {
             // Drop out if we're configuring, this the class manipulation
@@ -256,10 +252,7 @@ Ext.define('Ext.panel.Resizer', {
                 el.toggleCls(me.handleCls, !split);
 
                 if (key in splitEdges) {
-                    splitBaseCls = splitBaseCls || me.constructPanelSplitBase();
-                    for (i = 0, len = splitBaseCls.length; i < len; ++i) {
-                        target.toggleCls(splitBaseCls[i] + key, split);
-                    }
+                    target.toggleCls(splitPrefix + key, split);
                 }
             }
         }
@@ -335,6 +328,7 @@ Ext.define('Ext.panel.Resizer', {
         splitterCls: Ext.baseCSSPrefix + 'splitter',
         horizontalCls: Ext.baseCSSPrefix + 'horizontal',
         verticalCls: Ext.baseCSSPrefix + 'vertical',
+        splitPrefix: Ext.baseCSSPrefix + 'split-',
 
         edgeDelegateSelector: '> .' + Ext.baseCSSPrefix + 'panelresizer',
 
@@ -553,24 +547,6 @@ Ext.define('Ext.panel.Resizer', {
             }
 
             return v;
-        },
-
-        constructPanelSplitBase: function() {
-            var base = Ext.baseCSSPrefix + 'panel-',
-                ui = this.getUi(),
-                len, i,
-                ret = [];
-
-            if (ui) {
-                ui = ui.split(' ');
-                for (i = 0, len = ui.length; i < len; ++i) {
-                    ret.push(base + ui[i] + '-split-');
-                }
-            } else {
-                ret.push(base + 'split-');
-            }
-
-            return ret;
         },
 
         createEdge: function(targetEl, pos) {
@@ -858,6 +834,9 @@ Ext.define('Ext.panel.Resizer', {
                     event: e
                 });
             }
+            e.stopPropagation();
+            // Prevent any further drag events from completing
+            return false;
         },
 
         handleTouchStart: function(e) {
@@ -1014,13 +993,19 @@ Ext.define('Ext.panel.Resizer', {
         },
 
         setupDragListeners: function() {
-            var me = this;
+            var me = this,
+                delegate = me.edgeDelegateSelector;
 
             me.dragListeners = me.getTarget().element.on({
                 scope: me,
                 destroyable: true,
-                delegate: me.edgeDelegateSelector,
-                dragstart: 'handleDragStart',
+                delegate: delegate,
+                dragstart: {
+                    // Higher priority so that we run before any draggable component handlers.
+                    priority: 1000,
+                    delegate: delegate,
+                    fn: 'handleDragStart'
+                },
                 drag: 'handleDrag',
                 dragend: 'handleDragEnd',
                 dragcancel: 'handleDragCancel',

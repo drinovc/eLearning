@@ -91,7 +91,7 @@ Ext.define('Ext.Audio', {
 
     config: {
         /**
-         * @cfg
+         * @cfg cls
          * @inheritdoc
          */
         cls: Ext.baseCSSPrefix + 'audio'

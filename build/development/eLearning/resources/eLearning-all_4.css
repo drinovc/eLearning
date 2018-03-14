@@ -1,3 +1,24 @@
+/* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/etc/mixins/frame.scss:407 */
+.x-panel-header-light-framed-collapsed-bottom-tl,
+.x-panel-header-light-framed-collapsed-bottom-bl,
+.x-panel-header-light-framed-collapsed-bottom-tr,
+.x-panel-header-light-framed-collapsed-bottom-br,
+.x-panel-header-light-framed-collapsed-bottom-tc,
+.x-panel-header-light-framed-collapsed-bottom-bc,
+.x-panel-header-light-framed-collapsed-bottom-ml,
+.x-panel-header-light-framed-collapsed-bottom-mr {
+    background-image: url(images/panel-header/panel-header-light-framed-collapsed-bottom-corners.gif);
+}
+/* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/etc/mixins/frame.scss:453 */
+.x-panel-header-light-framed-collapsed-bottom-ml,
+.x-panel-header-light-framed-collapsed-bottom-mr {
+    background-image: url(images/panel-header/panel-header-light-framed-collapsed-bottom-sides.gif);
+    background-repeat: repeat-y;
+}
+/* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
+.x-panel-header-light-framed-collapsed-bottom-mc {
+    padding: 10px 14px 10px 14px;
+}
 /* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-panel-header-light-framed-collapsed-bottom:before {
     /*<if slicer>*/
@@ -3734,63 +3755,108 @@
     background-color: blue;
 }
 /* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:11 */
+.slide-container {
+    background-color: #ececec;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:15 */
 .slide {
     background-repeat: no-repeat !important;
     background-size: cover !important;
+    background-color: white;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:16 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:21 */
 .component {
     background-repeat: no-repeat;
     background-size: contain;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:19 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:24 */
 .component img {
     height: 100%;
     width: 100%;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:25 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:30 */
 .draggable {
-    border: solid 2px silver;
-    border-style: dashed;
+    border: dashed 2px silver;
     cursor: move;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:30 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:34 */
 .draggable.selected {
     border-color: orange;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:37 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:41 */
 .edit .correct .x-form-cb-label {
     font-weight: bold !important;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:44 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:48 */
 .preview .draggable {
     border-color: transparent !important;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:49 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:53 */
 pre {
     outline: 1px solid #ccc;
     padding: 5px;
     margin: 5px;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:54 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:58 */
 .string {
     color: green;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:57 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:61 */
 .number {
     color: darkorange;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:60 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:64 */
 .boolean {
     color: blue;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:63 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:67 */
 .null {
     color: magenta;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:66 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:70 */
 .key {
     color: black;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:73 */
+#html-slide {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:79 */
+.html-component {
+    /* all */
+    /* all */
+    position: absolute;
+    line-height: initial;
+    /* image */
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: rgba(222, 222, 222, 0.3);
+    border: dashed 2px silver;
+    overflow: hidden;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:92 */
+.html-component.selected {
+    border-color: orange;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:96 */
+.html-component .html-content {
+    height: 100%;
+    width: 100%;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:116 */
+.html-component .html-content.selection .option {
+    padding: 0.5em 0.5em;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:119 */
+.html-component .html-content.selection .option .fa {
+    width: 1.5em;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:128 */
+.preview .html-component {
+    border: none !important;
+    background-color: none;
 }
 /* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:1 */
 .red-bg {
@@ -3805,61 +3871,110 @@ pre {
     background-color: blue;
 }
 /* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:11 */
+.slide-container {
+    background-color: #ececec;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:15 */
 .slide {
     background-repeat: no-repeat !important;
     background-size: cover !important;
+    background-color: white;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:16 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:21 */
 .component {
     background-repeat: no-repeat;
     background-size: contain;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:19 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:24 */
 .component img {
     height: 100%;
     width: 100%;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:25 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:30 */
 .draggable {
-    border: solid 2px silver;
-    border-style: dashed;
+    border: dashed 2px silver;
     cursor: move;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:30 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:34 */
 .draggable.selected {
     border-color: orange;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:37 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:41 */
 .edit .correct .x-form-cb-label {
     font-weight: bold !important;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:44 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:48 */
 .preview .draggable {
     border-color: transparent !important;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:49 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:53 */
 pre {
     outline: 1px solid #ccc;
     padding: 5px;
     margin: 5px;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:54 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:58 */
 .string {
     color: green;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:57 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:61 */
 .number {
     color: darkorange;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:60 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:64 */
 .boolean {
     color: blue;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:63 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:67 */
 .null {
     color: magenta;
 }
-/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:66 */
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:70 */
 .key {
     color: black;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:73 */
+#html-slide {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:79 */
+.html-component {
+    /* all */
+    /* all */
+    position: absolute;
+    line-height: initial;
+    /* image */
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: rgba(222, 222, 222, 0.3);
+    border: dashed 2px silver;
+    overflow: hidden;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:92 */
+.html-component.selected {
+    border-color: orange;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:96 */
+.html-component .html-content {
+    height: 100%;
+    width: 100%;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:116 */
+.html-component .html-content.selection .option {
+    padding: 0.5em 0.5em;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:117 */
+.html-component .html-content.selection .option:first-child {
+    margin-top: 0.5em;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:123 */
+.html-component .html-content.selection .option .fa {
+    width: 1.5em;
+}
+/* C:/Work/Projekti/eLearning/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:132 */
+.preview .html-component {
+    border: none !important;
+    background-color: none;
 }

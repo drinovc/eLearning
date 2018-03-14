@@ -15,29 +15,26 @@ Ext.define('Ext.tab.Bar', {
 
     config: {
         /**
-         * @cfg {String}
+         * @cfg {String} defaultTabUI
          * A default {@link Ext.Component#ui ui} to use for {@link Ext.tab.Tab Tab} items.
          */
         defaultTabUI: null,
 
         /**
-         * @cfg {Boolean}
+         * @cfg {Boolean} animateIndicator
          * Determines if the active indicator below the tab should animate or snap
          */
         animateIndicator: false
     },
 
-    // temporary way to make the applier run so we default to horizontal scrolling
-    // on mobile devices.
-    // TODO: implement full scrolling capabilities across all device types
-    scrollable: undefined,
-
     /**
+     * @cfg defaultType
      * @inheritdoc
      */
     defaultType: 'tab',
 
     /**
+     * @cfg layout
      * @inheritdoc
      */
     layout: {
@@ -56,6 +53,10 @@ Ext.define('Ext.tab.Bar', {
         activeTab: null
     },
 
+    /**
+     * @property baseCls
+     * @inheritdoc
+     */
     baseCls: Ext.baseCSSPrefix + 'tabbar',
 
     /**
@@ -247,18 +248,6 @@ Ext.define('Ext.tab.Bar', {
         }
     },
 
-    applyScrollable: function(scrollable, oldScrollable) {
-        // Automatically turn on horizontal scrolling for devices that have no space-consuming scrollbars
-        // This allows for a reasonably good experience on mobile until we have proper overflow handling
-        // TODO: implement full scrolling capabilities across all device types
-        // IE and Edge are included here because we suppress the scrollbar using CSS
-        if ((scrollable === undefined) && (Ext.isIE || Ext.isEdge || !Ext.getScrollbarSize().height)) {
-            scrollable = 'x';
-        }
-
-        return this.callParent([scrollable, oldScrollable]);
-    },
-
     /**
      * @private
      * Parses the active tab, which can be a number or string
@@ -300,7 +289,7 @@ Ext.define('Ext.tab.Bar', {
                     nextTab = previousTab;
                 }
                 else {
-                    nextTab = tabToClose.next(':not(tab[disabled=true])') || tabToClose.prev(':not(tab[disabled=true])');
+                    nextTab = tabToClose.next('tab:not([disabled=true])') || tabToClose.prev('tab:not([disabled=true])');
                 }
             }
 

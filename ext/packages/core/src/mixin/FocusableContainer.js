@@ -60,7 +60,7 @@ Ext.define('Ext.mixin.FocusableContainer', {
     /**
      * @property {String/Ext.dom.Element} [focusableContainerEl="el"] The name of the element
      * that FocusableContainer should bind its keyboard handler to. Similar to {@link #ariaEl},
-     * this name is resolved to the {@link #Ext.dom.Element} instance after rendering.
+     * this name is resolved to the {@link Ext.dom.Element} instance after rendering.
      */
     focusableContainerEl: 'el',
     
@@ -212,7 +212,7 @@ Ext.define('Ext.mixin.FocusableContainer', {
         initDefaultFocusable: function() {
             var me = this,
                 haveFocusable = false,
-                items, item, i, len, tabIdx;
+                items, item, i, len;
 
             items = me.getFocusables();
             len = items.length;
@@ -459,8 +459,7 @@ Ext.define('Ext.mixin.FocusableContainer', {
         },
 
         onFocusLeave: function(e) {
-            var me = this,
-                child;
+            var me = this;
 
             if (me.resetFocusPosition) {
                 me.clearFocusables();

@@ -256,7 +256,7 @@ Ext.define('Ext.util.Geolocation', {
             provider = me.getProvider();
 
         if (oldAutoUpdate && provider) {
-            clearInterval(me.watchOperationId);
+            Ext.uninterval(me.watchOperationId);
             me.watchOperationId = null;
         }
 
@@ -285,7 +285,7 @@ Ext.define('Ext.util.Geolocation', {
         // The native watchPosition method is currently broken in iOS5...
 
         if (me.watchOperationId) {
-            clearInterval(me.watchOperationId);
+            Ext.uninterval(me.watchOperationId);
         }
 
         function pollPosition() {
@@ -322,7 +322,7 @@ Ext.define('Ext.util.Geolocation', {
      *
      * **If omitted, defaults to the object which fired the event.**
      *
-     * <!--positonOptions undocumented param, see W3C spec-->
+     * @param {Object} [positionOptions] (private) See W3C spec
      */
     updateLocation: function(callback, scope, positionOptions) {
         var me = this,

@@ -55,13 +55,13 @@ Ext.define('Ext.field.Password', {
         autoCapitalize: false,
 
         /**
-         * @cfg revealable {Boolean}
+         * @cfg {Boolean} revealable
          * Enables the reveal toggle button that will show the password in clear text.
          */
         revealable: false,
 
         /**
-         * @cfg revealed {Boolean}
+         * @cfg {Boolean} revealed
          * A value of 'true' for this config will show the password from clear text
          */
         revealed: {
@@ -70,8 +70,16 @@ Ext.define('Ext.field.Password', {
         }
     },
     
+    /**
+     * @cfg inputType
+     * @inheritdoc
+     */
     inputType: 'password',
 
+    /**
+     * @property classCls
+     * @inheritdoc
+     */
     classCls: Ext.baseCSSPrefix + 'passwordfield',
     revealedCls: Ext.baseCSSPrefix + 'revealed',
 

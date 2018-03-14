@@ -183,12 +183,13 @@ Ext.define('Ext.mixin.Inheritable', {
      * Gets the Controller or Component that is used as the event root for this view.
      *
      * @param {Object} [defaultScope=this] The default scope to return if none is found.
+     * @param {Boolean} [skipThis] (private)
      * @return {Ext.app.ViewController/Ext.container.Container} The default listener scope.
      *
      * @protected
      * @since 5.0.0
      */
-    resolveListenerScope: function (defaultScope, /* private */ skipThis) {
+    resolveListenerScope: function (defaultScope, skipThis) {
         var me = this,
             hasSkipThis = (typeof skipThis === 'boolean'),
             namedScope = Ext._namedScopes[defaultScope],
@@ -318,19 +319,32 @@ Ext.define('Ext.mixin.Inheritable', {
     },
 
     /**
+     * Bubbles up the {@link #method!getRefOwner} hierarchy, calling the specified function
+     * with each component. The scope (`this` reference) of the function call will be the
+     * scope provided or the current component. The arguments to the function will
+     * be the args provided or the current component. If the function returns false at any
+     * point, the bubble is stopped.
+     *
+     * @param {Function} fn The function to call
+     * @param {Object} [scope] The scope of the function. Defaults to current node.
+     * @param {Array} [args] The args to call the function with. Defaults to passing the current component.
+     */
+    bubble: function(fn, scope, args) {
+        for (var target = this; target; target = target.getRefOwner()) {
+            if (fn.apply(scope || target, args || [target]) === false) {
+                break;
+            }
+        }
+    },
+
+    /**
      * Determines whether this component is the descendant of a passed component.
      * @param {Ext.Component} ancestor A Component which may contain this Component.
      * @return {Boolean} `true` if the component is the descendant of the passed component,
      * otherwise `false`.
      */
     isDescendantOf: function(ancestor) {
-        var p;
-
-        // Iterate up the owner chain until we don't have one, or we find the ancestor.
-        for (p = this.getRefOwner(); p && p !== ancestor; p = p.getRefOwner()) {
-            // do nothing
-        }
-        return p || null;
+        return ancestor ? ancestor.isAncestor(this) : false;
     },
 
     /**
@@ -347,6 +361,7 @@ Ext.define('Ext.mixin.Inheritable', {
             }
             possibleDescendant = possibleDescendant.getRefOwner();
         }
+        return false;
     },
 
     /**
@@ -418,6 +433,7 @@ Ext.define('Ext.mixin.Inheritable', {
 
         /**
          * Called when this Inheritable is added to a parent
+         * @param parent
          * @param {Boolean} instanced
          */
         onInheritedAdd: function(parent, instanced) {

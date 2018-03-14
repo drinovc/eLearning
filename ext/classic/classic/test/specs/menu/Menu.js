@@ -1468,8 +1468,6 @@ function() {
             runs(function() {
                 expect(menu.isVisible()).toBe(true);
                 stretcher.destroy();
-                Ext.scroll.Scroller.viewport.destroy();
-                Ext.scroll.Scroller.viewport = null;
             });
         });
     });

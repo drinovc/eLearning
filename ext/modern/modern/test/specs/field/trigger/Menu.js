@@ -129,7 +129,21 @@ topSuite('Ext.field.trigger.Menu', ['Ext.field.Text', 'Ext.viewport.Default', 'E
 
                 trigger.onClick();
 
-                expect(trigger.getMenu().getDisplayed()).toBe(true);
+                var menu = trigger.getMenu();
+
+                expect(menu.getDisplayed()).toBe(true);
+
+                waitsFor(function () {
+                    return !menu.isAnimating;
+                });
+
+                runs(function () {
+                    menu.setDisplayed(false);
+                });
+
+                waitsFor(function () {
+                    return !menu.isAnimating;
+                });
             });
         });
     });

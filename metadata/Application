@@ -8,14 +8,22 @@
     "userConfig": {
         "models": [
             "Slide",
-            "Answer"
+            "Option",
+            "Lookup",
+            "Program"
         ],
         "name": "eLearning",
         "views": [
             "MainView",
             "TextEditor",
             "SelectionEditor",
-            "SourceView"
+            "SourceView",
+            "Settings",
+            "Templates",
+            "FileUpload",
+            "Programs",
+            "HomePage",
+            "EditTools"
         ]
     },
     "configAlternates": {

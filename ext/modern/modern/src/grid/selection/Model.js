@@ -4,36 +4,46 @@
  *
  * Supported features:
  *
- *  - Single / Range / Multiple individual row selection.
- *  - Single / Range cell selection.
- *  - Column selection by click selecting column headers.
- *  - Select / deselect all by clicking in the top-left, header.
- *  - Adds row number column to enable row selection.
+ *  - Single / Range / Multiple individual row selection
+ *  - Single / Range cell selection
+ *  - Column selection by click selecting column headers
+ *  - Select / deselect all by clicking in the top-left, header
+ *  - Adds row number column to enable row selection
  *  - Optionally you can enable row selection using checkboxes
  *
  * # Example usage
  *
  *     @example
- *     var store = Ext.create('Ext.data.Store', {
- *         fields: ['name', 'email', 'phone'],
- *         data: [
- *             { name: 'Lisa', email: 'lisa@simpsons.com', phone: '555-111-1224' },
- *             { name: 'Bart', email: 'bart@simpsons.com', phone: '555-222-1234' },
- *             { name: 'Homer', email: 'homer@simpsons.com', phone: '555-222-1244' },
- *             { name: 'Marge', email: 'marge@simpsons.com', phone: '555-222-1254' }
- *         ]
- *     });
- *
- *     Ext.create('Ext.grid.Panel', {
+ *     Ext.create({
+ *         xtype: 'grid',
  *         title: 'Simpsons',
- *         store: store,
+ *         store: [{
+ *             name: 'Lisa',
+ *             email: 'lisa@simpsons.com',
+ *             phone: '555-111-1224'
+ *         }, {
+ *             name: 'Bart',
+ *             email: 'bart@simpsons.com',
+ *             phone: '555-222-1234'
+ *         }, {
+ *             name: 'Homer',
+ *             email: 'homer@simpsons.com',
+ *             phone: '555-222-1244'
+ *         }],
  *         width: 400,
+ *         height: 300,
  *         renderTo: Ext.getBody(),
- *         columns: [
- *             { text: 'Name', dataIndex: 'name' },
- *             { text: 'Email', dataIndex: 'email', flex: 1 },
- *             { text: 'Phone', dataIndex: 'phone' }
- *         ],
+ *         columns: [{
+ *             text: 'Name',
+ *             dataIndex: 'name'
+ *         }, {
+ *             text: 'Email',
+ *             dataIndex: 'email',
+ *             flex: 1
+ *         }, {
+ *             text: 'Phone',
+ *             dataIndex: 'phone'
+ *         }],
  *         selectable: {
  *             columns: false, // Can select cells and rows, but not columns
  *             extensible: true // Uses the draggable selection extender
@@ -67,7 +77,7 @@ Ext.define('Ext.grid.selection.Model', {
 
     config: {
         /**
-         * @cfg {Boolean} [columns=false]
+         * @cfg {Boolean} columns
          * Set to `true` to enable selection of columns.
          *
          * **NOTE**: This will disable sorting on header click and instead provide column
@@ -79,7 +89,7 @@ Ext.define('Ext.grid.selection.Model', {
         },
 
         /**
-         * @cfg {Boolean} [cells=false]
+         * @cfg {Boolean} cells
          * Set to `true` to enable selection of individual cells or a single rectangular
          * range of cells. This will provide cell range selection using click, and
          * potentially drag to select a rectangular range if (@link #cfg!drag} is `true`.
@@ -91,10 +101,11 @@ Ext.define('Ext.grid.selection.Model', {
         },
 
         /**
-         * @cfg {Boolean} [rows=true]
+         * @cfg {Boolean} rows
          * Set to `true` to enable selection of rows by clicking on the selection model's
-         * {@link #cfg!checkbox} column, {@link Ext.grid.Grid#cfg!rowNumbers row number column}, or, if (@link #cfg!drag}
-         * is `true`, by swiping down the {@link Ext.grid.Grid#cfg!rowNumbers row number column}.
+         * {@link #cfg!checkbox} column, {@link Ext.grid.Grid#cfg!rowNumbers row number column}
+         * or, if {@link #cfg!drag} is `true`, by swiping down the
+         * {@link Ext.grid.Grid#cfg!rowNumbers row number column}.
          */
         rows: {
             $value: true,
@@ -102,22 +113,26 @@ Ext.define('Ext.grid.selection.Model', {
         },
 
         /**
-         * @cfg {Boolean} [drag]
+         * @cfg {Boolean} drag
          * Set to `true` to enables cell and row range selection by dragging.
          */
         drag: false,
 
         /**
-         * @cfg {String} [extensible=false]
-         * This configures whether this selection model is to implement a mouse based dragging gesture to extend a *contiguous* selection.
+         * @cfg {String} extensible
+         * This configures whether this selection model is to implement a mouse based
+         * dragging gesture to extend a *contiguous* selection.
          *
-         * Note that if there are multiple, discontiguous selected rows or columns, selection extension is not available.
+         * Note that if there are multiple, discontiguous selected rows or columns,
+         * selection extension is not available.
          *
-         * If set, then the bottom right corner of the contiguous selection will display a drag handle. By dragging this, an extension area
-         * may be defined into which the selection is extended.
+         * If set, then the bottom right corner of the contiguous selection will display a
+         * drag handle. By dragging this, an extension area may be defined into which the
+         * selection is extended.
          *
-         * Upon the end of the drag, the {@link Ext.grid.Grid#beforeselectionextend beforeselectionextend} event will be fired though the
-         * encapsulating grid. Event handlers may manipulate the store data in any way.
+         * The {@link Ext.grid.Grid#beforeselectionextend beforeselectionextend} event fires
+         * at the end of the drag though the owning grid. Event handlers may manipulate the
+         * store data in any way.
          *
          * Possible values for this configuration are
          *
@@ -129,8 +144,9 @@ Ext.define('Ext.grid.selection.Model', {
          *    - `false` Disable the extensible feature
          *    - `null` Disable the extensible feature
          *
-         * It's important to notice that setting this to `"both"`, `"xy"` or `true` will allow you to extend the selection in both
-         * directions, but only one direction at a time. It will NOT be possible to drag it diagonally.
+         * It's important to notice that setting this to `"both"`, `"xy"` or `true` will
+         * allow you to extend the selection in both directions, but only one direction at
+         * a time. It will NOT be possible to drag it diagonally.
          */
         extensible: {
             $value: false,
@@ -138,7 +154,7 @@ Ext.define('Ext.grid.selection.Model', {
         },
 
         /**
-         * @cfg {Boolean} [checkbox=false]
+         * @cfg {Boolean} checkbox
          * Configure as `true` to include a checkbox to indicate selection of *Records*. The
          * checkbox cell plays no part in cell or column selection apart from being a selected
          * cell and part of any iteration through selections.
@@ -146,21 +162,22 @@ Ext.define('Ext.grid.selection.Model', {
          * See {@link #cfg!headerCheckbox} for inclusion of a "select all" checkbox in the
          * column header of the checkbox column.
          *
-         * See {@link #cfg!checkboxDefaults} for how to influence the configuration of the checkbox
-         * column header.
+         * See {@link #cfg!checkboxDefaults} for how to influence the configuration of the
+         * checkbox column header.
          */
         checkbox: false,
 
         /**
-         * @cfg {Boolean} [headerCheckbox=true]
-         * Configure as `false` to not display the header checkbox at the top of the checkbox column
-         * when {@link #checkboxSelect} is set.
+         * @cfg {Boolean} headerCheckbox
+         * Configure as `false` to not display the header checkbox at the top of the checkbox
+         * column when {@link #checkboxSelect} is set.
          */
         headerCheckbox: true,
 
         /**
-         * @cfg {Object} [checkboxDefaults]
-         * A config object to configure the checkbox column header if {@link #cfg!checkbox} is set.
+         * @cfg {Object} checkboxDefaults
+         * A config object to configure the checkbox column header if {@link #cfg!checkbox}
+         * is set.
          */
         checkboxDefaults: {
             xtype: 'selectioncolumn',
@@ -173,12 +190,8 @@ Ext.define('Ext.grid.selection.Model', {
 
     /**
      * @event selectionchange
-     * Fired *by the grid* after the selection changes. Return `false` to veto the selection extension.
-     *
-     * Note that the behavior of selectionchange is different in Ext 6.x vs. Ext 5.  In Ext 6.x, if rows
-     * are being selected, a block of records is passed as the second parameter.  In Ext 5, the selection
-     * object was passed.
-     *
+     * Fired *by the grid* after the selection changes. Return `false` to veto the selection
+     * extension.
      *
      * @param {Ext.grid.Panel} grid The grid whose selection has changed.
      * @param {Ext.dataview.selection.Selection} selection A subclass of
@@ -186,17 +199,17 @@ Ext.define('Ext.grid.selection.Model', {
      */
 
     /**
-     * @cfg {Boolean} checkboxSelect [checkboxSelect=false]
+     * @cfg {Boolean} checkboxSelect
      * Enables selection of the row via clicking on checkbox. Note: this feature will add
      * new column at position specified by {@link #checkboxColumnIndex}.
      */
     checkboxSelect: false,
 
     /**
-     * @cfg {Number/String} [checkboxColumnIndex=0]
+     * @cfg {Number/String} checkboxColumnIndex
      * The index at which to insert the checkbox column.
-     * Supported values are a numeric index, and the strings 'first' and 'last'. Only valid when set
-     * *before* render.
+     * Supported values are a numeric index, and the strings 'first' and 'last'. Only valid
+     * when set before render.
      */
     checkboxColumnIndex: 0,
 
@@ -208,16 +221,23 @@ Ext.define('Ext.grid.selection.Model', {
     /**
      * @member Ext.grid.Grid
      * @event beforeselectionextend An event fired when an extension block is extended
-     * using a drag gesture. Only fired when the grid's `{@link Ext.grid.Grid.selectable #cfg!selectable}`
-     * is configured with the {@link Ext.grid.selection.Model#extensible extensible} config.
+     * using a drag gesture. Only fired when the grid's
+     * `{@link Ext.grid.Grid.selectable #cfg!selectable}` is configured with the
+     * {@link Ext.grid.selection.Model#extensible extensible} config.
+     *
      * @param {Ext.grid.Grid} grid The owning grid.
-     * @param {Ext.dataview.selection.Selection} An object which encapsulates a contiguous selection block.
+     * @param {Ext.dataview.selection.Selection} An object which encapsulates a contiguous
+     * selection block.
      * @param {Object} extension An object describing the type and size of extension.
      * @param {String} extension.type `"rows"` or `"columns"`
-     * @param {Ext.grid.Location} extension.start The start (top left) cell of the extension area.
-     * @param {Ext.grid.Location} extension.end The end (bottom right) cell of the extension area.
-     * @param {number} [extension.columns] The number of columns extended (-ve means on the left side).
-     * @param {number} [extension.rows] The number of rows extended (-ve means on the top side).
+     * @param {Ext.grid.Location} extension.start The start (top left) cell of the
+     * extension area.
+     * @param {Ext.grid.Location} extension.end The end (bottom right) cell of the
+     * extension area.
+     * @param {number} [extension.columns] The number of columns extended (-ve means on
+     * the left side).
+     * @param {number} [extension.rows] The number of rows extended (-ve means on the top
+     * side).
      */
 
     /**
@@ -285,12 +305,24 @@ Ext.define('Ext.grid.selection.Model', {
     },
 
     updateDrag: function (drag) {
-        this.getView()[drag ? 'on' : 'un']('childtouchstart', 'handleMouseDown', this);
+        var view = this.getView(),
+            viewListeners = {
+                dragstart: 'onViewDragStart',
+                delegate: view.eventDelegate,
+                scope: this
+            };
+
+        // Start a drag on longpress if touch is supported.
+        if (Ext.supports.Touch) {
+            viewListeners.longpress = 'onViewLongpress';
+        }
+        view.innerCt[drag ? 'on' : 'un'](viewListeners);
     },
 
     /**
      * @private
-     * @param what {"rows"/"records'/"cells"/"columns"} What kind of object is to be selected.
+     * @param {String} what {"rows"/"records'/"cells"/"columns"} What kind of object is to be selected.
+     * @param {Boolean} reset
      * @return {Ext.dataview.selection.Selection} A Selection object of the required type.
      */
     getSelection: function (what, reset) {
@@ -342,9 +374,7 @@ Ext.define('Ext.grid.selection.Model', {
     onHeaderTap: function(headerCt, header, e) {
         var me = this,
             sel = me.getSelection(),
-            hct,
-            range,
-            i;
+            range, columns, i;
 
         // A click on the numberer column toggles all
         if (header === this.numbererColumn) {
@@ -352,12 +382,21 @@ Ext.define('Ext.grid.selection.Model', {
         }
         // A column select click: exclude the checkbox column
         else if (me.getColumns() && header !== me.getCheckbox()) {
+
+            // SHIFT means select range from last selected to here
             if (e.shiftKey && sel && sel.lastColumnSelected) {
-                sel.clear();
-                hct = me.getView().getHeaderContainer();
-                range = Ext.Array.sort([hct.indexOfLeaf(sel.lastColumnSelected), hct.indexOf(header)], Ext.Array.numericSortFn);
+
+                // CTRL means keep current selection
+                if (!e.ctrlKey) {
+                    sel.clear();
+                }
+                headerCt = me.getView().getHeaderContainer();
+                columns = headerCt.getColumns();
+                range = Ext.Array.sort([headerCt.indexOfLeaf(sel.lastColumnSelected), 
+                                        headerCt.indexOf(header)], Ext.Array.numericSortFn);
+
                 for (i = range[0]; i <= range[1]; i++) {
-                    me.selectColumn(hct.getHeaderAtIndex(i), true);
+                    me.selectColumn(columns[i], true);
                 }
             } else {
                 if (me.isColumnSelected(header)) {
@@ -376,7 +415,7 @@ Ext.define('Ext.grid.selection.Model', {
      */
     toggleAll: function(header, e) {
         var me = this,
-            sel = me.getSelection(me.getRows() ? 'rows' : me.getCells() ? 'cells' : 'columns');
+            sel = me.getSelection();
 
         e.stopEvent();
         // Not all selected, select all
@@ -436,6 +475,7 @@ Ext.define('Ext.grid.selection.Model', {
 
     /**
      * Intercepts the grid's updateColumns method.  Adds the checkbox header.
+     * @param headerCt
      * @param {Object[]} columns
      * @private
      */
@@ -545,7 +585,8 @@ Ext.define('Ext.grid.selection.Model', {
      *               { text: 'Phone', dataIndex: 'phone', width:120 },
      *               {
      *                   text:'Combined', dataIndex: 'name', width : 300,
-     *                   renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+     *                   renderer: function (value, metaData, record, rowIndex,
+     *                                       colIndex, store, view) {
      *                       console.log(arguments);
      *                       return value + ' has email: ' + record.get('email');
      *                   }
@@ -563,14 +604,18 @@ Ext.define('Ext.grid.selection.Model', {
      *     // We can use a simple array when we have no locked columns.
      *     selectable.selectCells([0, 0], [1, 1], true);
      *
-     * @param rangeStart {Ext.grid.Location/Number[]} Range starting position. Can be either Cell context or a `[rowIndex, columnIndex]` numeric array.
+     * @param rangeStart {Ext.grid.Location/Number[]} Range starting position. Can be
+     * either Cell context or a `[rowIndex, columnIndex]` numeric array.
      *
-     * Note that when a numeric array is used in a locking grid, the column indices are relative to the outermost grid, encompassing locked *and* normal sides.
-     * @param rangeEnd {Ext.grid.Location/Number[]} Range end position. Can be either Cell context or a `[rowIndex, columnIndex]` numeric array.
+     * Note that when a numeric array is used in a locking grid, the column indices are
+     * relative to the outermost grid, encompassing locked *and* normal sides.
+     * @param rangeEnd {Ext.grid.Location/Number[]} Range end position. Can be either Cell
+     * context or a `[rowIndex, columnIndex]` numeric array.
      *
-     * Note that when a numeric array is used in a locking grid, the column indices are relative to the outermost grid, encompassing locked *and* normal sides.
-     * @param {Boolean} [suppressEvent] Pass `true` to prevent firing the
-     * `{@link #selectionchange}` event.
+     * Note that when a numeric array is used in a locking grid, the column indices are
+     * relative to the outermost grid, encompassing locked *and* normal sides.
+     * @param {Boolean} [suppressEvent] Pass `true` to not fire the `{@link #selectionchange}`
+     * event.
      */
     selectCells: function(rangeStart, rangeEnd, suppressEvent) {
         var me = this,
@@ -623,7 +668,7 @@ Ext.define('Ext.grid.selection.Model', {
             doSelect = true;
         }
         else if (me.getColumns()) {
-            sel = me.getSelection('cells');
+            sel = me.getSelection('columns');
             doSelect = true;
         }
 
@@ -716,7 +761,8 @@ Ext.define('Ext.grid.selection.Model', {
     privates: {
         /**
          * @property {Object} axesConfigs
-         * Use when converting the extensible config into a SelectionExtender to create its `axes` config to specify which axes it may extend.
+         * Use when converting the extensible config into a SelectionExtender to create
+         * its `axes` config to specify which axes it may extend.
          * @private
          */
         axesConfigs: {
@@ -778,8 +824,8 @@ Ext.define('Ext.grid.selection.Model', {
                 selData = me.getSelection(),
                 view, selectionChanged;
 
-            // When columns have changed, we have to deselect *every* cell in the row range because we do not know where the
-            // columns have gone to.
+            // When columns have changed, we have to deselect *every* cell in the row range
+            // because we do not know where the columns have gone to.
             if (selData) {
                 view = selData.view;
 
@@ -813,7 +859,8 @@ Ext.define('Ext.grid.selection.Model', {
             });
         },
 
-        // The selection may have acquired or lost contiguity, so the replicator may need enabling or disabling
+        // The selection may have acquired or lost contiguity, so the replicator may need
+        // enabling or disabling
         onColumnMove: function() {
             this.updateSelectionExtender();
         },
@@ -829,13 +876,25 @@ Ext.define('Ext.grid.selection.Model', {
             }
         },
 
+        onViewLongpress: function(e) {
+            if (e.pointerType === 'touch') {
+                e.startDrag();
+            }
+        },
+
         /**
          * Plumbing for drag selection of cell range
          * @private
          */
-        handleMouseDown: function(view, location) {
+        onViewDragStart: function(e) {
+            // For touch gestures, only initiate drags on longpress
+            if (e.pointerType === 'touch' && !e.longpress) {
+                return;
+            }
+
             var me = this,
-                e = location.event,
+                view = me.getView(),
+                location = new Ext.grid.Location(view, e),
                 header = location.column,
                 viewLocation = view.getNavigationModel().getLocation(),
                 isCheckClick = header === me.getCheckbox(),
@@ -846,13 +905,14 @@ Ext.define('Ext.grid.selection.Model', {
             }
 
             // Ignore right click, shift and alt modifiers.
-            // Also ignore touchstart because e cannot drag select using touches and
-            // ignore when actionableMode is true so we can select the text inside an editor
-            if (e.button || e.shiftKey || e.altKey || e.pointerType ==='touch' || (viewLocation && viewLocation.actionable) || !view.shouldSelectItem(e)) {
+            // Ignore when actionableMode is true so we can select the text inside an editor
+            if (e.claimed || e.button > 0 || e.shiftKey || e.altKey || 
+                    (viewLocation && viewLocation.actionable) || !view.shouldSelectItem(e)) {
                 return;
             }
 
             if (header) {
+                e.claimGesture();
                 me.mousedownPosition = location.clone();
 
                 if (isCheckClick) {
@@ -863,7 +923,8 @@ Ext.define('Ext.grid.selection.Model', {
                 if (header === me.numbererColumn || isCheckClick || !me.getCells()) {
                     // Enforce rows setting
                     if (me.getRows()) {
-                        // If checkOnly is set, and we're attempting to select a row outside of the checkbox column, reject
+                        // If checkOnly is set, and we're attempting to select a row 
+                        // outside of the checkbox column, reject
                         if (!isCheckClick && me.checkboxOnly) {
                             return;
                         }
@@ -886,15 +947,22 @@ Ext.define('Ext.grid.selection.Model', {
 
                 me.lastDragLocation = null;
 
-                // Add the listener after the view has potentially been corrected
-                Ext.getBody().on('mouseup', me.onMouseUp, me, { single: true });
+                // If it was a lomgpress, begin selection now.
+                // If it was a mousemove, then there will be a drag gesture coming right along.
+                if (e.longpress) {
+                    location.row.removeCls(view.pressedCls);
+                    me.onViewSelectionDrag(e);
+                }
 
                 // Only begin the drag process if configured to select what they asked for
                 if (sel) {
-                    me.mousemoveListener = view.el.on({
-                        mousemove: 'onMouseMove',
+                    // Add the listener after the view has potentially been corrected
+                    view.innerCt.on('dragend', me.onViewDragEnd, me, { single: true });
+
+                    me.mousemoveListener = view.innerCt.on({
+                        drag: 'onViewSelectionDrag',
                         scope: me,
-                        delegate: '.' + Ext.grid.cell.Base.prototype.classCls,
+                        delegate: view.eventDelegate,
                         destroyable: true
                     });
                 }
@@ -904,25 +972,47 @@ Ext.define('Ext.grid.selection.Model', {
         /**
          * Selects range based on mouse movements
          * @param e
-         * @param cell
          * @private
          */
-        onMouseMove: function(e, target) {
-            var me = this,
-                view = me.getView(),
+        onViewSelectionDrag: function(e) {
+            me = this;
+            view = me.getView();
+
+            // The target of a Touch object remains unchanged from the touchstart target
+            // even if the touch point moves outside of the original target.
+            // We determine view Location from the "over" target, so polyfill using
+            // the touch coordinates and document.elementFromPoint.
+            if (e.changedTouches) {
+                touch = e.changedTouches[0];
+
+                // If the target does not contain the touch point, we have to correct it.
+                if (touch && !Ext.fly(touch.target).getRegion().contains(touch.point)) {
+                    realTarget = Ext.event.Event.resolveTextNode(
+                        Ext.Element.fromPagePoint(touch.pageX, touch.pageY, true));
+
+                    // Points can sometimes go negative and return no target.
+                    if (realTarget) {
+                        e.target = realTarget;
+                    }
+                }
+            }
+
+            // Will fire when outside cells (on borders, row bodies and headers/footers).
+            // We must only process cells.
+            if (!Ext.fly(e.target).up(view.eventDelegate)) {
+                return;
+            }
+
+            var me,
+                view,
                 newLocation = me.dragLocation = new Ext.grid.Location(view, e),
-                cell = newLocation.getCell(true),
                 overColumn = newLocation.column,
                 overRecord = newLocation.record,
                 overRowIdx = newLocation.recordIndex,
                 lastDragLocation = me.lastDragLocation,
-                selData, lastOverRecord, lastOverColumn, recChange, colChange;
+                selData, lastOverRecord, lastOverColumn, recChange, colChange, touch, realTarget;
 
-            // Will fire when outside cells (on borders and headers/footers). Ignore this
-            if (!cell) {
-                return;
-            }
-
+            e.claimGesture();
             if (lastDragLocation) {
                 lastOverRecord = lastDragLocation.record;
                 lastOverColumn = lastDragLocation.column;
@@ -993,10 +1083,9 @@ Ext.define('Ext.grid.selection.Model', {
         /**
          * Clean up mousemove event
          * @param e
-         * @param target
          * @private
          */
-        onMouseUp: function(e, target) {
+        onViewDragEnd: function(e) {
             var me = this,
                 view = me.getView(),
                 dragLocation = me.dragLocation,
@@ -1006,12 +1095,14 @@ Ext.define('Ext.grid.selection.Model', {
             me.checkCellClicked = null;
 
             if (view && !view.destroyed) {
-                // If we catch the event before the View sees it and stamps a position in, we need to know where they mouseupped.
+                // If we catch the event before the View sees it and stamps a position in,
+                // we need to know where they mouseupped.
                 if (!location) {
                     e.location = new Ext.grid.Location(view, e);
                 }
 
-                // Disable until a valid new selection is announced in fireSelectionChange unless it's a click
+                // Disable until a valid new selection is announced in fireSelectionChange
+                // unless it's a click
                 if (me.getExtensible() && changedCell) {
                     me.getExtensible().disable();
                 }
@@ -1023,7 +1114,8 @@ Ext.define('Ext.grid.selection.Model', {
                     me.getSelection().addRange();
                 }
 
-                // Fire selection change only if we have dragged - if the mouseup position is different from the mousedown position.
+                // Fire selection change only if we have dragged - if the mouseup position
+                // is different from the mousedown position.
                 // If there has been no drag, the click handler will select the single row
                 else if (changedCell) {
                     me.fireSelectionChange();
@@ -1032,7 +1124,8 @@ Ext.define('Ext.grid.selection.Model', {
         },
 
         /**
-         * Called when the grid's Navigation model detects navigation events (`mousedown`, `click` and certain `keydown` events).
+         * Called when the grid's Navigation model detects navigation events (`mousedown`,
+         * `click` and certain `keydown` events).
          * @param {Ext.event.Event} navigateEvent The event which caused navigation.
          * @private
          */
@@ -1073,12 +1166,14 @@ Ext.define('Ext.grid.selection.Model', {
             }
 
             // Click is the mouseup at the end of a multi-cell/multi-column select swipe; reject.
-            if (sel && (sel.isCells || (sel.isColumns && selectingRows && !(ctrlKey || shiftKey))) && sel.getCount() > 1 && !shiftKey && navigateEvent.type === 'click') {
+            if (sel && (sel.isCells || (sel.isColumns && selectingRows && !(ctrlKey || shiftKey))) &&
+                    sel.getCount() > 1 && !shiftKey && navigateEvent.type === 'click') {
                 return;
             }
 
             // If all selection types are disabled, or it's not a selecting event, return
-            if (!(selectingCells || selectingColumns || selectingRows) || !record || navigateEvent.type === 'mousedown') {
+            if (!(selectingCells || selectingColumns || selectingRows) || !record || 
+                    navigateEvent.type === 'mousedown') {
                 return;
             }
 
@@ -1095,11 +1190,14 @@ Ext.define('Ext.grid.selection.Model', {
             }
 
             if (shiftKey && mode === 'multi') {
-                // If the event is in one of the row selecting cells, or cell selecting is turned off
-                if (toColumn === me.numbererColumn || toColumn === me.checkColumn || !(selectingCells || selectingColumns) || (sel && (sel.isRows || sel.isRecords))) {
+                // If the event is in one of the row selecting cells, or cell selecting is
+                // turned off
+                if (toColumn === me.numbererColumn || toColumn === me.checkColumn || 
+                        !(selectingCells || selectingColumns) ||
+                        (sel && (sel.isRows || sel.isRecords))) {
                     if (selectingRows) {
-
-                        // If checkOnly is set, and we're attempting to select a row outside of the checkbox column, reject
+                        // If checkOnly is set, and we're attempting to select a row outside
+                        // of the checkbox column, reject
                         if (toColumn !== checkbox && checkboxOnly) {
                             return;
                         }
@@ -1144,12 +1242,15 @@ Ext.define('Ext.grid.selection.Model', {
                     sel.clear(true);
                 }
 
-                // If the event is in one of the row selecting cells, or we have enabled row selection but not column selection
-                // so prioritize selecting rows
-                if (toColumn === me.numbererColumn || toColumn === checkbox || (selectingRows && !selectingCells)) {
-
-                    // If checkOnly is set, and we're attempting to select a row outside of the checkbox column, reject
-                    if (toColumn !== checkbox && checkboxOnly) {
+                // If we are selecting rows and (the event is in one of the row selecting
+                // cells or we're *only* selecting rows) then select this row
+                if (selectingRows && (toColumn === me.numbererColumn ||
+                        toColumn === checkbox || !selectingCells)) {
+                    // If checkOnly is set, and we're attempting to select a row outside
+                    // of the checkbox column, reject
+                    // Also reject if we're navigating by key within the same row.
+                    if (toColumn !== checkbox && checkboxOnly || (navigateEvent.keyCode &&
+                            navigateEvent.from && record === navigateEvent.from.record)) {
                         return;
                     }
 
@@ -1227,7 +1328,6 @@ Ext.define('Ext.grid.selection.Model', {
          * Returns true if specified cell within specified view is selected
          *
          * Used in {@link Ext.grid.Row} rendering to decide upon cell UI treatment.
-         * @param {Ext.grid.View} view - impactful when locked columns are used
          * @param {Number/Ext.grid.Location/Ext.data.Model} row - The Row index/record or
          * {@link Ext.grid.Location the grid Location} to test.
          * @param {Number} column - Column index to test.
@@ -1236,35 +1336,18 @@ Ext.define('Ext.grid.selection.Model', {
          * @private
          */
         isCellSelected: function(row, column) {
-            var me = this,
-                view = me.getView(),
-                sel = me.getSelection(),
-                location;
-
-            // One argument - it's a Location
-            if (row.isGridLocation) {
-                location = row;
-                row = location.recordIndex;
-                column = location.column;
-            }
-            // Row and column passed - convert to Location
-            else {
-            }
+            var sel = this.getSelection();
 
             if (sel) {
                 if (sel.isColumns) {
                     if (typeof column === 'number') {
-                        column = view.getVisibleColumns()[column];
+                        column = this.getView().getVisibleColumns()[column];
                     }
                     return sel.isSelected(column);
                 }
 
                 if (sel.isCells) {
-                    location = new Ext.grid.Location(view, {
-                        record: row,
-                        column: column
-                    });
-                    return sel.isSelected(location);
+                    return sel.isSelected(row, column);
                 }
 
                 // We're selecting records or rows.
@@ -1308,15 +1391,16 @@ Ext.define('Ext.grid.selection.Model', {
          * @private
          */
         updateRows: function(rows) {
-            var me = this,
-                sel = me.getSelection(),
-                checkHeader = me.getCheckbox();
+            var sel;
 
-            if (checkHeader) {
-                checkHeader.setHidden(!rows);
-            }
-            if (!rows && sel && sel.isRows) {
-                sel.clear();
+            if (!rows) {
+                // checkboxSelect depends on rowsSelect
+                this.setCheckbox(false);
+
+                sel = this.getSelection()
+                if (sel && sel.isRows) {
+                    sel.clear();
+                }
             }
         },
 
@@ -1329,8 +1413,6 @@ Ext.define('Ext.grid.selection.Model', {
             var me = this,
                 view = me.getView(),
                 sel = me.getSelection();
-
-            view.getHeaderContainer().setSortable(!columns);
 
             if (!columns && sel && sel.isColumns) {
                 sel.clear();
@@ -1383,7 +1465,10 @@ Ext.define('Ext.grid.selection.Model', {
 
             // Fire Grid's selectionchange event.
             // Only pass records if the selection type can yield them
-            view.fireEvent('selectionchange', view, selection.isRecords ? records : (selection.isCells ? selection.getRecords() : null), selecting, me.getSelection());
+            view.fireEvent('selectionchange', view, 
+                    selection.isRecords ? records : 
+                           (selection.isCells ? selection.getRecords() : null),
+                    selecting, me.getSelection());
         },
 
         updateSelectionExtender: function() {
@@ -1394,7 +1479,8 @@ Ext.define('Ext.grid.selection.Model', {
         },
 
         /**
-         * Called when a selection has been made. The selection object's onSelectionFinish calls back into this.
+         * Called when a selection has been made. The selection object's onSelectionFinish
+         * calls back into this.
          * @param {Ext.dataview.selection.Selection} sel The selection object specific to
          * the selection performed.
          * @param {Ext.grid.Location} [firstCell] The left/top most selected cell.
@@ -1453,7 +1539,8 @@ Ext.define('Ext.grid.selection.Model', {
 
             if (checkbox) {
                 me.checkboxOnly = checkbox === 'only';
-                me.checkboxColumn = checkbox = Ext.create(me.createCheckboxColumn(me.getCheckboxDefaults()));
+                me.checkboxColumn = checkbox = Ext.create(me.createCheckboxColumn(
+                        me.getCheckboxDefaults()));
             }
 
             return checkbox;
@@ -1471,6 +1558,8 @@ Ext.define('Ext.grid.selection.Model', {
 
                 if (checkbox) {
                     view.registerColumn(checkbox);
+                    // rows selection is required so force it
+                    me.setRows(true);
                 }
             }
         },
@@ -1484,10 +1573,14 @@ Ext.define('Ext.grid.selection.Model', {
          * Called when the SelectionExtender has the mouse released.
          * @param {Object} extension An object describing the type and size of extension.
          * @param {String} extension.type `"rows"` or `"columns"`
-         * @param {Ext.grid.Location} extension.start The start (top left) cell of the extension area.
-         * @param {Ext.grid.Location} extension.end The end (bottom right) cell of the extension area.
-         * @param {number} [extension.columns] The number of columns extended (-ve means on the left side).
-         * @param {number} [extension.rows] The number of rows extended (-ve means on the top side).
+         * @param {Ext.grid.Location} extension.start The start (top left) cell of the
+         * extension area.
+         * @param {Ext.grid.Location} extension.end The end (bottom right) cell of the
+         * extension area.
+         * @param {number} [extension.columns] The number of columns extended (-ve means
+         * on the left side).
+         * @param {number} [extension.rows] The number of rows extended (-ve means on the
+         * top side).
          * @private
          */
         extendSelection: function(extension) {
@@ -1543,10 +1636,13 @@ Ext.define('Ext.grid.selection.Model', {
         }
     }
 }, function (GridModel) {
-    var RowNumberer = Ext.ClassManager.get('Ext.grid.column.RowNumberer');
+    var RowNumberer = Ext.ClassManager.get('Ext.grid.column.RowNumberer'),
+        cellCls;
+
     if (RowNumberer) {
+        cellCls = Ext.grid.column.RowNumberer.prototype.cellCls;
         // This class adds the e-resize cursor on hover to indicate availability of selection
         GridModel.prototype.rowNumbererCellCls =
-            Ext.grid.column.RowNumberer.prototype.cellCls + ' ' + Ext.baseCSSPrefix + 'selmodel-row-numberer-cell';
+            (cellCls ? (cellCls + ' ') : '') + Ext.baseCSSPrefix + 'selmodel-row-numberer-cell';
     }
 });

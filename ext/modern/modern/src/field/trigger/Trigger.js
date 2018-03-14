@@ -10,44 +10,48 @@ Ext.define('Ext.field.trigger.Trigger', {
         'Ext.util.ClickRepeater'
     ],
 
-    /**
-     * @cfg {Boolean} [focusOnMouseDown=false] If `true`, the field will be focused upon
-     * mousedown on the trigger. This should be used only for main Picker field triggers
-     * that expand and collapse the picker; additional triggers should not focus the field.
-     * @private
-     */
-    focusOnMousedown: false,
-
     config: {
         /**
-         * @cfg {Function/String} [handler=undefined]
+         * @cfg {Function/String} handler
          * Function to run when trigger is clicked or tapped.
          * @controllable
          */
         handler: null,
 
         /**
-         * @cfg {String}
-         * @inheritdoc Ext.Button#iconCls
+         * @cfg iconCls
+         * @inheritdoc Ext.Button#cfg-iconCls
          */
         iconCls: null,
 
         /**
-         * @cfg {Boolean/Object}
+         * @cfg {Boolean/Object} repeat
          * `true` to attach a {@link Ext.util.ClickRepeater tap repeater} to the trigger,
          * or a config object for a tap repeater.
          */
         repeat: null,
 
         /**
-         * @cfg {Object} [scope]
+         * @cfg {Object} scope
          * Execution context for the {@link #handler} function.
          */
-        scope: null
+        scope: null,
+
+        /**
+         * @cfg {Boolean} focusOnTap
+         * If `true`, the field will be focused upon tap of the trigger.
+         *
+         * To show the keyboard, tap the input field while it is focused.
+         */
+        focusOnTap: true
     },
 
     interactiveCls: Ext.baseCSSPrefix + 'interactive',
 
+    /**
+     * @property template
+     * @inheritdoc
+     */
     template: [{
         reference: 'iconElement',
         classList: [
@@ -58,11 +62,10 @@ Ext.define('Ext.field.trigger.Trigger', {
 
     constructor: function(config) {
         var me = this,
-            element, repeat;
+            repeat;
 
         me.callParent([config]);
 
-        element = me.element;
         repeat = me.getRepeat();
 
         if (repeat) {
@@ -70,16 +73,16 @@ Ext.define('Ext.field.trigger.Trigger', {
                 target: me,
                 preventDefault: true,
                 listeners: {
-                    mousedown: me.onClickRepeaterTouchStart,
-                    mouseup: me.onClickRepeaterTouchEnd,
-                    click: me.onClick,
+                    mousedown: 'onClickRepeaterTouchStart',
+                    mouseup: 'onClickRepeaterTouchEnd',
+                    click: 'onClickRepeaterClick',
                     scope: me
                 }
             }, repeat));
         } else {
-            element.on({
-                click: me.onClick,
-                mousedown: me.onMouseDown,
+            me.element.on({
+                click: 'onClick',
+                mousedown: 'onMouseDown',
                 scope: me
             });
         }
@@ -90,41 +93,47 @@ Ext.define('Ext.field.trigger.Trigger', {
         this.callParent();
     },
 
+     onClickRepeaterClick: function(clickRepeater, e) {
+        this.onClick(e);
+    },
+
     onClick: function(e) {
         var me = this,
-            handler = me.getHandler(),
-            field = me.getField();
+            handler = !me.getDisabled() && me.getHandler(),
+            field = me.getField(),
+            focusEl;
 
-        // TODO: skip this if readonly? !editable?
-        if (handler && !me.getDisabled()) {
-            Ext.callback(handler, me.getScope(), [field, me, e], null, field);
+        if (field) {
+            if (e.pointerType !== 'mouse') {
+                // Do not allow the default focusing behaviour to follow on *after* the
+                // hander has run and this event finishes.
+                e.preventDefault();
+
+                if (me.getFocusOnTap()) {
+                    focusEl = field.getFocusTrap ? field.getFocusTrap() : field.getFocusEl();
+
+                    if (focusEl.dom !== document.activeElement) {
+                        focusEl.focus();
+                    }
+                }
+            }
+            if (handler) {
+                Ext.callback(handler, me.getScope(), [field, me, e], null, field);
+            }
         }
     },
 
     onMouseDown: function(e) {
-        var field = this.getField(),
-            activeEl = document.activeElement;
+        if (e.pointerType === 'mouse') {
+            var field = this.getFocusOnTap() && this.getField();
 
-        // If it was a genuine mousedown or pointerdown, NOT a touch, then focus the input field.
-        // Usually, the field will be focused, but the mousedown on the trigger
-        // might be the user's first contact with the field.
-        // It's definitely NOT the user's first contact with our field if the field
-        // has the focus.
-        // It is also possible that there are multiple triggers on the field, and only one
-        // of them causes picker expand/collapse. When picker is about to be collapsed
-        // we need to focus the input; otherwise if the picker was focused the focus will go
-        // to the document body which is not what we want. However if the mousedown was on
-        // a trigger that does not cause collapse we should NOT focus the field.
-        if (field && e.pointerType !== 'touch' && (!field.containsFocus || this.focusOnMousedown)) {
-            field.focus();
-        }
-        // If we are not focusing this field, we must blur any other widget, otherwise keyboard control
-        // will remain with that widget while this trigger's widget is perceived to be active.
-        else if (activeEl !== field.getFocusEl().dom) {
-            document.activeElement.blur();
-        }
+            // Focus the field on mousedown. Touch events do it on tap.
+            if (field) {
+                field.focus();
+            }
 
-        e.preventDefault();
+            e.preventDefault();
+        }
     },
 
     onClickRepeaterTouchStart: function(clickRepeater, e) {

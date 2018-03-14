@@ -444,14 +444,16 @@ Ext.define('Ext.mixin.Focusable', {
      * is available, set tabIndex attribute on it, too.
      *
      * @param {Number} newTabIndex new tabIndex to set
+     * @param {HTMLElement} [focusEl] (private)
      */
-    setTabIndex: function(newTabIndex, /* private */ focusEl) {
+    setTabIndex: function(newTabIndex, focusEl) {
         var me = this,
             ownerFC = me.ownerFocusableContainer,
             focusableIfDisabled = ownerFC && ownerFC.allowFocusingDisabledChildren,
             el;
         
-        if (!me.focusable) {
+        // See comments for definition of forceTabIndex as to why this is needed
+        if (!me.focusable && !me.forceTabIndex) {
             return;
         }
         
@@ -546,18 +548,30 @@ Ext.define('Ext.mixin.Focusable', {
 
     /**
      * @template
+     * @method
      * @protected
      * Called when focus moves *within* this Component's hierarchy
-     * @param {Ext.event.Event} e
-     * @param {Ext.event.Event} e.event The underlying DOM event.
-     * @param {HTMLElement} e.target The element gaining focus.
-     * @param {HTMLElement} e.relatedTarget The element losing focus.
-     * @param {Ext.Component} e.toComponent The Component gaining focus.
-     * @param {Ext.Component} e.fromComponent The Component losing focus.
+     * @param {Object} info
+     * @param {Ext.event.Event} info.event The underlying Event object.
+     * @param {HTMLElement} info.toElement The element gaining focus.
+     * @param {HTMLElement} info.fromElement The element losing focus.
+     * @param {Ext.Component} info.toComponent The Component gaining focus.
+     * @param {Ext.Component} info.fromComponent The Component losing focus.
+     * @param {Boolean} info.backwards `true` if the focus movement is backward in DOM order
      */
     onFocusMove: Ext.emptyFn,
 
     privates: {
+        // This private flag was introduced to work around an issue where
+        // the tab index would not be stamped onto the component.
+        // Consider a tool, which is focusable by default and has tabIndex: 0
+        // on the class definition. If a non-focusable tool is required, setting
+        // focusable: false is not enough, the tabIndex also needs to be considered.
+        // However, the default behaviour is to not modify the tabIndex on non
+        // focusable items. This config can go away if that behaviour is changed.
+        // Arguably, a non-focusable widget probably shouldn't retain a tab index
+        // if it's explicitly configured.
+        forceTabIndex: false,
         
         /**
          * Returns focus to the Component or element found in the cached
@@ -569,7 +583,7 @@ Ext.define('Ext.mixin.Focusable', {
             var me = this,
                 focusEvent = me.focusEnterEvent,
                 activeElement = Ext.Element.getActiveElement(),
-                focusTarget, fromComponent, nearestSibling, reverted;
+                focusTarget, fromComponent, reverted;
 
             // If we have a record of where focus arrived from,
             //  and have not been told to avoid refocusing,
@@ -595,15 +609,28 @@ Ext.define('Ext.mixin.Focusable', {
 
                 // If focus was from the body, try to keep it closer than that
                 if (focusTarget === document.body) {
-                    nearestSibling = me.findFocusTarget();
-                    if (nearestSibling) {
-                        focusTarget = nearestSibling.getFocusEl();
+                    fromComponent = me.findFocusTarget();
+                    if (fromComponent) {
+                        focusTarget = fromComponent.getFocusEl();
                     }
                 }
 
+                if (focusTarget && focusTarget.$isFocusableEntity) {
+                    if (!focusTarget.destroyed && focusTarget.isFocusable()) {
+                        focusTarget.focus();
+                    }
+                }
+                
                 // If the element is in the document and focusable, then we're good. The owning component will handle it.
-                if (Ext.getDoc().contains(focusTarget) && Ext.fly(focusTarget).isFocusable()) {
-                    focusTarget.focus();
+                else if (Ext.getDoc().contains(focusTarget) && Ext.fly(focusTarget).isFocusable()) {
+                    fromComponent = Ext.Component.from(focusTarget);
+
+                    // Allow the focus recieving component to modify the focus sequence.
+                    if (fromComponent) {
+                        fromComponent.revertFocusTo(focusTarget);
+                    } else {
+                        focusTarget.focus();
+                    }
                 }
 
                 // If the element has gone, or is hidden, we will have to rely on the intelligent focus diversion
@@ -620,6 +647,21 @@ Ext.define('Ext.mixin.Focusable', {
                     }
                 }
             }
+        },
+
+        /**
+         * This field is on the recieving end of a call from {@link #method!revertFocus}.
+         *
+         * It is called when focus is being pushed back into this Component from a Component
+         * that is focused and is being hidden or disabled.
+         *
+         * We must focus the passed element.
+         *
+         * Subclasses may perform some extra processing to prepare for refocusing.
+         * @param target
+         */
+        revertFocusTo: function(target) {
+            target.focus();
         },
 
         /**
@@ -721,8 +763,12 @@ Ext.define('Ext.mixin.Focusable', {
                 }
                 
                 // This attribute is a shortcut to look up a Component by its Elements
-                // It only makes sense on focusable elements, so we set it here
-                focusEl.dom.setAttribute('data-componentid', me.id);
+                // It only makes sense on focusable elements, so we set it here unless
+                // our focusEl is delegated to the focusEl of an owned Component and it
+                // already has ownership stamped into it.
+                if (!focusEl.dom.hasAttribute('data-componentid')) {
+                    focusEl.dom.setAttribute('data-componentid', me.id);
+                }
             }
         },
         
@@ -950,8 +996,25 @@ Ext.define('Ext.mixin.Focusable', {
     var keyboardModeCls = Ext.baseCSSPrefix + 'keyboard-mode',
         keyboardMode = false;
 
+    /**
+     * @property {Boolean} keyboardMode
+     * @member Ext
+     * A flag which indicates that the last UI interaction from the user was a keyboard gesture
+     */
+
+    /**
+     * @property {Boolean} touchMode
+     * @member Ext
+     * A flag which indicates that the last UI interaction from the user was a touch gesture
+     */
+
     Ext.setKeyboardMode = Ext.setKeyboardMode || function (keyboardMode) {
+        Ext.keyboardMode = keyboardMode;
         Ext.getBody().toggleCls(keyboardModeCls, keyboardMode);
+    };
+
+    Ext.isTouchMode = function () {
+        return (Ext.now() - Ext.lastTouchTime) < 500;
     };
 
     function syncKeyboardMode(e) {
@@ -965,6 +1028,7 @@ Ext.define('Ext.mixin.Focusable', {
             keyboardMode = false;
         } else {
             keyboardMode = (type === 'keydown');
+            Ext.lastTouchTime = e.pointerType === 'touch' && Ext.now();
             Ext.setKeyboardMode(keyboardMode);
         }
     }

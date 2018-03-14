@@ -16,46 +16,31 @@
     "designerId": "f4941368-9963-4383-b809-d66d6516ffe3",
     "cn": [
         {
-            "type": "jsonstore",
+            "type": "Ext.data.TreeStore",
             "reference": {
                 "name": "stores",
                 "type": "array"
             },
             "codeClass": null,
             "userConfig": {
+                "defaultRootText": "Slides",
                 "model": "Slide",
-                "name": "StoreSlides"
+                "name": "TreeStoreSlides",
+                "root": [
+                    "{",
+                    "    expanded: true,",
+                    "    children: []",
+                    "}"
+                ]
             },
             "configAlternates": {
                 "model": "model",
-                "name": "string"
+                "name": "string",
+                "root": "object",
+                "defaultRootText": "string"
             },
-            "name": "MyJsonStore",
-            "designerId": "d9bcfc54-5a7b-435a-b696-cf725cb569f4",
-            "cn": [
-                {
-                    "type": "Ext.data.proxy.Ajax",
-                    "reference": {
-                        "name": "proxy",
-                        "type": "object"
-                    },
-                    "codeClass": null,
-                    "name": "MyAjaxProxy",
-                    "designerId": "631cd83d-7b83-46ff-88d3-f815af3e5003",
-                    "cn": [
-                        {
-                            "type": "Ext.data.reader.Json",
-                            "reference": {
-                                "name": "reader",
-                                "type": "object"
-                            },
-                            "codeClass": null,
-                            "name": "MyJsonReader",
-                            "designerId": "2e7c5843-515c-4361-bc2b-a6796f86b153"
-                        }
-                    ]
-                }
-            ]
+            "name": "MyTreeStore",
+            "designerId": "1f0ae143-06f4-4c09-9043-df1ccd5d57bb"
         }
     ]
 }

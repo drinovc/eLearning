@@ -66,17 +66,45 @@ Ext.define('Ext.data.validator.Currency', {
         getMatcherText: function() {
             var me = this,
                 ret = me.callParent([true]),
-                symbol = Ext.String.escapeRegex(me.getSymbol()),
-                spacer = Ext.String.escapeRegex(me.getSpacer() || ''),
-                atEnd = me.getSymbolAtEnd();
+                symbolPart = me.getSymbolMatcher();
 
-            if (atEnd) {
-                ret += '(' + spacer + symbol + ')?';
+            if (me.getSymbolAtEnd()) {
+                ret += symbolPart;
             } else {
-                ret = '(' + symbol + spacer + ')?' + ret;
+                ret = symbolPart + ret;
             }
 
             return me.getSignPart() + ret;
+        },
+
+        getSymbolMatcher: function() {
+            var symbol = Ext.String.escapeRegex(this.getSymbol()),
+                spacer = Ext.String.escapeRegex(this.getSpacer() || ''),
+                s = this.getSymbolAtEnd() ? (spacer + symbol) : (symbol + spacer);
+
+            return '(?:' + s + ')?';
+        },
+
+        parseValue: function(v) {
+            // If we're at the front, replace -/+$1 with -/+1
+            v = v.replace(this.currencyMatcher, this.atEnd ? '' : '$1');
+            return this.callParent([v]);
+        },
+
+        rebuildMatcher: function() {
+            var me = this,
+                symbolPart, atEnd, sign;
+
+            me.callParent();
+
+            if (!me.isConfiguring) {
+                atEnd = me.getSymbolAtEnd();
+                symbolPart = me.getSymbolMatcher();
+                sign = me.getSignPart();
+
+                me.atEnd = atEnd;
+                me.currencyMatcher = new RegExp(atEnd ? (symbolPart + '$') : ('^' + sign + symbolPart));
+            }
         }
     }
 });

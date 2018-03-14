@@ -43,23 +43,52 @@ topSuite("Ext.field.Toggle", function() {
     });
 
     describe("events", function() {
+        var spy;
+
         beforeEach(function() {
             createField();
+            spy = jasmine.createSpy();
+        });
+
+        afterEach(function() {
+            spy = null;
         });
 
         describe("change", function() {
             it("should fire when you call setValue", function() {
-                var callback = jasmine.createSpy();
-                field.on('change', callback);
+                field.on('change', spy);
                 field.setValue(1);
-                expect(callback).toHaveBeenCalled();
+                expect(spy.callCount).toBe(1);
+                expect(spy.mostRecentCall.args[0]).toBe(field);
+                expect(spy.mostRecentCall.args[1]).toBe(true);
+                expect(spy.mostRecentCall.args[2]).toBe(false);
             });
 
             it("should fire when you call toggle", function() {
-                var callback = jasmine.createSpy();
-                field.on('change', callback);
+                field.on('change', spy);
                 field.toggle();
-                expect(callback).toHaveBeenCalled();
+                expect(spy.callCount).toBe(1);
+                expect(spy.mostRecentCall.args[0]).toBe(field);
+                expect(spy.mostRecentCall.args[1]).toBe(true);
+                expect(spy.mostRecentCall.args[2]).toBe(false);
+            });
+
+            it("should fire on tap", function() {
+                field.on('change', spy);
+                jasmine.fireMouseEvent(field.getSlider().element, 'click');
+
+                expect(spy.callCount).toBe(1);
+                expect(spy.mostRecentCall.args[0]).toBe(field);
+                expect(spy.mostRecentCall.args[1]).toBe(true);
+                expect(spy.mostRecentCall.args[2]).toBe(false);
+
+                spy.reset();
+                jasmine.fireMouseEvent(field.getSlider().element, 'click');
+
+                expect(spy.callCount).toBe(1);
+                expect(spy.mostRecentCall.args[0]).toBe(field);
+                expect(spy.mostRecentCall.args[1]).toBe(false);
+                expect(spy.mostRecentCall.args[2]).toBe(true);
             });
         });
     });

@@ -112,15 +112,23 @@ describe('Ext.data.validator.Phone', function() {
     });
 
     it('should not validate if the value is not a valid phone number', function () {
-        invalid.forEach(function (test) {
+        var i, len, test;
+        
+        for (i = 0, len = invalid.length; i < len; i++) {
+            test = invalid[i];
+            
             expect(validate(test)).toBe(v.getMessage());
-        });
+        }
     });
 
     it('should validate phone numbers', function() {
-        valid.forEach(function (test) {
+        var i, len, test;
+        
+        for (i = 0, len = valid.length; i < len; i++) {
+            test = valid[i];
+            
             expect(validate(test)).toBe(true);
-        });
+        }
     });
 
     it('should accept a custom message', function() {

@@ -33,7 +33,9 @@
     }
 
     .#{$prefix}big & {
-        border-radius: 50%;
+        .#{$prefix}inner-el {
+            border-radius: 50%;
+        }
     }
 
     .#{$prefix}icon-el {

@@ -8,7 +8,7 @@ Ext.define('Ext.mixin.ItemRippler', {
     config: {
         /**
          * @cfg {Boolean/Object} itemRipple
-         * @cfg {String} ripple.color The background color of the ripple.
+         * @cfg {String} itemRipple.color The background color of the ripple.
          * Default ripple {@link Ext.Widget#ripple} settings for each item in the data view
          *
          * For complex items, individual elements can suppress ripples by adding the
@@ -21,8 +21,7 @@ Ext.define('Ext.mixin.ItemRippler', {
     shouldRippleItem: function (item, e) {
         var itemRipple, ripple;
 
-        if (e.getTarget('.' + Ext.baseCSSPrefix + 'item-no-ripple, ' + 
-                        '.' + Ext.baseCSSPrefix + 'item-no-tap', this.element)) {
+        if (e.getTarget(this.noItemRippleSelector, this.element)) {
             return false;
         }
 
@@ -45,13 +44,16 @@ Ext.define('Ext.mixin.ItemRippler', {
         }
 
         var me = this,
-            state = e.type.match(/start|down/) ? 'start' : 'end',
+            start = e.type.match(me.rippleStateRe),
             itemRipple = me.shouldRippleItem(item, e),
-            el = item.isWidget ? item.el : item, pos, delta;
+            release = itemRipple && itemRipple.release,
+            isRelease = release === true,
+            el = item.isWidget ? item.el : item,
+            pos, delta, rs, rippledItems;
 
         // If this is a release based ripple lets track the start point
         // so we can ignore the ripple if this becomes a drag
-        if (itemRipple && state === 'start' && itemRipple.release === true) {
+        if (itemRipple && start && isRelease) {
             me.$rippleStart = e.getXY();
         }
 
@@ -59,24 +61,38 @@ Ext.define('Ext.mixin.ItemRippler', {
         // Do we have a ripple config?
         // Are we in the right event (start or end)?
         // do we have an element to ripple with?
-        if (itemRipple && el && (
-                (state === 'end' && itemRipple.release === true) ||
-                (state === 'start' && itemRipple.release !== true)
-        )) {
-            if (me.$rippleStart) {
+        if (itemRipple && el && ((!start && isRelease) || (start && release !== true))) {
+            rippledItems = me.$rippledItems || (me.$rippledItems = []);
+            rs = me.$rippleStart;
+
+            if (rs) {
                 pos = e.getXY();
                 // determine the distance from the start point
-                delta = Math.sqrt(Math.pow((pos[0] - me.$rippleStart[0]), 2) + 
-                                  Math.pow((pos[1] - me.$rippleStart[1]), 2));
+                delta = Math.sqrt(Math.pow((pos[0] - rs[0]), 2) +
+                                  Math.pow((pos[1] - rs[1]), 2));
 
                 if (delta <= 8) {
                     el.ripple(e, itemRipple);
+                    rippledItems.push(el);
                 }
             } else {
                 el.ripple(e, itemRipple);
+                rippledItems.push(el);
             }
 
             me.$rippleStart = null;
         }
+    },
+
+    destroyAllRipples: function () {
+        for (var items = this.$rippledItems; items && items.length; ) {
+            items.pop().destroyAllRipples();
+        }
+    },
+
+    privates: {
+        noItemRippleSelector: '.' + Ext.baseCSSPrefix + 'item-no-ripple, ' +
+                        '.' + Ext.baseCSSPrefix + 'item-no-tap',
+        rippleStateRe: /start|down/
     }
 });

@@ -1,7 +1,18 @@
 /**
- * This class provides Date specific processing for fields.
+ * A data field that automatically {@link #convert converts} its value to a date.
  *
- * In previous releases this functionality was integral to the `Field` base class.
+ *     @example
+ *     Ext.define('User', {
+ *         extend: 'Ext.data.Model',
+ *         fields: [
+ *             { name: 'birthDate', type: 'date' }
+ *         ]
+ *     });
+ *
+ *     var record = Ext.create('User', { birthDate: 'Tuesday, June 27, 2017' }),
+ *         value = record.get('birthDate');
+ *
+ *     Ext.toast("birthDate is " + value);
  */
 Ext.define('Ext.data.field.Date', {
     extend: 'Ext.data.field.Field',

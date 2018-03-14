@@ -79,7 +79,7 @@ var noArgs = [],
 
         flush: function () {
             if (Reaper.timer) {
-                clearTimeout(Reaper.timer);
+                Ext.undefer(Reaper.timer);
                 Reaper.timer = null;
             }
 
@@ -732,7 +732,7 @@ var noArgs = [],
 
         /**
          * Override members of this class. Overridden methods can be invoked via
-         * {@link Ext.Base#callParent}.
+         * {@link Ext.Base#method!callParent}.
          *
          *     Ext.define('My.Cat', {
          *         constructor: function() {
@@ -914,8 +914,8 @@ var noArgs = [],
          */
         mixin: function(name, mixinClass) {
             var me = this,
-                mixin, prototype, key, statics, i, ln, 
-                mixinName, name, mixinValue, mixins,
+                mixin, prototype, key, statics, i, ln,
+                mixinName,  mixinValue, mixins,
                 mixinStatics, staticName;
 
             if (typeof name !== 'string') {
@@ -1682,6 +1682,7 @@ var noArgs = [],
 
             if (name) {
                 configurator = me.self.getConfigurator();
+
                 if (typeof name === 'string') {
                     config = configurator.configs[name];
                     if (!config) {
@@ -1711,7 +1712,9 @@ var noArgs = [],
                         me[name] = value;
                     }
                 } else {
-                    configurator.reconfigure(me, name, options);
+                    // This should not have "options ||" except that it shipped in that
+                    // broken state, so we use it if present for compat.
+                    configurator.reconfigure(me, name, options || value);
                 }
             }
 

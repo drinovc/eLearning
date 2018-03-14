@@ -113,10 +113,11 @@ Ext.define('Ext.chart.interactions.Abstract', {
     },
 
     /**
-     * @protected
      * Find and return all series items corresponding to the given event.
      * @param {Event} e
      * @return {Array} array of matching item objects
+     * @protected
+     * @deprecated 6.5.2 This method is deprecated
      */
     getItemsForEvent: function (e) {
         var me = this,
@@ -214,13 +215,15 @@ Ext.define('Ext.chart.interactions.Abstract', {
             chart = me.getChart();
 
         if (me.syncTimer) {
-            clearTimeout(me.syncTimer);
+            Ext.undefer(me.syncTimer);
             me.syncTimer = null;
         }
         if (me.stopAnimationBeforeSync) {
             chart.animationSuspendCount++;
         }
+
         chart.redraw();
+
         if (me.stopAnimationBeforeSync) {
             chart.animationSuspendCount--;
         }
@@ -229,6 +232,7 @@ Ext.define('Ext.chart.interactions.Abstract', {
 
     sync: function () {
         var me = this;
+
         if (me.throttleGap && Ext.frameStartTime < me.syncThrottle) {
             if (me.syncTimer) {
                 return;

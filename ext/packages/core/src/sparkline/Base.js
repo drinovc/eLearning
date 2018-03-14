@@ -107,7 +107,8 @@ Ext.define('Ext.sparkline.Base', {
 
     cachedConfig: {
         /**
-         * @cfg {String} [lineColor=#157fcc] The hex value for line colors in graphs which
+         * @cfg {String} lineColor
+         * The hex value for line colors in graphs which
          * display lines ({@link Ext.sparkline.Box Box},
          * {@link Ext.sparkline.Discrete Discrete} and {@link Ext.sparkline.Line Line}).
          */
@@ -208,13 +209,6 @@ Ext.define('Ext.sparkline.Base', {
          * @static
          * @inheritable
          */
-        sparkLineTipClass: Ext.baseCSSPrefix + 'sparkline-tip-target',
-
-        /**
-         * @private
-         * @static
-         * @inheritable
-         */
         onClassCreated: function(cls) {
             var configUpdater = cls.prototype.updateConfigChange,
                 proto = cls.prototype,
@@ -238,16 +232,13 @@ Ext.define('Ext.sparkline.Base', {
     },
 
     constructor: function(config) {
-        var me = this;
+        var me = this,
+            ns = Ext.sparkline;
 
         // The canvas sets our element config
-        me.canvas = Ext.supports.Canvas ? new Ext.sparkline.CanvasCanvas(me)
-                                        : new Ext.sparkline.VmlCanvas(me);
-        if (!me.getDisableTooltips()) {
-            me.element.cls = Ext.sparkline.Base.sparkLineTipClass;
-        }
+        me.canvas = Ext.supports.Canvas ? new ns.CanvasCanvas(me)
+                                        : new ns.VmlCanvas(me);
 
-        Ext.apply(me, config);
         me.callParent([config]);
     },
 
@@ -280,7 +271,7 @@ Ext.define('Ext.sparkline.Base', {
             // Ensure that there is a single timer to handle all queued redraws.
             if (!me.redrawTimer) {
                 Ext.sparkline.Base.prototype.redrawTimer =
-                        Ext.Function.requestAnimationFrame(me.processRedrawQueue);
+                        Ext.raf(me.processRedrawQueue);
             }
         } else {
             me.redraw();
@@ -435,9 +426,13 @@ Ext.define('Ext.sparkline.Base', {
                 if (!me.disableHighlight) {
                     me.renderHighlight(region);
                 }
-                tipHtml = me.getRegionTooltip(region);
+                if (!me.getDisableTooltips()) {
+                    tipHtml = me.getRegionTooltip(region);
+                }
             }
-            me.fireEvent('sparklineregionchange', me);
+            if (me.hasListeners.sparklineregionchange) {
+                me.fireEvent('sparklineregionchange', me);
+            }
 
             if (tipHtml) {
                 me.getSharedTooltip().setHtml(tipHtml);
@@ -571,33 +566,4 @@ Ext.define('Ext.sparkline.Base', {
         proto.redrawQueue = {};
         proto.redrawTimer = 0;
     };
-
-    // If we are on a VML platform (IE8 - TODO: remove this when that retires)...
-    if (!Ext.supports.Canvas) {
-        SparklineBase.prototype.element = {
-            tag: 'span',
-            reference: 'element',
-            listeners: {
-                mouseenter: 'onMouseEnter',
-                mouseleave: 'onMouseLeave',
-                mousemove: 'onMouseMove'
-            },
-            style: {
-                display: 'inline-block',
-                position: 'relative',
-                overflow: 'hidden',
-                margin: '0px',
-                padding: '0px',
-                verticalAlign: 'top',
-                cursor: 'default'
-            },
-            children: [{
-                tag: 'svml:group',
-                reference: 'groupEl',
-                coordorigin: '0 0',
-                coordsize: '0 0',
-                style: 'position:absolute;width:0;height:0;pointer-events:none'
-            }]
-        };
-    }
 });

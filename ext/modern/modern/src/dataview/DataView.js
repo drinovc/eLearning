@@ -254,11 +254,23 @@ Ext.define('Ext.dataview.DataView', {
     },
 
     privates: {
-        changeItem: function (storeIndex) {
-            var me = this,
-                record = me.dataRange.records[storeIndex];
+        dirtyCls: Ext.baseCSSPrefix + 'dirty',
 
-            me.syncItemRecord(me.dataItems[storeIndex], record, storeIndex);
+        changeItem: function (recordIndex) {
+            var me = this,
+                dataItems = me.dataItems,
+                item = dataItems[recordIndex],
+                record = me.dataRange.records[recordIndex],
+                storeCount = me.store.getCount(),
+                options = {
+                    isFirst: !recordIndex,
+                    isLast: recordIndex === storeCount -1,
+                    item: item,
+                    record: record,
+                    recordIndex: recordIndex
+                };
+
+            me.syncItemRecord(options);
         },
 
         clearItems: function() {
@@ -275,10 +287,15 @@ Ext.define('Ext.dataview.DataView', {
             var me = this,
                 store = me.store,
                 data = me.gatherData(record, index),
+                markDirty = me.getMarkDirty(),
                 dom, itemEl;
 
             itemEl = Ext.Element.create(me.getItemElementConfig(index, data, store));
             dom = itemEl.dom;
+
+            if (markDirty) {
+                itemEl.addCls(me.markDirtyCls);
+            }
 
             dom.setAttribute('data-viewid', me.id);
             dom.setAttribute('data-recordid', record.internalId);
@@ -292,7 +309,11 @@ Ext.define('Ext.dataview.DataView', {
 
             this.callParent();
         },
-
+		
+        resetSelection: function(records) {
+            this.setItemSelection(records, false);
+        },
+		
         doRefresh: function (scrollToTop) {
             var me = this,
                 records = me.dataRange.records,
@@ -315,7 +336,10 @@ Ext.define('Ext.dataview.DataView', {
                 // Stashes the NavigationModel's location for restoration after refresh
                 restoreFocus = me.saveFocusState();
                 me.hideEmptyText();
-
+                
+                // Resets Store's selection
+                me.resetSelection(records);
+                	
                 if (itemCount > storeCount) {
                     me.removeItems(storeCount, itemCount);
                     // We've removed extra items, but all remaining items need to
@@ -417,18 +441,20 @@ Ext.define('Ext.dataview.DataView', {
             return value || this.getEmptyItemText();
         },
 
-        syncItemRecord: function (item, record, storeIndex) {
-            // Note: This method is called by Ext.dataview.Abstract with 2 arguments
-            // but we extend it with "storeIndex" to allow changeItem to pass that
-            // along and save a call to store.indexOf().
-
+        syncItemRecord: function (options) {
             var me = this,
+                item = options.item,
+                record = options.record,
                 store = me.store,
-                data = me.gatherData(record, storeIndex);
+                recordIndex = options ? options.recordIndex : store.indexOf(record),
+                data = me.gatherData(record, recordIndex),
+                dirtyCls = me.$dirty;
 
-            item.innerHTML = me.renderItemTpl(storeIndex, data, store);
+            item.innerHTML = me.renderItemTpl(recordIndex, data, store);
             item.setAttribute('data-recordid', record.internalId);
-            item.setAttribute('data-recordindex', storeIndex);
+            item.setAttribute('data-recordindex', recordIndex);
+
+            Ext.fly(item).toggleCls(me.dirtyCls, record.dirty);
         },
 
         traverseItem: function (item, delta) {

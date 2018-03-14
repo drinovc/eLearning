@@ -105,6 +105,7 @@ Ext.define('Ext.grid.cell.Base', {
     },
 
     classCls: Ext.baseCSSPrefix + 'gridcell',
+    dirtyCls: Ext.baseCSSPrefix + 'dirty',
 
     alignCls: {
         left: Ext.baseCSSPrefix + 'align-left',
@@ -215,40 +216,60 @@ Ext.define('Ext.grid.cell.Base', {
     refresh: function (ctx) {
         var me = this,
             was = me.refreshContext,
-            context, value;
+            context, modified, value;
 
         if (!me.isBound('value')) {
-            me.refreshContext = context = me.beginRefresh(ctx || was);
+            ctx = ctx || was;
+            modified = ctx && ctx.modified;
 
-            value = me.refreshValue(context);
+            if (!modified || me.bound(modified)) {
+                me.refreshContext = context = me.beginRefresh(ctx);
 
-            if (value !== me.getValue()) {
-                me.setValue(value);
+                value = me.refreshValue(context);
+
+                if (value !== me.getValue()) {
+                    me.setValue(value);
+                }
+                else if (me.writeValue) {
+                    me.writeValue();
+                }
+
+                me.refreshContext = was;
             }
-            else if (me.writeValue) {
-                me.writeValue();
-            }
-
-            me.refreshContext = was;
         }
     },
 
     refreshValue: function (context) {
-        var record = context.record,
+        var me = this,
+            record = context.record,
             dataIndex = context.dataIndex,
-            value;
+            value, dirty, modified;
 
         if (context.summary) {
-            value = this.summarize(context);
+            value = me.summarize(context);
         }
         else if (record && dataIndex) {
             value = record.get(dataIndex);
+            modified = record.modified;
+            dirty = !!(modified && modified.hasOwnProperty(dataIndex));
+
+            if (dirty !== me.$dirty) {
+                me.toggleCls(me.dirtyCls, dirty);
+
+                me.$dirty = dirty;
+            }
         }
 
         return value;
     },
 
     privates: {
+        //<debug>
+        refreshCounter: 0,
+        //</debug>
+
+        $dirty: false,
+
         /**
          * @property {Object} refreshContext
          * This object holds a cache of information used across the cells of a row during
@@ -283,15 +304,29 @@ Ext.define('Ext.grid.cell.Base', {
                     record: me.getRecord()
                 });
 
+            //<debug>
+            ++me.refreshCounter; // for testing
+            context.from = context.from || 'cell';
+            //</debug>
+
             context.cell = me;
             context.column = column;
             context.dataIndex = me.dataIndex;
-            //<debug>
-            context.from = context.from || 'cell';
-            //</debug>
             context.scope = column.getScope();
 
             return context;
+        },
+
+        /**
+         * Returns `true` if this cell's value is bound to any of the given `fields`. This
+         * is typically due to the `dataIndex`.
+         * @param {Object} fields An object keyed by field names with truthy values.
+         * @return {Boolean}
+         * @since 6.5.1
+         * @private
+         */
+        bound: function (fields) {
+            return !!fields[this.dataIndex];
         },
 
         summarize: function (context) {

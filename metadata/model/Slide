@@ -9,26 +9,29 @@
         "designer|userClassName": "Slide"
     },
     "configAlternates": {
-        "designer|userClassName": "string"
+        "designer|userClassName": "string",
+        "idProperty": "string"
     },
     "name": "MyModel",
     "designerId": "6ef1d73d-f30c-41ff-9f94-ee89ca8b070d",
     "cn": [
         {
-            "type": "Ext.data.field.Integer",
+            "type": "Ext.data.field.String",
             "reference": {
                 "name": "fields",
                 "type": "array"
             },
             "codeClass": null,
             "userConfig": {
-                "name": "sequence"
+                "name": "id",
+                "unique": true
             },
             "configAlternates": {
-                "name": "string"
+                "name": "string",
+                "unique": "boolean"
             },
-            "name": "MyInteger",
-            "designerId": "63b37613-717a-4c18-a37c-0cefe10da228"
+            "name": "MyString3",
+            "designerId": "9b5a614a-cda1-4534-bd7f-9b37776c86b9"
         },
         {
             "type": "Ext.data.field.String",
@@ -61,6 +64,22 @@
             },
             "name": "MyString1",
             "designerId": "1fd991cf-3a55-4aef-aedf-7a1d719019f1"
+        },
+        {
+            "type": "Ext.data.field.Integer",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "sequence"
+            },
+            "configAlternates": {
+                "name": "string"
+            },
+            "name": "MyInteger",
+            "designerId": "63b37613-717a-4c18-a37c-0cefe10da228"
         }
     ]
 }

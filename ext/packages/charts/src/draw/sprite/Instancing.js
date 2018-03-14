@@ -62,6 +62,7 @@ Ext.define('Ext.draw.sprite.Instancing', {
         template.ownAttr = template.attr;
 
         this.clearAll();
+        this.setDirty(true);
     },
 
     updateInstances: function (instances) {

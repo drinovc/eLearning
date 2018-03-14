@@ -80,15 +80,14 @@ Ext.define('Ext.Template', {
      * 
      * @param {String...} html List of strings to be concatenated into template.
      * Alternatively an array of strings can be given, but then no config object may be passed.
-     * @param {Object} config (optional) Config object
+     * @param {Object} [config] A config object to apply to this instance.
      */
-    constructor: function(html) {
+    constructor: function (html) {
         var me = this,
             args = arguments,
             buffer = [],
-            i,
             length = args.length,
-            value;
+            i, value;
 
         me.initialConfig = {};
         
@@ -136,7 +135,7 @@ Ext.define('Ext.Template', {
     disableFormats: false,
 
     /**
-     * @property {RegExp} re
+     * @property {RegExp} tokenRe
      * Regular expression used to extract tokens.
      *
      * Finds the following expressions within a format string
@@ -441,10 +440,10 @@ Ext.define('Ext.Template', {
         formatFns = {};
 
     /**
-     * Alias for {@link Ext.String#format}.
      * @method format
-     * @inheritdoc Ext.String#format
+     * @inheritdoc Ext.String#method-format
      * @member Ext.util.Format
+     * Alias for {@link Ext.String#format}.
      */
 
     /**
@@ -456,7 +455,7 @@ Ext.define('Ext.Template', {
      *     var s = Ext.String.format('<div class="{0}">{1}</div>', cls, text);
      *     // s now contains the string: '<div class="my-class">Some text</div>'
      *
-     * @param {String} string The tokenized string to be formatted.
+     * @param {String} format The tokenized string to be formatted.
      * @param {Mixed...} values The values to replace tokens `{0}`, `{1}`, etc in order.
      * @return {String} The formatted string.
      * @member Ext.String

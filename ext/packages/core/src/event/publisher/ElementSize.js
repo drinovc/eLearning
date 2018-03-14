@@ -99,7 +99,11 @@ Ext.define('Ext.event.publisher.ElementSize', {
                     monitor.forceRefresh();
                 }
             }
+            // This just pushes onto the RAF queue.
             Ext.TaskQueue.flush();
+
+            // Flush the RAF queue to make this truly synchronous.
+            Ext.Function.fireElevatedHandlers();
         }
     }
     //</debug>

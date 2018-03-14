@@ -69,6 +69,7 @@ Ext.define('Ext.promise.Consequence', function(Consequence) { return {
     /**
      * @param {Function} onFulfilled Callback to execute to transform a fulfillment value.
      * @param {Function} onRejected Callback to execute to transform a rejection reason.
+     * @param {Function} onProgress Callback to execute to transform a progress value.
      */
     constructor: function(onFulfilled, onRejected, onProgress) {
         var me = this;
@@ -104,7 +105,7 @@ Ext.define('Ext.promise.Consequence', function(Consequence) { return {
     /**
      * Update this Consequence with the specified progress value.
      *
-     * @param {Mixed} value Progress value.
+     * @param {Mixed} progress Progress value.
      */
     update: function(progress) {
         if (Ext.isFunction(this.onProgress)) {

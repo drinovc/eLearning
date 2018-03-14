@@ -24,29 +24,32 @@ Ext.define('Ext.TaskQueue', {
     timer: null,
 
     constructor: function() {
-        this.run = Ext.Function.bind(this.run, this);
+        var me = this;
+
+        me.run = me.run.bind(me);
         
         // Some global things like floated wrapper are persistent and will add tasks/
         // add timers all the time, spoiling resource checks in our unit test suite.
         // To work around that we're implementing a parallel queue where only trusted
         // tasks will go, and fly under the radar of resource checker.
         //<debug>
-        this.runProtected = Ext.Function.bind(
-            this.run, this, [this.protectedReadQueue, this.protectedWriteQueue, 'runProtected']
+        me.runProtected = Ext.Function.bind(
+            me.run, me, [me.protectedReadQueue, me.protectedWriteQueue, 'runProtected']
         );
-        this.runProtected.$skipTimerCheck = true;
+        me.runProtected.$skipTimerCheck = true;
         //</debug>
         
         // iOS has a nasty bug which causes pending requestAnimationFrame to not release
         // the callback when the WebView is switched back and forth from / to being background process
         // We use a watchdog timer to workaround this, and restore the pending state correctly if this happens
         // This timer has to be set as an interval from the very beginning and we have to keep it running for
-        // as long as the app lives, setting it later doesn't seem to work
+        // as long as the app lives, setting it later doesn't seem to work.
+        // The watchdog timer must be accessible for environments to cancel.
         if (Ext.os.is.iOS) {
             //<debug>
-            this.watch.$skipTimerCheck = true;
+            me.watch.$skipTimerCheck = true;
             //</debug>
-            Ext.interval(this.watch, 500, this);
+            me.watchdogTimer = Ext.interval(this.watch, 500, this);
         }
     },
 
@@ -80,8 +83,9 @@ Ext.define('Ext.TaskQueue', {
     },
 
     requestWrite: function(fn, scope, args) {
-        var request = {
-                id: ++this.writeRequestId,
+        var me = this,
+            request = {
+                id: ++me.writeRequestId,
                 fn: fn,
                 scope: scope,
                 args: args
@@ -89,13 +93,13 @@ Ext.define('Ext.TaskQueue', {
         
         //<debug>
         if (arguments[3] === true) {
-            this.protectedWriteQueue.push(request);
-            this.request(false, 'runProtected');
+            me.protectedWriteQueue.push(request);
+            me.request(false, 'runProtected');
         }
         else {
         //</debug>
-            this.writeQueue.push(request);
-            this.request(false);
+            me.writeQueue.push(request);
+            me.request(false);
         //<debug>
         }
         //</debug>
@@ -109,7 +113,12 @@ Ext.define('Ext.TaskQueue', {
 
     request: function(mode, method) {
         var me = this;
-        
+
+        //<debug>
+        // Used below to cancel the correct timer.
+        var oldMode = me.mode;
+        //</debug>
+
         if (!me.pending) {
             me.pendingTime = Date.now();
             me.pending = true;
@@ -119,20 +128,24 @@ Ext.define('Ext.TaskQueue', {
                 me.timer = Ext.defer(me[method] || me.run, 1);
             }
             else {
-                me.timer = Ext.Function.requestAnimationFrame(me[method] || me.run);
+                me.timer = Ext.raf(me[method] || me.run);
             }
         }
         
         //<debug>
         // Last one should win
         if (me.mode === mode && me.timer) {
-            clearTimeout(me.timer);
-            
+            if (oldMode) {
+                Ext.undefer(me.timer);
+            } else {
+                Ext.unraf(me.timer);
+            }
+
             if (mode) {
                 me.timer = Ext.defer(me[method] || me.run, 1);
             }
             else {
-                me.timer = Ext.Function.requestAnimationFrame(me[method] || me.run);
+                me.timer = Ext.raf(me[method] || me.run);
             }
         }
         //</debug>
@@ -148,7 +161,7 @@ Ext.define('Ext.TaskQueue', {
         }
         
         if (!queue.length && this.mode === mode && this.timer) {
-            clearTimeout(this.timer);
+            Ext.undefer(this.timer);
         }
     },
 
@@ -222,26 +235,35 @@ Ext.define('Ext.TaskQueue', {
         var me = this,
             timer = me.timer;
 
+        if (timer) {
+            if (me.mode) {
+                Ext.undefer(timer);
+            } else {
+                Ext.unraf(timer);
+            }
+        }
+
         me.readQueue.length = me.writeQueue.length = 0;
         me.pending = me.timer = false;
         me.mode = true;
-        
-        if (timer) {
-            clearTimeout(timer);
-            Ext.Function.cancelAnimationFrame(timer);
-        }
     }
 
     //<debug>
     ,privates: {
         flush: function() {
-            var me = this;
+            var me = this,
+                mode = me.mode;
 
             while (me.readQueue.length || me.writeQueue.length) {
-                clearTimeout(me.timer);
-                Ext.Function.cancelAnimationFrame(me.timer);
+                if (mode) {
+                    Ext.undefer(me.timer);
+                } else {
+                    Ext.unraf(me.timer);
+                }
+
                 me.run();
             }
+
             me.mode = true;
         }
     }

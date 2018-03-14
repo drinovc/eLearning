@@ -38,6 +38,10 @@ Ext.define('Ext.form.field.Display', {
     requires: ['Ext.util.Format', 'Ext.XTemplate'],
     alternateClassName: ['Ext.form.DisplayField', 'Ext.form.Display'],
     
+    /**
+     * @cfg fieldSubTpl
+     * @inheritdoc
+     */
     fieldSubTpl: [
         '<div id="{id}" data-ref="inputEl" role="textbox" aria-readonly="true"',
         ' aria-labelledby="{cmpId}-labelEl" {inputAttrTpl}',
@@ -51,8 +55,16 @@ Ext.define('Ext.form.field.Display', {
     ],
     
     // We have the ARIA markup pre-rendered so we don't want it to be applied
+    /**
+     * @property ariaRole
+     * @inheritdoc
+     */
     ariaRole: undefined,
     
+    /**
+     * @property focusable
+     * @inheritdoc
+     */
     focusable: false,
 
     // Display fields are divs not real input fields, so rendering
@@ -60,17 +72,22 @@ Ext.define('Ext.form.field.Display', {
     skipLabelForAttribute: true,
 
     /**
-     * @cfg {Boolean} readOnly
+     * @cfg readOnly
+     * @inheritdoc
      * @private
      */
     readOnly: true,
 
     /**
-     * @cfg {String} [fieldCls="x-form-display-field"]
-     * The default CSS class for the field.
+     * @cfg fieldCls
+     * @inheritdoc
      */
     fieldCls: Ext.baseCSSPrefix + 'form-display-field',
 
+    /**
+     * @cfg fieldBodyCls
+     * @inheritdoc
+     */
     fieldBodyCls: Ext.baseCSSPrefix + 'form-display-field-body',
 
     /**
@@ -111,18 +128,27 @@ Ext.define('Ext.form.field.Display', {
      * The scope to execute the {@link #renderer} function. Defaults to this.
      */
 
+    /**
+     * @property noWrap
+     * @inheritdoc
+     */
     noWrap: false,
     
     /**
-     * @cfg {Boolean} validateOnChange
+     * @cfg validateOnChange
+     * @inheritdoc
      * @private
      */
     validateOnChange: false,
 
+    /**
+     * @method initEvents
+     * @inheritdoc
+     */
     initEvents: Ext.emptyFn,
 
     /**
-     * @cfg {Boolean} [submitValue=false]
+     * @cfg submitValue
      * @inheritdoc
      */
     submitValue: false,
@@ -130,7 +156,7 @@ Ext.define('Ext.form.field.Display', {
     getValue: function() {
         return this.value;
     },
-    
+
     valueToRaw: function(value) {
         if (value || value === 0 || value === false) {
             return value;

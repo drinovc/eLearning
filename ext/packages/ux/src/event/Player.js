@@ -636,7 +636,7 @@ return {
     schedule: function () {
         var me = this;
         if (!me.timer) {
-            me.timer = setTimeout(me.timerFn, 10);
+            me.timer = Ext.defer(me.timerFn, 10);
         }
     },
 
@@ -718,7 +718,7 @@ return {
         var me = this;
 
         if (me.timer) {
-            clearTimeout(me.timer);
+            Ext.undefer(me.timer);
             me.timer = null;
         }
     },

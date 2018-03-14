@@ -303,14 +303,12 @@ Ext.define('Ext.chart.theme.Base', {
         },
 
         /**
-         * @deprecated Use the {@link Ext.draw.Container#gradients} config instead.
-         * @since 5.0.1
+         * @deprecated 5.0.1 Use the {@link Ext.draw.Container#gradients} config instead.
          */
         useGradients: false,
 
         /**
-         * @deprecated Use the {@link Ext.chart.AbstractChart#background} config instead.
-         * @since 5.0.1
+         * @deprecated 5.0.1 Use the {@link Ext.chart.AbstractChart#background} config instead.
          */
         background: null
     },

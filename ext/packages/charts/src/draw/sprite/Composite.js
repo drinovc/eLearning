@@ -72,8 +72,7 @@ Ext.define('Ext.draw.sprite.Composite', {
     },
 
     /**
-     * @deprecated Use {@link #addSprite} instead.
-     * @since 6.2.1
+     * @deprecated 6.2.1 Use {@link #addSprite} instead.
      */
     add: function (sprite) {
         return this.addSprite(sprite);
@@ -115,8 +114,7 @@ Ext.define('Ext.draw.sprite.Composite', {
     },
 
     /**
-     * @deprecated Use {@link #addSprite} instead.
-     * @since 6.2.1
+     * @deprecated 6.2.1 Use {@link #addSprite} instead.
      * Adds a list of sprites to the composite.
      * @param {Ext.draw.sprite.Sprite[]|Object[]|Ext.draw.sprite.Sprite|Object} sprites
      */

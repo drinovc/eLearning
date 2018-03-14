@@ -2520,7 +2520,16 @@ function() {
                             });
 
                             it("should not merge classes when changing tdStyle", function() {
-                                var cell;
+                                var testEl = Ext.getBody().createChild({
+                                        style: 'text-decoration: underline'
+                                    }),
+
+                                    // We need implementation-specific style string
+                                    underlineStyle = Ext.fly(testEl).getStyle('text-decoration'),
+                                    cell;
+
+                                testEl.destroy();
+
                                 makeGrid([{
                                     width: 100,
                                     dataIndex: 'field0',
@@ -2554,7 +2563,7 @@ function() {
                                 }
                                 
                                 expect(style).not.toBe('red');
-                                expect(cell.getStyle('text-decoration')).toBe('underline');
+                                expect(cell.getStyle('text-decoration')).toBe(underlineStyle);
                             });
                         });
 

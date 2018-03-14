@@ -272,6 +272,7 @@ Ext.define('Ext.toolbar.Paging', {
     },
 
     /**
+     * @property defaultBindProperty
      * @inheritdoc
      */
     defaultBindProperty: 'store',

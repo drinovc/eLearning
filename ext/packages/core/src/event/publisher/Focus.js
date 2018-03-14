@@ -167,7 +167,7 @@ function(Focus) {
                             // But we want that to fire only once, so process window blur
                             // which happens last.
                             if (e.target === window) {
-                                clearTimeout(focusTimeout);
+                                Ext.undefer(focusTimeout);
                                 focusTimeout = 0;
                                 me.processFocusIn(e, Focus.previousActiveElement, document.body);
                                 Focus.previousActiveElement = null;
@@ -179,11 +179,11 @@ function(Focus) {
                         // by removing previously focused element from the DOM, or some
                         // other happening that doesn't involve <strike>Elvis</strike>focus
                         // completely leaving the building.
-                        focusTimeout = setTimeout(function() {
+                        focusTimeout = Ext.defer(function() {
                             focusTimeout = 0;
                             me.processFocusIn(e, e.target, document.body);
                             Focus.previousActiveElement = null;
-                        }, 0);
+                        }, 1);
                         
                         // Store the timer in case the element gets destroyed before
                         // the function above has a chance to fire
@@ -195,7 +195,7 @@ function(Focus) {
                     Focus.previousActiveElement = targetIsElement ? e.target : null;
                 }
                 else {
-                    clearTimeout(focusTimeout);
+                    Ext.undefer(focusTimeout);
                     focusTimeout = 0;
 
                     me.processFocusIn(
@@ -212,7 +212,7 @@ function(Focus) {
             
             destroy: function() {
                 if (this.focusinTimeout) {
-                    clearTimeout(this.focusinTimeout);
+                    Ext.undefer(this.focusinTimeout);
                     this.focusinTimeout = null;
                 }
                 

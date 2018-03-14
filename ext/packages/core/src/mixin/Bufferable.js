@@ -134,6 +134,8 @@ Ext.define('Ext.mixin.Bufferable', function (Bufferable) { return {
                 classMethods;
 
             if (methods) {
+                Bufferable._canonicalize(methods);
+
                 classMethods = me.self.prototype.bufferableMethods;
 
                 me.bufferableMethods = Ext.merge(Ext.clone(classMethods), methods);
@@ -157,12 +159,65 @@ Ext.define('Ext.mixin.Bufferable', function (Bufferable) { return {
         },
 
         statics: {
+            SINGLE: { single: true },
+
+            _canonicalize: function (methods) {
+                var t, def, s, name;
+
+                for (name in methods) {
+                    s = Ext.String.capitalize(name);
+                    def = methods[name];
+                    t = typeof def;
+
+                    if (t === 'number' || t === 'string') {
+                        // method: 50
+                        // method: 'asap'
+                        // method: 'idle'
+                        // method: 'raf'
+                        methods[name] = def = {
+                            delay: def
+                        };
+                    }
+
+                    if (typeof(t = def.delay) === 'string') {
+                        // method: {
+                        //     delay: 'asap'
+                        // }
+                        def[t] = true;
+                        delete def.delay;
+                    }
+
+                    def.capitalized = s;
+                    def.name = name;
+
+                    if (!def.fn) {
+                        def.fn = 'do' + s;
+                    }
+
+                    if (!def.flag) {
+                        def.flag = 'is' + s + 'Pending';
+                    }
+                }
+            },
+
             _canceller: function () {
-                var timer = this, // this fn is "cnacel()" on timer instances
+                var timer = this, // this fn is "cancel()" on timer instances
                     id = timer.id;
 
                 if (id) {
-                    clearTimeout(id);
+                    if (timer.delay) {
+                        Ext.undefer(id);
+                    }
+                    else if (timer.asap) {
+                        Ext.unasap(id);
+                    }
+                    else if (timer.idle) {
+                        Ext.un('idle', id, null, Bufferable.SINGLE);
+                    }
+                    else if (timer.raf) {
+                        Ext.unraf(id);
+                    }
+
                     timer.id = null;
                 }
 
@@ -172,7 +227,7 @@ Ext.define('Ext.mixin.Bufferable', function (Bufferable) { return {
 
             _invoker: function () {
                 var timer = this, // this fn is "invoke()" on timer instances
-                    args = timer.args,
+                    args = timer.args || Ext.emptyArray,
                     target = timer.target;
 
                 //<debug>
@@ -183,23 +238,27 @@ Ext.define('Ext.mixin.Bufferable', function (Bufferable) { return {
                 target[timer.fn].apply(target, args);
             },
 
-            delayCall: function (target, name, flagName, methodName, args) {
+            delayCall: function (target, def, args) {
                 var bufferables = target.bufferables || target.initBufferables(),
-                    timer = bufferables[name] || (bufferables[name] = {
+                    name = def.name,
+                    timer = bufferables[name] || (bufferables[name] = Ext.apply({
                             //<debug>
                             calls: 0,
                             invokes: 0,
                             //</debug>
                             args: null,
                             cancel: Bufferable._canceller,
-                            flag: flagName,
-                            fn: methodName,
                             id: null,
-                            name: name,
                             target: target,
                             invoke: Bufferable._invoker
-                        }),
-                    delay = target.bufferableMethods[name];
+                        }, def)),
+                    delay = def.delay,
+                    exec = function () {
+                        if (timer.id) {
+                            timer.id = null;
+                            timer.invoke();
+                        }
+                    };
 
                 if (timer.id) {
                     timer.cancel();
@@ -210,13 +269,20 @@ Ext.define('Ext.mixin.Bufferable', function (Bufferable) { return {
                 ++timer.calls;
                 //</debug>
 
-                if (delay) {
-                    timer.id = Ext.defer(function () {
-                        timer.id = null;
-                        timer.invoke();
-                    }, delay);
+                target[timer.flag] = true;
 
-                    target[flagName] = true;
+                if (delay) {
+                    timer.id = Ext.defer(exec, delay);
+                }
+                else if (def.asap) {
+                    timer.id = Ext.asap(exec);
+                }
+                else if (def.idle) {
+                    timer.id = exec;
+                    Ext.on('idle', exec, null, Bufferable.SINGLE);
+                }
+                else if (def.raf) {
+                    timer.id = Ext.raf(exec);
                 }
                 else {
                     // allow bufferableMethods: { foo: 0 } to force immediate call
@@ -227,22 +293,26 @@ Ext.define('Ext.mixin.Bufferable', function (Bufferable) { return {
             processClass: function (cls, bufferableMethods) {
                 var proto = cls.prototype,
                     inherited = proto.bufferableMethods,
-                    name;
+                    def, name;
 
                 if (bufferableMethods) { // if (derived class)
+                    Bufferable._canonicalize(bufferableMethods);
+
                     if (inherited) {
                         // If we have a derived class, it could be just adjusting the
                         // configuration, not introducing new properties, so clone the
                         // inherited config and merge on the one from the classBody.
-                        inherited = Ext.clone(inherited);
-                        proto.bufferableMethods = Ext.merge(inherited, bufferableMethods);
+                        inherited = Ext.merge(Ext.clone(inherited), bufferableMethods);
                     }
+
+                    proto.bufferableMethods = inherited || bufferableMethods;
                 }
                 else {
                     // else we are being mixed in, so the bufferableMethods on the
                     // prototype almost certainly belong to the immediate user class
                     // that is mixing us in... (leave the config on the prototype)
                     bufferableMethods = inherited;
+                    Bufferable._canonicalize(bufferableMethods);
 
                     // prevent shape change
                     proto.bufferables = null;
@@ -251,19 +321,19 @@ Ext.define('Ext.mixin.Bufferable', function (Bufferable) { return {
                 if (bufferableMethods) {
                     for (name in bufferableMethods) {
                         if (!proto[name]) {
-                            Bufferable.processMethod(proto, name, Array.prototype.slice);
+                            def = bufferableMethods[name];
+                            Bufferable.processMethod(proto, def, Array.prototype.slice);
                         }
                     }
                 }
             },
 
-            processMethod: function (proto, name, slice) {
-                var cap = Ext.String.capitalize(name),
-                    flag = 'is' + cap + 'Pending',
-                    fn = 'do' + cap;
+            processMethod: function (proto, def, slice) {
+                var name = def.name,
+                    cap = def.capitalized;
 
                 proto[name] = function () {
-                    return Bufferable.delayCall(this, name, flag, fn, slice.call(arguments));
+                    return Bufferable.delayCall(this, def, slice.call(arguments));
                 };
 
                 proto['cancel' + cap] = function () {
@@ -276,4 +346,4 @@ Ext.define('Ext.mixin.Bufferable', function (Bufferable) { return {
             }
         } // statics
     } // privates
-}});
+};});

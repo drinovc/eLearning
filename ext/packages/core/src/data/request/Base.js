@@ -140,12 +140,7 @@ Ext.define('Ext.data.request.Base', {
     },
 
     clearTimer: function() {
-        var timer = this.timer;
-
-        if (timer) {
-            clearTimeout(timer);
-            this.timer = null;
-        }
+        this.timer = Ext.undefer(this.timer);
     },
 
     destroy: function() {

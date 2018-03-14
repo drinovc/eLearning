@@ -3,6 +3,7 @@
  */
 Ext.define('Ext.ux.DataView.DragSelector', {
     requires: ['Ext.dd.DragTracker', 'Ext.util.Region'],
+    alias: 'plugin.dataviewdragselector',
 
     /**
      * Initializes the plugin by setting up the drag tracker

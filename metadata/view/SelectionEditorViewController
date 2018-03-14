@@ -29,6 +29,8 @@
                 "fn": "show",
                 "implHandler": [
                     "opts = Ext.applyIf(opts, {",
+                    "    text: '',",
+                    "    options: [],",
                     "    callback: function(value) { console.log('Please specify a callback!', value); },",
                     "    scope: this",
                     "});",
@@ -38,6 +40,11 @@
                     "    view = me.getView();",
                     "",
                     "me._opts = opts;",
+                    "",
+                    "if(opts.options) {",
+                    "    me.getStore('StoreOptions').setData(Ext.clone(opts.options));",
+                    "}",
+                    "refs.text.setValue(opts.text);",
                     "",
                     "view.show();"
                 ]

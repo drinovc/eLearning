@@ -23,6 +23,12 @@ Ext.define('Ext.chart.legend.Legend', {
          * toggled by interaction with the legend items.
          */
         toggleable: true
+
+        /**
+         * @cfg {Ext.chart.legend.store.Store} store
+         * The {@link Ext.chart.legend.store.Store} to bind this legend to.
+         * @private
+         */
     },
 
     baseCls: Ext.baseCSSPrefix + 'legend',
@@ -56,6 +62,17 @@ Ext.define('Ext.chart.legend.Legend', {
                     // This will trigger AbstractChart.onLegendStoreUpdate.
                     record.set('disabled', !disabled);
                 }
+            }
+        }
+    },
+
+    onResize: function (width, height, oldWidth, oldHeight) {
+        var me = this,
+            chart = me.chart;
+
+        if (!me.isConfiguring) {
+            if (chart) {
+                chart.scheduleLayout();
             }
         }
     }

@@ -1,14 +1,20 @@
 topSuite("Ext.picker.Date", [
     'Ext.viewport.Viewport'
 ], function() {
-    var viewport, datePicker;
+    var datePicker;
 
     jasmine.usesViewport();  // setup in beforeAll, teardown in afterAll
 
-    function makeDatePicker (value) {
-        datePicker = Ext.create('Ext.picker.Date', {
+    function makeDatePicker (value, slotCfg) {
+        var cfg = {
             value: value || null
-        });
+        };
+
+        if (slotCfg) {
+            cfg.slotOrder = slotCfg;
+        }
+
+        datePicker = Ext.create('Ext.picker.Date', cfg);
 
         Ext.Viewport.add(datePicker);
     } 
@@ -26,6 +32,18 @@ topSuite("Ext.picker.Date", [
             datePicker.show(false);
 
             expect(datePicker.getValue()).toEqual(Ext.Date.clearTime(date));
+        });
+    });
+
+    describe("configuration", function() {
+        it("should allow to be created without a day slow", function() {
+            var date = new Date();
+
+            makeDatePicker(date, ["year", "month" ]);
+
+            expect(function() {
+                datePicker.show();
+            }).not.toThrow();
         });
     });
 });

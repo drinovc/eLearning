@@ -472,7 +472,9 @@ Ext.define('Ext.app.Controller', {
 
     config : {
         /**
-         * @cfg {Ext.app.Application} application The {@link Ext.app.Application} for this controller accessible via the getApplication method.
+         * @cfg {Ext.app.Application} application
+         * The {@link Ext.app.Application} for this controller accessible via the
+         * getApplication method.
          * @accessor
          * @readonly
          */
@@ -573,7 +575,8 @@ Ext.define('Ext.app.Controller', {
 
     /**
      * @private
-     * Takes either an object and transforms it into an array. The following are valid refs values:
+     * Takes either an object and transforms it into an array. The following are valid
+     * refs values:
      *
      *     refs: {
      *         myComponent: 'container'
@@ -935,6 +938,7 @@ Ext.define('Ext.app.Controller', {
     },
 
     /**
+     * @method destroy
      * @inheritdoc
      * @param destroyRefs (private)
      * @param fromApp (private)

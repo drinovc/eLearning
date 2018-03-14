@@ -228,15 +228,18 @@ Ext.define('Ext.ux.form.MultiSelect', {
     
     afterRender: function(){
         var me = this,
-            boundList = me.boundList,
-            records, panel;
+            boundList, scrollable, records, panel;
         
         me.callParent();
+
+        boundList = me.boundList;
+        scrollable = boundList && boundList.getScrollable();
+
         if (me.selectOnRender) {
             records = me.getRecordsForValue(me.value);
             if (records.length) {
                 ++me.ignoreSelectChange;
-                me.boundList.getSelectionModel().select(records);
+                boundList.getSelectionModel().select(records);
                 --me.ignoreSelectChange;
             }
             delete me.toSelect;
@@ -248,14 +251,16 @@ Ext.define('Ext.ux.form.MultiSelect', {
 
         if (me.draggable || me.dragGroup){
             me.dragZone = Ext.create('Ext.view.DragZone', {
-                view: me.boundList,
+                view: boundList,
                 ddGroup: me.dragGroup,
-                dragText: me.dragText
+                dragText: me.dragText,
+                containerScroll: !!scrollable,
+                scrollEl: scrollable && scrollable.getElement()
             });
         }
         if (me.droppable || me.dropGroup){
             me.dropZone = Ext.create('Ext.view.DropZone', {
-                view: me.boundList,
+                view: boundList,
                 ddGroup: me.dropGroup,
                 handleNodeDrop: function(data, dropRecord, position) {
                     var view = this.view,

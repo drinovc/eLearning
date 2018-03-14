@@ -360,67 +360,240 @@ function() {
         });
     });
 
-    (Ext.isWebKit ? describe : xdescribe)("focus/blur", function() {
-        var blurFired, textfield;
+    describe("focus/blur", function() {
+        var blurSpy, focusLeaveSpy, validateSpy, button;
 
         beforeEach(function() {
+            blurSpy = jasmine.createSpy('blur event');
+            focusLeaveSpy = jasmine.createSpy('focusleave event');
+            validateSpy = jasmine.createSpy('validitychange event');
+            
             makeComponent({
                 renderTo: Ext.getBody(),
+                allowBlank: false,
+                listeners: {
+                    blur: blurSpy,
+                    focusleave: focusLeaveSpy,
+                    validitychange: validateSpy
+                },
                 createPicker: function() {
                     return new Ext.Container({
                         hidden: true,
                         renderTo: Ext.getBody(),
                         floating: true,
                         html: 'foo',
+                        defaultFocus: 'component',
                         items: [
                             {
                                 xtype: 'component',
-                                autoEl: 'a'
+                                autoEl: 'a',
+                                focusable: true,
+                                tabIndex: 0
                             }
                         ]
                     });
                 }
             });
         });
+        
+        afterEach(function() {
+            blurSpy = focusLeaveSpy = validateSpy = null;
+        });
 
         describe("blur event", function() {
             beforeEach(function() {
-                textfield = Ext.widget({
+                button = new Ext.button.Button({
                     renderTo: document.body,
-                    xtype: 'textfield'
+                    text: 'foo'
                 });
-                blurFired = false;
-            }); 
+                
+                focusAndWait(component);
+            });
             
             afterEach(function() {
-                textfield.destroy();
+                button = Ext.destroy(button);
             });
 
-            it("should fire the blur event when another component is programmatically focused", function() {
-                component.focus();
-                component.on('blur', function() {
-                    blurFired = true;
+            describe("to other component", function() {
+                it("should fire the blur event", function() {
+                    runs(function() {
+                        expect(blurSpy).not.toHaveBeenCalled();
+                    });
+                    
+                    focusAndWait(button);
+                    
+                    runs(function() {
+                        expect(blurSpy).toHaveBeenCalled();
+                    });
                 });
-                textfield.focus();
-                expect(blurFired).toBe(true);
+                
+                it("should validate by default", function() {
+                    focusAndWait(button);
+                    
+                    runs(function() {
+                        expect(validateSpy).toHaveBeenCalled();
+                    });
+                });
+                
+                it("should not validate when validateOnBlur is false", function() {
+                    component.validateOnBlur = false;
+                    
+                    focusAndWait(button);
+                    
+                    runs(function() {
+                        expect(validateSpy).not.toHaveBeenCalled();
+                    });
+                });
             });
 
-            it("should not fire the blur event when the input loses focus due to the picker receiving focus", function() {
-                component.on('blur', function() {
-                    blurFired = true;
+            describe("to the picker", function() {
+                it("should fire the blur event", function() {
+                    component.expand();
+                    
+                    focusAndWait(component.picker);
+                    
+                    runs(function() {
+                        expect(blurSpy).toHaveBeenCalled();
+                    });
                 });
-                component.expand();
-                component.picker.items.getAt(0).focus();
-                expect(blurFired).toBe(false);
+                
+                it("should validate by default", function() {
+                    component.expand();
+                    
+                    focusAndWait(component.picker);
+                    
+                    runs(function() {
+                        expect(validateSpy).toHaveBeenCalled();
+                    });
+                });
+                
+                it("should not validate when validateOnBlur is false", function() {
+                    component.validateOnBlur = false;
+                    component.expand();
+                    
+                    focusAndWait(component.picker);
+                    
+                    runs(function() {
+                        expect(validateSpy).not.toHaveBeenCalled();
+                    });
+                });
+            });
+        });
+        
+        describe("focusleave event", function() {
+            beforeEach(function() {
+                button = new Ext.button.Button({
+                    renderTo: document.body,
+                    text: 'foo'
+                });
+                
+                focusAndWait(component);
+            });
+            
+            afterEach(function() {
+                button = Ext.destroy(button);
+            });
+
+            describe("to other component", function() {
+                it("should fire the focusleave event", function() {
+                    runs(function() {
+                        expect(blurSpy).not.toHaveBeenCalled();
+                        expect(focusLeaveSpy).not.toHaveBeenCalled();
+                    });
+                    
+                    focusAndWait(button);
+                    
+                    runs(function() {
+                        expect(blurSpy).toHaveBeenCalled();
+                        expect(focusLeaveSpy).toHaveBeenCalled();
+                    });
+                });
+                
+                it("should validate by default", function() {
+                    focusAndWait(button);
+                    
+                    runs(function() {
+                        expect(validateSpy).toHaveBeenCalled();
+                    });
+                });
+                
+                it("should validate when validateOnBlur is false but validateOnFocusLeave is true", function() {
+                    component.validateOnBlur = false;
+                    component.validateOnFocusLeave = true;
+                    
+                    focusAndWait(button);
+                    
+                    runs(function() {
+                        expect(validateSpy).toHaveBeenCalled();
+                    });
+                });
+                
+                it("should not validate when both flags are false", function() {
+                    component.validateOnBlur = false;
+                    component.validateOnFocusLeave = false;
+                    
+                    focusAndWait(button);
+                    
+                    runs(function() {
+                        expect(validateSpy).not.toHaveBeenCalled();
+                    });
+                });
+            });
+
+            describe("to the picker", function() {
+                it("should fire the blur event", function() {
+                    component.expand();
+                    
+                    focusAndWait(component.picker);
+                    
+                    runs(function() {
+                        expect(blurSpy).toHaveBeenCalled();
+                    });
+                });
+                
+                it("should not fire the focusleave event", function() {
+                    component.expand();
+                    
+                    focusAndWait(component.picker);
+                    
+                    runs(function() {
+                        expect(focusLeaveSpy).not.toHaveBeenCalled();
+                    });
+                });
+                
+                it("should validate by default", function() {
+                    component.expand();
+                    
+                    focusAndWait(component.picker);
+                    
+                    runs(function() {
+                        expect(validateSpy).toHaveBeenCalled();
+                    });
+                });
+                
+                it("should not validate when validateOnBlur is false", function() {
+                    component.validateOnBlur = false;
+                    component.validateOnFocusLeave = true;
+                    
+                    component.expand();
+                    
+                    focusAndWait(component.picker);
+                    
+                    runs(function() {
+                        expect(validateSpy).not.toHaveBeenCalled();
+                    });
+                });
             });
         });
 
-        it("should re-focus the input if focus is lost due to a mousedown on the picker", function() {
+        // What is this?
+        xit("should re-focus the input if focus is lost due to a mousedown on the picker", function() {
             component.focus();
             component.expand();
             jasmine.fireMouseEvent(component.picker.el.dom, 'mousedown');
             expect(component.hasFocus).toBe(true);
             expect(Ext.Element.getActiveElement()).toBe(component.inputEl.dom);
+            jasmine.fireMouseEvent(component.picker.el.dom, 'mouseup');
         });
     });
     

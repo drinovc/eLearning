@@ -40,8 +40,8 @@ Ext.define('Ext.menu.Item', {
 
     config: {
         /**
-         * @cfg {Number/String} glyph
-         * @inheritdoc Ext.panel.Header#glyph
+         * @cfg glyph
+         * @inheritdoc Ext.panel.Header#cfg-glyph
          */
         glyph: null
     },
@@ -105,12 +105,12 @@ Ext.define('Ext.menu.Item', {
     hideOnClick: true,
 
     /**
-     * @cfg {String} [icon=Ext#BLANK_IMAGE_URL]
-     * @inheritdoc Ext.panel.Header#icon
+     * @cfg [icon=Ext#BLANK_IMAGE_URL]
+     * @inheritdoc Ext.panel.Header#cfg-icon
      */
 
     /**
-     * @cfg {String} iconCls
+     * @cfg iconCls
      * @inheritdoc Ext.panel.Header#cfg-iconCls
      */
 
@@ -160,10 +160,28 @@ Ext.define('Ext.menu.Item', {
      */
     tooltipType: 'qtip',
     
+    /**
+     * @property focusable
+     * @inheritdoc
+     */
     focusable: true,
+    
+    /**
+     * @property ariaRole
+     * @inheritdoc
+     */
     ariaRole: 'menuitem',
+    
+    /**
+     * @property ariaEl
+     * @inheritdoc
+     */
     ariaEl: 'itemEl',
 
+    /**
+     * @cfg baseCls
+     * @inheritdoc
+     */
     baseCls: Ext.baseCSSPrefix + 'menu-item',
     arrowCls: Ext.baseCSSPrefix + 'menu-item-arrow',
     baseIconCls: Ext.baseCSSPrefix + 'menu-item-icon',
@@ -175,10 +193,18 @@ Ext.define('Ext.menu.Item', {
     linkCls: Ext.baseCSSPrefix + 'menu-item-link',
     linkHrefCls: Ext.baseCSSPrefix + 'menu-item-link-href',
 
+    /**
+     * @cfg childEls
+     * @inheritdoc
+     */
     childEls: [
         'itemEl', 'iconEl', 'textEl', 'arrowEl'
     ],
     
+    /**
+     * @cfg renderTpl
+     * @inheritdoc
+     */
     renderTpl:
         '<tpl if="plain">' +
             '{text}' +
@@ -223,10 +249,18 @@ Ext.define('Ext.menu.Item', {
             '</a>' +
         '</tpl>',
     
+    /**
+     * @cfg autoEl
+     * @inheritdoc
+     */
     autoEl: {
         role: 'presentation'
     },
     
+    /**
+     * @property maskOnDisable
+     * @inheritdoc
+     */
     maskOnDisable: false,
 
     iconAlign: 'left',
@@ -544,7 +578,7 @@ Ext.define('Ext.menu.Item', {
         
         me.cancelDeferExpand();
         me.cancelDeferHide();
-        clearTimeout(me.deferHideParentMenusTimer);
+        Ext.undefer(me.deferHideParentMenusTimer);
 
         me.setMenu(null);
         
@@ -805,6 +839,8 @@ Ext.define('Ext.menu.Item', {
      *
      *   - **String** : A string to be used as innerHTML (html tags are accepted) to show in a tooltip
      *   - **Object** : A configuration object for {@link Ext.tip.QuickTipManager#register}.
+     *
+     * @param {Boolean} [initial] (private)
      *
      * @return {Ext.menu.Item} this
      */

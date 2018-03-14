@@ -2051,13 +2051,15 @@ topSuite("Ext", ["Ext.event.publisher.Dom", "Ext.event.publisher.Gesture"], func
         describe('timer callbacks', function () {
             var called = false,
                 elevatedCalled = false,
-                fn;
+                elevatedScope, elevatedArgs, fn;
 
             beforeEach(function () {
                 fn = function () {
                     elevatedCalled = elevated;
+                    elevatedScope = this;
+                    elevatedArgs = Ext.Array.slice(arguments, 0);
+
                     called = true;
-                    expect(elevated).toBe(true);
                 };
             });
 
@@ -2071,7 +2073,6 @@ topSuite("Ext", ["Ext.event.publisher.Dom", "Ext.event.publisher.Gesture"], func
 
                 runs(function() {
                     bufferedFn = Ext.Function.createBuffered(fn, 1, fakeScope, ['foo', 'bar']);
-                    spyOn(Ext, 'elevateFunction').andCallThrough();
                     bufferedFn();
                 });
 
@@ -2082,10 +2083,9 @@ topSuite("Ext", ["Ext.event.publisher.Dom", "Ext.event.publisher.Gesture"], func
                 runs(function() {
                     expect(elevatedCalled).toBe(true);
                     expect(elevated).toBe(false);
-                    args = Ext.elevateFunction.mostRecentCall.args;
-                    expect(args[0]).toBe(fn);
-                    expect(args[1]).toBe(fakeScope);
-                    expect(args[2]).toEqual(['foo', 'bar']);
+
+                    expect(elevatedScope).toBe(fakeScope);
+                    expect(elevatedArgs).toEqual(['foo', 'bar']);
                 });
             });
 
@@ -2094,7 +2094,6 @@ topSuite("Ext", ["Ext.event.publisher.Dom", "Ext.event.publisher.Gesture"], func
 
                 runs(function() {
                     delayedFn = Ext.Function.createDelayed(fn, 1);
-                    spyOn(Ext, 'elevateFunction').andCallThrough();
                     delayedFn('foo', 'bar');
                 });
 
@@ -2105,11 +2104,9 @@ topSuite("Ext", ["Ext.event.publisher.Dom", "Ext.event.publisher.Gesture"], func
                 runs(function() {
                     expect(elevatedCalled).toBe(true);
                     expect(elevated).toBe(false);
-                    args = Ext.elevateFunction.mostRecentCall.args;
-                    // not the original function - createDelayed uses a bound fn
-                    expect(args[0] instanceof Function).toBe(true);
-                    expect(args[1]).toBe(window);
-                    expect(args[2]).toEqual(['foo', 'bar']);
+
+                    expect(elevatedScope).toBe(window);
+                    expect(elevatedArgs).toEqual(['foo', 'bar']);
                 });
             });
 
@@ -2117,9 +2114,21 @@ topSuite("Ext", ["Ext.event.publisher.Dom", "Ext.event.publisher.Gesture"], func
                 var throttledFn, args;
 
                 runs(function() {
-                    throttledFn = Ext.Function.createThrottled(fn, 1, fakeScope);
-                    spyOn(Ext, 'elevateFunction').andCallThrough();
-                    throttledFn('foo', 'bar');
+                    // Ensure the throttle threshold is enough that the second call
+                    // with ['foo', 'bar'] executes within the throttle period
+                    // and the call gets deferred.
+                    throttledFn = Ext.Function.createThrottled(fn, 10, fakeScope);
+
+                    called = false;
+
+                    elevatedCalled = null;
+                    throttledFn('barf', 'yip'); // should run now
+                    expect(elevatedCalled).toBe(false);
+                    expect(called).toBe(true);
+
+                    called = false;
+
+                    throttledFn('foo', 'bar'); // should run later
                 });
 
                 waitsFor(function() {
@@ -2129,11 +2138,9 @@ topSuite("Ext", ["Ext.event.publisher.Dom", "Ext.event.publisher.Gesture"], func
                 runs(function() {
                     expect(elevatedCalled).toBe(true);
                     expect(elevated).toBe(false);
-                    args = Ext.elevateFunction.mostRecentCall.args;
-                    // not the original function - createDelayed uses a bound fn
-                    expect(args[0]).toBe(fn);
-                    expect(args[1]).toBe(fakeScope);
-                    expect(args[2]).toEqual(['foo', 'bar']);
+
+                    expect(elevatedScope).toBe(fakeScope);
+                    expect(elevatedArgs).toEqual(['foo', 'bar']);
                 });
             });
 
@@ -2142,7 +2149,6 @@ topSuite("Ext", ["Ext.event.publisher.Dom", "Ext.event.publisher.Gesture"], func
 
                 runs(function() {
                     Ext.defer(fn, 1, fakeScope, ['foo', 'bar']);
-                    spyOn(Ext, 'elevateFunction').andCallThrough();
                 });
 
                 waitsFor(function() {
@@ -2152,11 +2158,9 @@ topSuite("Ext", ["Ext.event.publisher.Dom", "Ext.event.publisher.Gesture"], func
                 runs(function() {
                     expect(elevatedCalled).toBe(true);
                     expect(elevated).toBe(false);
-                    args = Ext.elevateFunction.mostRecentCall.args;
-                    // not the original function - defer uses a bound fn
-                    expect(args[0] instanceof Function).toBe(true);
-                    expect(args[1]).toBeUndefined();
-                    expect(args[2]).toBeUndefined();
+
+                    expect(elevatedScope).toBe(fakeScope);
+                    expect(elevatedArgs).toEqual(['foo', 'bar']);
                 });
             });
 
@@ -2164,12 +2168,11 @@ topSuite("Ext", ["Ext.event.publisher.Dom", "Ext.event.publisher.Gesture"], func
                 var args, interval;
 
                 fn = Ext.Function.createSequence(fn, function () {
-                    clearInterval(interval);
+                    Ext.uninterval(interval);
                 });
 
                 runs(function() {
                     interval = Ext.interval(fn, 100, fakeScope, ['foo', 'bar']);
-                    spyOn(Ext, 'elevateFunction').andCallThrough();
                 });
 
                 waitsFor(function() {
@@ -2179,18 +2182,15 @@ topSuite("Ext", ["Ext.event.publisher.Dom", "Ext.event.publisher.Gesture"], func
                 runs(function() {
                     expect(elevatedCalled).toBe(true);
                     expect(elevated).toBe(false);
-                    args = Ext.elevateFunction.mostRecentCall.args;
-                    // not the original function - interval uses a bound fn
-                    expect(args[0] instanceof Function).toBe(true);
-                    expect(args[1]).toBeUndefined();
-                    expect(args[2]).toBeUndefined();
+
+                    expect(elevatedScope).toBe(fakeScope);
+                    expect(elevatedArgs).toEqual(['foo', 'bar']);
                 });
             });
 
             it("should call the elevateFunction when a requestAnimationFrame callback is called", function() {
                 runs(function() {
-                    spyOn(Ext, 'elevateFunction').andCallThrough();
-                    Ext.Function.requestAnimationFrame(fn);
+                    Ext.raf(fn);
                 });
 
                 waitsFor(function() {
@@ -2209,7 +2209,6 @@ topSuite("Ext", ["Ext.event.publisher.Dom", "Ext.event.publisher.Gesture"], func
 
                 runs(function() {
                     animFn = Ext.Function.createAnimationFrame(fn, fakeScope);
-                    spyOn(Ext, 'elevateFunction').andCallThrough();
                     animFn('foo', 'bar');
                 });
 
@@ -2220,64 +2219,10 @@ topSuite("Ext", ["Ext.event.publisher.Dom", "Ext.event.publisher.Gesture"], func
                 runs(function() {
                     expect(elevatedCalled).toBe(true);
                     expect(elevated).toBe(false);
-                    args = Ext.elevateFunction.mostRecentCall.args;
-                    // createAnimationFrame calls through to requestAnimationFrame, so the
-                    // original fn/scope/args are not the ones passed to elevateFunction
-                    expect(args[0] instanceof Function).toBe(true);
-                    expect(args[1]).toBeUndefined();
-                    expect(args[2]).toBeUndefined();
+
+                    expect(elevatedScope).toBe(fakeScope);
+                    expect(elevatedArgs).toEqual(['foo', 'bar']);
                 });
-            });
-        });
-
-        it("should call the elevate function when an Ext.callback function is called", function() {
-            var called = false,
-                animFn, args;
-
-            function fn() {
-                called = true;
-            }
-
-            runs(function() {
-                spyOn(Ext, 'elevateFunction').andCallThrough();
-                Ext.callback(fn, fakeScope);
-            });
-
-            waitsFor(function() {
-                return called;
-            });
-
-            runs(function() {
-                expect(Ext.elevateFunction.callCount).toBe(1);
-                args = Ext.elevateFunction.mostRecentCall.args;
-                expect(args[0]).toBe(fn);
-                expect(args[1]).toBe(fakeScope);
-            });
-        });
-
-        it("should call the elevate function when an Ext.callback function is called with args", function() {
-            var called = false,
-                animFn, args;
-
-            function fn() {
-                called = true;
-            }
-
-            runs(function() {
-                spyOn(Ext, 'elevateFunction').andCallThrough();
-                Ext.callback(fn, fakeScope, ['foo', 'bar']);
-            });
-
-            waitsFor(function() {
-                return called;
-            });
-
-            runs(function() {
-                expect(Ext.elevateFunction.callCount).toBe(1);
-                args = Ext.elevateFunction.mostRecentCall.args;
-                expect(args[0]).toBe(fn);
-                expect(args[1]).toBe(fakeScope);
-                expect(args[2]).toEqual(['foo', 'bar']);
             });
         });
     });

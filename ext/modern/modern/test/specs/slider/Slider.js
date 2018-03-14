@@ -1,15 +1,12 @@
 topSuite("Ext.slider.Slider", function() {
-    var slider,
-        createField = function(config) {
-            if (slider) {
-                slider.destroy();
-            }
+    var slider;
 
-            slider = Ext.create('Ext.slider.Slider', config || {});
-        };
+    function createField(config) {
+        slider = new Ext.slider.Slider(config);
+    }
 
     afterEach(function() {
-        Ext.destroy(slider);
+        slider = Ext.destroy(slider);
     });
 
     describe('value', function() {
@@ -39,7 +36,6 @@ topSuite("Ext.slider.Slider", function() {
         });
 
         it('should clamp value to minValue and maxValue', function() {
-            var done = false;
             createField({
                 renderTo: document.body,
                 width: 200,
@@ -52,6 +48,18 @@ topSuite("Ext.slider.Slider", function() {
             expect(slider.getValue()).toBe(100);
             slider.setValue(-1);
             expect(slider.getValue()).toBe(0);
+        });
+
+        it("should position correctly immediately at render time", function() {
+            createField({
+                renderTo: Ext.getBody(),
+                width: 200,
+                value: 50
+            });
+            var t = slider.getThumb(),
+                w = t.element.getWidth();
+
+            expect(t.element.getX()).toBeApprox(100 - (w / 2), 2);
         });
     });
 

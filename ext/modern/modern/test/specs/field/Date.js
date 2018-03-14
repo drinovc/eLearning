@@ -1,5 +1,7 @@
-topSuite("Ext.field.Date", ['Ext.viewport.Viewport'],
-function() {
+topSuite("Ext.field.Date", [
+    'Ext.viewport.Viewport',
+    'Ext.data.validator.Date'
+], function() {
     jasmine.usesViewport(); // setup in beforeAll, teardown in afterAll
 
     var today = Ext.Date.clearTime(new Date()),
@@ -33,12 +35,25 @@ function() {
             expect(field.getValue()).toEqual(new Date(2010, 0, 1));
         });
 
-        it("should return the string for a string that does not match the format", function() {
+        it("should accept an object containing the year, month, and day", function () {
+           makeField();
+           field.setValue({year: 2010, month: 0, day: 1});
+           expect(field.getValue()).toEqual(new Date(2010, 0, 1));
+        });
+
+        it("should return null for a string that cannot be parsed", function() {
             makeField({
                 dateFormat: 'Y-m-d'
             });
-            field.setValue('01/01/2010');
-            expect(field.getValue()).toBe('01/01/2010');
+            field.setValue('01/50/2010');
+            expect(field.getValue()).toBe(null);
+        });
+
+        it("should return null for an object that cannot be parsed", function() {
+            makeField();
+
+            field.setValue({});
+            expect(field.getValue()).toBe(null);
         });
 
         it("should update the text field with the formatted value when specifying a date", function() {
@@ -214,17 +229,21 @@ function() {
         var oldPlatformTags;
 
         beforeEach(function() {
-            oldPlatformTags = Ext.platformTags;
-            makeField();
+            oldPlatformTags = Ext.merge({}, Ext.platformTags);
         });
 
         afterEach(function() {
             Ext.platformTags = oldPlatformTags;
-            field = Ext.destroy(field);
+        });
+
+        it("should create only one date trigger", function() {
+            makeField();
+            expect(field.afterInputElement.dom.children.length).toBe(1);
         });
 
         it("should choose edge picker on a phone", function() {
             Ext.platformTags.phone = true;
+            makeField();
 
             var picker = field.getPicker();
 
@@ -233,6 +252,7 @@ function() {
 
         it("should choose floated picker when not on a phone", function() {
             Ext.platformTags.phone = false;
+            makeField();
 
             var picker = field.getPicker();
 
@@ -240,6 +260,7 @@ function() {
         });
 
         it('should set value onto edge picker', function () {
+            makeField();
             var date = new Date();
 
             date.setHours(0);
@@ -251,12 +272,13 @@ function() {
 
             field.setValue(date);
 
-            var picker = field.getPicker();
+            field.expand();
 
-            expect(picker.getValue()).toEqual(new Date(date));
+            expect(field.getPicker().getValue()).toEqual(new Date(date));
         });
 
         it('should set value onto floated picker', function () {
+            makeField();
             var date = new Date();
 
             date.setHours(0);
@@ -266,9 +288,77 @@ function() {
 
             field.setValue(date);
 
-            var picker = field.getPicker();
+            field.expand();
 
-            expect(picker.getValue()).toEqual(new Date(date));
+            expect(field.getPicker().getValue()).toEqual(new Date(date));
+        });
+
+        describe("picker with invalid value", function() {
+            function runIt(type) {
+                var D = Ext.Date,
+                    now = D.clearTime(new Date(), true);
+
+                makeField({
+                    picker: type
+                });
+                field.inputElement.dom.value = 'asdf';
+                field.showPicker();
+                expect(D.clearTime(field.getPicker().getValue(), true)).toEqual(now);
+            }
+
+            it("should set the current date with picker: edge", function() {
+                runIt('edge');
+            });
+
+            it("should set the current date with picker: floated", function() {
+                runIt('floated');
+            });
+        });
+        
+        describe("year picker", function() {
+            beforeEach(function() {
+                makeField({
+                    picker: 'floated'
+                });
+                
+                field.showPicker();
+            });
+            
+            it("should not close date panel when year picker is clicked", function() {
+                var datePicker = field.getPicker(),
+                    yearPicker = datePicker.getYearPicker(),
+                    showSpy = jasmine.createSpy('year picker show'),
+                    hideSpy = jasmine.createSpy('year picker hide');
+                
+                expect(datePicker.isVisible(true)).toBe(true);
+                
+                yearPicker.on({
+                    show: showSpy,
+                    hide: hideSpy
+                });
+                
+                datePicker.toggleYearPicker(true);
+                
+                waitForSpy(showSpy);
+                
+                runs(function() {
+                    var rec, item;
+                    
+                    expect(yearPicker.isVisible(true)).toBe(true);
+                    
+                    rec = yearPicker.getStore().find('year', new Date().getFullYear() + 1);
+                    item = yearPicker.getItem(rec);
+                    
+                    jasmine.fireMouseEvent(item.el, 'click');
+                });
+                
+                waitForSpy(hideSpy);
+                
+                runs(function() {
+                    expect(yearPicker.isVisible(true)).toBe(false);
+                    expect(datePicker.isVisible(true)).toBe(true);
+                });
+            });
         });
     });
 
@@ -291,6 +381,64 @@ function() {
             field.setValue('01/01/2017');
 
             expect(field.validate()).toBe(true);
+        });
+    });
+
+    describe("resetting", function() {
+        it("should reset to the original value", function() {
+            var spy = jasmine.createSpy();
+
+            makeField({
+                value: new Date('01/01/2017 00:00:00')
+            });
+            
+            field.on('change', spy);
+            field.setValue(new Date('02/02/2017 00:00:00'));
+
+            expect(field.getValue()).toEqual(new Date('02/02/2017 00:00:00'));
+
+            field.reset();
+
+            expect(field.getValue()).toEqual(new Date('01/01/2017 00:00:00'));
+            expect(spy.callCount).toBe(2);
+        });
+
+        it("should reset the field when the input is not valid", function() {
+            var spy = jasmine.createSpy();
+
+            makeField({
+                value: new Date('01/01/2017 00:00:00')
+            });
+            field.on('change', spy);
+
+            field.inputElement.dom.value = 'abcdefg';
+            field.onInput({});
+
+            expect(field.isValid()).toBe(false);
+
+            field.reset();
+
+            expect(field.getValue()).toEqual(new Date('01/01/2017 00:00:00'));
+            expect(field.inputElement.dom.value).not.toBe('abcdefg');
+            expect(spy.callCount).toBe(0);
+            expect(field.isValid()).toBe(true);
+        });
+    });
+
+    describe("empty value", function() {
+        it("should be able to clear the value", function() {
+            makeField({
+                value: new Date()
+            });
+
+            // Simulate selecting the text and backspacing it out
+            // Firing key events for backspace don't end up triggering
+            // onInput
+            field.inputElement.dom.value = '';
+            field.onInput({});
+
+            expect(field.getValue()).toBeNull();
+            expect(field.inputElement.dom.value).toBe('');
         });
     });
 });

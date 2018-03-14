@@ -8,8 +8,16 @@ Ext.define('Ext.google.data.AbstractProxy', {
 
     // TODO: Batch actions
     // https://developers.google.com/api-client-library/javascript/features/batch
+    /**
+     * @cfg batchActions
+     * @inheritdoc
+     */
     batchActions: false,
 
+    /**
+     * @cfg reader
+     * @inheritdoc
+     */
     reader: {
         type: 'json',
         rootProperty: 'items',
@@ -47,6 +55,7 @@ Ext.define('Ext.google.data.AbstractProxy', {
     },
 
     /**
+     * @method buildUrl
      * @protected
      * @inheritdoc
      */

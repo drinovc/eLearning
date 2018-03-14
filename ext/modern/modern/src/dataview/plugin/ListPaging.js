@@ -12,12 +12,11 @@
  *
  *         store: Ext.create('TweetStore'),
  *
- *         plugins: [
- *             {
- *                 type: 'listpaging',
+ *         plugins: {
+ *             listpaging: {
  *                 autoPaging: true
  *             }
- *         ],
+ *         },
  *
  *         itemTpl: [
  *             '<img src="{profile_image_url}" />',
@@ -168,7 +167,7 @@ Ext.define('Ext.dataview.plugin.ListPaging', {
      * @private
      */
     applyLoadMoreCmp: function (config, instance) {
-        return Ext.Factory.widget.update(instance, config, this, 'createLoadMoreCmp');
+        return Ext.updateWidget(instance, config, this, 'createLoadMoreCmp');
     },
 
     createLoadMoreCmp: function (config) {

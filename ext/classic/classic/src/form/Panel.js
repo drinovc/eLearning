@@ -148,72 +148,85 @@ Ext.define('Ext.form.Panel', {
     basicFormConfigs: [
         /**
          * @cfg api
-         * @inheritdoc Ext.form.Basic#api
+         * @inheritdoc Ext.form.Basic#cfg!api
          */
         'api', 
+
         /**
          * @cfg baseParams
-         * @inheritdoc Ext.form.Basic#baseParams
+         * @inheritdoc Ext.form.Basic#cfg!baseParams
          */
         'baseParams', 
+
         /**
          * @cfg errorReader
-         * @inheritdoc Ext.form.Basic#errorReader
+         * @inheritdoc Ext.form.Basic#cfg!errorReader
          */
         'errorReader', 
+
         /**
          * @cfg jsonSubmit
-         * @inheritdoc Ext.form.Basic#jsonSubmit
+         * @inheritdoc Ext.form.Basic#cfg!jsonSubmit
          */
         'jsonSubmit',
+
         /**
          * @cfg method
-         * @inheritdoc Ext.form.Basic#method
+         * @inheritdoc Ext.form.Basic#cfg!method
          */
         'method', 
+
         /**
          * @cfg paramOrder
-         * @inheritdoc Ext.form.Basic#paramOrder
+         * @inheritdoc Ext.form.Basic#cfg!paramOrder
          */
         'paramOrder',
+
         /**
          * @cfg paramsAsHash
-         * @inheritdoc Ext.form.Basic#paramsAsHash
+         * @inheritdoc Ext.form.Basic#cfg!paramsAsHash
          */
         'paramsAsHash',
+
         /**
          * @cfg reader
-         * @inheritdoc Ext.form.Basic#reader
+         * @inheritdoc Ext.form.Basic#cfg!reader
          */
         'reader',
+
         /**
          * @cfg standardSubmit
-         * @inheritdoc Ext.form.Basic#standardSubmit
+         * @inheritdoc Ext.form.Basic#cfg!standardSubmit
          */
         'standardSubmit',
+
         /**
          * @cfg timeout
-         * @inheritdoc Ext.form.Basic#timeout
+         * @inheritdoc Ext.form.Basic#cfg!timeout
          */
         'timeout',
+
         /**
          * @cfg trackResetOnLoad
-         * @inheritdoc Ext.form.Basic#trackResetOnLoad
+         * @inheritdoc Ext.form.Basic#cfg!trackResetOnLoad
          */
         'trackResetOnLoad',
+
         /**
          * @cfg url
-         * @inheritdoc Ext.form.Basic#url
+         * @inheritdoc Ext.form.Basic#cfg!url
          */
         'url',
+
         /**
          * @cfg waitMsgTarget
-         * @inheritdoc Ext.form.Basic#waitMsgTarget
+         * @inheritdoc Ext.form.Basic#cfg!waitMsgTarget
          */
         'waitMsgTarget',
+
         /**
          * @cfg waitTitle
-         * @inheritdoc Ext.form.Basic#waitTitle
+         * @inheritdoc Ext.form.Basic#cfg!waitTitle
          */
         'waitTitle'
     ],
@@ -234,21 +247,25 @@ Ext.define('Ext.form.Panel', {
              * @inheritdoc Ext.form.Basic#beforeaction
              */
             'beforeaction',
+
             /**
              * @event actionfailed
              * @inheritdoc Ext.form.Basic#actionfailed
              */
             'actionfailed',
+
             /**
              * @event actioncomplete
              * @inheritdoc Ext.form.Basic#actioncomplete
              */
             'actioncomplete',
+
             /**
              * @event validitychange
              * @inheritdoc Ext.form.Basic#validitychange
              */
             'validitychange',
+
             /**
              * @event dirtychange
              * @inheritdoc Ext.form.Basic#dirtychange
@@ -330,6 +347,7 @@ Ext.define('Ext.form.Panel', {
     },
 
     /**
+     * @method getValues
      * Convenience function for fetching the current value of each field in the form. This is the same as calling
      * {@link Ext.form.Basic#getValues this.getForm().getValues()}.
      *
@@ -340,6 +358,7 @@ Ext.define('Ext.form.Panel', {
     },
     
     /**
+     * @method isDirty
      * Convenience function to check if the form has any dirty fields. This is the same as calling
      * {@link Ext.form.Basic#isDirty this.getForm().isDirty()}.
      *
@@ -350,6 +369,7 @@ Ext.define('Ext.form.Panel', {
     },
     
     /**
+     * @method isValid
      * Convenience function to check if the form has all valid fields. This is the same as calling
      * {@link Ext.form.Basic#isValid this.getForm().isValid()}.
      *
@@ -360,6 +380,7 @@ Ext.define('Ext.form.Panel', {
     },
 
     /**
+     * @method reset
      * Convenience function reset the form. This is the same as calling
      * {@link Ext.form.Basic#reset this.getForm().reset()}.
      *
@@ -370,6 +391,7 @@ Ext.define('Ext.form.Panel', {
     },
     
     /**
+     * @method hasInvalidField
      * Convenience function to check if the form has any invalid fields. This is the same as calling
      * {@link Ext.form.Basic#hasInvalidField this.getForm().hasInvalidField()}.
      *

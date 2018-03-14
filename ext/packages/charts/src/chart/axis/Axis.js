@@ -66,7 +66,8 @@ Ext.define('Ext.chart.axis.Axis', {
     requires: [
         'Ext.chart.axis.sprite.Axis',
         'Ext.chart.axis.segmenter.*',
-        'Ext.chart.axis.layout.*'
+        'Ext.chart.axis.layout.*',
+        'Ext.chart.Util'
     ],
 
     isAxis: true,
@@ -288,12 +289,10 @@ Ext.define('Ext.chart.axis.Axis', {
         title: null,
 
         /**
-         * @cfg {Number} increment
-         * Given a minimum and maximum bound for the series to be rendered (that can be obtained
-         * automatically or by manually setting `minimum` and `maximum`) tick marks will be added
-         * on each `increment` from the minimum value to the maximum one.
+         * @private
+         * @cfg {Number} [expandRangeBy=0]
          */
-        increment: 0.5,
+        expandRangeBy: 0,
 
         /**
          * @private
@@ -331,12 +330,6 @@ Ext.define('Ext.chart.axis.Axis', {
          * WARNING: Meant to be set automatically by chart. Do not set it manually.
          */
         rotation: null,
-
-        /**
-         * @cfg {Boolean} [labelInSpan]
-         * Draws the labels in the middle of the spans.
-         */
-        labelInSpan: null,
 
         /**
          * @cfg {Array} visibleRange
@@ -413,6 +406,7 @@ Ext.define('Ext.chart.axis.Axis', {
     range: null,
 
     defaultRange: [0, 1],
+    rangePadding: 0.5,
 
     xValues: [],
 
@@ -949,6 +943,10 @@ Ext.define('Ext.chart.axis.Axis', {
         return range;
     },
 
+    isSingleDataPoint: function (range) {
+        return (range[0] + this.rangePadding) === 0 && (range[1] - this.rangePadding) === 0;
+    },
+
     calculateRange: function () {
         var me = this,
             boundSeries = me.boundSeries,
@@ -958,6 +956,7 @@ Ext.define('Ext.chart.axis.Axis', {
             maximum = me.getMaximum(),
             visibleRange = me.getVisibleRange(),
             getRangeMethod = 'get' + me.getDirection() + 'Range',
+            expandRangeBy = me.getExpandRangeBy(),
             context, attr, majorTicks,
             series, i, ln, seriesRange,
             range = [NaN, NaN];
@@ -975,11 +974,17 @@ Ext.define('Ext.chart.axis.Axis', {
             }
         }
 
-        range = Ext.chart.Util.validateRange(range, me.defaultRange);
+        range = Ext.chart.Util.validateRange(range, me.defaultRange, me.rangePadding);
 
-        if (me.getLabelInSpan()) {
-            range[0] -= me.getIncrement();
-            range[1] += me.getIncrement();
+        // The second condition is there to account for a special case where we only have
+        // a single data point, so the effective range of coordinated data is 0 (whatever
+        // the actual value of that single data point is, it will be assigned an index of
+        // zero, as the first and only data point). Since zero range is invalid, the
+        // validateRange function above will expand the range by the value of the rangePadding,
+        // which makes further expansion by the value of expandRangeBy unnecessary.
+        if (expandRangeBy && (!me.isSingleDataPoint(range))) {
+            range[0] -= expandRangeBy;
+            range[1] += expandRangeBy;
         }
 
         if (isFinite(minimum)) {

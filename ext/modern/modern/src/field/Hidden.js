@@ -48,5 +48,7 @@ Ext.define('Ext.field.Hidden', {
      */
     inputType: 'hidden',
 
+    hidden: true,
+
     classCls: Ext.baseCSSPrefix + 'hiddenfield'
 });

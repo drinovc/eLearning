@@ -12,6 +12,7 @@ Ext.define('Ext.google.data.CalendarsProxy', {
     googleApis: { 'calendar': { version: 'v3' } },
 
     /**
+     * @method buildApiRequests
      * @protected
      * @inheritdoc
      */
@@ -31,6 +32,7 @@ Ext.define('Ext.google.data.CalendarsProxy', {
     },
 
     /**
+     * @method extractResponseData
      * @protected
      * @inheritdoc
      */

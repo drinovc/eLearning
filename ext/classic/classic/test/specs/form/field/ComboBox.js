@@ -576,6 +576,25 @@ function() {
                 });
                 expect(component.inputEl.dom.value).toEqual('text 1|text 2');
             });
+
+            it('should accept an object with display and value fields', function () {
+                // See https://sencha.jira.com/browse/EXTJS-24354
+                makeComponent({
+                    value: { val: 'foo', disp: 'bar' },
+                    valueField: 'val',
+                    displayField: 'disp',
+                    renderTo: Ext.getBody()
+                });
+
+                expect(component.inputEl.dom.value).toEqual('bar');
+                expect(component.getRawValue()).toEqual('bar');
+                expect(component.getValue()).toEqual('foo');
+
+                component.setValue({ val: 'bar', disp: 'foo' });
+                expect(component.inputEl.dom.value).toEqual('foo');
+                expect(component.getRawValue()).toEqual('foo');
+                expect(component.getValue()).toEqual('bar');
+            });
         });
 
         describe("setValue method", function() {
@@ -655,6 +674,17 @@ function() {
                 });
                 component.setValue(['value 1', 'value not in store']);
                 expect(component.inputEl.dom.value).toEqual('text 1');
+            });
+            it("should display the valueNotFoundText when setting as a single value with a custom displayField", function() {
+                makeComponent({
+                    valueField: 'foo',
+                    forceSelection: true,
+                    valueNotFoundText: 'oops!',
+                    displayField: 'display',
+                    renderTo: Ext.getBody()
+                });
+                component.setValue(1234);
+                expect(component.inputEl.dom.value).toEqual('oops!');
             });
             it("should update the expanded dropdown's selection - single select", function() {
                 makeComponent({
@@ -1605,12 +1635,12 @@ function() {
             });
 
             component.expand();
-            spyOn(component.picker.getScrollable(), 'scrollIntoView');
+            spyOn(component.picker.getScrollable(), 'ensureVisible');
             component.setValue('value 32');
 
             component.doAutoSelect();
 
-            expect(component.picker.getScrollable().scrollIntoView).toHaveBeenCalled();
+            expect(component.picker.getScrollable().ensureVisible).toHaveBeenCalled();
         });
         
         it("should select first item when autoSelectLast == false", function() {
@@ -2179,6 +2209,22 @@ function() {
             runs(function() {
                 expect(component.inputEl.dom.value).toBe('text 1');
             });
+        });
+
+        it("should not clear the lastSelectedRecords when calling setValue", function() {
+            makeComponent({
+                displayField: 'text',
+                valueField: 'val',
+                forceSelection: true,
+                queryMode: 'local',
+                renderTo: Ext.getBody()
+            });
+
+            component.setValue('value 2');
+
+            component.setValue('value 2');
+
+            expect(component.lastSelectedRecords).not.toBe(null);
         });
 
         describe("setting value to a value not in the Store with forceSelection: false", function() {

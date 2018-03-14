@@ -64,7 +64,7 @@ Ext.define('Ext.grid.column.Date', {
      */
 
     /**
-     * @cfg {Boolean} producesHTML
+     * @cfg producesHTML
      * @inheritdoc
      */
     producesHTML: false,

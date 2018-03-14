@@ -146,7 +146,7 @@ Ext.define('Ext.dd.ScrollManager', {
         var proc = this.proc;
 
         if (proc.id) {
-            clearInterval(proc.id);
+            Ext.uninterval(proc.id);
         }
 
         proc.id = 0;

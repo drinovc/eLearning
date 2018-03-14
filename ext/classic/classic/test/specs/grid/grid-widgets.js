@@ -240,16 +240,16 @@ function() {
             
             jasmine.waitsForScroll(grid.getScrollable(), function scrollIt(scroller, x, y) {
                 if (view.all.endIndex >= 100) {
-                    clearTimeout(timer);
+                    Ext.undefer(timer);
                     return true;
                 }
                 
                 // Only scroll again when both have caught up with rendering..
                 if (readyToScroll) {
                     readyToScroll = 0;
-                    timer = setTimeout(function() {
+                    timer = Ext.defer(function() {
                         normalView.bufferedRenderer.scrollTo(lastRow + 3, false, function(success, record, item) {
-                            scroller.scrollIntoView(item);
+                            scroller.ensureVisible(item);
                             readyToScroll = true;
                             lastRow = normalView.bufferedRenderer.getLastVisibleRowIndex();
                             scrollIt(scroller);

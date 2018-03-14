@@ -95,6 +95,7 @@ Ext.define('Ext.grid.RowEditor', {
             me.items = [
                 // Locked columns container shrinkwraps the fields
                 lockedCt = me.lockedColumnContainer = new Container({
+                    $initParent: me,
                     id: grid.id + '-locked-editor-cells',
                     scrollable: {
                         x: false,
@@ -110,19 +111,23 @@ Ext.define('Ext.grid.RowEditor', {
 
                 // Normal columns container flexes the remaining RowEditor width
                 normalCt = me.normalColumnContainer = new Container({
+                    $initParent: me,
+                    id: grid.id + '-normal-editor-cells',
                     // not user scrollable, but needs a Scroller instance for syncing with view
                     scrollable: {
                         x: false,
                         y: false
                     },
-                    flex: 1,
-                    id: grid.id + '-normal-editor-cells',
                     layout: {
                         type: 'hbox',
                         align: 'middle'
-                    }
+                    },
+                    flex: 1
                 })
             ];
+
+            delete lockedCt.$initParent;
+            delete normalCt.$initParent;
 
             // keep horizontal position of fields in sync with view's horizontal scroll position
             lockedCt.getScrollable().addPartner(grid.lockedGrid.view.getScrollable(), 'x');
@@ -219,7 +224,10 @@ Ext.define('Ext.grid.RowEditor', {
             width;
 
         field._marginWidth = (field._marginWidth || field.el.getMargin('lr'));
-        width = column.getWidth() - field._marginWidth;
+
+        // Avoid negative width as this will throw Invalid Argument errors in IE
+        width = Math.max(column.getWidth() - field._marginWidth, 0);
+        
         field.setWidth(width);
         if (field.xtype === 'displayfield') {
             // displayfield must have the width set on the inputEl for ellipsis to work
@@ -519,7 +527,7 @@ Ext.define('Ext.grid.RowEditor', {
         fieldContainer.insert(idx, column.getEditor());
     },
 
-    onColumnAdd: function(column) {
+    onColumnAdd: function(column, pos) {
 
         // If a column header added, process its leaves
         if (column.isGroupHeader) {
@@ -527,11 +535,11 @@ Ext.define('Ext.grid.RowEditor', {
         }
         this.preventReposition = true;
         this.addFieldsForColumn(column);
-        this.insertColumnEditor(column);
+        this.insertColumnEditor(column, pos);
         this.preventReposition = false;
     },
 
-    insertColumnEditor: function(column) {
+    insertColumnEditor: function(column, pos) {
         var me = this,
             field,
             fieldContainer,
@@ -548,10 +556,14 @@ Ext.define('Ext.grid.RowEditor', {
             return;
         }
 
+        if (pos == null) {
+            pos = column.getIndex();
+        }
+
         fieldContainer = column.isLocked() ? me.lockedColumnContainer : me.normalColumnContainer;
 
         // Insert the column's field into the editor panel.
-        fieldContainer.insert(column.getIndex(), field = column.getEditor());
+        fieldContainer.insert(pos, field = column.getEditor());
 
         // Ensure the view scrolls the field into view on focus
         field.on('focus', me.onFieldFocus, me);
@@ -573,7 +585,7 @@ Ext.define('Ext.grid.RowEditor', {
 
         // skipFocusScroll should be true right after the editor has been started
         if (!this.skipFocusScroll) {
-            field.column.getView().getScrollable().scrollIntoView(field.el);
+            field.column.getView().getScrollable().ensureVisible(field.el);
         } else {
             this.skipFocusScroll = null;
         }
@@ -620,7 +632,7 @@ Ext.define('Ext.grid.RowEditor', {
                     // If going back to the first column, scroll back to field.
                     // If we're in a locking view, this has to be done programatically to avoid jarring
                     // when navigating from the locked back into the normal side
-                    activeField.column.getView().getScrollable().scrollIntoView(activeField.ownerCt.child(':focusable').el);
+                    activeField.column.getView().getScrollable().ensureVisible(activeField.ownerCt.child(':focusable').el);
                 }
                 else {
                     target = me.down(':focusable:not([isButton]):last');

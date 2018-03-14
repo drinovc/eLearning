@@ -4,15 +4,16 @@ topSuite("Ext.route.Route", ['Ext.app.Controller'], function () {
         numArgs = 0,
         numBeforeArgs = 0,
         token = 'foo/bar',
-        controller;
+        controller,
+        beforeSpy, beforeBlockSpy, actionSpy;
 
     function promiseHasBeenResolved (promise) {
         var resolved = spyOn({
-                    test: Ext.emptyFn
-                }, 'test'),
-                rejected = spyOn({
-                    test: Ext.emptyFn
-                }, 'test');
+                test: Ext.emptyFn
+            }, 'test'),
+            rejected = spyOn({
+                test: Ext.emptyFn
+            }, 'test');
 
         promise.then(resolved, rejected);
 
@@ -26,11 +27,11 @@ topSuite("Ext.route.Route", ['Ext.app.Controller'], function () {
 
     function promiseHasBeenRejected (promise) {
         var resolved = spyOn({
-                    test: Ext.emptyFn
-                }, 'test'),
-                rejected = spyOn({
-                    test: Ext.emptyFn
-                }, 'test');
+                test: Ext.emptyFn
+            }, 'test'),
+            rejected = spyOn({
+                test: Ext.emptyFn
+            }, 'test');
 
         promise.then(resolved, rejected);
 
@@ -67,16 +68,17 @@ topSuite("Ext.route.Route", ['Ext.app.Controller'], function () {
                 actionExecuted = true;
             }
         });
+
+        beforeSpy = spyOn(controller, 'beforeHandleRoute').andCallThrough();
+        beforeBlockSpy = spyOn(controller, 'beforeHandleRouteBlock').andCallThrough();
+        actionSpy = spyOn(controller, 'handleRoute').andCallThrough();
     });
 
     afterEach(function () {
-        controller.destroy();
+        controller = beforeSpy = beforeBlockSpy = actionSpy =
+            actionExecuted = beforeExecuted = Ext.destroy(controller);
 
-        controller = null;
-        actionExecuted = false;
-        beforeExecuted = false;
-        numArgs = 0;
-        numBeforeArgs = 0;
+        numArgs = numBeforeArgs = 0;
     });
 
     describe("should recognize tokens", function () {
@@ -595,6 +597,79 @@ topSuite("Ext.route.Route", ['Ext.app.Controller'], function () {
                     expect(fn).not.toHaveBeenCalled();
                 });
             });
+        });
+    });
+
+    describe('removeHandler', function () {
+        var controller2;
+
+        afterEach(function () {
+            if (controller2) {
+                controller2.destroy();
+                controller2 = null;
+            }
+        });
+
+        it('should remove handler passing just the scope', function () {
+            controller2 = new Ext.app.Controller({
+                handleRoute: Ext.emptyFn
+            });
+
+            var route = new Ext.route.Route({
+                url: 'foo',
+                handlers: [
+                    {
+                        action: 'handleRoute',
+                        scope: controller
+                    },
+                    {
+                        action: 'handleRoute',
+                        scope: controller2
+                    }
+                ]
+            });
+
+            expect(route.getHandlers().length).toBe(2);
+
+            route.removeHandler(controller2);
+
+            expect(route.getHandlers().length).toBe(1);
+
+            expect(route.getHandlers()[0].scope).toBe(controller);
+        });
+
+        xit('should remove handler passing scope and which handler', function () {
+            controller2 = new Ext.app.Controller({
+                handleRoute: Ext.emptyFn
+            });
+
+            var handler = new Ext.route.Handler({
+                    action: 'handleRoute',
+                    scope: controller2
+                }),
+                route = new Ext.route.Route({
+                    url: 'foo',
+                    handlers: [
+                        {
+                            action: 'handleRoute',
+                            scope: controller
+                        },
+                        {
+                            action: 'handleRoute',
+                            scope: controller2
+                        },
+                        handler
+                    ]
+                });
+
+            expect(route.getHandlers().length).toBe(3);
+
+            route.removeHandler(controller2, handler);
+
+            expect(route.getHandlers().length).toBe(2);
+
+            expect(route.getHandlers()[0].scope).toBe(controller);
+            expect(route.getHandlers()[1].scope).toBe(controller2);
         });
     });
 });

@@ -170,7 +170,7 @@ Ext.define('Ext.grid.column.Widget', {
 
     config: {
         /**
-         * @cfg defaultWidgetUI
+         * @cfg {Object} defaultWidgetUI
          * A map of xtype to {@link Ext.Component#ui} names to use when using Components in this column.
          *
          * Currently {@link Ext.Button Button} and all subclasses of {@link Ext.form.field.Text TextField} default
@@ -179,10 +179,14 @@ Ext.define('Ext.grid.column.Widget', {
         defaultWidgetUI: {}
     },
 
+    /**
+     * @cfg ignoreExport
+     * @inheritdoc
+     */
     ignoreExport: true,
 
     /**
-     * @cfg
+     * @cfg sortable
      * @inheritdoc
      */
     sortable: false,
@@ -216,8 +220,8 @@ Ext.define('Ext.grid.column.Widget', {
      * This column's {@link #dataIndex} is used to update the widget/component's {@link Ext.Component#defaultBindProperty defaultBindProperty}.
      *
      * The widget will be decorated with 2 methods:
-     * `getWidgetRecord` - Returns the {@link Ext.data.Model record} the widget is associated with.
-     * `getWidgetColumn` - Returns the {@link Ext.grid.column.Widget column} the widget 
+     * {@link #method-getWidgetRecord} - Returns the {@link Ext.data.Model record} the widget is associated with.
+     * {@link #method-getWidgetColumn} - Returns the {@link Ext.grid.column.Widget column} the widget
      * was associated with.
      */
     
@@ -304,6 +308,20 @@ Ext.define('Ext.grid.column.Widget', {
         me.isFixedSize = Ext.isNumber(widget.width);
     },
 
+    /**
+     * @method getWidgetRecord
+     * getWidgetRecord is a method that decorates every widget.
+     * Returns the {@link Ext.data.Model record} the widget is associated with.
+     * @return {Ext.data.Model}
+     */
+
+    /**
+     * @method getWidgetColumn
+     * getWidgetColumn is a method that decorates every widget.
+     * Returns the {@link Ext.grid.column.Widget column} the widget was associated with.
+     * @return {Ext.grid.column.Widget}
+     */
+
     processEvent : function(type, view, cell, recordIndex, cellIndex, e, record, row) {
         var target;
          
@@ -353,6 +371,11 @@ Ext.define('Ext.grid.column.Widget', {
     },
 
     // Cell must be left blank
+    /**
+     * @method defaultRenderer
+     * @inheritdoc
+     * @localdoc **Important:** Cell must be left blank
+     */
     defaultRenderer: Ext.emptyFn, 
 
     updater: function(cell, value, record) {

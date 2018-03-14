@@ -7,6 +7,10 @@ Ext.define('Ext.grid.cell.Tree', {
     
     isTreeCell: true,
 
+    /**
+     * @property classCls
+     * @inheritdoc
+     */
     classCls: Ext.baseCSSPrefix + 'treecell',
 
     collapsedCls: Ext.baseCSSPrefix + 'collapsed',
@@ -26,7 +30,7 @@ Ext.define('Ext.grid.cell.Tree', {
         iconClsProperty: 'iconCls',
 
         /**
-         * @cfg {String} iconCls
+         * @cfg iconCls
          * @inheritdoc Ext.panel.Header#cfg-iconCls
          * @localdoc **Note:** This value is taken from the underlying {@link #node}.
          */
@@ -48,6 +52,10 @@ Ext.define('Ext.grid.cell.Tree', {
     // See theme-base/src/grid/cell/Tree.scss when maintaining this structure.
     // Ancestor classes on containing elements are used to style elements in this structure.
     // This involves nested child selectors which rely on this structure.
+    /**
+     * @property element
+     * @inheritdoc
+     */
     element: {
         reference: 'element',
         children: [{
@@ -72,6 +80,10 @@ Ext.define('Ext.grid.cell.Tree', {
         }]
     },
 
+    /**
+     * @cfg toolDefaults
+     * @inheritdoc
+     */
     toolDefaults: {
         zone: 'tail'
     },

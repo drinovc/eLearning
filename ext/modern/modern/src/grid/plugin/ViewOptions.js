@@ -32,9 +32,9 @@
  *
  *     Ext.create('Ext.grid.Grid', {
  *         store: store,
- *         plugins: [{
- *             type: 'gridviewoptions'
- *         }],
+ *         plugins: {
+ *             gridviewoptions: true
+ *         },
  *         columns: [{
  *             text: 'Name',
  *             dataIndex: 'name',
@@ -60,9 +60,9 @@ Ext.define('Ext.grid.plugin.ViewOptions', {
     alias: 'plugin.gridviewoptions',
 
     requires: [
-        'Ext.field.Toggle',
         'Ext.dataview.NestedList',
-        'Ext.dataview.plugin.SortableList'
+        'Ext.dataview.plugin.SortableList',
+        'Ext.grid.plugin.ViewOptionsListItem'
     ],
 
     config: {
@@ -80,90 +80,76 @@ Ext.define('Ext.grid.plugin.ViewOptions', {
          * The configuration of the menu
          */
         sheet: {
-            cls: Ext.baseCSSPrefix + 'gridviewoptions',
-            xtype: 'sheet',
-            items: [{
-                docked: 'top',
-                xtype: 'titlebar',
-                title: 'Customize',
-                items: {
-                    xtype: 'button',
-                    text: 'Done',
-                    ui: 'action',
-                    align: 'right',
-                    role: 'donebutton'
-                }
-            }],
-            hidden: true,
-            hideOnMaskTap: true,
-            enter: 'right',
-            exit: 'right',
-            modal: true,
-            right: 0,
-            layout: 'fit',
-            stretchY: true
+            lazy: true,
+            $value: {
+                xtype: 'sheet',
+                cls: Ext.baseCSSPrefix + 'gridviewoptions',
+                items: [{
+                    docked: 'top',
+                    xtype: 'titlebar',
+                    title: 'Customize',
+                    items: [{
+                        xtype: 'button',
+                        text: 'Done',
+                        ui: 'action',
+                        align: 'right',
+                        role: 'donebutton'
+                    }]
+                }],
+                hidden: true,
+                hideOnMaskTap: true,
+                enter: 'right',
+                exit: 'right',
+                modal: true,
+                right: 0,
+                layout: 'fit',
+                stretchY: true
+            }
         },
 
         /**
          * The column's configuration
          */
         columnList: {
-            xtype: 'nestedlist',
-            title: 'Columns',
-            listConfig: {
-                plugins: [{
-                    type: 'sortablelist',
-                    source: {
-                        handle: '.' + Ext.baseCSSPrefix + 'column-options-sortablehandle'
-                    }
-                }],
-                mode: 'MULTI',
-                infinite: true,
-                itemConfig: {
-                    tools: null,
-                    cls: Ext.baseCSSPrefix + 'column-options-item'
+            lazy: true,
+            $value: {
+                xtype: 'nestedlist',
+                title: 'Columns',
+                clearSelectionOnListChange: false,
+                listConfig: {
+                    triggerEvent: null,
+                    infinite: true,
+                    mode: 'MULTI',
+                    variableHeights: true,
+                    plugins: {
+                        sortablelist: {
+                            source: {
+                                handle: '.' + Ext.baseCSSPrefix + 'column-options-sortablehandle'
+                            }
+                        }
+                    },
+                    itemConfig: {
+                        xtype: 'viewoptionslistitem'
+                    },
+                    itemTpl: '{text}'
                 },
-                itemTpl: [
-                    '<div class="' + Ext.baseCSSPrefix + 'column-options-itemwrap<tpl if="hidden"> {hiddenCls}</tpl>',
-                            '<tpl if="grouped"> {groupedCls}</tpl>">',
-                        '<div class="' + Ext.baseCSSPrefix + 'column-options-sortablehandle ' + Ext.baseCSSPrefix + 'font-icon"></div>',
-                        '<tpl if="header">',
-                            '<div class="' + Ext.baseCSSPrefix + 'column-options-folder ' + Ext.baseCSSPrefix + 'font-icon"></div>',
-                        '<tpl else>',
-                            '<div class="' + Ext.baseCSSPrefix + 'column-options-leaf ' + Ext.baseCSSPrefix + 'font-icon"></div>',
-                        '</tpl>',
-                        '<div class="' + Ext.baseCSSPrefix + 'column-options-text">{text}</div>',
-                        '<tpl if="groupable && dataIndex">',
-                            '<div class="' + Ext.baseCSSPrefix + 'column-options-groupindicator ' + Ext.baseCSSPrefix + 'font-icon"></div>',
-                        '</tpl>',
-                        '<tpl if="hideable">',
-                            '<div class="' + Ext.baseCSSPrefix + 'column-options-visibleindicator ' + Ext.baseCSSPrefix + 'font-icon"></div>',
-                        '</tpl>',
-                    '</div>'
-                ],
-                triggerEvent: null,
-                bufferSize: 1,
-                minimumBufferSize: 1
-            },
-            store: {
-                type: 'tree',
-                fields: [
-                    'id',
-                    'text',
-                    'dataIndex',
-                    'header',
-                    'hidden',
-                    'hiddenCls',
-                    'hideable',
-                    'grouped',
-                    'groupedCls',
-                    'groupable'
-                ],
-                root: {
-                    text: 'Columns'
+                store: {
+                    type: 'tree',
+                    fields: [
+                        'id',
+                        'text',
+                        'dataIndex',
+                        'header',
+                        'hidden',
+                        'hideable',
+                        'grouped',
+                        'groupable'
+                    ],
+                    root: {
+                        text: 'Columns'
+                    }
                 }
-            },
-            clearSelectionOnListChange: false
+            }
         },
 
         /**
@@ -177,18 +163,14 @@ Ext.define('Ext.grid.plugin.ViewOptions', {
         groupIndicatorSelector: '.' + Ext.baseCSSPrefix + 'column-options-groupindicator'
     },
 
-    /**
-     * @private
-     */
-    _hiddenColumnCls:  Ext.baseCSSPrefix + 'column-options-hidden',
-
-    /**
-     * @private
-     */
-    _groupedColumnCls: Ext.baseCSSPrefix + 'column-options-grouped',
-
     init: function(grid) {
         this.setGrid(grid);
+    },
+
+    destroy: function () {
+        this.destroyMembers('sheet', 'columnList');
+
+        this.callParent();
     },
 
     updateGrid: function(grid, oldGrid) {
@@ -240,7 +222,7 @@ Ext.define('Ext.grid.plugin.ViewOptions', {
             });
 
             // For each item in the nested list, we want to handle the reorder
-            list.on('dragsort', 'onColumnReorder', this, {
+            list.on('dragsort', 'onColumnDrag', this, {
                 delegate: '> list'
             });
 
@@ -258,7 +240,7 @@ Ext.define('Ext.grid.plugin.ViewOptions', {
         this.getSheet().hide();
     },
 
-    onColumnReorder: function(list, row, newIndex) {
+    onColumnDrag: function(list, row, newIndex) {
         var column = Ext.getCmp(row.getRecord().get('id')),
             parent = column.getParent(),
             siblings = parent.getInnerItems(),
@@ -381,19 +363,16 @@ Ext.define('Ext.grid.plugin.ViewOptions', {
             header = column.getParent(),
             store = nestedList.getStore(),
             parentNode = store.getRoot(),
-            hiddenCls = me._hiddenColumnCls,
             isGridGrouped = grid.getGrouped(),
             grouper = grid.getStore().getGrouper(),
             dataIndex = column.getDataIndex(),
             data = {
                 id: column.getId(),
-                text: column.getText(),
-                groupable: isGridGrouped && column.getGroupable(),
+                text: column.getText() || '\xA0',
+                groupable: isGridGrouped && column.canGroup(),
                 hidden: column.isHidden(),
-                hiddenCls: hiddenCls,
                 hideable: column.getHideable(),
                 grouped: !!(isGridGrouped && grouper && grouper.getProperty() === dataIndex),
-                groupedCls: me._groupedColumnCls,
                 dataIndex: column.getDataIndex(),
                 leaf: true
             }, idx, headerNode;
@@ -406,7 +385,6 @@ Ext.define('Ext.grid.plugin.ViewOptions', {
                     groupable: false,
                     header: true,
                     hidden: header.isHidden(),
-                    hiddenCls: hiddenCls,
                     id: header.getId(),
                     text: header.getText()
                 });

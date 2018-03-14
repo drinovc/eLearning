@@ -1,3 +1,4 @@
+// @cmd.optimizer.requires.async
 /**
  * This mixin allows users to easily require external scripts in their classes. This load
  * process delays application launch (`Ext.onReady`) until all such scripts are loaded
@@ -19,7 +20,6 @@
  * use the {@link Ext.Manifest#mashup mashup} object.
  *
  * @since 5.0.0
- * @cmd.optimizer.requires.async
  */
 Ext.define('Ext.mixin.Mashup', function (Mashup) { return {
     extend: 'Ext.Mixin',
@@ -52,6 +52,13 @@ Ext.define('Ext.mixin.Mashup', function (Mashup) { return {
      *              "key": "[GOOGLE_MAPS_KEY]"
      *          }
      *      }
+     *
+     * For non-components (classes that have no `xtype`), the `mashupConfig` can be used
+     * to supply the configuration key:
+     *
+     *      mashupConfig: {
+     *          key: 'map'
+     *      }
      */
 
     /**
@@ -78,7 +85,8 @@ Ext.define('Ext.mixin.Mashup', function (Mashup) { return {
                 onCreated = hooks.onCreated,
                 xtypes = targetClass.prototype.xtypes,
                 mashup = Ext.manifest.mashup || {},
-                i, x, script, xtype;
+                options = body.mashupConfig,
+                i, script;
 
             if (requiredScripts) {
                 delete body.requiredScripts;
@@ -86,26 +94,49 @@ Ext.define('Ext.mixin.Mashup', function (Mashup) { return {
                 hooks.onCreated = function() {
                     var me = this,
                         scripts = [],
-                        args = Ext.Array.slice(arguments);
+                        args = Ext.Array.slice(arguments),
+                        redirect = mashup.redirect || {};
 
                     requiredScripts = scripts.concat(requiredScripts);
+
+                    options = options && mashup[options.key];
+
+                    if (xtypes) {
+                        for (i = 0; !options && i < xtypes.length; ++i) {
+                            options = mashup[xtypes[i]];
+                        }
+                    }
 
                     for (i = 0; i < requiredScripts.length; i++) {
                         script = requiredScripts[i];
 
-                        if (mashup && script.indexOf('{') > -1) {
-                            for (x = 0; x < xtypes.length; x++) {
-                                xtype = xtypes[x];
-                                if (mashup[xtype]) {
-                                    script = new Ext.Template(script).apply(mashup[xtype]);
-                                    break;
-                                }
+                        if (redirect[script] === false) {
+                            continue;
+                        }
+
+                        script = redirect[script] || script;
+
+                        if (script.indexOf('{') > -1) {
+                            if (options) {
+                                script = new Ext.Template(script).apply(options);
                             }
+                            //<debug>
+                            else {
+                                Ext.log.error('Missing mashup options for ' +
+                                    body.$className + ' script "' + script + '"');
+                            }
+                            //</debug>
                         }
 
                         scripts.push(script);
                     }
 
+                    if (!scripts.length) {
+                        hooks.onCreated = onCreated;
+                        hooks.onCreated.call(me, args);
+
+                        return;
+                    }
 
                     Ext.Loader.loadScripts({
                         url: scripts,

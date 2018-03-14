@@ -19,35 +19,40 @@ Ext.define('Ext.data.validator.AbstractDate', {
          * The format(s) to allow. See {@link Ext.Date}.
          * @locale
          */
-        format: undefined
+        format: ''
     },
 
     applyFormat: function(format) {
         if (!format) {
             format = this.getDefaultFormat();
         }
-        
+
         if (!Ext.isArray(format)) {
             format = [format];
         }
+
         return format;
     },
 
-    validate: function(value) {
-        var format = this.getFormat(),
-            len = format.length,
-            i;
-
-        for (i = 0; i < len; ++i) {
-            if (Ext.Date.parse(value, format[i], true)) {
-                return true;
-            }
+    parse: function (value) {
+        if (Ext.isDate(value)) {
+            return value;
         }
 
-        return this.getMessage();
+        var me = this,
+            format = me.getFormat(),
+            len = format.length,
+            ret = null,
+            i;
+
+        for (i = 0; i < len && !ret; ++i) {
+            ret = Ext.Date.parse(value, format[i], true);
+        }
+
+        return ret;
     },
 
-    privates: {
-        getDefaultFormat: Ext.privateFn
+    validate: function(value) {
+        return this.parse(value) ? true : this.getMessage();
     }
 });

@@ -336,15 +336,16 @@ $tabbar-strip-background-color: dynamic($tab-active-background-color);
         background-color: $strip-background-color;
         height: $strip-height;
         @if $enable-big {
-            .x-big & {
+            .#{$prefix}big & {
                 height: $strip-height-big;
             }
         }
     }
 
-    .#{$prefix}active-indicator-el  {
-        position: absolute;
-        bottom: 0;
-        z-index: 2;
+    .#{$prefix}#{$xtype}#{$ui-suffix} .#{$prefix}boxscroller.#{$prefix}horizontal > .#{$prefix}tool {
+        margin-bottom: $strip-height;
+        .#{$prefix}big & {
+            margin-bottom: $strip-height-big;
+        }
     }
 }

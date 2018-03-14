@@ -103,7 +103,7 @@ Ext.define('Ext.field.Container', {
 
                 /**
                  * @cfg autoSize
-                 * @inheritdock Ext.Container#
+                 * @inheritdoc Ext.Container#
                  */
                 'autoSize'
             ],

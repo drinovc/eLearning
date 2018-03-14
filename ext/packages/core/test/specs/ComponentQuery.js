@@ -1090,7 +1090,8 @@ topSuite("Ext.ComponentQuery", ["Ext.Container"], function() {
             Ext.define('spec.Foo', {
                 extend: 'Ext.Component',
                 config: {
-                    bar: 1
+                    bar: 1,
+                    cqUnitTestConfigName: 1
                 },
                 baz: 2
             });
@@ -1136,6 +1137,11 @@ topSuite("Ext.ComponentQuery", ["Ext.Container"], function() {
             expect(result.length).toBe(1);
             expect(result[0]).toBe(foo);
         });
+        it("should match instance config presence", function(){
+            result = cq.query('[cqUnitTestConfigName]');
+            expect(result.length).toBe(1);
+            expect(result[0]).toBe(foo);
+        });
 
         it("should match a property on the instance", function() {
             result = cq.query('[baz=2]');
@@ -1154,8 +1160,7 @@ topSuite("Ext.ComponentQuery", ["Ext.Container"], function() {
             expect(result.length).toBe(1);
             expect(result[0]).toBe(bletch);
         });
-
-});
+    });
     
     describe('querying non Ext classes', function() {
         it('should be able to query on raw objects', function() {

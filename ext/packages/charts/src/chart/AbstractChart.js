@@ -1,8 +1,9 @@
 /**
  * The Ext.chart package provides the capability to visualize data.
- * Each chart binds directly to a {@link Ext.data.Store store} enabling automatic updates of the chart.
- * A chart configuration object has some overall styling options as well as an array of axes
- * and series. A chart instance example could look like this:
+ * Each chart binds directly to a {@link Ext.data.Store store} enabling automatic
+ * updates of the chart. A chart configuration object has some overall styling
+ * options as well as an array of axes and series. A chart instance example could
+ * look like this:
  *
  *     Ext.create('Ext.chart.CartesianChart', {
  *         width: 800,
@@ -23,22 +24,24 @@
  *         ]
  *     });
  *
- * In this example we set the `width` and `height` of a chart; We decide whether our series are
- * animated or not and we select a store to be bound to the chart; We also set the legend to the right part of the
- * chart.
+ * In this example we set the `width` and `height` of a chart; We decide whether
+ * our series are animated or not and we select a store to be bound to the chart;
+ * We also set the legend to the right part of the chart.
  *
- * You can register certain interactions such as {@link Ext.chart.interactions.PanZoom} on the chart by specify an
- * array of names or more specific config objects. All the events will be wired automatically.
+ * You can register certain interactions such as {@link Ext.chart.interactions.PanZoom}
+ * on the chart by specifying an array of names or more specific config objects.
+ * All the events will be wired automatically.
  *
  * You can also listen to series `itemXXX` events on both chart and series level.
  *
  * For example:
  *
  *     Ext.create('Ext.chart.CartesianChart', {
- *         plugins: [{
- *             ptype: 'chartitemevents',
- *             moveEvents: true
- *         }],
+ *         plugins: {
+ *             chartitemevents: {
+ *                 moveEvents: true
+ *             }
+ *         },
  *         store: {
  *             fields: ['pet', 'households', 'total'],
  *             data: [
@@ -76,8 +79,24 @@
  *         }
  *     });
  *
- * For more information about the axes and series configurations please check the documentation of
- * each series (Line, Bar, Pie, etc).
+ * Important! It's generally a poor design choice to put interactive charts
+ * inside scrollable views, in such cases it's not possible to tell
+ * which component should respond to the interaction.
+ * Since charts are typically interactive their default touch action config
+ * looks as follows: {@link Ext.draw.Container#touchAction}.
+ * If you do have a chart inside a scrollable view, even if it has no interactions,
+ * you have to set its `touchAction` config to the following:
+ *
+ *     touchAction: {
+ *         panX: true,
+ *         panY: true
+ *     }
+ *
+ * Otherwise, if a touch action started on a chart, a swipe will not scroll
+ * the view.
+ *
+ * For more information about the axes and series configurations please check
+ * the documentation of each series (Line, Bar, Pie, etc).
  *
  */
 Ext.define('Ext.chart.AbstractChart', {
@@ -89,6 +108,7 @@ Ext.define('Ext.chart.AbstractChart', {
         'Ext.chart.series.Series',
         'Ext.chart.interactions.Abstract',
         'Ext.chart.axis.Axis',
+        'Ext.chart.Util',
         'Ext.data.StoreManager',
         'Ext.chart.legend.Legend',
         'Ext.chart.legend.SpriteLegend',
@@ -103,8 +123,8 @@ Ext.define('Ext.chart.AbstractChart', {
 
     /**
      * @event beforerefresh
-     * Fires before a refresh to the chart data is called.  If the `beforerefresh` handler returns
-     * `false` the {@link #refresh} action will be canceled.
+     * Fires before a refresh to the chart data is called.  If the `beforerefresh`
+     * handler returns `false` the {@link #refresh} action will be canceled.
      * @param {Ext.chart.AbstractChart} this
      */
 
@@ -116,7 +136,7 @@ Ext.define('Ext.chart.AbstractChart', {
 
     /**
      * @event redraw
-     * Fires after each {@link #redraw} call.
+     * Fires after each {@link #event!redraw} call.
      * @param {Ext.chart.AbstractChart} this
      */
 
@@ -238,7 +258,8 @@ Ext.define('Ext.chart.AbstractChart', {
 
         /**
          * @cfg {Ext.data.Store/String/Object} store
-         * The data source to which the chart is bound. Acceptable values for this property are:
+         * The data source to which the chart is bound.
+         * Acceptable values for this property are:
          *
          *   - **any {@link Ext.data.Store Store} class / subclass**
          *   - **an {@link Ext.data.Store#storeId ID of a store}**
@@ -298,7 +319,9 @@ Ext.define('Ext.chart.AbstractChart', {
          * @cfg {String} [theme="default"]
          * The name of the theme to be used. A theme defines the colors and styles
          * used by the series, axes, markers and other chart components.
-         * Please see the documentation for the {@link Ext.chart.theme.Base} class for more information.
+         * Please see the documentation for the {@link Ext.chart.theme.Base} class
+         * for more information.
+         *
          * Possible theme values are:
          *   - 'green', 'sky', 'red', 'purple', 'blue', 'yellow'
          *   - 'category1' to 'category6'
@@ -374,14 +397,16 @@ Ext.define('Ext.chart.AbstractChart', {
         style: null,
 
         /**
-         * @cfg {Boolean/Object} animation (optional) `true` for the default animation (easing: 'ease' and duration: 500)
-         * or a standard animation config object to be used for default chart animations.
+         * @cfg {Boolean/Object} [animation=true]
+         * Defaults to `easeInOut` easing with a 500ms duration.
+         * See {@link Ext.draw.modifier.Animation} for possible configuration options.
          */
         animation: !Ext.isIE8,
 
         /**
          * @cfg {Ext.chart.series.Series/Array} series
-         * Array of {@link Ext.chart.series.Series Series} instances or config objects. For example:
+         * Array of {@link Ext.chart.series.Series Series} instances or config objects.
+         * For example:
          *
          *     series: [{
          *         type: 'column',
@@ -399,7 +424,8 @@ Ext.define('Ext.chart.AbstractChart', {
 
         /**
          * @cfg {Ext.chart.axis.Axis/Array/Object} axes
-         * Array of {@link Ext.chart.axis.Axis Axis} instances or config objects. For example:
+         * Array of {@link Ext.chart.axis.Axis Axis} instances or config objects.
+         * For example:
          *
          *     axes: [{
          *         type: 'numeric',
@@ -447,13 +473,16 @@ Ext.define('Ext.chart.AbstractChart', {
         legend: null,
 
         /**
-         * @cfg {Array} colors Array of colors/gradients to override the color of items and legends.
+         * @cfg {Array} colors
+         * Array of colors/gradients to override the color of items and legends.
          */
         colors: null,
 
         /**
-         * @cfg {Object|Number|String} insetPadding The amount of inset padding in pixels for the chart.
-         * Inset padding is the padding from the boundary of the chart to any of its contents.
+         * @cfg {Object/Number/String} insetPadding
+         * The amount of inset padding in pixels for the chart.
+         * Inset padding is the padding from the boundary of the chart to any
+         * of its contents.
          */
         insetPadding: {
             top: 10,
@@ -645,75 +674,70 @@ Ext.define('Ext.chart.AbstractChart', {
         me.resumeChartLayout();
     },
 
-    applyAnimation: function (newAnimation, oldAnimation) {
-        if (!newAnimation) {
-            newAnimation = {
-                duration: 0
-            };
-        } else if (newAnimation === true) {
-            newAnimation = {
-                easing: 'easeInOut',
-                duration: 500
-            };
+    applyAnimation: function (animation, oldAnimation) {
+        return Ext.chart.Util.applyAnimation(animation, oldAnimation);
+    },
+
+    updateAnimation: function () {
+        if (this.isConfiguring) {
+            return;
         }
-        return oldAnimation ? Ext.apply({}, newAnimation, oldAnimation) : newAnimation;
+        var seriesList = this.getSeries(),
+            ln = seriesList.length,
+            i, series;
+
+        this.isSettingSeriesAnimation = true;
+        for (i = 0; i < ln; i++) {
+            series = seriesList[i];
+            // Don't update the series animation config, if it was set by
+            // a user, unless 'suspendAnimation' was called.
+            if (!series.isUserAnimation || this.animationSuspendCount) {
+                series.setAnimation(series.getAnimation());
+            }
+        }
+        this.isSettingSeriesAnimation = false;
     },
 
     getAnimation: function () {
+        var result;
+
         if (this.animationSuspendCount) {
-            return {
+            result = {
                 duration: 0
             };
         } else {
-            return this.callParent();
+            result = this.callParent();
         }
-    },
 
-    applyInsetPadding: function (padding, oldPadding) {
-        if (!Ext.isObject(padding)) {
-            return Ext.util.Format.parseBox(padding);
-        } else if (!oldPadding) {
-            return padding;
-        } else {
-            return Ext.apply(oldPadding, padding);
-        }
+        return result;
     },
 
     suspendAnimation: function () {
-        var me = this,
-            seriesList = me.getSeries(),
-            n = seriesList.length,
-            i = -1,
-            series;
-
-        me.animationSuspendCount++;
-        if (me.animationSuspendCount === 1) {
-            while (++i < n) {
-                // Update animation config to not animate.
-                series = seriesList[i];
-                series.setAnimation(series.getAnimation());
-            }
+        this.animationSuspendCount++;
+        if (this.animationSuspendCount === 1) {
+            this.updateAnimation();
         }
     },
 
     resumeAnimation: function () {
-        var me = this,
-            seriesList = me.getSeries(),
-            n = seriesList.length,
-            i = -1,
-            series, animation;
-
-        me.animationSuspendCount--;
-        if (me.animationSuspendCount === 0) {
-            while (++i < n) {
-                // Update animation config to animate.
-                series = seriesList[i];
-                animation = series.getAnimation();
-                // Series may not have had their own animation to begin with,
-                // so fall back to chart's animation in that case.
-                series.setAnimation(animation.duration && animation || me.getAnimation());
-            }
+        this.animationSuspendCount--;
+        if (this.animationSuspendCount === 0) {
+            this.updateAnimation();
         }
+    },
+
+    applyInsetPadding: function (padding, oldPadding) {
+        var result;
+
+        if (!Ext.isObject(padding)) {
+            result = Ext.util.Format.parseBox(padding);
+        } else if (!oldPadding) {
+            result = padding;
+        } else {
+            result = Ext.apply(oldPadding, padding);
+        }
+
+        return result;
     },
 
     /**
@@ -1220,11 +1244,6 @@ Ext.define('Ext.chart.AbstractChart', {
             series = me.getSeries(),
             colors = me.getColors(),
             i;
-            //seriesStyle,
-            //colorIndex = 0,
-            //markerIndex = 0,
-            //markerCount,
-            //colorCount,
 
         if (!series) {
             return;
@@ -1238,31 +1257,6 @@ Ext.define('Ext.chart.AbstractChart', {
 
         for (i = 0; i < series.length; i++) {
             series[i].setTheme(theme);
-
-            // TODO: This may look like it belongs to the theme, but there we don't know what
-            // TODO: series the chart will be using and thus the color count is unknown.
-            // TODO: It could also be moved to the series.updateTheme method, if not for the
-            // TODO: circular copying that starts from the previous index.
-            // TODO: Finally, keeping it here is not really an option either, since theme
-            // TODO: is a singleton, so we shouldn't modify it before passing it
-            // TODO: to the series.updateTheme.
-            // seriesStyle = {};
-            //
-            //if (theme.getSeriesThemes) {
-            //    colorCount = series.themeColorCount();
-            //    seriesStyle.subStyle = me.circularCopyObject(theme.getSeriesThemes(), colorIndex, colorCount);
-            //    colorIndex += colorCount;
-            //} else {
-            //    seriesStyle.subStyle = {};
-            //}
-            //
-            //if (theme.getMarkerThemes) {
-            //    markerCount = series.themeMarkerCount();
-            //    seriesStyle.markerSubStyle = me.circularCopyObject(theme.getMarkerThemes(), markerIndex, markerCount);
-            //    markerIndex += markerCount;
-            //} else {
-            //    seriesStyle.markerSubStyle = {};
-            //}
         }
 
         me.updateSpriteTheme(theme);
@@ -1405,7 +1399,6 @@ Ext.define('Ext.chart.AbstractChart', {
 
     applySeries: function (newSeries, oldSeries) {
         var me = this,
-            theme = me.getTheme(),
             result = [],
             oldMap, oldSeriesItem,
             i, ln, series;
@@ -1453,7 +1446,6 @@ Ext.define('Ext.chart.AbstractChart', {
                         };
                     }
                     series.chart = me;
-                    series.theme = theme;
                     series = Ext.create(series.xclass || ('series.' + series.type), series);
                 }
             }
@@ -1766,7 +1758,7 @@ Ext.define('Ext.chart.AbstractChart', {
 
     /**
      * @private
-     * Lays out chart components and triggers a {@link #redraw}.
+     * Lays out chart components and triggers a {@link #event!redraw}.
      * Note: the actual layout is performed in a subclass.
      * A subclass should not perform a layout, if this parent method
      * returns `false`.
@@ -1775,7 +1767,7 @@ Ext.define('Ext.chart.AbstractChart', {
     performLayout: function () {
         if (this.destroying || this.destroyed) {
             //<debug>
-            Ext.raise('Attempting to lay out a dead chart: ' + me.getId());
+            Ext.raise('Attempting to lay out a dead chart: ' + this.getId());
             //</debug>
             return false; // Cancel subclass layout.
         }
@@ -1903,12 +1895,10 @@ Ext.define('Ext.chart.AbstractChart', {
 
     /**
      * @private
-     * Converts page coordinates into chart's 'main' surface coordinates.
+     * Converts page coordinates into chart's 'series' surface coordinates.
      */
     getEventXY: function (e) {
-        // TODO: 'main' surface rect happens to match 'series' surface rect,
-        // TODO: but an optional 'surface' (name) param might be useful.
-        return this.getSurface().getEventXY(e);
+        return this.getSurface('series').getEventXY(e);
     },
 
     /**
@@ -1921,27 +1911,39 @@ Ext.define('Ext.chart.AbstractChart', {
     getItemForPoint: function (x, y) {
         var me = this,
             seriesList = me.getSeries(),
-            mainRect = me.getMainRect(),
+            rect = me.getMainRect(),
             ln = seriesList.length,
-            // If we haven't drawn yet, don't attempt to find any items.
-            i = me.hasFirstLayout ? ln - 1 : -1,
-            series, item;
+            minDistance = Infinity,
+            result = null,
+            i, item;
 
         // The x,y here are already converted to the 'main' surface coordinates.
         // Series surface rect matches the main surface rect.
-        if (!(mainRect && x >= 0 && x <= mainRect[2] && y >= 0 && y <= mainRect[3])) {
+        if (!(me.hasFirstLayout && rect && x >= 0 && x <= rect[2] && y >= 0 && y <= rect[3])) {
             return null;
         }
-        // Iterate from the end so that the series that are drawn later get hit tested first.
-        for (; i >= 0; i--) {
-            series = seriesList[i];
-            item = series.getItemForPoint(x, y);
+        // Iterate in reverse order so that the series that render later (on top)
+        // get hit tested first.
+        for (i = ln - 1; i >= 0; i--) {
+            item = seriesList[i].getItemForPoint(x, y);
             if (item) {
-                return item;
+                // Imagine a chart with multiple series, e.g. 'line', 'scatter' and 'bar'.
+                // For 'line' and 'scatter' series, the method will look for the nearest
+                // marker, but for 'bar' series, it will look for the first bar that
+                // contains the given point. For such series, the 'distance' information
+                // is absent and meaningless.
+                if (!item.distance) {
+                    result = item;
+                    break;
+                }
+                if (item.distance < minDistance) {
+                    minDistance = item.distance;
+                    result = item;
+                }
             }
         }
 
-        return null;
+        return result;
     },
 
     /**
@@ -1949,6 +1951,7 @@ Ext.define('Ext.chart.AbstractChart', {
      * @param {Number} x
      * @param {Number} y
      * @return {Array} An array of objects with `series` and `item` properties.
+     * @deprecated 6.5.2 This method is deprecated
      */
     getItemsForPoint: function (x, y) {
         var me = this,
@@ -1963,7 +1966,7 @@ Ext.define('Ext.chart.AbstractChart', {
         for (; i >= 0; i--) {
             series = seriesList[i];
             item = series.getItemForPoint(x, y);
-            if (item) {
+            if (item && item.category === 'items') {
                 items.push(item);
             }
         }
@@ -2031,6 +2034,14 @@ Ext.define('Ext.chart.AbstractChart', {
         if (isNeedUpdateColors && recordCount > me.recordCount) {
             me.updateColors(me.getColors());
             me.recordCount = recordCount;
+        }
+
+        // 'refreshLegendStore' will attemp to grab the 'series',
+        // which are still configuring at this point.
+        // The legend store will be refreshed inside the chart.series
+        // updater anyway.
+        if (!me.isConfiguring) {
+            me.refreshLegendStore();
         }
     },
 

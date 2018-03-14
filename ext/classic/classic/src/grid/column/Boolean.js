@@ -71,7 +71,7 @@ Ext.define('Ext.grid.column.Boolean', {
      */
 
      /**
-     * @cfg {Boolean} producesHTML
+     * @cfg producesHTML
      * @inheritdoc
      */
     producesHTML: false,

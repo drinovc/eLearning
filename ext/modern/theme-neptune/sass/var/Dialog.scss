@@ -4,6 +4,12 @@
 
 /**
  * @var {color/list}
+ * Dialog background-color
+ */
+$dialog-background-color: dynamic(null);
+
+/**
+ * @var {color/list}
  * Dialog border-color
  */
 $dialog-border-color: dynamic($base-highlight-color);
@@ -36,7 +42,7 @@ $dialog-border-radius-big: dynamic(5px);
  * @var {color}
  * Dialog body background-color
  */
-$dialog-body-background-color: dynamic(null);
+$dialog-body-background-color: dynamic($dialog-background-color);
 
 /**
  * @var {color}
@@ -206,6 +212,12 @@ $dialog-header-title-padding: dynamic(0);
  * Dialog Header Title padding in the {@link Global_CSS#$enable-big big} sizing scheme
  */
 $dialog-header-title-padding-big: dynamic(0);
+
+/**
+ * @var {number}
+ * Dialog Header Title opacity
+ */
+$dialog-header-title-opacity: dynamic(null);
 
 /**
  * @var {shadow}
@@ -623,6 +635,9 @@ $dialog-min-width-big: dynamic(300px);
  * @param {number/list} $header-title-padding-big
  * Dialog Header Title padding in the {@link Global_CSS#$enable-big big} sizing scheme
  *
+ * @param {number/list} $header-title-opacity
+ * Dialog Header Title opacity
+ *
  * @param {shadow} $header-shadow
  * Dialog Header Shadow
  *
@@ -811,6 +826,7 @@ $dialog-min-width-big: dynamic(300px);
     $header-padding-big: null,
     $header-title-padding: null,
     $header-title-padding-big: null,
+    $header-title-opacity: null,
     $header-shadow: null,
     $header-z-index: null,
     $header-min-height: null,

@@ -23,8 +23,8 @@
             },
             "codeClass": null,
             "userConfig": {
-                "model": "Answer",
-                "name": "StoreAnswers"
+                "model": "Option",
+                "name": "StoreOptions"
             },
             "configAlternates": {
                 "model": "model",

@@ -81,9 +81,8 @@ Ext.define('Ext.view.TableLayout', {
             owner = me.owner,
             columnsChanged = headerContext.getProp('columnsChanged'),
             state = ownerContext.state,
-            columnFlusher, otherSynchronizer, synchronizer, rowHeightFlusher,
-            bodyDom = owner.body.dom,
-            bodyHeight, ctSize, overflowY, overflowX;
+            overflowable, columnFlusher, otherSynchronizer, synchronizer, rowHeightFlusher,
+            bodyDom = owner.body.dom, bodyHeight, ctSize, overflowY, overflowX, scrollbarHeight;
 
         // Shortcut when empty grid - let the base handle it.
         // EXTJS-14844: Even when no data rows (all.getCount() === 0) there may be summary rows to size.
@@ -166,9 +165,8 @@ Ext.define('Ext.view.TableLayout', {
         me.callParent([ ownerContext ]);
 
         if (!ownerContext.heightModel.shrinkWrap) {
-            // If the grid is shrink wrapping, we can't be overflowing
-            overflowY = false;
             if (!ownerCtContext.heightModel.shrinkWrap) {
+                overflowable = true;
                 // We are placed in a fit layout of the gridpanel (our ownerCt), so we need to
                 // consult its containerSize when we are not shrink-wrapping to see if our
                 // content will overflow vertically.
@@ -179,9 +177,10 @@ Ext.define('Ext.view.TableLayout', {
                 }
 
                 bodyHeight = bodyDom.offsetHeight;
-                overflowY = bodyHeight > ctSize.height;
+                if (bodyHeight > ctSize.height) {
+                    overflowY = true;
+                }
             }
-            ownerContext.setProp('viewOverflowY', overflowY);
         }
 
         // Adjust the presence of X scrollability depending upon whether the headers
@@ -194,7 +193,8 @@ Ext.define('Ext.view.TableLayout', {
         //
         // If no locking, then if there is no horizontal overflow, we set overflow-x: hidden
         // This avoids "pantom" scrollbars which are only caused by the presence of another scrollbar.
-        if (me.done && ownerContext.allowScrollX && Ext.getScrollbarSize().height) {
+        scrollbarHeight = Ext.getScrollbarSize().height;
+        if (me.done && ownerContext.allowScrollX && scrollbarHeight) {
             // No locking sides, ensure X scrolling is on if there is overflow, but not if there is no overflow
             // This eliminates "phantom" scrollbars which are only caused by other scrollbars.
             // Locking horizontal scrollbars are handled in Ext.grid.locking.Lockable#afterLayout
@@ -206,6 +206,16 @@ Ext.define('Ext.view.TableLayout', {
                 }
                 ownerContext.setProp('overflowX', overflowX);
             }
+
+            // If the overflowY was set to false but then adding a horizontal scrollbar
+            // will overflow the view vertically we need to set overflowY to true
+            if (overflowX && bodyHeight && overflowable) {
+                overflowY = (bodyHeight + scrollbarHeight) > ctSize.height;
+            }
+        }
+
+        if (me.done || overflowY != null) {
+            ownerContext.setProp('viewOverflowY', !!overflowY);
         }
     },
 
@@ -285,12 +295,12 @@ Ext.define('Ext.view.TableLayout', {
             return;
         }
 
-        ownerContext.target.syncRowHeightFinish(flusher.synchronizer,
-                                                flusher.otherSynchronizer);
+        ownerContext.target.syncRowHeightFinish(flusher.synchronizer, flusher.otherSynchronizer);
 
         flusher.flushed = true;
 
         ownerContext.syncRowHeights = true;
+        
         if (!me.pending) {
             ownerContext.context.queueLayout(me);
         }
@@ -300,7 +310,8 @@ Ext.define('Ext.view.TableLayout', {
         var me = this,
             ownerGrid = me.owner.ownerGrid,
             nodeContainer = Ext.fly(me.owner.getNodeContainer()),
-            scroller = this.owner.getScrollable();
+            scroller = this.owner.getScrollable(),
+            buffered;
 
         me.callParent([ ownerContext ]);
 
@@ -309,8 +320,9 @@ Ext.define('Ext.view.TableLayout', {
         }
 
         // Inform any buffered renderer about completion of the layout of its view
-        if (me.owner.bufferedRenderer) {
-            me.owner.bufferedRenderer.afterTableLayout(ownerContext);
+        buffered = me.owner.bufferedRenderer;
+        if (buffered) {
+            buffered.afterTableLayout(ownerContext);
         }
         
         if (ownerGrid) {
@@ -318,6 +330,13 @@ Ext.define('Ext.view.TableLayout', {
         }
 
         if (scroller && !scroller.isScrolling) {
+            // BufferedRenderer only sets nextRefreshStartIndex to zero when preserveScrollOnReload is false.
+            // And if variableRowHeight is true, restoring the scroller will be handled by the bufferedRenderer
+            if (buffered) {
+                if (buffered.nextRefreshStartIndex === 0 || me.owner.hasVariableRowHeight()) {
+                    return;
+                }
+            }
             scroller.restoreState();
         }
     },

@@ -19,7 +19,6 @@ Ext.define('Ext.dataview.selection.Records', {
          * A {@link Ext.util.Collection} instance, or configuration object used to create
          * the collection of selected records.
          * @readonly
-         * @member Ext.dataview.DataView
          */
         selected: null
     },
@@ -200,23 +199,25 @@ Ext.define('Ext.dataview.selection.Records', {
         var me = this,
             selection = me.getSelected(),
             view = me.view,
-            columns = view.ownerGrid.getVisibleColumnManager().getColumns(),
+            columns = view.getHeaderContainer().getVisibleColumns(),
             colCount,
             i,
             j,
-            location,
+            baseLocation, location,
             abort = false;
 
         if (columns) {
             colCount = columns.length;
-            location = new Ext.grid.Location(view);
+            baseLocation = new Ext.grid.Location(view);
 
             // Use Collection#each instead of copying the entire dataset into an array and iterating that.
             if (selection) {
                 selection.each(function(record) {
-                    location.setItem(record);
+                    location = baseLocation.clone({
+                        record: record
+                    });
                     for (i = 0; i < colCount; i++) {
-                        location.setColumn(columns[i]);
+                        location = location.cloneForColumn(columns[i]);
                         if (fn.call(scope || me, location, location.columnIndex, location.recordIndex) === false) {
                             abort = true;
                             return false;
@@ -350,8 +351,11 @@ Ext.define('Ext.dataview.selection.Records', {
          */
         refresh: function() {
             var me = this,
+                view = me.view,
                 selModel = me.getSelectionModel(),
-                storeCollection = me.view.getStore().getData(),
+                storeCollection = view.getStore().getData(),
+                filterFn = storeCollection.getFilters().getFilterFn(),
+                ignoredFilter = selModel.ignoredFilter,
                 selected = me.getSelected(),
                 lastSelected = selModel.getLastSelected(),
                 newLastSelected,
@@ -364,11 +368,26 @@ Ext.define('Ext.dataview.selection.Records', {
             // Uncover the unfiltered selection if it's there.
             // We only want to prune from the selection records which are
             // *really* no longer in the store.
-            storeCollection = storeCollection.getSource() || storeCollection;
+            if (ignoredFilter) {
+                if (ignoredFilter.getDisabled()) {
+                    ignoredFilter = null;
+                } else {
+                    ignoredFilter.setDisabled(true);
+                    storeCollection = storeCollection.getSource() || storeCollection;
+                }
+            }
 
             // Update the lastSelected instance with the new version from the store if any.
             if (lastSelected) {
                 newLastSelected = storeCollection.get(storeCollection.getKey(lastSelected));
+
+                // We are using the unfiltered source collection, so we must
+                // filter using all filters except the ignored filter.
+                // This is to accommodate a ComboBox's primaryFilter which must not
+                // evict selected records from the selection.
+                if (newLastSelected && ignoredFilter && !filterFn(newLastSelected)) {
+                    newLastSelected = null;
+                }
             }
 
             // If there is a current selection, build the toDeselect and toReselect lists
@@ -380,6 +399,13 @@ Ext.define('Ext.dataview.selection.Records', {
                     rec = selections[i];
                     matchingSelection = storeCollection.get(storeCollection.getKey(rec));
 
+                    // If we are using the unfiltered source because of having to ignore only one
+                    // filter, then test the filter condition here with that one filter disabled.
+                    // Evict the record if it still does not pass the filter.
+                    if (matchingSelection && ignoredFilter && !filterFn(matchingSelection)) {
+                        matchingSelection = null;
+                    }
+
                     if (matchingSelection) {
                         if (matchingSelection !== rec) {
                             toDeselect.push(rec);
@@ -390,6 +416,13 @@ Ext.define('Ext.dataview.selection.Records', {
                     }
                 }
 
+                // Give the view an opportunity to intervene in the selection model refresh.
+                // BoundLists remove any interactively added "isEntered" records from the
+                // toDeselect array because they are outside the scope of the field's supplied Store.
+                if (view.beforeSelectionRefresh) {
+                    view.beforeSelectionRefresh(toDeselect, toReselect);
+                }
+
                 // Update the selected Collection.
                 // Records which are no longer present will be in the toDeselect list
                 // Records which have the same id which have returned will be in the toSelect list.
@@ -398,6 +431,10 @@ Ext.define('Ext.dataview.selection.Records', {
                 selected.suppressEvent = true;
                 selected.splice(selected.getCount(), toDeselect, toReselect);
                 selected.suppressEvent = false;
+            }
+
+            if (ignoredFilter) {
+                ignoredFilter.setDisabled(false);
             }
 
             // Keep any lastSelected up to date with what's now in the store

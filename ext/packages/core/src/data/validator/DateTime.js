@@ -7,6 +7,8 @@ Ext.define('Ext.data.validator.DateTime', {
 
     type: 'datetime',
 
+    isDateTimeValidator: true,
+
     /**
      * @cfg {String} message
      * The error message to return when the value is not a valid time.

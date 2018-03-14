@@ -1,6 +1,7 @@
 /**
  * @class Ext.sparkline.Base
  */
+
 Ext.define('Ext.override.sparkline.Base', {
     override: 'Ext.sparkline.Base',
 

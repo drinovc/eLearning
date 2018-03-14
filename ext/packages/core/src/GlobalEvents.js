@@ -186,12 +186,26 @@ Ext.define('Ext.GlobalEvents', {
     },
 
     setPressedComponent: function(component, e) {
-        var pressedComponent = this.pressedComponent;
+        var me = this,
+            pressedComponent = me.pressedComponent;
 
         if (pressedComponent && pressedComponent.onRelease) {
             pressedComponent.onRelease(e);
         }
-        this.pressedComponent = component;
+        
+        me.pressedComponent = component;
+
+        if (component) {
+            me.pressedScrollStart = Ext.on({
+                scrollstart: function () {
+                    me.setPressedComponent(null, e);
+                },
+                destroyable: true
+            });
+        }
+        else {
+            me.pressedScrollStart = Ext.destroy(me.pressedScrollStart);
+        }
     },
 
     attachListeners: function() {
@@ -228,7 +242,7 @@ Ext.define('Ext.GlobalEvents', {
             }
             else {
                 winListeners.resize.buffer = me.resizeBuffer;
-            };
+            }
             
             win.on(winListeners);
         }
@@ -246,11 +260,16 @@ Ext.define('Ext.GlobalEvents', {
 
     fireMouseDown: function(e) {
         this.fireEvent('mousedown', e);
+
+        // Synchronize floated component ordering.
+        // Note that this is an ASAP method and will complete asynchronously
+        // after this event has finished.
+        Ext.ComponentManager.handleDocumentMouseDown(e);
     },
 
     fireMouseUp: function(e) {
         this.fireEvent('mouseup', e);
-        this.setPressedComponent(null);
+        this.setPressedComponent(null, e);
     },
 
     fireResize: function() {
@@ -310,4 +329,22 @@ Ext.define('Ext.GlobalEvents', {
     Ext.fireEvent = function() {
         return GlobalEvents.fireEvent.apply(GlobalEvents, arguments);
     };
+
+    /**
+     * @member Ext
+     * @method fireIdle
+     * Fires the global `idle` event if there are any listeners registered.
+     *
+     * @since 6.5.1
+     * @private
+     */
+    Ext.fireIdle = function () {
+        if (GlobalEvents.hasListeners.idle && !Ext._suppressIdle) {
+            GlobalEvents.fireEventArgs('idle');
+        }
+
+        Ext._suppressIdle = false;
+    };
+
+    Ext._suppressIdle = false;
 });

@@ -284,7 +284,7 @@ Ext.define('Ext.dataview.IndexBar', {
                 store = list.getStore(),
                 groups = store.getGroups(),
                 ln = groups.length,
-                group, groupKey, i, closest;
+                group, groupKey, i, closest, item, record;
 
             for (i = 0; i < ln; i++) {
                 group = groups.getAt(i);
@@ -299,8 +299,24 @@ Ext.define('Ext.dataview.IndexBar', {
             }
 
             if (closest) {
-                list.ensureVisible(closest.first(), {
-                    animation: me.getAnimation()
+                record = closest.first();
+
+                // Scrolling when infinite will already take the
+                // header into account so we only want to get the
+                // header when the list is not infinite. Also note,
+                // header pinning is only applicable to infinite
+                // lists so we don't have to worry about adjusting
+                // for pinned headers.
+                if (!list.getInfinite()) {
+                    item = list.itemFromRecord(record).$header;
+                }
+
+                list.ensureVisible(record, {
+                    animation: me.getAnimation(),
+                    item: item,
+                    align: {
+                        y: 'start'
+                    }
                 });
             }
         },

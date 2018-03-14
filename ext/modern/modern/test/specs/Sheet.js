@@ -1,6 +1,8 @@
 /* global Ext, expect */
 
-topSuite("Ext.Sheet", function() {
+topSuite("Ext.Sheet", [
+    'Ext.layout.VBox'
+], function() {
     var menus = [],
         sheet;
 
@@ -9,7 +11,7 @@ topSuite("Ext.Sheet", function() {
     function createSheet(config) {
         sheet = Ext.create('Ext.Sheet', config || {});
         return sheet;
-    };
+    }
 
     function destroyMenu(menu) {
         if (menu) {
@@ -142,7 +144,7 @@ topSuite("Ext.Sheet", function() {
             expect(bottom.isHidden()).toBe(true);
             left.setDisplayed(true);
             waitsFor(function() {
-                return !left.isAnimating;
+                return !left.isTranslating;
             });
             runs(function() {
                 expect(left.isHidden()).toBe(false);
@@ -165,16 +167,13 @@ topSuite("Ext.Sheet", function() {
             expect(bottom.isHidden()).toBe(true);
             left.setDisplayed(true);
             waitsFor(function() {
-                return !left.isAnimating;
+                return !left.isTranslating;
             });
             runs(function() {
                 left.setDisplayed(false);
             });
             waitsFor(function() {
-                return !left.isAnimating;
-            });
-            runs(function() {
-                expect(left.isHidden()).toBe(true);
+                return !left.isTranslating && left.isHidden() === true;
             });
         });
     });
@@ -218,7 +217,7 @@ topSuite("Ext.Sheet", function() {
             expect(menu.isHidden()).toBe(true);
             Ext.Viewport.showMenu('left');
             waitsFor(function() {
-                return !menu.isAnimating;
+                return !menu.isTranslating;
             });
             runs(function() {
                 expect(menu.isHidden()).toBe(false);
@@ -249,7 +248,7 @@ topSuite("Ext.Sheet", function() {
             expect(menu.isHidden()).toBe(true);
             Ext.Viewport.showMenu('right');
             waitsFor(function() {
-                return !menu.isAnimating;
+                return !menu.isTranslating;
             });
             runs(function() {
                 expect(menu.isHidden()).toBe(false);
@@ -280,7 +279,7 @@ topSuite("Ext.Sheet", function() {
             expect(menu.isHidden()).toBe(true);
             Ext.Viewport.showMenu('top');
             waitsFor(function() {
-                return !menu.isAnimating;
+                return !menu.isTranslating;
             });
             runs(function() {
                 expect(menu.isHidden()).toBe(false);
@@ -311,7 +310,7 @@ topSuite("Ext.Sheet", function() {
             expect(menu.isHidden()).toBe(true);
             Ext.Viewport.showMenu('bottom');
             waitsFor(function() {
-                return !menu.isAnimating;
+                return !menu.isTranslating;
             });
             runs(function() {
                 expect(menu.isHidden()).toBe(false);
@@ -331,7 +330,7 @@ topSuite("Ext.Sheet", function() {
             expect(menu.isHidden()).toBe(true);
             Ext.Viewport.showMenu('left');
             waitsFor(function() {
-                return !menu.isAnimating;
+                return !menu.isTranslating;
             });
             runs(function() {
                 expect(menu.isHidden()).toBe(false);
@@ -362,7 +361,7 @@ topSuite("Ext.Sheet", function() {
             expect(getMenu('bottom')).toBe(bottom);
         });
 
-        it("should hideOther multiple menus left", function() {
+        it("should hideOther menus when a menu is shown", function() {
             function make(side) {
                 var m = makeMenu();
                 Ext.Viewport.setMenu(m, {
@@ -379,17 +378,17 @@ topSuite("Ext.Sheet", function() {
             Ext.Viewport.showMenu('left');
             Ext.Viewport.showMenu('right');
             waitsFor(function() {
-                return !left.isAnimating && !right.isAnimating && !top.isAnimating && !bottom.isAnimating;
+                return !left.isTranslating && !right.isTranslating && !top.isTranslating && !bottom.isTranslating;
             });
             runs(function() {
-                expect(left.isHidden()).toBe(false);
+                expect(left.isHidden()).toBe(true);
                 expect(right.isHidden()).toBe(false);
                 expect(top.isHidden()).toBe(true);
                 expect(bottom.isHidden()).toBe(true);
                 Ext.Viewport.hideOtherMenus('left');
             });
             waitsFor(function()  {
-                return !left.isHidden() && right.isHidden() && top.isHidden() && bottom.isHidden();
+                return left.isHidden() && right.isHidden() && top.isHidden() && bottom.isHidden();
             });
         });
     });

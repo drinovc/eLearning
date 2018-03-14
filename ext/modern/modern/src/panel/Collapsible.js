@@ -1,18 +1,19 @@
 /**
  * @class Ext.Panel
  */
+
 Ext.define('Ext.panel.Collapsible', {
     override: 'Ext.Panel',
 
     config: {
         /**
-         * @cfg {Boolean} [collapsed]
+         * @cfg {Boolean} collapsed
          * `true` to start collapsed.
          */
         collapsed: null,
 
         /**
-         * @cfg {'top'/'right'/'bottom'/'left'/Boolean/Object} [collapsible]
+         * @cfg {'top'/'right'/'bottom'/'left'/Boolean/Object} collapsible
          * A configuration for a {@link Ext.panel.Collapser Collapser}.
          *
          * True to make the panel collapsible and have an expand/collapse toggle Tool added into the header tool button
@@ -51,7 +52,7 @@ Ext.define('Ext.panel.Collapsible', {
 
     /**
      * @event drawerhide
-     * Fires then the {@link #Ext.panel.Collapser#cfg-drawer drawer} hides.
+     * Fires then the {@link Ext.panel.Collapser#cfg-drawer drawer} hides.
      *
      * @param {Ext.panel.Panel} this
      * @since 6.5.0
@@ -59,7 +60,7 @@ Ext.define('Ext.panel.Collapsible', {
 
     /**
      * @event drawershow
-     * Fires then the {@link #Ext.panel.Collapser#cfg-drawer drawer} shows.
+     * Fires then the {@link Ext.panel.Collapser#cfg-drawer drawer} shows.
      *
      * @param {Ext.panel.Panel} this
      * @since 6.5.0
@@ -89,6 +90,7 @@ Ext.define('Ext.panel.Collapsible', {
     },
 
     /**
+     * @method collapse
      * @inheritdoc Ext.panel.Collapser#method-collapse
      */
     collapse: function(animation) {
@@ -96,6 +98,7 @@ Ext.define('Ext.panel.Collapsible', {
     },
 
     /**
+     * @method expand
      * @inheritdoc Ext.panel.Collapser#method-expand
      */
     expand: function(animation) {
@@ -103,6 +106,7 @@ Ext.define('Ext.panel.Collapsible', {
     },
 
     /**
+     * @method toggleCollapsed
      * @inheritdoc Ext.panel.Collapser#method-toggleCollapsed
      */
     toggleCollapsed: function(collapsed, animation) {
@@ -197,12 +201,11 @@ Ext.define('Ext.panel.Collapsible', {
                 bodyWrap = me.bodyWrapElement;
 
             if (bodyWrap.parent() !== el) {
-                /**
-                 * We need to make sure the collapser node
-                 * is after the header in case the resizer
-                 * node is present. The resizer node needs
-                 * to be on top to function.
-                 */
+
+                 // We need to make sure the collapser node
+                 // is after the header in case the resizer
+                 // node is present. The resizer node needs
+                 // to be on top to function.
                 if (header) {
                     bodyWrap.insertAfter(header.element);
                 } else {

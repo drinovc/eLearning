@@ -156,6 +156,7 @@ Ext.define('Ext.util.ProtoElement', function () {
         },
 
         /**
+         * @method setStyle
          * @inheritdoc Ext.dom.Element#method-setStyle
          * @return {Ext.util.ProtoElement} this
          */

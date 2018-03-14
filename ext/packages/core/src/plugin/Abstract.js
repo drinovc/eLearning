@@ -75,10 +75,12 @@ Ext.define('Ext.plugin.Abstract', {
      *      var panel = Ext.create({
      *          xtype: 'panel',
      *
-     *          plugins: [{
-     *              id: 'foo',
-     *              ...
-     *          }]
+     *          plugins: {
+     *              foobar: {
+     *                  id: 'foo',
+     *                  ...
+     *              }
+     *          }
      *      });
      *
      *      // later on:
@@ -109,7 +111,7 @@ Ext.define('Ext.plugin.Abstract', {
      */
     destroy: function() {
         this.cmp = this.pluginConfig = null;
-        
+
         this.callParent();
     },
 
@@ -122,7 +124,7 @@ Ext.define('Ext.plugin.Abstract', {
             if (Ext.isArray(alias)) {
                 alias = alias[0];
             }
-            
+
             prototype.ptype = alias.split('plugin.')[1];
         }
     },
@@ -149,7 +151,16 @@ Ext.define('Ext.plugin.Abstract', {
                 var type = Ext.typeOf(plugins), // 'object', 'array', 'string'
                     entry, key, obj, value;
 
-                if (type === 'string' || plugins.isInstance) {
+                if (type === 'string') {
+                    obj = {};
+
+                    // allows for findPlugin to find a plugin
+                    // defined as a string
+                    obj[typeProp] = plugins;
+
+                    plugins = [ obj ];
+                }
+                else if (plugins.isInstance) {
                     plugins = [ plugins ];
                 }
                 else if (type === 'object') {

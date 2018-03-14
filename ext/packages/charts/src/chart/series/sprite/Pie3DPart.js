@@ -137,7 +137,7 @@ Ext.define('Ext.chart.series.sprite.Pie3DPart', {
                 distortion: 0.5,
                 baseRotation: 0,
                 baseColor: 'white',
-                colorSpread: 0.7,
+                colorSpread: 0.5,
                 miterLimit: 1,
                 bevelWidth: 5,
                 strokeOpacity: 0,
@@ -176,6 +176,18 @@ Ext.define('Ext.chart.series.sprite.Pie3DPart', {
                 color: 'rgba(255,255,255,0)'
             }]
         });
+    },
+
+    updateRenderer: function () {
+        this.setDirty(true);
+    },
+
+    updateRendererData: function () {
+        this.setDirty(true);
+    },
+
+    updateRendererIndex: function () {
+        this.setDirty(true);
     },
 
     alphaUpdater: function (attr) {
@@ -446,12 +458,14 @@ Ext.define('Ext.chart.series.sprite.Pie3DPart', {
             };
             changes = Ext.callback(renderer, null,
                 [me, itemCfg, me.getRendererData(), me.getRendererIndex()], 0, me.getSeries());
-            if (changes.part) {
-                // Can't let users change the nature of the sprite.
-                changes.part = part;
+            if (changes) {
+                if (changes.part) {
+                    // Can't let users change the nature of the sprite.
+                    changes.part = part;
+                }
+                me.setAttributes(changes);
+                me.useAttributes(ctx, rect);
             }
-            me.setAttributes(changes);
-            me.useAttributes(ctx, rect);
         }
 
         me.callParent([surface, ctx]);

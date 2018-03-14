@@ -13,9 +13,10 @@ Ext.define('Ext.data.proxy.WebStorage', {
 
     config: {
         /**
-        * @cfg {String} id
-        * The unique ID used as the key in which all record data are stored in the local storage object.
-        */
+         * @cfg {String} id
+         * The unique ID used as the key in which all record data are stored in the local
+         * storage object.
+         */
         id: undefined
     },
 
@@ -60,6 +61,7 @@ Ext.define('Ext.data.proxy.WebStorage', {
     },
 
     /**
+     * @method create
      * @inheritdoc
      */
     create: function(operation) {
@@ -82,7 +84,6 @@ Ext.define('Ext.data.proxy.WebStorage', {
             record = records[i];
 
             if (record.phantom) {
-                record.phantom = false;
                 identifier = record.identifier;
                 if (identifier && identifier.isUnique) {
                     id = record.getId();
@@ -104,6 +105,7 @@ Ext.define('Ext.data.proxy.WebStorage', {
     },
 
     /**
+     * @method read
      * @inheritdoc
      */
     read: function(operation) {
@@ -189,6 +191,7 @@ Ext.define('Ext.data.proxy.WebStorage', {
     },
 
     /**
+     * @method update
      * @inheritdoc
      */
     update: function(operation) {
@@ -214,6 +217,7 @@ Ext.define('Ext.data.proxy.WebStorage', {
     },
 
     /**
+     * @method erase
      * @inheritdoc
      */
     erase: function(operation) {

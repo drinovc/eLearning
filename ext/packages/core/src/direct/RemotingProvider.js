@@ -119,8 +119,8 @@ Ext.define('Ext.direct.RemotingProvider', {
     /**
      * @cfg {Boolean} [disableNestedActions=false]
      * In versions prior to 4.2, using dotted Action names was not really meaningful,
-     * because it generated flat {@link #cfg-namespace} object with dotted property names.
-     * For example, take this API declaration:
+     * because it generated flat {@link #cfg-namespace} object with dotted property
+     * names. For example, take this API declaration:
      *
      *      {
      *          actions: {
@@ -147,8 +147,8 @@ Ext.define('Ext.direct.RemotingProvider', {
      *          }
      *      }
      *
-     * In Ext JS 4.2, we introduced new namespace handling behavior. Now the same API object
-     * will be like this:
+     * In Ext JS 4.2, we introduced new namespace handling behavior. Now the same API
+     * object will be like this:
      *
      *      window.MyApp = {
      *          TestAction: {
@@ -177,7 +177,8 @@ Ext.define('Ext.direct.RemotingProvider', {
     /**
      * @cfg {String} url
      *
-     * **Required**. The url to connect to the {@link Ext.direct.Manager} server-side router. 
+     * **Required**. The url to connect to the {@link Ext.direct.Manager} server-side
+     * router. 
      */
     
     /**
@@ -187,7 +188,7 @@ Ext.define('Ext.direct.RemotingProvider', {
      */
     
     /**
-     * @cfg {Number/Boolean} [enableBuffer=10]
+     * @cfg {Number/Boolean} enableBuffer
      *
      * `true` or `false` to enable or disable combining of method
      * calls. If a number is specified this is the amount of time in milliseconds
@@ -202,25 +203,25 @@ Ext.define('Ext.direct.RemotingProvider', {
     enableBuffer: 10,
     
     /**
-     * @cfg {Number} bufferLimit The maximum number of requests to batch together.
-     * By default, an unlimited number of requests will be batched. This option will
-     * allow to wait only for a certain number of Direct method calls before
-     * dispatching a request to the server, even if {@link #enableBuffer} timeout
-     * has not yet expired.
+     * @cfg {Number} bufferLimit
+     * The maximum number of requests to batch together. By default, an unlimited number
+     * of requests will be batched. This option will allow to wait only for a certain
+     * number of Direct method calls before dispatching a request to the server, even if
+     * {@link #enableBuffer} timeout has not yet expired.
      * 
      * Note that this option does nothing if {@link #enableBuffer} is set to `false`.
      */
     bufferLimit: Number.MAX_VALUE,
     
     /**
-     * @cfg {Number} [maxRetries=1]
+     * @cfg {Number} maxRetries
      *
      * Number of times to re-attempt delivery on failure of a call.
      */
     maxRetries: 1,
     
     /**
-     * @cfg {Number} [timeout]
+     * @cfg {Number} timeout
      *
      * The timeout to use for each request.
      */
@@ -278,6 +279,7 @@ Ext.define('Ext.direct.RemotingProvider', {
     },
     
     /**
+     * @method connect
      * @inheritdoc
      */
     connect: function() {
@@ -474,7 +476,7 @@ Ext.define('Ext.direct.RemotingProvider', {
      *
      * @private
      */
-    configureTransaction: function(action, method, args) {
+    configureTransaction: function(action, method, args, isForm) {
         var data, cb, scope, options, params;
         
         data = method.getCallData(args);
@@ -493,7 +495,7 @@ Ext.define('Ext.direct.RemotingProvider', {
         
         // Callback might be unspecified for a notification
         // that does not expect any return value
-        cb = cb && scope ? Ext.Function.bind(cb, scope) : cb;
+        cb = cb && scope ? cb.bind(scope) : cb;
         
         params = Ext.apply({}, {
             provider: this,

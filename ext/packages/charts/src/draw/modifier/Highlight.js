@@ -27,6 +27,7 @@ Ext.define('Ext.draw.modifier.Highlight', {
 
     applyStyle: function (style, oldStyle) {
         oldStyle = oldStyle || {};
+
         if (this.getSprite()) {
             Ext.apply(oldStyle, this.getSprite().self.def.normalize(style));
         } else {
@@ -203,7 +204,7 @@ Ext.define('Ext.draw.modifier.Highlight', {
 
     popUp: function (attr, changes) {
         changes = this.filterChanges(attr, changes);
-        Ext.draw.modifier.Modifier.prototype.popUp.call(this, attr, changes);
+        this.callParent([attr, changes]);
     }
 
 });

@@ -74,7 +74,7 @@ Ext.define('Ext.mixin.Selectable', {
         selected: true,
 
         /**
-         * @cfg {Boolean} [pruneRemoved=true]
+         * @cfg {Boolean} pruneRemoved
          * Remove records from the selection when they are removed from the store.
          *
          * **Important:** When using {@link Ext.toolbar.Paging paging} or a {@link Ext.data.BufferedStore},
@@ -95,10 +95,18 @@ Ext.define('Ext.mixin.Selectable', {
          */
         selection: null,
 
+        /**
+         * @cfg twoWayBindable
+         * @inheritdoc Ext.mixin.Bindable#cfg-twoWayBindable
+         */
         twoWayBindable: {
             selection: 1
         },
 
+        /**
+         * @cfg publishes
+         * @inheritdoc Ext.mixin.Bindable#cfg-publishes
+         */
         publishes: {
             selection: 1
         }
@@ -590,7 +598,7 @@ Ext.define('Ext.mixin.Selectable', {
      * @member Ext.mixin.Selectable
      * @method getLastSelected
      * @return {Array} The previous selection.
-     * @deprecated 2.0.0
+     * @deprecated 2.0.0 This method is deprecated.
      */
 
     /**
@@ -605,7 +613,7 @@ Ext.define('Ext.mixin.Selectable', {
      * This was an internal function accidentally exposed in 1.x and now deprecated. Calling it has no effect
      * @member Ext.mixin.Selectable
      * @method setLastFocused
-     * @deprecated 2.0.0
+     * @deprecated 2.0.0 This method is deprecated.
      */
 
     /**
@@ -624,8 +632,8 @@ Ext.define('Ext.mixin.Selectable', {
      */
 
     /**
-     * @cfg {Boolean} locked
-     * @inheritdoc Ext.mixin.Selectable#disableSelection
+     * @cfg locked
+     * @inheritdoc Ext.mixin.Selectable#cfg-disableSelection
      * @deprecated 2.0.0 Please use {@link #disableSelection} instead.
      */
 });

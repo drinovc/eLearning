@@ -286,6 +286,8 @@ topSuite('Ext.grid.header.Container', ['Ext.grid.Panel', 'Ext.form.field.Text'],
 
                 expect(function () {
                     var e = {
+                        isEvent: true,
+                        target: field.inputEl.dom,
                         getTarget: function () {
                             return field.inputEl.dom;
                         }

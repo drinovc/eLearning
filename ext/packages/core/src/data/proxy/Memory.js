@@ -69,13 +69,10 @@ Ext.define('Ext.data.proxy.Memory', {
         */
         data: {
             $value: null,
-            // Don't deeply clone the data object, just shallow copy the array
+            // Because of destructive association reading, we always need to clone incoming data
+            // to protect externally owned data objects from mutation
             merge: function(newValue, currentValue, target, mixinClass) {
-                if (Ext.isArray(newValue)) {
-                    return Ext.Array.clone(newValue);
-                } else {
-                    return Ext.clone(newValue);
-                }
+                return newValue ? Ext.clone(newValue) : newValue;
             }
         },
 
@@ -150,7 +147,10 @@ Ext.define('Ext.data.proxy.Memory', {
      */
     read: function(operation) {
         var me = this,
-            resultSet = me.getReader().read(me.getData()),
+            reader = me.getReader(),
+            resultSet = reader.read(me.getData(), {
+                recordCreator: reader.defaultRecordCreatorFromServer
+            }),
             records = resultSet.getRecords(),
             sorters = operation.getSorters(),
             grouper = operation.getGrouper(),

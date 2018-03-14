@@ -1,7 +1,7 @@
 /* global Ext, expect, spyOn, jasmine, xit, MockAjaxManager */
 
 (Ext.isIE8 ? xtopSuite : topSuite)("grid-general-buffered-preserve-scroll",
-    [false, 'Ext.grid.Panel', 'Ext.data.ArrayStore'],
+    [false, 'Ext.grid.Panel', 'Ext.data.ArrayStore', 'Ext.data.BufferedStore'],
 function() {
     var grid, store,
         synchronousLoad = true,

@@ -207,10 +207,10 @@ Ext.define('Ext.data.StoreManager', {
     };
 
     /**
+     * @method getStore
      * Shortcut to {@link Ext.data.StoreManager#lookup}.
      * @member Ext
-     * @method getStore
-     * @inheritdoc Ext.data.StoreManager#lookup
+     * @inheritdoc Ext.data.StoreManager#method-lookup
      */
     Ext.getStore = function(name) {
         return Ext.data.StoreManager.lookup(name);

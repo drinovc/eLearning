@@ -55,43 +55,65 @@ Ext.define('Ext.field.Toggle', {
     alternateClassName: 'Ext.form.Toggle',
     requires: ['Ext.slider.Toggle'],
 
+    /**
+     * @cfg twoWayBindable
+     * @inheritdoc
+     */
     twoWayBindable: {
         value: 1
     },
 
+    /**
+     * @cfg publishes
+     * @inheritdoc
+     */
     publishes: {
         value: 1
     },
 
     config: {
+        /**
+         * @cfg slider
+         * @inheritdoc
+         */
         slider: {
             xtype: 'toggleslider'
         },
 
         /**
-         * @cfg {String} activeLabel The label to add to the toggle field when it is toggled on.
-         * Only available in the Blackberry theme.
+         * @cfg {String} activeLabel
+         * The label to add to the toggle field when it is toggled on. Only available in
+         * the Blackberry theme.
          * @accessor
          */
         activeLabel: null,
 
         /**
-         * @cfg {String} inactiveLabel The label to add to the toggle field when it is toggled off.
-         * Only available in the Blackberry theme.
+         * @cfg {String} inactiveLabel
+         * The label to add to the toggle field when it is toggled off. Only available in
+         * the Blackberry theme.
          * @accessor
          */
         inactiveLabel: null,
 
         /**
-         * @inheritdoc Ext.slider.Slider#value
-         * @cfg {Boolean} value
+         * @cfg value
+         * @inheritdoc Ext.slider.Slider#cfg-value
          * @accessor
          */
         value: false
     },
 
+    /**
+     * @cfg bodyAlign
+     * @inheritdoc
+     */
     bodyAlign: 'start',
 
+    /**
+     * @property classCls
+     * @inheritdoc
+     */
     classCls: Ext.baseCSSPrefix + 'togglefield',
 
     /**
@@ -163,6 +185,8 @@ Ext.define('Ext.field.Toggle', {
 
     setSliderValue: function(value) {
         this.getSlider().setValue(value ? 1 : 0);
+        return !!value;
+
     },
 
     /**

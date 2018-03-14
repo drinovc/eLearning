@@ -1,6 +1,7 @@
 /**
  * @class Ext.event.Event
  */
+
 Ext.define('Ext.overrides.event.Event', {
     override: 'Ext.event.Event',
 
@@ -288,7 +289,7 @@ Ext.define('Ext.overrides.event.Event', {
                         fn.$skipTimerCheck = true;
                         //</debug>
                         
-                        setTimeout(fn);
+                        Ext.defer(fn, 1);
                     }
                 }
                 
@@ -313,7 +314,7 @@ Ext.define('Ext.overrides.event.Event', {
                  * @member Ext.event.Event
                  * Clones this event.
                  * @return {Ext.event.Event} The cloned copy
-                 * @deprecated 5.0.0
+                 * @deprecated 5.0.0 This method is deprecated.
                  */
                 clone: function() {
                     return new this.self(this.browserEvent, this);
@@ -323,17 +324,7 @@ Ext.define('Ext.overrides.event.Event', {
     }
 }, function() {
     var Event = this,
-        btnMap,
-        onKeyDown = function(e) {
-            if (e.keyCode === 9) {
-                Event.forwardTab = !e.shiftKey;
-            }
-        },
-        onKeyUp = function(e) {
-            if (e.keyCode === 9) {
-                delete Event.forwardTab;
-            }
-        };
+        btnMap;
 
 //<feature legacyBrowser>
     if (Ext.isIE9m) {
@@ -388,8 +379,9 @@ Ext.define('Ext.overrides.event.Event', {
             mouseEnterRe: /(mouseover|mouseenter)/,
 
             /**
+             * @method enableIEAsync
              * @member Ext.event.Event
-             * @inheritdoc Ext.event.Event#static-enableIEAsync
+             * @inheritdoc Ext.event.Event#static-method-enableIEAsync
              * @private
              */
             enableIEAsync: function(browserEvent) {
@@ -419,18 +411,13 @@ Ext.define('Ext.overrides.event.Event', {
         // We place these listeners to capture Tab and Shift-Tab key strokes
         // and pass this information in the focus/blur event if it happens
         // between keydown/keyup pair.
-        document.attachEvent('onkeydown', onKeyDown);
-        document.attachEvent('onkeyup',   onKeyUp);
+        document.attachEvent('onkeydown', Ext.event.Event.globalTabKeyDown);
+        document.attachEvent('onkeyup',   Ext.event.Event.globalTabKeyUp);
         
         window.attachEvent('onunload', function() {
-            document.detachEvent('onkeydown', onKeyDown);
-            document.detachEvent('onkeyup',   onKeyUp);
+            document.detachEvent('onkeydown', Ext.event.Event.globalTabKeyDown);
+            document.detachEvent('onkeyup',   Ext.event.Event.globalTabKeyUp);
         });
     }
-    else
 //</feature>
-    if (document.addEventListener) {
-        document.addEventListener('keydown', onKeyDown, true);
-        document.addEventListener('keyup',   onKeyUp,   true);
-    }
 });

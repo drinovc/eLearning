@@ -11,25 +11,28 @@ Ext.define('Ext.fx.animation.Slide', {
 
     config: {
         /**
-         * @cfg {String} direction The direction of which the slide animates
+         * @cfg {String} direction
+         * The direction of which the slide animates
          * @accessor
          */
         direction: 'left',
 
         /**
-         * @cfg {Boolean} out True if you want to make this animation slide out, instead of slide in.
+         * @cfg {Boolean} out
+         * True if you want to make this animation slide out, instead of slide in.
          * @accessor
          */
         out: false,
 
         /**
-         * @cfg {Number} offset The offset that the animation should go offscreen before entering (or when exiting)
+         * @cfg {Number} offset
+         * The offset that the animation should go offscreen before entering (or when exiting)
          * @accessor
          */
         offset: 0,
 
         /**
-         * @cfg
+         * @cfg easing
          * @inheritdoc
          */
         easing: 'auto',

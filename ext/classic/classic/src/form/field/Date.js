@@ -72,7 +72,7 @@ Ext.define('Ext.form.field.Date', {
     alternateClassName: ['Ext.form.DateField', 'Ext.form.Date'],
 
     /**
-     * @cfg {String} [format="m/d/Y"]
+     * @cfg {String} format
      * The default date format string which can be overriden for localization support. The format must be valid
      * according to {@link Ext.Date#parse}.
      * @locale
@@ -80,7 +80,7 @@ Ext.define('Ext.form.field.Date', {
     format : "m/d/Y",
 
     /**
-     * @cfg {String} [ariaFormat="M j Y"]
+     * @cfg {String} ariaFormat
      * This date format will be used to format ARIA attributes in the field and its Picker,
      * to provide Assistive Technologies such as screen readers with user friendly text.
      * The format must be valid {@link Ext.Date#format}.
@@ -104,8 +104,9 @@ Ext.define('Ext.form.field.Date', {
     disabledDaysText : "Disabled",
 
     /**
-     * @cfg {String} ariaDisabledDaysText The text that Assistive Technologies such as screen readers
-     * will announce when the date falls on a disabled day of week.
+     * @cfg {String} ariaDisabledDaysText
+     * The text that Assistive Technologies such as screen readers will announce when the
+     * date falls on a disabled day of week.
      * @locale
      */
     ariaDisabledDaysText: "This day of week is disabled",
@@ -118,8 +119,9 @@ Ext.define('Ext.form.field.Date', {
     disabledDatesText : "Disabled",
 
     /**
-     * @cfg {String} ariaDisabledDatesText The text that Assistive Technologies such as screen readers
-     * will announce when the date falls on a disabled date.
+     * @cfg {String} ariaDisabledDatesText
+     * The text that Assistive Technologies such as screen readers will announce when the
+     * date falls on a disabled date.
      * @locale
      */
     ariaDisabledDatesText: "This date cannot be selected",
@@ -132,9 +134,10 @@ Ext.define('Ext.form.field.Date', {
     minText : "The date in this field must be equal to or after {0}",
 
     /**
-     * @cfg {String} ariaMinText The text that Assistive Technologies such as screen readers
-     * will announce when the date in the cell is before {@link #minValue}. The date substituted
-     * for {0} will be formatted as per {@link #ariaFormat}.
+     * @cfg {String} ariaMinText
+     * The text that Assistive Technologies such as screen readers will announce when the
+     * date in the cell is before {@link #minValue}. The date substituted for {0} will be
+     * formatted as per {@link #ariaFormat}.
      * @locale
      */
     ariaMinText: "The date must be equal to or after {0}",
@@ -147,9 +150,10 @@ Ext.define('Ext.form.field.Date', {
     maxText : "The date in this field must be equal to or before {0}",
 
     /**
-     * @cfg {String} ariaMaxText The text that Assistive Technologies such as screen readers
-     * will announce when the date in the cell is after {@link #maxValue}. The date substituted
-     * for {0} will be formatted as per {@link #ariaFormat}.
+     * @cfg {String} ariaMaxText
+     * The text that Assistive Technologies such as screen readers will announce when the
+     * date in the cell is after {@link #maxValue}. The date substituted for {0} will be
+     * formatted as per {@link #ariaFormat}.
      * @locale
      */
     ariaMaxText: "The date must be equal to or before {0}",
@@ -162,14 +166,14 @@ Ext.define('Ext.form.field.Date', {
     invalidText : "{0} is not a valid date - it must be in the format {1}",
 
     /**
-     * @cfg {String} formatText The format text to be announced by screen readers
-     * when the field is focused.
+     * @cfg {String} formatText
+     * The format text to be announced by screen readers when the field is focused.
      * @locale
      */
     formatText: 'Expected date format {0}.',
 
     /**
-     * @cfg {String} [triggerCls='x-form-date-trigger']
+     * @cfg {String} triggerCls
      * An additional CSS class used to style the trigger button. The trigger will always get the class 'x-form-trigger'
      * and triggerCls will be **appended** if specified (default class displays a calendar icon).
      */
@@ -245,10 +249,14 @@ Ext.define('Ext.form.field.Date', {
 
     initTimeFormat: 'H',
 
+    /**
+     * @cfg matchFieldWidth
+     * @inheritdoc
+     */
     matchFieldWidth: false,
 
     /**
-     * @cfg {Number} [startDay=undefined]
+     * @cfg {Number} startDay
      * Day index at which the week should begin, 0-based.
      *
      * Defaults to `0` (Sunday).
@@ -257,13 +265,21 @@ Ext.define('Ext.form.field.Date', {
     startDay: 0,
 
     /**
-     * @cfg {String[]} valuePublishEvent
+     * @cfg valuePublishEvent
      * @inheritdoc
      */
     valuePublishEvent: ['select', 'blur'],
 
+    /**
+     * @cfg componentCls
+     * @inheritdoc
+     */
     componentCls: Ext.baseCSSPrefix + 'form-field-date',
     
+    /**
+     * @property ariaRole
+     * @inheritdoc
+     */
     ariaRole: 'combobox',
 
     /**
@@ -275,6 +291,9 @@ Ext.define('Ext.form.field.Date', {
      * @private
      */
     rawDateText: '',
+    
+    // Date field should validate on focusleave not blur
+    validateOnFocusLeave: true,
 
     initComponent: function() {
         var me = this,
@@ -521,7 +540,7 @@ Ext.define('Ext.form.field.Date', {
      *     dateField.format = 'Y-m-d';
      *     dateField.setValue('2006-05-04');
      *
-     * @param {String/Date} date The date or valid date string
+     * @param {String/Date} v The date or valid date string
      * @return {Ext.form.field.Date} this
      */
     setValue: function(v) {
@@ -708,6 +727,21 @@ Ext.define('Ext.form.field.Date', {
         });
     },
 
+    createInitialDate: function(value) {
+        var minValue = this.minValue, 
+            maxValue = this.maxValue;
+
+        value = value || new Date();
+
+        if (minValue && minValue > value) {
+            value = minValue;
+        } else if (maxValue && maxValue < value) {
+            value = maxValue;
+        }
+
+        return value;
+    },
+
     onSelect: function(m, d) {
         var me = this;
 
@@ -735,7 +769,8 @@ Ext.define('Ext.form.field.Date', {
      */
     onExpand: function() {
         var value = this.rawDate;
-        this.picker.setValue(Ext.isDate(value) ? value : new Date());
+
+        this.picker.setValue(Ext.isDate(value) ? value : this.createInitialDate());
     },
 
     /**

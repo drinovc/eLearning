@@ -219,7 +219,8 @@ Ext.define('Ext.fx.runner.CssTransition', {
             // Forward navigation in Chrome 50 navigates iframes, and orphans
             // the testElement in a detached document. Reconnect it if this has happened.
             if (testElement.ownerDocument.defaultView !== iframe.contentWindow) {
-                iframe.contentDocument.body.appendChild(testElement);
+                iframeDocument = iframe.contentDocument;
+                iframeDocument.body.appendChild(testElement);
                 me.testElementComputedStyle = iframeDocument.defaultView.getComputedStyle(testElement);
             }
         } else {
@@ -274,7 +275,6 @@ Ext.define('Ext.fx.runner.CssTransition', {
 
     run: function(animations) {
         var me = this,
-            Function = Ext.Function,
             ret = [],
             isLengthPropertyMap = me.lengthProperties,
             fromData = {},
@@ -465,7 +465,7 @@ Ext.define('Ext.fx.runner.CssTransition', {
                         messageFollowupFn.$skipTimerCheck = true;
                         //</debug>
                         
-                        me.messageFollowupId = Function.requestAnimationFrame(messageFollowupFn);
+                        me.messageFollowupId = Ext.raf(messageFollowupFn);
                     }
                  }
                  else {
@@ -481,9 +481,12 @@ Ext.define('Ext.fx.runner.CssTransition', {
             messageTimerFn.$skipTimerCheck = true;
             //</debug>
             
-            me.messageTimerId = Function.requestAnimationFrame(messageTimerFn);
+            me.messageTimerId = Ext.raf(messageTimerFn);
         }
 
+        // TODO: This method needs to attach something to the element it is animating
+        // we then need to monitor for destruction of that element
+        // and clean up any animations that remain.
         return ret;
     },
 
@@ -515,12 +518,12 @@ Ext.define('Ext.fx.runner.CssTransition', {
         
         if (activeAnimations === stoppedAnimations) {
             if (me.messageFollowupId) {
-                clearTimeout(me.messageFollowupId);
+                Ext.unraf(me.messageFollowupId);
                 me.messageFollowupId = null;
             }
             
             if (me.messageTimerId) {
-                clearTimeout(me.messageTimerId);
+                Ext.unraf(me.messageTimerId);
                 me.messageTimerId = null;
             }
             Ext.apply(me.transitionQueue, {

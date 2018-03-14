@@ -11,6 +11,9 @@
  *
  * Pie charts and Radar charts are common examples of Polar charts.
  *
+ * Please check out the summary for the {@link Ext.chart.AbstractChart} as well,
+ * for helpful tips and important details.
+ *
  */
 Ext.define('Ext.chart.PolarChart', {
     extend: 'Ext.chart.AbstractChart',
@@ -65,6 +68,12 @@ Ext.define('Ext.chart.PolarChart', {
         return Ext.isNumber(padding) ? padding : oldPadding;
     },
 
+    updateInnerPadding: function () {
+        if (!this.isConfiguring) {
+            this.performLayout();
+        }
+    },
+
     doSetSurfaceRect: function (surface, rect) {
         var mainRect = this.getMainRect();
         surface.setRect(rect);
@@ -77,7 +86,7 @@ Ext.define('Ext.chart.PolarChart', {
             firstSeries = Ext.Array.from(me.config.series)[0],
             i, ln, axis, foundAngular;
 
-        if (firstSeries.type === 'radar' && newAxes && newAxes.length) {
+        if (firstSeries && firstSeries.type === 'radar' && newAxes && newAxes.length) {
             // For compatibility with ExtJS: add a default angular axis if it's missing
             for (i = 0, ln = newAxes.length; i < ln; i++) {
                 axis = newAxes[i];
@@ -107,7 +116,7 @@ Ext.define('Ext.chart.PolarChart', {
 
         try {
             me.chartLayoutCount++;
-            me.animationSuspendCount++;
+            me.suspendAnimation();
             if (this.callParent() === false) {
                 applyThickness = false;
                 // Animation will be decremented in finally block
@@ -239,7 +248,7 @@ Ext.define('Ext.chart.PolarChart', {
 
             me.redraw();
         } finally {
-            me.animationSuspendCount--;
+            me.resumeAnimation();
             if (applyThickness) {
                 me.resumeThicknessChanged();
             }

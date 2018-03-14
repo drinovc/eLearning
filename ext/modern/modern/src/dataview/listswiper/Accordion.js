@@ -78,7 +78,7 @@ Ext.define('Ext.dataview.listswiper.Accordion', {
 
     scrollDock: null,
 
-    constructor: function () {
+    constructor: function (config) {
         var me = this;
 
         me.left = {
@@ -93,7 +93,7 @@ Ext.define('Ext.dataview.listswiper.Accordion', {
             items: []
         };
 
-        me.callParent(arguments);
+        me.callParent([config]);
     },
 
     initialize: function () {
@@ -182,8 +182,13 @@ Ext.define('Ext.dataview.listswiper.Accordion', {
     },
 
     onActionTap: function (action, button, e) {
-        e.stopPropagation();
-        this.commit(e, action, button);
+        var me = this,
+            state = me.getState();
+
+        if (state !== 'dragpeek') {
+            e.stopPropagation();
+            this.commit(e, action, button);
+        }
     },
 
     onDismissTap: function () {
@@ -241,20 +246,36 @@ Ext.define('Ext.dataview.listswiper.Accordion', {
     },
 
     privates: {
+        destroyItem: function () {
+            var me = this,
+                plugin = me.owner,
+                item = me.ownerCmp;
+
+            if (!me.destroyed) {
+                me.animating = false;
+                me.el.removeCls(me.baseCls + '-was-collapsed');
+                plugin.destroyItem(item);
+            }
+        },
         animateItem: function (offset, config) {
             config = config || {};
 
             var me = this,
-                plugin = me.owner,
-                item = me.ownerCmp,
                 side = me.side,
                 target = this.getTranslationTarget(),
                 duration = config.duration || 150,
-                destroy = config.destroy;
+                completeFn;
 
             return new Ext.Promise(function (resolve) {
                 me.animating = true;
                 me.offset = side.isLeft ? offset : -offset;
+                completeFn = function () {
+                    if (!me.destroyed) {
+                        me.animating = false;
+                        me.el.removeCls(me.baseCls + '-was-collapsed');
+                    }
+                    resolve();
+                };
 
                 if (target.dom) {
                     if (side.el.dom) {
@@ -276,41 +297,33 @@ Ext.define('Ext.dataview.listswiper.Accordion', {
                             }
                         },
 
-                        callback: function () {
-                            if (!me.destroyed) {
-                                me.animating = false;
-                                me.el.removeCls(me.baseCls + '-was-collapsed');
-                                if (destroy) {
-                                    plugin.destroyItem(item);
-                                }
-                            }
-                            resolve();
-                        }
+                        callback: completeFn
                     });
                 } else {
-                    me.animating = false;
-                    me.el.removeCls(me.baseCls + '-was-collapsed');
-                    plugin.destroyItem(item);
-                    resolve();
+                    completeFn();
                 }
             });
         },
 
         commit: function (e, action, button) {
             var me = this,
-                action = action || me.getDefaultAction(),
-                button = button || me.getDefaultButton(),
-                undoable = action.undoable,
                 plugin = me.owner,
-                handler = action.$originalHandler,
+                undoable, handler,
                 delay, precommitResult, undo, backgroundColor;
+
+            action = action || me.getDefaultAction();
+            button = button || me.getDefaultButton();
+            undoable = action.undoable;
+            handler = button.$originalHandler;
 
             me.setAction(action);
             me.$precommitResult = precommitResult = me.invokeAction(action, 'precommit');
 
             if (handler) {
                 me.snapback().then(function () {
-                    Ext.callback(handler, action.getScope(), [action, e], 0, action);
+                    Ext.callback(handler, button.getScope(), [action, e], 0, button);
+                }).then(function() {
+                    me.destroyItem();
                 });
             } else {
                 if (!undoable) {
@@ -367,14 +380,11 @@ Ext.define('Ext.dataview.listswiper.Accordion', {
                 return;
             }
 
-            if (action.snapback !== false) {
-                me.snapback().then(function () {
-                    me.invokeAction(action, 'revert');
-                });
-            } else {
+            me.snapback().then(function () {
                 me.invokeAction(action, 'revert');
-                me.snapback();
-            }
+            }).then(function() {
+                me.destroyItem();
+            });
         },
 
         //<debug>
@@ -450,16 +460,13 @@ Ext.define('Ext.dataview.listswiper.Accordion', {
             }
 
             if (action) {
-                if (action.snapback !== false) {
-                    me.snapback().then(function () {
-                        me.invokeAction(action, 'commit');
-                    });
-                } else {
+                me.snapback().then(function () {
                     me.invokeAction(action, 'commit');
-                    me.snapback();
-                }
+                }).then(function() {
+                    me.destroyItem();
+                });
             } else {
-                me.snapback();
+                me.snapback(true);
             }
         },
 
@@ -469,7 +476,6 @@ Ext.define('Ext.dataview.listswiper.Accordion', {
             if (me.animating || state === 'undo') {
                 return;
             }
-
             e.claimGesture();
             me.initialOffset = me.offset || 0;
             me.startX = e.getX() - me.el.getX() - me.initialOffset;
@@ -478,6 +484,10 @@ Ext.define('Ext.dataview.listswiper.Accordion', {
         },
 
         onDragMove: function (e) {
+            // Additonal check for undo state so that it will not create multiple undo buttons 
+            if ((this.getState()) === 'undo') {
+                return;
+            }
             e.preventDefault();
             this.syncState(e.deltaX);
         },
@@ -485,23 +495,25 @@ Ext.define('Ext.dataview.listswiper.Accordion', {
         onDragEnd: function (e) {
             var me = this,
                 state = me.getState();
-
             e.preventDefault();
             me.isDragging = false;
             if (state === 'dragcommit') {
                 me.commit(e);
             } else if (state === 'dragopen') {
                 me.open();
+            } else if (state === 'undo') {
+                // avoid calling snapback in case it is already in undo state
+                return;
             } else {
-                me.snapback();
+                me.snapback(true);
             }
         },
 
         getDefaultButton: function(side) {
-            var side = side || this.side,
-                items = side.items,
-                button = items[side.isLeft ? 0 : items.length - 1];
-            return button;
+            side = side || this.side;
+
+            var items = side.items;
+            return items[side.isLeft ? 0 : items.length - 1];
         },
 
         getDefaultAction: function (side) {
@@ -522,10 +534,11 @@ Ext.define('Ext.dataview.listswiper.Accordion', {
             return this.animateItem(this.side.naturalWidth);
         },
 
-        snapback: function () {
-            var me = this;
+        snapback: function (destroy) {
+            var me = this,
+                anim = me.animateItem(0);
 
-            return me.animateItem(0, {destroy: true});
+            return destroy ? anim.then(function() { me.destroyItem(); }) : anim;
         },
 
         syncSides: function () {

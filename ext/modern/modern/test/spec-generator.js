@@ -91,7 +91,10 @@ Ext.define('SpecGenerator.MainController', {
                 .replace(/"(\w+)":/g, function (p1, p2) {
                     return p2 + ':';
                 })
-                .replace(/"/g, "'") + ');';
+                .replace(/"/g, "'")
+                // .replace(/: \{\n\s+/g, ': { '  )
+                // .replace(/\n\s+\}/g, ' }')
+                + ');';
         }
 
         this.lookup('outputField').setValue(output);

@@ -12,7 +12,7 @@
  *     });
  *
  * @singleton
- * @deprecated 5.0.0
+ * @deprecated 5.0.0 Please use the Ext.dom.Element api to attach listeners to DOM Elements
  */
 Ext.define('Ext.EventManager', {
     singleton: true,
@@ -27,17 +27,17 @@ Ext.define('Ext.EventManager', {
      *
      * {@link Ext.EventManager#on} is an alias for {@link Ext.EventManager#addListener}.
      *
-     * @param {String/Ext.dom.Element/HTMLElement/Window} el The html element or id to assign the event handler to.
+     * @param {String/Ext.dom.Element/HTMLElement/Window} element The html element or id to assign the event handler to.
      *
      * @param {String} eventName The name of the event to listen for.
      * May also be an object who's property names are event names.
      *
-     * @param {Function/String} [handler] The handler function the event invokes. A String parameter
+     * @param {Function/String} [fn] The handler function the event invokes. A String parameter
      * is assumed to be method name in `scope` object, or Element object if no scope is provided.
-     * @param {Ext.event.Event} handler.event The {@link Ext.event.Event EventObject} describing the event.
-     * @param {Ext.dom.Element} handler.target The Element which was the target of the event.
+     * @param {Ext.event.Event} fn.event The {@link Ext.event.Event EventObject} describing the event.
+     * @param {Ext.dom.Element} fn.target The Element which was the target of the event.
      * Note that this may be filtered by using the `delegate` option.
-     * @param {Object} handler.options The options object from the addListener call.
+     * @param {Object} fn.options The options object from the addListener call.
      *
      * @param {Object} [scope] The scope (`this` reference) in which the handler function is executed.
      * Defaults to the Element.
@@ -92,7 +92,7 @@ Ext.define('Ext.EventManager', {
      * @param {Function} fn      The handler function the window unload event invokes.
      * @param {Object}   scope   The scope (<code>this</code> reference) in which the handler function executes. Defaults to the browser window.
      * @param {Boolean}  options Options object as passed to {@link Ext.dom.Element#addListener}
-     * @deprecated 5.0.0
+     * @deprecated 5.0.0 This method is deprecated.
      */
     onWindowUnload: function(fn, scope, options) {
         //<debug>
@@ -106,10 +106,10 @@ Ext.define('Ext.EventManager', {
      * Recursively removes all previous added listeners from an element and its children.
      * Typically you will use {@link Ext.dom.Element#clearListeners} directly on an Element
      * in favor of calling this method.
-     * @param {String/Ext.dom.Element/HTMLElement/Window} el The id or html element from which
+     * @param {String/Ext.dom.Element/HTMLElement/Window} element The id or html element from which
      * to remove all event handlers.
      * @param {String} eventName (optional) The name of the event.
-     * @deprecated 5.0.0
+     * @deprecated 5.0.0 This method is deprecated.
      */
     purgeElement: function(element, eventName) {
         //<debug>
@@ -122,9 +122,9 @@ Ext.define('Ext.EventManager', {
     /**
      * Removes all event handers from an element.  Typically you will use {@link
      * Ext.dom.Element#clearListeners} directly on an Element in favor of calling this method.
-     * @param {String/Ext.dom.Element/HTMLElement/Window} el The id or html element from which
+     * @param {String/Ext.dom.Element/HTMLElement/Window} element The id or html element from which
      * to remove all event handlers.
-     * @deprecated 5.0.0
+     * @deprecated 5.0.0 This method is deprecated.
      */
     removeAll: function(element) {
         //<debug>
@@ -140,11 +140,12 @@ Ext.define('Ext.EventManager', {
      *
      * {@link Ext.EventManager#on} is an alias for {@link Ext.EventManager#addListener}.
      *
-     * @param {String/Ext.dom.Element/HTMLElement/Window} el The id or html element from which to remove the listener.
+     * @param {String/Ext.dom.Element/HTMLElement/Window} element The id or html element from which to remove the listener.
      * @param {String} eventName The name of the event.
      * @param {Function} fn The handler function to remove. **This must be a reference to the function passed
      * into the {@link #addListener} call.**
-     * @param {Object} scope If a scope (`this` reference) was specified when the listener was added,
+     * @param {Object} scope If a scope (`this` reference) was specified when the listener was added.
+     * @param {Object} options
      * then this must refer to the same object.
      */
     removeListener: function(element, eventName, fn, scope, options) {
@@ -159,7 +160,7 @@ Ext.define('Ext.EventManager', {
      * Removes the passed window resize listener.
      * @param {Function} fn        The method the event invokes
      * @param {Object}   scope    The scope of handler
-     * @deprecated 5.0.0
+     * @deprecated 5.0.0 This method is deprecated.
      */
     removeResizeListener: function(fn, scope) {
         //<debug>
@@ -173,7 +174,7 @@ Ext.define('Ext.EventManager', {
      * Removes the passed window unload listener.
      * @param {Function} fn        The method the event invokes
      * @param {Object}   scope    The scope of handler
-     * @deprecated 5.0.0
+     * @deprecated 5.0.0 This method is deprecated.
      */
     removeUnloadListener: function(fn, scope) {
         //<debug>
@@ -186,7 +187,7 @@ Ext.define('Ext.EventManager', {
     /**
      * Stop the event (preventDefault and stopPropagation)
      * @param {Event} event The event to stop
-     * @deprecated 5.0.0
+     * @deprecated 5.0.0 This method is deprecated.
      */
     stopEvent: function(event) {
         //<debug>
@@ -200,7 +201,7 @@ Ext.define('Ext.EventManager', {
     /**
      * Cancels bubbling of the event.
      * @param {Event} event The event to stop bubbling.
-     * @deprecated 5.0.0
+     * @deprecated 5.0.0 This method is deprecated.
      */
     stopPropagation: function(event) {
         //<debug>
@@ -218,7 +219,7 @@ Ext.define('Ext.EventManager', {
     /**
      * Prevents the browsers default handling of the event.
      * @param {Event} event The event to prevent the default
-     * @deprecated 5.0.0
+     * @deprecated 5.0.0 This method is deprecated.
      */
     preventDefault: function(event) {
         //<debug>
@@ -246,7 +247,7 @@ Ext.define('Ext.EventManager', {
      * Get the id of the element. If one has not been assigned, automatically assign it.
      * @param {HTMLElement/Ext.dom.Element} element The element to get the id for.
      * @return {String} id
-     * @deprecated 5.0.0
+     * @deprecated 5.0.0 This method is deprecated.
      */
     getId: function(element) {
         //<debug>
@@ -261,7 +262,7 @@ Ext.define('Ext.EventManager', {
      * Gets the related target from the event.
      * @param {Object} event The event
      * @return {HTMLElement} The related target.
-     * @deprecated 5.0.0
+     * @deprecated 5.0.0 This method is deprecated.
      */
     getRelatedTarget: function(event) {
         //<debug>
@@ -284,7 +285,7 @@ Ext.define('Ext.EventManager', {
      * Gets the x coordinate from the event
      * @param {Object} event The event
      * @return {Number} The x coordinate
-     * @deprecated 5.0.0
+     * @deprecated 5.0.0 This method is deprecated.
      */
     getPageX: function(event) {
         //<debug>
@@ -298,7 +299,7 @@ Ext.define('Ext.EventManager', {
      * Gets the x & y coordinate from the event
      * @param {Object} event The event
      * @return {Number[]} The x/y coordinate
-     * @deprecated 5.0.0
+     * @deprecated 5.0.0 This method is deprecated.
      */
     getPageXY: function(event) {
         //<debug>
@@ -323,7 +324,7 @@ Ext.define('Ext.EventManager', {
      * Gets the y coordinate from the event
      * @param {Object} event The event
      * @return {Number} The y coordinate
-     * @deprecated 5.0.0
+     * @deprecated 5.0.0 This method is deprecated.
      */
     getPageY: function(event) {
         //<debug>
@@ -337,7 +338,7 @@ Ext.define('Ext.EventManager', {
      * Gets the target of the event.
      * @param {Object} event The event
      * @return {HTMLElement} target
-     * @deprecated 5.0.0
+     * @deprecated 5.0.0 This method is deprecated.
      */
     getTarget: function(event) {
         //<debug>
@@ -357,7 +358,7 @@ Ext.define('Ext.EventManager', {
      * @private
      * @param {HTMLElement} node The node
      * @return {HTMLElement} The resolved node
-     * @deprecated 5.0.0
+     * @deprecated 5.0.0 This method is deprecated.
      */
     resolveTextNode: Ext.isGecko ?
         function(node) {
@@ -375,16 +376,16 @@ Ext.define('Ext.EventManager', {
         }
 }, function(EventManager) {
     /**
-     * @member Ext.EventManager
      * @method on
-     * @inheritdoc Ext.EventManager#addListener
+     * @member Ext.EventManager
+     * @inheritdoc Ext.EventManager#method-addListener
      */
     EventManager.on = EventManager.addListener;
 
     /**
-     * @member Ext.EventManager
      * @method un
-     * @inheritdoc Ext.EventManager#removeListener
+     * @member Ext.EventManager
+     * @inheritdoc Ext.EventManager#method-removeListener
      */
     EventManager.un = EventManager.removeListener;
 });

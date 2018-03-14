@@ -13,38 +13,53 @@ Ext.define('Ext.dataview.BoundListNavigationModel', {
 
     privates: {
         getKeyNavCfg: function(view) {
-            var me = this;
+            if (this.keyboard !== false) {
+                // Drive the KeyNav off the BoundList's ownerField's focusEl if possible.
+                // If there's no ownerField, try the view's focusEl. If that is not focusable
+                // then we are not keyboard navigable.
+                var eventEl = (view.ownerField || view).getFocusEl();
 
-            // Drive the KeyNav off the View's itemkeydown event so that beforeitemkeydown listeners may veto.
-            // By default KeyNav uses defaultEventAction: 'stopEvent', and this is required for movement keys
-            // which by default affect scrolling.
-            return {
-                target: view.getRefOwner().getFocusEl(),
-                eventName: 'keydown',
-                defaultEventAction: 'stopEvent',
-                esc: me.onKeyEsc,
-                up: me.onKeyUp,
-                down: me.onKeyDown,
-                right: me.onKeyRight,
-                left: me.onKeyLeft,
-                pageDown: me.onKeyPageDown,
-                pageUp: me.onKeyPageUp,
-                home: me.onKeyHome,
-                end: me.onKeyEnd,
-                tab: me.onKeyTab,
-                space: me.onKeySpace,
-                enter: me.onKeyEnter,
-                A: {
-                    ctrl: true,
-                    // Need a separate function because we don't want the key
-                    // events passed on to selectAll (causes event suppression).
-                    handler: me.onSelectAllKeyPress
-                },
-                // This object has to get its key processing in first.
-                // Specifically, before any Editor's key hyandling.
-                priority: 1001,
-                scope: me
-            };
+                // If we are not linked
+                if (eventEl) {
+                    var me = this;
+
+                    return {
+                        target: eventEl,
+                        eventName: 'keydown',
+                        defaultEventAction: 'stopEvent',
+                        esc: me.onKeyEsc,
+                        up: me.onKeyUp,
+                        down: me.onKeyDown,
+                        right: me.onKeyRight,
+                        left: me.onKeyLeft,
+                        pageDown: me.onKeyPageDown,
+                        pageUp: me.onKeyPageUp,
+                        home: me.onKeyHome,
+                        end: me.onKeyEnd,
+                        tab: me.onKeyTab,
+                        space: me.onKeySpace,
+                        enter: me.onKeyEnter,
+                        A: {
+                            ctrl: true,
+                            // Need a separate function because we don't want the key
+                            // events passed on to selectAll (causes event suppression).
+                            handler: me.onSelectAllKeyPress
+                        },
+                        // This object has to get its key processing in first.
+                        // Specifically, before any Editor's key hyandling.
+                        priority: 1001,
+                        scope: me
+                    };
+                }
+            }
+        },
+
+        getViewListeners: function(view) {
+            var result = this.callParent([view]);
+
+            result.childtouchstart = 'onChildTouchStart';
+            result.childTap = 'onChildTap';
+            return result;
         },
 
         // Focus never moves during BoundList navigation.
@@ -54,28 +69,62 @@ Ext.define('Ext.dataview.BoundListNavigationModel', {
         doFocus: Ext.privateFn,
 
         handleLocationChange: function(location, options) {
-            var target = location.sourceElement;
+            var target = location.sourceElement,
+                ownerField = this.getView().ownerField;
 
-            if (target) {
-                this.getView().getRefOwner().inputElement.dom.setAttribute('aria-activedescendant', target.id);
+            if (target && ownerField) {
+                ownerField.inputElement.dom.setAttribute('aria-activedescendant', target.id);
             }
             this.callParent([location, options]);
         },
 
         onChildTouchStart: function(view, location) {
             var e = location.event;
-            if (e.pointerType === 'mouse') {
-                // Stop the mousedown from blurring the input field
-                // We can't do this for touch events otherwise scrolling
-                // won't work.
+
+            // Mousedown/pointerdown events move focus by default.
+            // BoundLists do not accept focus so prevent any focus movement.
+            if (e.pointerType !== 'touch') {
                 e.preventDefault();
             }
-
-            // We have prevented focusing, so we need to explicitly
-            // set the location to the context item.
-            this.setLocation(location);
-            this.callParent([view, location]);
         },
+
+        onChildTap: function(view, location) {
+            var e = location.event,
+                newLocation;
+
+            if (!view.destroyed) {
+                // Touch tap events move focus by default.
+                // BoundLists do not accept focus so prevent any focus movement.
+                if (e.pointerType === 'touch') {
+                    e.preventDefault();
+                }
+
+                // Must create a new location based around the *item*, not the clicked
+                // element because it's the location's sourceElement that is scrolled into
+                // view (for example input fields and other focusables take priority)
+                // but we want the whole list item to be the measured, scrolled element.
+                newLocation = this.createLocation(location.item);
+
+                // We're already here. For example SelectField setting the location on downarrow expand
+                if (this.location && this.location.equals(newLocation)) {
+                    this.onNavigate(e);
+                } else {
+                    // Because there is going to be no focus event, we must explicitly
+                    // set the position here and select it.
+                    this.setLocation(newLocation, {
+                        event: location.event,
+                        animation: true
+                    });
+                }
+            }
+
+            // Touch taps go "through" the list and focus the field below it.
+            if (e.pointerType === 'touch') {
+                e.stopEvent();
+            }
+        },
+
+        onChildTrigger: Ext.privateFn,
 
         onKeyLeft: function() {
             return true;
@@ -96,7 +145,7 @@ Ext.define('Ext.dataview.BoundListNavigationModel', {
 
         onKeyEsc: function() {
             var view = this.getView(),
-                field = view.getRefOwner();
+                field = view.ownerField;
 
             // ESC collapsed an expanded list.
             if (field && view.isVisible()) {
@@ -111,7 +160,7 @@ Ext.define('Ext.dataview.BoundListNavigationModel', {
 
         onKeyTab: function(e) {
             var view = this.getView(),
-                field = view.getRefOwner();
+                field = view.ownerField;
 
             if (view.isVisible()) {
                 // SelectOnTab selects the value of the field
@@ -135,7 +184,7 @@ Ext.define('Ext.dataview.BoundListNavigationModel', {
         onKeyEnter: function(e) {
             var view = this.getView(),
                 selectable = view.getSelectable(),
-                field = view.getRefOwner();
+                field = view.ownerField;
 
             // Stop the keydown event so that an ENTER keyup does not get delivered to
             // any element which focus is transferred to in a select handler.
@@ -143,7 +192,7 @@ Ext.define('Ext.dataview.BoundListNavigationModel', {
 
             // Handle the case where the highlighted item is already selected
             // In this case, the change event won't fire, so just collapse
-            if (!(field.getMultiSelect && field.getMultiSelect()) && selectable.isSelected(this.location.record) && field.collapse) {
+            if (selectable.isSelected(this.location.record) && field.collapse) {
                 field.collapse();
             } else {
                 this.selectHighlighted(e);
@@ -161,12 +210,18 @@ Ext.define('Ext.dataview.BoundListNavigationModel', {
             var doNavigate = event && (
                     event.pointerType ||
                     (this.getNavigateOnSpace() && event.keyCode === event.SPACE)
-                );
+                ),
+                view = this.getView(),
+                field = view.getRefOwner();
 
             // We dnly select on pointer gestures or (SPACE if configured).
             // The ENTER key is handled above.
             if (doNavigate) {
                 this.callParent([event]);
+                
+                if (field && field.maybeCollapse) {
+                    field.maybeCollapse(event);
+                }
             }
         },
 

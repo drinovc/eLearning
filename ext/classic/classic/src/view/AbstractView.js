@@ -38,6 +38,10 @@ Ext.define('Ext.view.AbstractView', {
         }
     },
     
+    /**
+     * @property defaultBindProperty
+     * @inheritdoc
+     */
     defaultBindProperty: 'store',
 
     /**
@@ -117,7 +121,9 @@ Ext.define('Ext.view.AbstractView', {
 
             // Create a task which will call flushChangeQueue in updateDelay milliseconds from the time it's invoked.
             if (!me.flushQueueTask) {
-                me.flushQueueTask = new Ext.util.DelayedTask(Ext.global.requestAnimationFrame ? Ext.Function.createAnimationFrame(me.flushChangeQueue, me) : Ext.Function.bind(me.flushChangeQueue, me), me, null, false);
+                me.flushQueueTask = new Ext.util.DelayedTask(Ext.global.requestAnimationFrame ?
+                        Ext.Function.createAnimationFrame(me.flushChangeQueue, me) :
+                        me.flushChangeQueue.bind(me), me, null, false);
             }
             if (!me.flushTimer) {
                 me.flushTimer = me.flushQueueTask.delay(Ext.view.AbstractView.updateDelay);
@@ -200,7 +206,16 @@ Ext.define('Ext.view.AbstractView', {
         }
     },
 
+    /**
+     * @cfg publishes
+     * @inheritdoc
+     */
     publishes: ['selection'],
+    
+    /**
+     * @cfg twoWayBindable
+     * @inheritdoc
+     */
     twoWayBindable: ['selection'],
 
     /**
@@ -210,7 +225,7 @@ Ext.define('Ext.view.AbstractView', {
     selection: null,
 
     /**
-     * @cfg {Boolean} [throttledUpdate=false]
+     * @cfg {Boolean} throttledUpdate
      * Configure as `true` to have this view participate in the global throttled update queue which flushes store changes to the UI at a maximum rate
      * determined by the {@link #updateDelay} setting.
      */
@@ -226,7 +241,7 @@ Ext.define('Ext.view.AbstractView', {
      */
 
     /**
-     * @cfg {Boolean} [deferInitialRefresh=false]
+     * @cfg {Boolean} deferInitialRefresh
      * Configure as 'true` to defer the initial refresh of the view.
      *
      * This allows the View to execute its render and initial layout more quickly because the process will not be encumbered
@@ -379,7 +394,7 @@ Ext.define('Ext.view.AbstractView', {
     preserveScrollOnRefresh: false,
 
     /**
-     * @cfg {Boolean} [preserveScrollOnReload=false]
+     * @cfg {Boolean} preserveScrollOnReload
      * True to preserve scroll position when the store is reloaded.
      *
      * You may want to configure this as `true` if you are using a {@link Ext.data.BufferedStore buffered store}
@@ -389,8 +404,16 @@ Ext.define('Ext.view.AbstractView', {
      */
     preserveScrollOnReload: false,
 
+    /**
+     * @property autoDestroyBoundStore
+     * @inheritdoc
+     */
     autoDestroyBoundStore: true,
     
+    /**
+     * @property ariaRole
+     * @inheritdoc
+     */
     ariaRole: 'listbox',
     itemAriaRole: 'option',
 
@@ -398,7 +421,17 @@ Ext.define('Ext.view.AbstractView', {
      * @private
      */
     last: false,
+    
+    /**
+     * @property focusable
+     * @inheritdoc
+     */
     focusable: true,
+    
+    /**
+     * @cfg tabIndex
+     * @inheritdoc
+     */
     tabIndex: 0,
 
     triggerEvent: 'itemclick',
@@ -888,9 +921,6 @@ Ext.define('Ext.view.AbstractView', {
     /**
      * Refreshes the view by reloading the data from the store and re-rendering the template.
      *
-     * **Note:** This method should only be used when `bufferedRenderer` is set to `false`.  BufferedRender
-     * has its own methods for managing its data's state.
-     *
      * @since 2.3.0
      */
     refresh: function() {
@@ -929,8 +959,11 @@ Ext.define('Ext.view.AbstractView', {
                 }
             }
 
-            if (refreshCounter) {
+            if (refreshCounter || me.emptyEl) {
                 me.clearViewEl();
+            }
+
+            if (refreshCounter) {
                 me.refreshCounter++;
             } else {
                 me.refreshCounter = 1;
@@ -1008,12 +1041,16 @@ Ext.define('Ext.view.AbstractView', {
         }
     },
 
-    addEmptyText: function() {       
+    addEmptyText: function() {
         var me = this,
             store = me.getStore();
 
         if (me.emptyText && !store.isLoading() && (!me.deferEmptyText || me.refreshCounter > 1 || store.isLoaded())) {
-            me.emptyEl = Ext.core.DomHelper.insertHtml('beforeEnd', me.getTargetEl().dom, me.emptyText);
+            if (!me.emptyEl) {
+                me.emptyEl = Ext.core.DomHelper.insertHtml('beforeEnd', me.getTargetEl().dom, me.emptyText);
+            } else {
+                Ext.fly(me.emptyEl).setHtml(me.emptyText);
+            }
         }
     },
 
@@ -1110,7 +1147,9 @@ Ext.define('Ext.view.AbstractView', {
     },
 
     onViewScroll: function(scroller, x, y) {
-        this.fireEvent('scroll', this, x, y);
+        if (!this.destroyed) {
+            this.fireEvent('scroll', this, x, y);
+        }
     },
 
     onViewScrollEnd: function(scroller, x, y) {
@@ -1158,7 +1197,7 @@ Ext.define('Ext.view.AbstractView', {
      * (either an array if your params are numeric (i.e. {0}) or an object (i.e. {foo: 'bar'}))
      * @since 2.3.0
      */
-    prepareData: function(data, index, record) {
+    prepareData: function(data, recordIndex, record) {
         var associatedData, attr, hasCopied;
         if (record) {
             associatedData = record.getAssociatedData();
@@ -1339,7 +1378,7 @@ Ext.define('Ext.view.AbstractView', {
         var me = this,
             all = me.all,
             scroller = me.getScrollable(),
-            yPos = scroller.getPosition().y,
+            yPos = scroller && scroller.getPosition().y,
             selModel = me.getSelectionModel(),
             origStart = startIndex,
             result, item, fragment, children, oldItems, endIndex, restoreFocus;
@@ -1373,7 +1412,9 @@ Ext.define('Ext.view.AbstractView', {
             oldItems = all.removeRange(startIndex, endIndex, true);
 
             // Restore scroll position
-            scroller.scrollTo(null, yPos);
+            if (scroller) {
+                scroller.scrollTo(null, yPos);
+            }
 
             // Some subclasses do not need to do this. TableView does not need to do this.
             if (me.refreshSelmodelOnRefresh !== false) {
@@ -1592,25 +1633,33 @@ Ext.define('Ext.view.AbstractView', {
     },
 
     updateIndexes: function(startIndex, endIndex) {
-        var nodes = this.all.elements,
-            node,
-            records = this.getViewRange(),
-            i,
-            myId = this.id;
+        var me = this,
+            nodes = me.all.elements,
+            records = me.getViewRange(),
+            selModel = me.getSelectionModel(),
+            myId = me.id,
+            node, record, i;
 
         startIndex = startIndex || 0;
         endIndex = endIndex || ((endIndex === 0) ? 0 : (nodes.length - 1));
+
         for (i = startIndex; i <= endIndex; i++) {
             node = nodes[i];
+            record = records[i];
+
             node.setAttribute('data-recordIndex', i);
-            node.setAttribute('data-recordId', records[i].internalId);
+            node.setAttribute('data-recordId', record.internalId);
             node.setAttribute('data-boundView', myId);
+            if (selModel.getLastSelected()) {
+                me[selModel.isSelected(record) ? 'onItemSelect' : 'onItemDeselect'](record);
+            }
         }
     },
 
     /**
      * Changes the data store bound to this view and refreshes it.
      * @param {Ext.data.Store} store The store to bind to this view
+     * @param {Object} initial
      * @since 3.4.0
      */
     bindStore: function (store, initial) {
@@ -1939,8 +1988,8 @@ Ext.define('Ext.view.AbstractView', {
 
     /**
      * Finds the index of the passed node.
-     * @param {HTMLElement/String/Number/Ext.data.Model} nodeInfo An HTMLElement template node, index of a template node, the id of a template node
-     * or a record associated with a node.
+     * @param {HTMLElement/String/Number/Ext.data.Model} node An HTMLElement template node,
+     * index of a template node, the id of a template node or a record associated with a node.
      * @return {Number} The index of the node or -1
      * @since 2.3.0
      */
@@ -2148,7 +2197,7 @@ Ext.define('Ext.view.AbstractView', {
             return me.loadMask;
         },
 
-        /*
+        /**
          * @private
          * This method returns the inner node containing element. This is useful for the bufferedRenderer
          * or for when the view contains extra elements and we need to point the exact element that will 

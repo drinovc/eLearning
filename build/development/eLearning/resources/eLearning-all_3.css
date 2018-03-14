@@ -1,3 +1,31 @@
+/* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/etc/mixins/frame.scss:379 */
+.x-btn-default-toolbar-medium-tc {
+    background-position: 0 0;
+}
+/* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/etc/mixins/frame.scss:383 */
+.x-btn-default-toolbar-medium-bc {
+    background-position: 0 -1px;
+}
+/* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/etc/mixins/frame.scss:388 */
+.x-btn-default-toolbar-medium-tr,
+.x-btn-default-toolbar-medium-br,
+.x-btn-default-toolbar-medium-mr {
+    padding-right: 1px;
+}
+/* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/etc/mixins/frame.scss:394 */
+.x-btn-default-toolbar-medium-tl,
+.x-btn-default-toolbar-medium-bl,
+.x-btn-default-toolbar-medium-ml {
+    padding-left: 1px;
+}
+/* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/etc/mixins/frame.scss:400 */
+.x-btn-default-toolbar-medium-tc {
+    height: 1px;
+}
+/* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/etc/mixins/frame.scss:403 */
+.x-btn-default-toolbar-medium-bc {
+    height: 1px;
+}
 /* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/etc/mixins/frame.scss:407 */
 .x-btn-default-toolbar-medium-tl,
 .x-btn-default-toolbar-medium-bl,
@@ -15585,25 +15613,4 @@ div.x-border-layout-ct {
 /* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/etc/mixins/frame.scss:403 */
 .x-panel-header-light-framed-collapsed-bottom-bc {
     height: 2px;
-}
-/* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/etc/mixins/frame.scss:407 */
-.x-panel-header-light-framed-collapsed-bottom-tl,
-.x-panel-header-light-framed-collapsed-bottom-bl,
-.x-panel-header-light-framed-collapsed-bottom-tr,
-.x-panel-header-light-framed-collapsed-bottom-br,
-.x-panel-header-light-framed-collapsed-bottom-tc,
-.x-panel-header-light-framed-collapsed-bottom-bc,
-.x-panel-header-light-framed-collapsed-bottom-ml,
-.x-panel-header-light-framed-collapsed-bottom-mr {
-    background-image: url(images/panel-header/panel-header-light-framed-collapsed-bottom-corners.gif);
-}
-/* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/etc/mixins/frame.scss:453 */
-.x-panel-header-light-framed-collapsed-bottom-ml,
-.x-panel-header-light-framed-collapsed-bottom-mr {
-    background-image: url(images/panel-header/panel-header-light-framed-collapsed-bottom-sides.gif);
-    background-repeat: repeat-y;
-}
-/* C:/Work/Projekti/eLearning/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
-.x-panel-header-light-framed-collapsed-bottom-mc {
-    padding: 10px 14px 10px 14px;
 }

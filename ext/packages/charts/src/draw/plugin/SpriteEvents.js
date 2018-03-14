@@ -3,7 +3,9 @@
  * to sprite events. For example:
  *
  *     var drawContainer = Ext.create('Ext.draw.Container', {
- *          plugins: ['spriteevents'],
+ *          plugins: {
+ *              spriteevents: true
+ *          },
  *          renderTo: Ext.getBody(),
  *          width: 200,
  *          height: 200,

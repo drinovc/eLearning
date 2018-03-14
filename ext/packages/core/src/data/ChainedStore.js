@@ -6,7 +6,13 @@
 Ext.define('Ext.data.ChainedStore', {
     extend: 'Ext.data.AbstractStore',
     alias: 'store.chained',
-    
+
+    /**
+     * @property {Boolean} isChainedStore
+     * `true` in this class to identify an object as an instantiated ChainedStore, or subclass thereof.
+     */
+    isChainedStore: true,
+
     config: {
         /**
          * @cfg {Ext.data.Store/String} source
@@ -279,7 +285,7 @@ Ext.define('Ext.data.ChainedStore', {
             var source = this.getSource(),
                 val = defaultValue;
 
-            if (source) {
+            if (source && !source.destroyed) {
                 val = source[method]();
             }
             return val;

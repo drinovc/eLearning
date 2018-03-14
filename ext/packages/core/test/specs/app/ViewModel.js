@@ -1,9 +1,11 @@
-/* global expect, jasmine, Ext, MockAjaxManager, spyOn */
+/* global describe, expect, jasmine, Ext, MockAjaxManager, spyOn */
 
-topSuite("Ext.app.ViewModel",
-    ['Ext.data.Store', 'Ext.data.validator.*', 'Ext.Container', 'Ext.app.ViewController'],
-function() {
-    
+topSuite("Ext.app.ViewModel", [
+    'Ext.data.Store',
+    'Ext.data.validator.*',
+    'Ext.Container',
+    'Ext.app.ViewController'
+], function() {
     var viewModel, scheduler, session, spy;
 
     function bindDeepNotify (key, fn, scope, vm) {
@@ -35,7 +37,7 @@ function() {
         binding.setValue(value);
         vm.notify();
     }
-    
+
     function notify() {
         viewModel.notify();
     }
@@ -104,7 +106,7 @@ function() {
         complete(data);
         notify();
     }
-    
+
     beforeEach(function() {
         Ext.data.Store.prototype.config.asynchronousLoad = false;
 
@@ -112,7 +114,7 @@ function() {
         MockAjaxManager.addMethods();
         spy = jasmine.createSpy();
     });
-    
+
     afterEach(function() {
         Ext.data.Store.prototype.config.asynchronousLoad = undefined;
 
@@ -122,6 +124,109 @@ function() {
 
         MockAjaxManager.removeMethods();
         Ext.data.Model.schema.clear(true);
+    });
+
+    describe("escapes", function() {
+        describe("escape", function() {
+            var V = Ext.app.ViewModel;
+
+            it("should leave null/undefined", function() {
+                expect(V.escape(null)).toBe(null);
+                expect(V.escape(undefined)).toBe(undefined);
+            });
+
+            it("should leave a boolean value", function() {
+                expect(V.escape(false)).toBe(false);
+                expect(V.escape(true)).toBe(true);
+            });
+
+            it("should leave a numeric value", function() {
+                expect(V.escape(0)).toBe(0);
+                expect(V.escape(1.23)).toBe(1.23);
+                expect(V.escape(-189)).toBe(-189);
+            });
+
+            it("should leave a date value", function() {
+                var v = new Date();
+                expect(V.escape(v)).toBe(v);
+            });
+
+            it("should escape a string", function() {
+                expect(V.escape('{foo}')).toBe('~~{foo}');
+                expect(V.escape('{{foo}}')).toBe('~~{{foo}}');
+                expect(V.escape('ok')).toBe('~~ok');
+            });
+
+            it("should escape an object and copy where needed", function() {
+                var val = new Date();
+
+                var o = {
+                    a: true,
+                    b: 100,
+                    c: val,
+                    d: '{foo}',
+                    e: null,
+                    f: {
+                        g: '{bar}'
+                    }
+                }, ret;
+
+                ret = V.escape(o);
+                expect(ret).not.toBe(o);
+                expect(ret.f).not.toBe(o.f);
+                expect(ret).toEqual({
+                    a: true,
+                    b: 100,
+                    c: val,
+                    d: '~~{foo}',
+                    e: null,
+                    f: {
+                        g: '~~{bar}'
+                    }
+                });
+            });
+        });
+
+        // This is not intended to be exhaustive, more tests are in Ext.app.bind.Template
+        describe("escaped expressions", function() {
+            var old;
+
+            beforeEach(function() {
+                old = Ext.app.bind.Template.prototype.escapes;
+                Ext.app.bind.Template.prototype.escapes = true;
+                createViewModel();
+            });
+
+            afterEach(function() {
+                Ext.app.bind.Template.prototype.escapes = old;
+            });
+
+            describe("with no tokens", function() {
+                it("should fire when escaped with backslashes", function() {
+                    bindNotify('\\static');
+                    expectArgs('static', undefined);
+                });
+
+                it("should fire when escaped with ~~", function() {
+                    bindNotify('~~static');
+                    expectArgs('static', undefined);
+                });
+            });
+
+            describe("with tokens", function() {
+                it("should fire when escaped with backslashes", function() {
+                    setNotify('foo', 100);
+                    bindNotify('\\{foo} {foo}');
+                    expectArgs('{foo} 100', undefined);
+                });
+
+                it("should fire when escaped with ~~", function() {
+                    setNotify('foo', 100);
+                    bindNotify('{foo} ~~{foo}');
+                    expectArgs('100 {foo}', undefined);
+                });
+            });
+        });
     });
 
     describe("isReadOnly", function() {
@@ -511,7 +616,7 @@ function() {
                         }
                     });
             
-                    it("should default the scope to the session", function() {
+                    it("should default the scope to the viewmodel", function() {
                         run(function() {
                             bindNotify('{name}', spy);
                         }, function() {
@@ -2254,6 +2359,10 @@ function() {
                         });
 
                         describe("with an autoLoad", function() {
+                            beforeEach(function() {
+                                Ext.data.Store.prototype.config.asynchronousLoad = true;
+                            });
+
                             it("should not publish while the store is pending a load/loading", function() {
                                 makeLoadStore(true);
                                 setup();
@@ -2344,6 +2453,10 @@ function() {
                         });
 
                         describe("with an autoLoad", function() {
+                            beforeEach(function() {
+                                Ext.data.Store.prototype.config.asynchronousLoad = true;
+                            });
+
                             it("should not publish while the store is pending a load/loading", function() {
                                 makeLoadStore(true);
                                 setup();
@@ -2434,6 +2547,21 @@ function() {
                                 expectArgs(foo, bar);
                             });
                         });
+
+                        describe("two-way", function() {
+                            it("should be able to set a model property", function() {
+                                makeInlineStore();
+                                setup();
+
+                                var first = store.first(),
+                                    b = bindNotify('{store.first.name}', Ext.emptyFn);
+
+                                b.setValue('aaa');
+                                notify();
+                                expect(first.get('name')).toBe('aaa');
+                                expect(store.first()).toBe(first);
+                            });
+                        });
                     });
 
                     describe("last", function() {
@@ -2450,6 +2578,10 @@ function() {
                         });
 
                         describe("with an autoLoad", function() {
+                            beforeEach(function() {
+                                Ext.data.Store.prototype.config.asynchronousLoad = true;
+                            });
+
                             it("should not publish while the store is pending a load/loading", function() {
                                 makeLoadStore(true);
                                 setup();
@@ -2541,6 +2673,21 @@ function() {
                                 expectArgs(bar, foo);
                             });
                         });
+
+                        describe("two-way", function() {
+                            it("should be able to set a model property", function() {
+                                makeInlineStore();
+                                setup();
+
+                                var last = store.last(),
+                                    b = bindNotify('{store.last.name}', Ext.emptyFn);
+
+                                b.setValue('aaa');
+                                notify();
+                                expect(last.get('name')).toBe('aaa');
+                                expect(store.last()).toBe(last);
+                            });
+                        });
                     });
 
                     describe("loading", function() {
@@ -2562,7 +2709,7 @@ function() {
                             expectArgs(true);
                         });
 
-                        it("should be loading if the store has is loading", function() {
+                        it("should be loading if the store is loading", function() {
                             makeLoadStore(false);
                             setup();
                             spy.reset();
@@ -2615,7 +2762,7 @@ function() {
                     afterEach(function() {
                         user = null;
                     });
-                    
+
                     it("should create/load the store if it's never been loaded", function() {
                         // We don't have a reference to the store, so spy on everything here
                         var loadSpy = spyOn(Ext.data.ProxyStore.prototype, 'load').andCallThrough();
@@ -2911,6 +3058,28 @@ function() {
                             });
                             expectArgs('Org1');
                         });
+
+                        if (withSession) {
+                            it("should be able to update the reference by setting the key", function() {
+                                makeUser(1, {
+                                    name: 'Foo'
+                                });
+                                makePost(101, {
+                                    userId: 1
+                                });
+
+                                new User({ id: 2, name: 'Bar' }, session);
+
+                                setNotify('post', post);
+                                bindNotify('{post.user.name}', spy);
+
+                                spy.reset();
+
+                                post.set('userId', 2);
+                                notify();
+                                expectArgs('Bar', 'Foo');
+                            });
+                        }
                     });
 
                     describe("the many", function() {
@@ -3249,6 +3418,28 @@ function() {
 
                             Ext.undefine('spec.Address');
                         });
+
+                        if (withSession) {
+                            it("should be able to update the reference by setting the key", function() {
+                                makePassport(1, {
+                                    name: 'Foo'
+                                });
+                                makeUser(101, {
+                                    passportId: 1
+                                });
+
+                                new Passport({ id: 2, name: 'Bar' }, session);
+
+                                setNotify('user', user);
+                                bindNotify('{user.passport.name}', spy);
+
+                                spy.reset();
+
+                                user.set('passportId', 2);
+                                notify();
+                                expectArgs('Bar', 'Foo');
+                            });
+                        }
                     });
 
                     describe("the non-key holder", function() {
@@ -5522,10 +5713,13 @@ function() {
             });
 
             describe("for invalid fields", function() {
-                var Val = Ext.data.validator.Validator.all;
+                var V = Ext.data.validator;
+                function getMessage(T) {
+                    return T.prototype.config.message;
+                }
 
                 it('should report description too short', function () {
-                    var calls = 0, 
+                    var calls = 0,
                         value;
 
                     viewModel.bind('{theUser.validation.description}', function (v) {
@@ -5563,7 +5757,7 @@ function() {
 
                     expect(scheduler.passes).toBe(1);
                     expect(calls).toBe(1);
-                    expect(value).toBe(Val.presence.config.message);
+                    expect(value).toBe(getMessage(V.Presence));
 
                     // Now make the field valid and see if our binding is notified.
                     var rec = session.getRecord('User', 42);
@@ -5589,7 +5783,7 @@ function() {
 
                     expect(scheduler.passes).toBe(1);
                     expect(calls).toBe(1);
-                    expect(value).toEqual(Val.format.config.message);
+                    expect(value).toEqual(getMessage(V.Format));
 
                     // Now make the field valid and see if our binding is notified.
                     var rec = session.getRecord('User', 42);
@@ -5615,7 +5809,7 @@ function() {
 
                     expect(scheduler.passes).toBe(1);
                     expect(calls).toBe(1);
-                    expect(value).toEqual(Val.inclusion.config.message);
+                    expect(value).toEqual(getMessage(V.Inclusion));
 
                     // Now make the field valid and see if our binding is notified.
                     var rec = session.getRecord('User', 42);
@@ -5641,7 +5835,7 @@ function() {
 
                     expect(scheduler.passes).toBe(1);
                     expect(calls).toBe(1);
-                    expect(value).toEqual(Val.exclusion.config.message);
+                    expect(value).toEqual(getMessage(V.Exclusion));
 
                     // Now make the field valid and see if our binding is notified.
                     var rec = session.getRecord('User', 42);
@@ -5667,7 +5861,7 @@ function() {
 
                     expect(scheduler.passes).toBe(1);
                     expect(calls).toBe(1);
-                    expect(value).toEqual(Val.email.config.message);
+                    expect(value).toEqual(getMessage(V.Email));
 
                     // Now make the field valid and see if our binding is notified.
                     var rec = session.getRecord('User', 42);
@@ -8278,6 +8472,77 @@ function() {
                 }, Ext.emptyFn);
                 viewModel.destroy();
                 expect(binding.destroyed).toBe(true);
+            });
+        });
+    });
+
+    describe('idle event', function () {
+        var listener;
+
+        beforeEach(function() {
+            createViewModel();
+        });
+
+        afterEach(function () {
+            listener = Ext.destroy(listener);
+        });
+
+        it('should fire global idle after bind notification', function () {
+            var calls = [],
+                done;
+
+            listener = Ext.on({
+                destroyable: true,
+
+                idle: function () {
+                    var timer = Ext.Timer.firing;
+
+                    if (timer && timer.fn.$skipTimerCheck) {
+                        return;
+                    }
+
+                    if (timer && !timer.ours) {
+                        var s = timer.creator;
+
+                        if (timer.runner) {
+                            Ext.each(timer.runner.fired, function (task) {
+                                s += '\n-----------------------';
+                                s += 'Task:';
+                                s += task.creator;
+                                s += '\n-----------------------';
+                            });
+                        }
+
+                        expect(s).toBe('not running');
+                    }
+
+                    calls.push('idle');
+                }
+            });
+
+            viewModel.bind('{foo}', function (v) {
+                calls.push({ foo: v });
+                done = true;
+            });
+
+            viewModel.set('foo', 42);
+
+            var timer = Ext.Timer.get(viewModel.getScheduler().timer);
+            if (timer) {
+                timer.ours = true;
+            }
+
+            expect(calls).toEqual([]);
+
+            waitFor(function () {
+                return done;
+            });
+
+            runs(function () {
+                expect(calls).toEqual([
+                    { foo: 42 },
+                    'idle'
+                ]);
             });
         });
     });

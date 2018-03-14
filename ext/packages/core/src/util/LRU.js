@@ -188,6 +188,7 @@
          * Reduces the length of the list to be no more than the specified `size`, removing
          * items from the end of the list as necessary. Optionally each removed item can
          * be passed to a callback `fn`.
+         * @param {Number} size The number of items in the list
          * @param {Function} [fn] A function to call for each removed item.
          * @param {Object} fn.key The key of the removed item.
          * @param {Object} fn.value The removed item.

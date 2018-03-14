@@ -57,6 +57,7 @@ Ext.define('Ext.draw.ContainerBase', {
             height: '90%',
             hideOnMaskTap: true,
             centered: true,
+            floated: true,
             scrollable: false,
             closable: true,
             // Use 'hide' so that hiding via close button/mask tap go through

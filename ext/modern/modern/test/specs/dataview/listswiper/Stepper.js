@@ -445,7 +445,7 @@ xtopSuite("Ext.dataview.listswiper.Stepper", [
             scrollable.scrollBy(0, 128);
         });
 
-        it('should dismiss pending actions after dismissDelay milliseconds if greater than 0', function(done) {
+        it('should dismiss pending actions after dismissDelay milliseconds if greater than 0', function() {
             var spy = jasmine.createSpy(),
                 list = acquireView({
                     plugins: {
@@ -473,17 +473,21 @@ xtopSuite("Ext.dataview.listswiper.Stepper", [
             swipe(list.getItemAt(4), 'left', 192);
 
             expect(spy.callCount).toBe(0);
-
-            setTimeout(function() {
+            
+            waits(200);
+            
+            runs(function() {
                 expect(spy.callCount).toBe(0);
-                setTimeout(function() {
-                    expect(spy.callCount).toBe(3);
-                    done();
-                }, 100);
-            }, 200);
+            });
+            
+            waits(100);
+            
+            runs(function() {
+                expect(spy.callCount).toBe(3);
+            });
         });
 
-        it('should NOT dismiss pending actions if dismissDelay is 0', function(done) {
+        it('should NOT dismiss pending actions if dismissDelay is 0', function() {
             var spy = jasmine.createSpy(),
                 list = acquireView({
                     plugins: {
@@ -509,11 +513,12 @@ xtopSuite("Ext.dataview.listswiper.Stepper", [
             swipe(list.getItemAt(1), 'left', 192);
             swipe(list.getItemAt(3), 'right', 192);
             swipe(list.getItemAt(4), 'left', 192);
-
-            setTimeout(function() {
+            
+            waits(500)
+            
+            runs(function() {
                 expect(spy.callCount).toBe(0);
-                done();
-            }, 500);
+            });
         });
     });
 

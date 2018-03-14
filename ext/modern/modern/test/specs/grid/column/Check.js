@@ -160,7 +160,11 @@ topSuite("Ext.grid.column.Check", ['Ext.grid.Grid', 'Ext.data.ArrayStore', 'Ext.
                         tpl: '{val}'
                     }]);
                     clickCheckbox(0);
-                    expect(grid.isSelected(store.getAt(0))).toBe(true);
+
+                    // Touch taps are delayed by 1ms to allow focus processing to perform navigation
+                    waitsFor(function() {
+                        return grid.isSelected(store.getAt(0)) === true;
+                    });
                 });
 
                 it("should select when a full row update is not required", function() {
@@ -171,7 +175,11 @@ topSuite("Ext.grid.column.Check", ['Ext.grid.Grid', 'Ext.data.ArrayStore', 'Ext.
                         dataIndex: 'val'
                     }]);
                     clickCheckbox(0);
-                    expect(grid.isSelected(store.getAt(0))).toBe(true);
+
+                    // Touch taps are delayed by 1ms to allow focus processing to perform navigation
+                    waitsFor(function() {
+                        return grid.isSelected(store.getAt(0)) === true;
+                    });
                 });
             });
 

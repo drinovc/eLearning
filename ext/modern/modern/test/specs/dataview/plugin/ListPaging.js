@@ -63,7 +63,7 @@ xtopSuite("Ext.dataview.plugin.ListPaging", [
                 load: {
                     single: true,
                     fn: function() {
-                        clearTimeout(timer);
+                        Ext.undefer(timer);
                         resolve(true);
                     }
                 }
@@ -179,7 +179,7 @@ xtopSuite("Ext.dataview.plugin.ListPaging", [
 
                 // scroll to item just above the buffer zone (10 - 4)
                 var el = list.getItemAt(6).element;
-                scroller.scrollIntoView(el);
+                scroller.ensureVisible(el);
                 return waitForLoadingAndReply(store);
             }).then(function(loaded) {
                 expect(loaded).toBeFalsy();
@@ -189,7 +189,7 @@ xtopSuite("Ext.dataview.plugin.ListPaging", [
 
                 // scroll to item at the top of the buffer zone (10 - 3)
                 var el = list.getItemAt(7).element;
-                scroller.scrollIntoView(el);
+                scroller.ensureVisible(el);
                 return waitForLoadingAndReply(store);
             }).then(function(loaded) {
                 expect(loaded).toBeTruthy();
@@ -222,7 +222,7 @@ xtopSuite("Ext.dataview.plugin.ListPaging", [
 
                 // scroll to the last "almost" bottom of the last item
                 var el = list.getItemAt(9).element;
-                var y = scroller.getScrollIntoViewXY(el).y - 1;
+                var y = scroller.getEnsureVisibleXY(el).y - 1;
                 scroller.scrollTo(null, y);
                 return waitForLoadingAndReply(store);
             }).then(function(loaded) {

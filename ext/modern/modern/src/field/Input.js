@@ -6,6 +6,8 @@ Ext.define('Ext.field.Input', {
     extend: 'Ext.field.Field',
     xtype: 'inputfield',
 
+    isInputField: true,
+
     /**
      * @property {String} tag
      * The tag name to use for this field's input element. Subclasses should override this
@@ -19,7 +21,10 @@ Ext.define('Ext.field.Input', {
          * @cfg {String} [inputType='text'] The type attribute for input fields -- e.g. text,
          * password, date, url, email, etc.
          */
-        inputType: null,
+        inputType: {
+            cached: true,
+            $value: 'text'
+        },
 
         /**
          * @cfg {Boolean} [readOnly=false]
@@ -31,7 +36,7 @@ Ext.define('Ext.field.Input', {
          * triggers, set {@link Ext.field.Text#cfg!editable} to `false`.
          * @accessor
          */
-        readOnly: null,
+        readOnly: false,
 
         /**
          * @private
@@ -88,12 +93,26 @@ Ext.define('Ext.field.Input', {
     },
 
     updateValue: function (value, oldValue) {
-        this.setInputValue(value);
+        // This is to prevent formatting from updating the current
+        // value while typing
+        if (this.canSetInputValue()) {
+            this.setInputValue(value);
+        }
         this.callParent([value, oldValue]);
     },
 
     applyInputValue: function(value) {
-        return (value != null) ? value : '';
+        return (value != null) ? (value + '') : '';
+    },
+
+    completeEdit: function() {
+        var me = this,
+            value = me.getInputValue(),
+            parsedValue = me.parseValue(value);
+
+        if (parsedValue !== null) {
+            me.setInputValue(me.getValue());
+        }
     },
 
     updateInputValue: function(value) {
@@ -104,19 +123,38 @@ Ext.define('Ext.field.Input', {
         }
     },
 
+    reset: function() {
+        var me = this, 
+            original = me.originalValue;
+        
+        if (me.isEqual(original, me.getValue())) {
+            me.setInputValue(original);
+            if (!me.isValid()) {
+                me.validate();
+            }
+        } else {
+            me.setValue(original);
+        }
+
+        return me;
+    },
+
     privates: {
+        canSetInputValue: function() {
+            return true;
+        },
+
         /**
          * Helper method to update or remove an attribute on the `inputElement`
          * @private
          */
         setInputAttribute: function (attribute, newValue) {
-            var inputElement = this.inputElement;
+            var inputElement = this.inputElement.dom;
 
             if (!Ext.isEmpty(newValue, true)) {
-                inputElement.dom.setAttribute(attribute, newValue);
-            }
-            else {
-                inputElement.dom.removeAttribute(attribute);
+                inputElement.setAttribute(attribute, newValue);
+            } else {
+                inputElement.removeAttribute(attribute);
             }
         }
     },
@@ -128,9 +166,7 @@ Ext.define('Ext.field.Input', {
                 // the cls on?  inputWrap perhaps?
                 /**
                  * @cfg {String} inputCls
-                 * As of version 6.5 this config has been removed because there is no
-                 * longer an input component to add the class to.
-                 * @deprecated
+                 * @deprecated 6.5.0 There is no longer an input component to which to add a class.
                  */
                 inputCls: null
             }

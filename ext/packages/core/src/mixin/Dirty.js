@@ -26,7 +26,10 @@ Ext.define('Ext.mixin.Dirty', {
          * cases this config's value is maintained by the object and should be considered
          * readonly. The class implementor should be the only one to call the setter.
          */
-        dirty: null
+        dirty: {
+            $value: false,
+            lazy: true
+        }
     },
 
     dirty: false,  // on the prototype as false (not undefined)
@@ -73,14 +76,14 @@ Ext.define('Ext.mixin.Dirty', {
         return this.ignoreDirty ? false : dirty;
     },
 
-    updateDirty: function (dirty, oldValue) {
+    updateDirty: function (dirty) {
         var me = this;
 
         // Store the property directly in case we are used in an "_dirty" world.
         me.dirty = dirty;
 
-        if (!me.ignoreDirty && me.fireEvent) {
-            me.fireEvent('dirtychange', me, dirty);
+        if (me.fireEvent && !me.isDirtyInitializing) {
+            me.fireDirtyChange();
         }
     },
 
@@ -104,6 +107,14 @@ Ext.define('Ext.mixin.Dirty', {
         }
     },
 
+    fireDirtyChange: function() {
+        var me = this;
+
+        if (!me.ignoreDirty && me.hasListeners.dirtychange) {
+            me.fireEvent('dirtychange', me, me.dirty);
+        }
+    },
+
     /**
      * This method is called to track a given record in the total number of dirty records
      * (modified, created or dropped). See `untrackRecordState` and `clearRecordStates`.
@@ -117,19 +128,30 @@ Ext.define('Ext.mixin.Dirty', {
         var me = this,
             counters = me._crudCounters || (me._crudCounters = { C:0, R:0, U:0, D:0 }),
             dirtyRecordCountWas = me._dirtyRecordCount,
-            changed, dirtyRecordCount, was;
+            state = record.crudState,
+            stateWas = record.crudStateWas,
+            changed, dirtyRecordCount;
 
-        if (!initial && (was = record.crudStateWas) !== null) {
-            --counters[was];
-        }
+        if (initial || state !== stateWas) {
+            if (!initial && stateWas) {
+                --counters[stateWas];
+            }
 
-        ++counters[record.crudState];
-        me._dirtyRecordCount = dirtyRecordCount = counters.C + counters.U + counters.D;
+            if (!(record.phantom && state === 'D')) {
+                ++counters[state];
+            }
 
-        changed = !dirtyRecordCount !== !dirtyRecordCountWas;
+            //<debug>
+            me.checkCounters();
+            //</debug>
 
-        if (changed && me.recordStateIsDirtyState) {
-            me.setDirty(dirtyRecordCount > 0);
+            me._dirtyRecordCount = dirtyRecordCount = counters.C + counters.U + counters.D;
+
+            changed = !dirtyRecordCount !== !dirtyRecordCountWas;
+
+            if (changed && me.recordStateIsDirtyState) {
+                me.setDirty(dirtyRecordCount > 0);
+            }
         }
 
         return changed;
@@ -148,10 +170,17 @@ Ext.define('Ext.mixin.Dirty', {
         var me = this,
             counters = me._crudCounters,
             dirtyRecordCountWas = me._dirtyRecordCount,
+            state = record.crudState,
             changed, dirtyRecordCount;
 
-        if (counters) {
-            --counters[record.crudState];
+        // If it's erased and dropped, it will have already been tracked
+        if (counters && state !== 'D' && !record.erased) {
+            --counters[state];
+
+            //<debug>
+            me.checkCounters();
+            //</debug>
+
             me._dirtyRecordCount = dirtyRecordCount = counters.C + counters.U + counters.D;
 
             changed = !dirtyRecordCount !== !dirtyRecordCountWas;
@@ -163,4 +192,17 @@ Ext.define('Ext.mixin.Dirty', {
 
         return changed;
     }
+
+    //<debug>
+    ,checkCounters: function() {
+        var counters = this._crudCounters,
+            key;
+
+        for (key in counters) {
+            if (counters[key] < 0) {
+                Ext.raise('Invalid state for ' + key);
+            }
+        }
+    }
+    //</debug>
 });

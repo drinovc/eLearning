@@ -36,22 +36,27 @@ Ext.define('Ext.grid.selection.Cells', {
 
     /**
      * Returns `true` if the passed {@link Ext.grid.Location cell context} is selected.
-     * @param {Ext.grid.Location} cellLocation The cell location to test.
+     * @param {Number/Ext.grid.Location} recordIndex The record index or `location` instance.
+     * @param {Number} [columnIndex] The column index if `recordIndex` is not the actual `location`.
      * @return {Boolean} `true` if the passed {@link Ext.grid.Location cell context} is selected.
      */
-    isSelected: function(cellLocation) {
-        var range, recordIndex, columnIndex;
-
-        if (!cellLocation || !cellLocation.isGridLocation) {
-            return false;
-        }
+    isSelected: function(recordIndex, columnIndex) {
+        var range;
 
         if (this.startCell) {
+            if (recordIndex.isGridLocation) {
+                columnIndex = recordIndex.columnIndex;
+                recordIndex = recordIndex.recordIndex;
+            }
+            //<debug>
+            if (!(Ext.isNumber(recordIndex) && Ext.isNumber(columnIndex))) {
+                Ext.raise('Cells#isSelected must be passed either a GridLocation of a row and column index');
+            }
+            //</debug>
+
             // get start and end rows in the range
             range = this.getRowRange();
 
-            recordIndex = cellLocation.recordIndex;
-            columnIndex = cellLocation.columnIndex;
             if (recordIndex >= range[0] && recordIndex <= range[1]) {
                 // get start and end columns in the range
                 range = this.getColumnRange();
@@ -222,7 +227,7 @@ Ext.define('Ext.grid.selection.Cells', {
                 });
                 me.startCell = extensionVector.start.clone();
                 me.setRangeEnd(newEndCell);
-                me.view.getNavigationModel().setPosition(extensionVector.start);
+                me.view.getNavigationModel().setLocation(extensionVector.start);
             } else {
                 me.startCell = new Ext.grid.Location(view, {
                     record: me.getFirstRowIndex(),
@@ -295,13 +300,13 @@ Ext.define('Ext.grid.selection.Cells', {
          * @private
          */
         isAllSelected: function() {
-            var start = this.rangeStart,
-                end = this.rangeEnd;
+            var start = this.startCell,
+                end = this.endCell;
 
             // All selected only if we encompass the entire store and every visible column
             if (start) {
                 if (!start.columnIndex && !start.recordIndex) {
-                    return end.columnIndex === end.view.getVisibleColumns().length - 1 && end.recordIndex === end.view.store.getCount - 1;
+                    return end.columnIndex === end.view.getVisibleColumns().length - 1 && end.recordIndex === end.view.store.getCount() - 1;
                 }
             }
             return false;

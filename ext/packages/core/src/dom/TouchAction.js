@@ -86,6 +86,7 @@ Ext.define('Ext.dom.TouchAction', {
                 touchmove: 'onTouchMove',
                 touchend: 'onTouchEnd',
                 scope: me,
+                delegated: false,
                 translate: false,
                 capture: true,
                 priority: 5000
@@ -118,7 +119,8 @@ Ext.define('Ext.dom.TouchAction', {
      */
     containsTargets: function(dom, e) {
         var contains = true,
-            touches = e.type === 'touchend' ? e.changedTouches : e.touches,
+            event = e.browserEvent,
+            touches = e.type === 'touchend' ? event.changedTouches : event.touches,
             i, ln;
 
         for (i = 0, ln = touches.length; i < ln; i++) {
@@ -286,7 +288,7 @@ Ext.define('Ext.dom.TouchAction', {
             dom = e.target,
             touchCount, flags, doubleTapZoom;
 
-        touchCount = e.touches.length;
+        touchCount = e.browserEvent.touches.length;
 
         if (touchCount === 0) {
             if (me.isDoubleTap) {
@@ -322,7 +324,7 @@ Ext.define('Ext.dom.TouchAction', {
         preventSingle = me.preventSingle;
         preventMulti = me.preventMulti;
 
-        touchCount = e.touches.length;
+        touchCount = e.browserEvent.touches.length;
 
         // Don't check for touchCount here when checking for preventMulti.
         // This ensures that if we determined not to cancel the multi-touch gesture
@@ -408,7 +410,7 @@ Ext.define('Ext.dom.TouchAction', {
         var me = this,
             time, flags, dom, panX, panY;
 
-        if (e.touches.length === 1) {
+        if (e.browserEvent.touches.length === 1) {
             time = e.time;
 
             // Use a time of 500ms between touchstart events to detecting a double tap that

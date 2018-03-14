@@ -138,7 +138,7 @@ Ext.define('Ext.dom.GarbageCollector', {
 
         if (timerId) {
             this.timerId = null;
-            clearTimeout(timerId);
+            Ext.undefer(timerId);
         }
     },
 

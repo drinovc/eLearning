@@ -28,6 +28,10 @@ Ext.define('Ext.chart.navigator.NavigatorBase', {
         }
 
         return me;
+    },
+
+    getDocked: function () {
+        return this.dock;
     }
 
 });

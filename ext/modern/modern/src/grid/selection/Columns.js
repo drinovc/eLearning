@@ -37,10 +37,8 @@ Ext.define('Ext.grid.selection.Columns', {
 
     eachColumn: function (fn, scope) {
         var me = this,
-            view = me.view,
             columns = me.selectedColumns,
-            len,
-            i;
+            len, i;
 
         if (columns) {
             len = columns.length;
@@ -56,9 +54,8 @@ Ext.define('Ext.grid.selection.Columns', {
         var me = this,
             view = me.view,
             columns = me.selectedColumns,
-            len,
-            i,
-            context = new Ext.grid.Location(view);
+            context = new Ext.grid.Location(view),
+            len, i;
 
         if (columns) {
             len = columns.length;
@@ -117,6 +114,7 @@ Ext.define('Ext.grid.selection.Columns', {
         /**
          * Adds the passed Column to the selection.
          * @param {Ext.grid.column.Column} column
+         * @param {Boolean} suppressEvent (private)
          * @private
          */
         add: function(column, suppressEvent) {
@@ -236,9 +234,12 @@ Ext.define('Ext.grid.selection.Columns', {
         /**
          * Removes the passed Column from the selection.
          * @param {Ext.grid.column.Column} column
+         * @param {Boolean} suppressEvent (private)
          * @private
          */
-        remove: function(column) {
+        remove: function(column, suppressEvent) {
+            var selModel = this.getSelectionModel();
+
             //<debug>
             if (!column.isGridColumn) {
                 Ext.raise('Column selection must be passed a grid Column header object');
@@ -252,6 +253,10 @@ Ext.define('Ext.grid.selection.Columns', {
                 // In which case the view will have selected cells removed, so no refresh needed.
                 if (column.getGrid() && column.isVisible()) {
                     this.refreshColumns(column);
+                    selModel.updateHeaderState();
+                    if (!suppressEvent) {
+                        selModel.fireSelectionChange();
+                    }
                 }
             }
         },

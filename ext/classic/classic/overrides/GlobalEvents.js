@@ -3,6 +3,7 @@
 /**
  * @class Ext.GlobalEvents
  */
+
 Ext.define('Ext.overrides.GlobalEvents', {
     override: 'Ext.GlobalEvents',
 

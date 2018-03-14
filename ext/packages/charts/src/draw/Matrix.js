@@ -744,8 +744,7 @@ Ext.define('Ext.draw.Matrix', {
     },
 
     /**
-     * @deprecated
-     * @since 6.0.1
+     * @deprecated 6.0.1 This method is deprecated.
      * Determines if this matrix has the same values as another matrix.
      * @param {Ext.draw.Matrix} matrix
      * @return {Boolean}

@@ -76,8 +76,23 @@ Ext.define('Ext.data.BufferedStore', {
     config: {
         data: 0,
         pageSize: 25,
+        
+        /**
+         * @cfg remoteSort
+         * @inheritdoc
+         */
         remoteSort: true,
+        
+        /**
+         * @cfg remoteFilter
+         * @inheritdoc
+         */
         remoteFilter: true,
+        
+        /**
+         * @cfg sortOnLoad
+         * @inheritdoc
+         */
         sortOnLoad: false,
 
         /**
@@ -89,9 +104,9 @@ Ext.define('Ext.data.BufferedStore', {
          * For example, if the height of the view area and the configured
          * {@link #trailingBufferZone} and {@link #leadingBufferZone} require that there
          * are three pages in the cache, then a `purgePageCount` of 5 ensures that up to
-         * 11 pages can be in the page cache any any one time. This is enough to allow the
-         * user to scroll rapidly between different areas of the dataset without evicting
-         * pages which are still needed.
+         * 11 pages can be in the page cache any any one time. This is enough to allow
+         * the user to scroll rapidly between different areas of the dataset without
+         * evicting pages which are still needed.
          *
          * A value of 0 indicates to never purge the prefetched data.
          */
@@ -107,13 +122,15 @@ Ext.define('Ext.data.BufferedStore', {
 
         /**
          * @cfg {Number} leadingBufferZone
-         * The number of extra rows to keep cached on the leading side of scrolling buffer
-         * as scrolling proceeds. A larger number means fewer replenishments from the server.
+         * The number of extra rows to keep cached on the leading side of scrolling
+         * buffer as scrolling proceeds. A larger number means fewer replenishments from
+         * the server.
          */
         leadingBufferZone: 200,
 
         /**
-         * @cfg {Number} defaultViewSize The default view size to use until the
+         * @cfg {Number} defaultViewSize
+         * The default view size to use until the
          * {@link #viewSize} has been configured.
          * @private
          */
@@ -128,7 +145,9 @@ Ext.define('Ext.data.BufferedStore', {
         viewSize: 0,
 
         /**
-         * @inheritdoc
+         * @cfg {Boolean} trackRemoved
+         * The {@link Ext.data.ProxyStore#cfg!trackRemoved trackRemoved} config is not
+         * supported by buffered stores.
          */
         trackRemoved: false
     },
@@ -517,6 +536,7 @@ Ext.define('Ext.data.BufferedStore', {
     },
 
     /**
+     * @method getAt
      * @inheritdoc
      */
     getAt: function (index) {
@@ -542,6 +562,7 @@ Ext.define('Ext.data.BufferedStore', {
     },
 
     /**
+     * @method contains
      * @inheritdoc
      */
     contains: function (record) {

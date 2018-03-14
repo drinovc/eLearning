@@ -254,16 +254,30 @@ function() {
                 expect(north.nextSibling().isXType('splitter')).toBe(true);
             });  
             
-            it("should create a splitter with collapsible: true & collapseMode: 'mini'", function(){
-                var west = new Ext.panel.Panel({
-                    region: 'west',
-                    height: 50,
-                    collapsible: true,
-                    collapseMode: 'mini'
+            describe("collapsible: true && collapseMode: 'mini'", function() {
+                it("should create a splitter", function(){
+                    var west = new Ext.panel.Panel({
+                        region: 'west',
+                        height: 50,
+                        collapsible: true,
+                        collapseMode: 'mini'
+                    });
+                    createWithCenter([west]);
+                    expect(west.nextSibling().isXType('splitter')).toBe(true);
                 });
-                createWithCenter([west]);
-                expect(west.nextSibling().isXType('splitter')).toBe(true);
-            });  
+                
+                it("should not hide the splitter if region is collapsed", function() {
+                    var west = new Ext.panel.Panel({
+                        region: 'west',
+                        height: 50,
+                        collapsible: true,
+                        collapsed: true,
+                        collapseMode: 'mini'
+                    });
+                    createWithCenter([west]);
+                    expect(west.nextSibling().isVisible()).toBe(true);
+                });
+            });
             
             describe("splitter configuration", function() {
                 var east, splitter;

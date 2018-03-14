@@ -1,23 +1,27 @@
 /**
- * A 'Toast' is a simple modal message that is displayed on the screen and then automatically closed by a timeout or by a user tapping
- * outside of the toast itself. Think about it like a text only alert box that will self destruct. **A Toast should not be instantiated manually**
- * but creating by calling 'Ext.toast(message, timeout)'. This will create one reusable toast container and content will be swapped out as
- * toast messages are queued or displayed.
+ * A 'Toast' is a simple message that is displayed on the screen and then automatically closed by a
+ * timeout. Think about it like a text only alert box that will self destruct. **A Toast should not
+ * be instantiated manually** but creating by calling 'Ext.toast(message, timeout)'. This will create
+ * one reusable toast container and content will be swapped out as toast messages are queued
+ * or displayed.
  *
  * # Simple Toast
  *
  *      @example
- *      Ext.toast('Hello Sencha!'); // Toast will close in 1000 milliseconds (default)
+ *      // Toast will close in 1000 milliseconds (default)
+ *      Ext.toast('Hello Sencha!');
  *
  * # Toast with Timeout
  *
  *      @example
- *      Ext.toast('Hello Sencha!', 5000); // Toast will close in 5000 milliseconds
+ *      // Toast will close in 5000 milliseconds
+ *      Ext.toast('Hello Sencha!', 5000);
  *
  * # Toast with config
  *
  *      @example
- *      Ext.toast({message: 'Hello Sencha!', timeout: 2000}); // Toast will close in 2000 milliseconds
+ *      // Toast will close in 2000 milliseconds
+ *      Ext.toast({message: 'Hello Sencha!', timeout: 2000});
  *
  * # Multiple Toasts queued
  *
@@ -34,13 +38,13 @@ Ext.define('Ext.Toast', {
 
     config: {
         /**
-         * @cfg
+         * @cfg centered
          * @inheritdoc
          */
         centered: false,
 
         /**
-         * @cfg
+         * @cfg showAnimation
          * @inheritdoc
          */
         showAnimation: {
@@ -50,7 +54,7 @@ Ext.define('Ext.Toast', {
         },
 
         /**
-         * @cfg
+         * @cfg hideAnimation
          * @inheritdoc
          */
         hideAnimation: {
@@ -78,24 +82,33 @@ Ext.define('Ext.Toast', {
         timeout: 1000,
 
         /**
+         * @cfg {Number} maxQueue
+         * The the maximum number of toasts that can be queued up.  When there are this many toasts queued up and
+         * a new call to Ext.toast() is made, the oldest queued Toast that is not yet displayed will be dropped
+         * from the queue.
+         */
+        maxQueue: 3,
+
+        /**
          * @cfg {Boolean/Object} messageAnimation
          * The animation that should be used between toast messages when they are queued up
          */
         messageAnimation: true,
 
         /**
-         * @cfg {Boolean} hideOnMaskTap
+         * @cfg hideOnMaskTap
          * @inheritdoc
          */
         hideOnMaskTap: true,
 
         /**
+         * @cfg modal
          * @hide
          */
         modal: false,
 
         /**
-         * @cfg
+         * @cfg layout
          * @inheritdoc
          */
         layout: {
@@ -104,16 +117,11 @@ Ext.define('Ext.Toast', {
         }
     },
 
+    /**
+     * @property classCls
+     * @inheritdoc
+     */
     classCls: Ext.baseCSSPrefix + 'toast',
-
-    initialize: function() {
-        this.callParent(arguments);
-        Ext.getDoc().on({
-            scope: this,
-            tap: 'onDocumentTap',
-            capture: true
-        });
-    },
 
     /**
      * @private
@@ -142,18 +150,18 @@ Ext.define('Ext.Toast', {
     startTimer: function () {
         var timeout = this.getTimeout();
         if (this._timeoutID) {
-            clearTimeout(this._timeoutID);
+            Ext.undefer(this._timeoutID);
         }
 
         if (!Ext.isEmpty(timeout)) {
-            this._timeoutID = setTimeout(Ext.bind(this.onTimeout, this), timeout);
+            this._timeoutID = Ext.defer(this.onTimeout.bind(this), timeout);
         } else {
             this.onTimeout();
         }
     },
 
     stopTimer: function () {
-        clearTimeout(this._timeoutID);
+        Ext.undefer(this._timeoutID);
         this._timeoutID = null;
     },
 
@@ -224,10 +232,6 @@ Ext.define('Ext.Toast', {
         }
     },
 
-    onDocumentTap: function() {
-        this.hide();
-    },
-
     /**
      * @private
      */
@@ -252,6 +256,11 @@ Ext.define('Ext.Toast', {
         if (this._timeoutID !== null) {
             this.hide();
         }
+    },
+
+    doDestroy: function() {
+        this.stopTimer();
+        this.callParent();
     }
 }, function (Toast) {
     var _queue = [];
@@ -263,6 +272,19 @@ Ext.define('Ext.Toast', {
         return Ext.Toast._instance;
     }
 
+    //<debug>
+    /**
+     * @member Ext.Toast
+     * @method getQueueCount
+     * @private
+     * Provided for unit tests
+     * @returns {Number}
+     */
+    Toast.prototype.getQueueCount = function() {
+        return _queue.length;
+    };
+    //</debug>
+
     Toast.prototype.next = function () {
         var config = _queue.shift();
 
@@ -273,8 +295,20 @@ Ext.define('Ext.Toast', {
         return !config;
     };
 
+    /**
+     * Destroys any Toast components and elements, freeing the resources.
+     *
+     * They will be created again upon calling Ext.toast().
+     */
+    Ext.Toast.destroy = function() {
+        if (Ext.Toast._instance) {
+            Ext.Toast._instance.destroy();
+            Ext.Toast._instance = null;
+        }
+    };
     Ext.toast = function (message, timeout) {
         var toast = getInstance(),
+            maxQueue = Ext.Toast.prototype.config.maxQueue,
             config = message;
 
         if (Ext.isString(message)) {
@@ -295,6 +329,10 @@ Ext.define('Ext.Toast', {
         }
 
         _queue.push(config);
+
+        if (_queue.length > maxQueue) {
+            _queue.shift();
+        }
 
         if (!toast.isRendered() || toast.isHidden()) {
             toast.next();

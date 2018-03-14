@@ -1,10 +1,15 @@
 .#{$prefix}tool {
-    display: flex;
+    display: inline-flex;
     outline: none;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 
     .#{$prefix}icon-el {
-        flex: 1;
+        flex: none;
     }
+}
+
+.#{$prefix}boxscroller > .#{$prefix}tool {
+    align-self: center;
 }

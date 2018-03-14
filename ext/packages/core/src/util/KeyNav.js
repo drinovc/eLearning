@@ -186,7 +186,7 @@ Ext.define('Ext.util.KeyNav', {
             me.destroyKeyMap = true;
         }
 
-        this.addBindings(config);
+        me.addBindings(config);
 
         map.disable();
         

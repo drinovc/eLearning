@@ -4,6 +4,14 @@
 Ext.define('Ext.fx.animation.Abstract', {
     extend: 'Ext.Evented',
 
+    mixins: [
+        'Ext.mixin.Factoryable'
+    ],
+
+    factoryConfig: {
+        type: 'animation'
+    },
+
     isAnimation: true,
 
     requires: [
@@ -16,7 +24,7 @@ Ext.define('Ext.fx.animation.Abstract', {
         element: null,
 
         /**
-         * @cfg before
+         * @cfg {Object} before
          * Before configuration.
          */
         before: null,
@@ -32,7 +40,7 @@ Ext.define('Ext.fx.animation.Abstract', {
         duration:  300,
 
         /**
-         * @cfg easing
+         * @cfg {String} easing
          * Easing type.
          */
         easing: 'linear',

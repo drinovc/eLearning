@@ -1,6 +1,7 @@
 /**
  * @class Ext.Widget
  */
+
 Ext.define('Ext.overrides.Widget', {
     override: 'Ext.Widget',
 
@@ -20,22 +21,6 @@ Ext.define('Ext.overrides.Widget', {
          * The default value is 8.
          */
         floatInset: 8,
-
-        /**
-         * This method reorders the DOM structure of floated components to arrange that the clicked
-         * element is last of its siblings, and therefore on the visual "top" of the floated component stack.
-         * @param {type} e The mousedown event
-         * @private
-         */
-        onDocumentMouseDown: function(e) {
-            var selector = Ext.Widget.prototype.floatedSelector,
-                targetFloated = Ext.Component.from(e.getTarget(selector, Ext.getBody()));
-
-            // If the mousedown is in a floated, move it to top.
-            if (targetFloated) {
-                targetFloated.toFront(true);
-            }
-        },
 
         onModalMaskTap: function (e) {
             var top = this.topModal;
@@ -58,7 +43,7 @@ Ext.define('Ext.overrides.Widget', {
          * method.
          *
          * When supplied as a string or number this option supports the same syntax
-         * as CSS {@link https://developer.mozilla.org/en-US/docs/Web/CSS/flex flex}.
+         * as CSS [flex](https://developer.mozilla.org/en-US/docs/Web/CSS/flex).
          * For example:
          *
          *     flex: '1 2 auto'
@@ -227,7 +212,10 @@ Ext.define('Ext.overrides.Widget', {
          * @private
          * @accessor
          */
-        translatable: null,
+        translatable: {
+            lazy: true,
+            $value: null
+        },
 
         /**
          * @cfg {String/Ext.util.Region/Ext.dom.Element} [constrainAlign]
@@ -247,27 +235,14 @@ Ext.define('Ext.overrides.Widget', {
          *
          * You may also specify an element, or a {@link Ext.util.Region Region}
          */
-        constrainAlign: null
-    },
+        constrainAlign: null,
 
-    /**
-     * @cfg {String} translationMethod
-     * This config is the default `translatable` type to use for this type of component.
-     * This is not normally set on instances because it is more appropriate to just set
-     * `translatable`:
-     *
-     *      items: [{
-     *          translatable: {
-     *              type: 'csstransform',
-     *          }
-     *          ...
-     *
-     * This config is more useful for a class to set the default translatable type that
-     * will be used for any components that are `translatable`.
-     *
-     * @private
-     * @since 6.5.0
-     */
+        /**
+         * @cfg {String} [selfAlign]
+         * Specifies the self alignment of this widget in a box layout
+         */
+        alignSelf: null
+    },
 
     /**
      * @property {Boolean/String}
@@ -321,6 +296,8 @@ Ext.define('Ext.overrides.Widget', {
      * @readonly
      */
     shimCls: Ext.baseCSSPrefix + 'shim',
+
+    rootCls: Ext.baseCSSPrefix + 'root',
 
     /**
      * @event beforetofront
@@ -415,7 +392,11 @@ Ext.define('Ext.overrides.Widget', {
     },
 
     /**
-     * @inheritdoc
+     * Returns `true` if this Component is currently hidden.
+     * @param {Boolean/Ext.Widget} [deep=false] `true` to check if this component
+     * is hidden because a parent container is hidden. Alternatively, a reference to the
+     * top-most parent at which to stop climbing.
+     * @return {Boolean} `true` if currently hidden.
      */
     isHidden: function(deep) {
         var me = this,
@@ -501,13 +482,16 @@ Ext.define('Ext.overrides.Widget', {
     },
 
     /**
-     * Brings a {@link #cfg-floated} Component to the front of any other visible, floated Components.
+     * Brings a {@link #cfg-floated} Component to the front of any other visible, floated
+     * Components while honoring all {@link #cfg!alwaysOnTop} settings. This may not become
+     * topmost if another visible floated component has a higher {@link #cfg!alwaysOnTop} value.
      *
-     * TODO: If this Component is modal, inserts the modal mask just below this Component.
-     *
+     * If this Component becomes the topmost *modal* floated component, the the shared modal
+     * mask is moved to just below this Component.
+     * @param {Boolean} [fromMousedown] (private)
      * @return {Ext.Component} this
      */
-    toFront: function(/* private */ fromMousedown) {
+    toFront: function(fromMousedown) {
         //<debug>
         if (!this.getFloated()) {
             Ext.raise('Cannot use toFront on a non-floated component');
@@ -544,7 +528,7 @@ Ext.define('Ext.overrides.Widget', {
             listeners = config.listeners;
 
         config = Ext.apply({
-            type: me.translationMethod || 'cssposition',
+            type: 'cssposition',
             ownerCmp: me,
             element: me.renderElement
         }, config);
@@ -794,6 +778,7 @@ Ext.define('Ext.overrides.Widget', {
     afterRender: Ext.emptyFn,
 
     /**
+     * @method
      * This method is called the first time a component is inserted into the DOM. If this
      * component {@link Ext.Container contains} other components, the `onRender` method
      * for child components is called *after* the parent's `onRender`.
@@ -832,7 +817,7 @@ Ext.define('Ext.overrides.Widget', {
     updateFloated: function (floated, oldFloated) {
         var me = this,
             fw = me.floatWrap,
-            modal;
+            modal, sibling;
 
         if (floated) {
             me.refreshInnerState = Ext.emptyFn;
@@ -849,7 +834,7 @@ Ext.define('Ext.overrides.Widget', {
         } else {
             // If transitioning to an inner component, unwrap ourself.
             if (fw) {
-                fw.el.dom.removeChild(me.el.dom);
+                fw.dom.removeChild(me.el.dom);
                 me.un('resize', 'syncFloatWrap', me);
                 fw.destroy();
                 me.floatWrap = null;
@@ -865,13 +850,37 @@ Ext.define('Ext.overrides.Widget', {
 
         me.el.toggleCls(me.floatedCls, floated);
 
-        // If we are *changing* floatedness, these
-        // configs behave in different ways.
-        // We have to force them to be reevaluated by their appliers.
-        if (!me.isConfiguring) {
+        // If we are *changing* floatedness, then if the modal config has been
+        // processed, we need to clear it and re-evaluate it for the new mode.
+        //
+        // So for floated to non-floated, the _modal property will have
+        // to cycle from true to an instance of Ext.Mask. And vice versa
+        // for non-floated - floated.
+        if (me.hasOwnProperty('_modal')) {
             modal = me.getModal && me.getModal();
+
             if (modal) {
-                Ext.destroy(modal);
+                me.setModal(false);
+                if (floated) {
+                    // If we are being changed *to* floated, then the modal
+                    // will be the mask instance, so destroy it.
+                    // And if we're visible, show the shared mask.
+                    Ext.destroy(modal);
+                    if (me.isVisible()) {
+                        me.showModalMask();
+                    }
+                } else {
+                    // We're being changed to non-floated.
+                    // The shared modal mask must be moved to below the topmost
+                    // modal sibling, or if none, hidden.
+                    sibling = me.getModalSibling();
+
+                    if (sibling) {
+                        sibling.showModalMask();
+                    } else {
+                        me.hideModalMask();
+                    }
+                }
                 me.setModal(true);
             }
             if (me.getHideOnMaskTap && me.getHideOnMaskTap()) {
@@ -886,9 +895,11 @@ Ext.define('Ext.overrides.Widget', {
         me.syncFloatedState(floated, oldFloated, me.rendered && oldFloated === false);
     },
         
-    applyUi: function(ui, oldUi) {
+    applyUi: function(ui) {
         var me = this,
             inheritedUi = me._inheritedUi;
+
+        ui = me.callParent([ui]);
 
         if (inheritedUi) {
             // if some of our UI's are inherited from our parent, let's not remove those
@@ -927,6 +938,12 @@ Ext.define('Ext.overrides.Widget', {
         if (!this.isConfiguring && globals.hasListeners[event]) {
             globals.fireEvent(event, this);
         }
+    },
+
+    updateAlignSelf: function (align) {
+        this.el.setStyle({
+            'align-self': align
+        });
     },
 
     privates: {
@@ -1108,8 +1125,14 @@ Ext.define('Ext.overrides.Widget', {
                 // If there is an owning component, constrain into its renderTarget
                 // if it's a container, or it's bodyElement or element if not.
                 if (parent) {
-                    constrainAlign = parent.getRenderTarget ? parent.getRenderTarget() : (parent.bodyElement || parent.element);
-                    isViewport = parent.isViewport;
+                    // If the owner is a non-relative floated, the constraint is the viewport
+                    if (parent.getFloated() && !parent.getRelative()) {
+                        constrainAlign = Ext.getBody();
+                        isViewport = true;
+                    } else {
+                        constrainAlign = parent.getRenderTarget ? parent.getRenderTarget() : (parent.bodyElement || parent.element);
+                        isViewport = parent.isViewport;
+                    }
                 }
                 // No owning component and no constrainAlign; use viewport for floated, parent el for positioned.
                 else if (!constrainAlign) {
@@ -1126,7 +1149,8 @@ Ext.define('Ext.overrides.Widget', {
 
                     // Inset from viewport edge for readability
                     if (isViewport) {
-                        docInsets = Ext.Widget.floatInset;
+                        // Round to avoid subpixel errors
+                        docInsets = Math.round(Ext.Widget.floatInset);
                         constrainAlign.adjust(docInsets, -docInsets, -docInsets, docInsets);
                     }
                 }
@@ -1153,7 +1177,8 @@ Ext.define('Ext.overrides.Widget', {
         },
 
         syncFloatedState: function(floated, oldFloated, rendered) {
-            var me = this;
+            var me = this,
+                isHidden = me.isHidden();
 
             if (floated) {
                 if (rendered) {
@@ -1165,11 +1190,13 @@ Ext.define('Ext.overrides.Widget', {
                     } else {
                         me.syncXYPosition();
                     }
-                    me.showModalMask();
+                    if (!isHidden) {
+                        me.showModalMask();
+                    }
                 }
                 // Not rendered - insert into correct floatParentNode unless we are hidden
                 else {
-                    if (!me.isHidden()) {
+                    if (!isHidden) {
                         me.findFloatParent();
                     }
                     else {
@@ -1210,13 +1237,13 @@ Ext.define('Ext.overrides.Widget', {
          *
          * @private
          */
-        findFloatParent: function() {
+        findFloatParent: function(needsShow) {
             var me = this,
-                parent = me.getParent();
+                parent = me.getRefOwner();
 
             // Climb to the nearest floated if possible
             while (parent && !parent.getFloated()) {
-                parent = parent.getParent();
+                parent = parent.getRefOwner();
             }
 
             // Hit the top seeing no floateds; use the global floatRoot
@@ -1231,7 +1258,7 @@ Ext.define('Ext.overrides.Widget', {
                 me.floatParentNode = parent.getFloatWrap();
             }
 
-            me.insertFloatedDom();
+            me.insertFloatedDom(needsShow);
         },
 
         /**
@@ -1244,8 +1271,7 @@ Ext.define('Ext.overrides.Widget', {
          */
         getFloatWrap: function() {
             var me = this,
-                fw = me.floatWrap,
-                width, height;
+                fw = me.floatWrap;
 
             if (!fw) {
                 me.floatWrap = fw = Ext.get(Ext.DomHelper.createDom({
@@ -1314,25 +1340,22 @@ Ext.define('Ext.overrides.Widget', {
          * This method inserts this floated component's DOM into its owning floatParent.
          * @private
          */
-        insertFloatedDom: function() {
+        insertFloatedDom: function(needsShow) {
             var me = this,
-                floatParentNode = me.floatParentNode,
-                Widget = Ext.Widget;
+                fw = me.getFloatWrap(),
+                floatParentNode = me.floatParentNode;
 
-            // We always have a floatWrap for any future floated descendants as soon
-            // as we are rendered.
-            floatParentNode.dom.appendChild(me.getFloatWrap().dom);
-            me.setRendered(true, true);
-
-            // Sync positions of all associated elements.
-            me.syncXYPosition();
-
-            // Add the global mousedown floated reorderer listener only once on first floated insert.
-            if (!Widget.$mousedownListeners) {
-                Widget.$mousedownListeners = Ext.getDoc().on({
-                    mousedown: Widget.onDocumentMouseDown,
-                    destroyable: true
-                });
+            if (fw.dom.parentNode !== floatParentNode.dom) {
+                floatParentNode.dom.appendChild(me.getFloatWrap().dom);
+                if (needsShow) {
+                    // The following operations require that the component be
+                    // temporarily visible for measurement purposes. They will
+                    // be undone by outside callers
+                    me.setVisibility(true);
+                    me._hidden = false;
+                }
+                me.setRendered(true, true);
+                me.syncXYPosition();
             }
         },
 
@@ -1369,13 +1392,20 @@ Ext.define('Ext.overrides.Widget', {
 
         hideModalMask: function() {
             var me = this,
-                parentNode = me.floatParentNode,
-                mask;
+                floatRoot = Ext.getFloatRoot(),
+                floatParentNode = me.floatParentNode,
+                data, mask;
             
             // If we're hidden there may not be a parent node
-            if (parentNode) {
-                mask = parentNode.getData().modalMask;
-    
+            if (floatParentNode) {
+                data = floatParentNode.getData();
+
+                // If our floatParent is not relative we will be using the root's mask.
+                if (floatParentNode !== floatRoot && !data.component.getRelative()) {
+                    data = floatRoot.getData();
+                }
+
+                mask = data.modalMask;
                 if (mask && mask.dom.parentNode) {
                     mask = mask.dom;
                     Ext.getDetachedBody().appendChild(mask);
@@ -1386,6 +1416,7 @@ Ext.define('Ext.overrides.Widget', {
         showModalMask: function() {
             var me = this,
                 Widget = Ext.Widget,
+                floatRoot = Ext.getFloatRoot(),
                 positionEl = me.getFloatWrap(),
                 parent = me.getParent(),
                 floatParentNode = me.floatParentNode,
@@ -1393,18 +1424,46 @@ Ext.define('Ext.overrides.Widget', {
                 mask;
 
             if (me.getFloated() && me.getModal && me.getModal()) {
+
+                // If our floatParent is not relative we use the root's mask.
+                // Obviously, if we are a top level floated, this will already
+                // be the case.
+                if (floatParentNode !== floatRoot && !data.component.getRelative()) {
+                    data = floatRoot.getData();
+                }
+
                 // getModal might cause this to be created.
                 mask = data.modalMask;
                 if (mask) {
-                    floatParentNode.dom.insertBefore(mask.dom, positionEl.dom);
-                } else {
+                    // IE11 freaks out on insertBefore if positionEl is not yet
+                    // in the dom
+                    if (positionEl.dom.parentElement === floatParentNode.dom) {
+                        floatParentNode.dom.insertBefore(mask.dom, positionEl.dom);
+                    }
+                    else {
+                        floatParentNode.dom.appendChild(mask.dom);
+                    }
+                }
+                else {
                     mask = data.modalMask = floatParentNode.createChild({
                         cls: 'x-mask'
                     }, positionEl);
+
                     mask.on({
                         tap: Widget.onModalMaskTap,
                         scope: Widget
                     });
+
+                    // A know issue with Safari Mobile causes a body with overflow: hidden
+                    // to be scrollable on iOS.
+                    // https://bugs.webkit.org/show_bug.cgi?id=153852
+                    if (Ext.isiOS && floatParentNode === floatRoot) {
+                        mask.on({
+                            touchmove: function (e) {
+                                e.preventDefault();
+                            }
+                        });
+                    }
                 }
                 Widget.topModal = me;
 
@@ -1432,36 +1491,50 @@ Ext.define('Ext.overrides.Widget', {
         },
         
         updateAlwaysOnTop: function(alwaysOnTop) {
-            this.getFloatWrap().getData().alwaysOnTop = Number(alwaysOnTop);
-            this.syncAlwaysOnTop();
+            var me = this;
+            
+            me.getFloatWrap().getData().alwaysOnTop = Number(alwaysOnTop);
+
+            if (!me.floatParentNode) {
+                me.findFloatParent();
+            }
+
+            if (!me.isConfiguring) {
+                me.syncAlwaysOnTop();
+            }
         },
 
         /**
          * @private
          * Fixes up the alwaysOnTop order of this floated widget within its siblings.
+         * @param fromMousedown (private)
          * @return {Boolean} `true` if this was the topmost widget among its siblings.
          */
-        syncAlwaysOnTop: function(/* private */ fromMousedown) {
+        syncAlwaysOnTop: function(fromMousedown) {
             var me = this,
                 positionEl = me.getFloatWrap().dom,
                 parentEl = me.floatParentNode,
                 nodes = parentEl.dom.childNodes,
                 len = nodes.length,
-                i, startIdx,
                 alwaysOnTop = Number(me.getAlwaysOnTop()),
-                refNode,
-                range = me.statics().range;
+                range = me.statics().range,
+                maskCls = Ext.Mask.prototype.baseCls,
+                i, startIdx, nodeEl, refNode, isTopModal, currentAlwaysOnTop;
 
-            // If already at end, no node movement necessary
+            // Start from 1.
+            // All elements if floatRoot are considered, The first element in child floatWraps
+            // is the child floated which owns that floatWrap.
+            startIdx = parentEl === Ext.floatRoot ? 0 : 1;
+            
+            // Fastest way of seeing whether we need to move the modal mask
+            // to just below our positionEl.
+            isTopModal = me.getModal() && positionEl.previousSibling && Ext.fly(positionEl.previousSibling).hasCls(maskCls);
+
             if (positionEl.nextSibling) {
-                // Start from 1.
-                // All elements if floatRoot are considered, The first element in child floatWraps
-                // is the child floated which owns that floatWrap.
-                startIdx = parentEl === Ext.floatRoot ? 0 : 1;
                 for (i = len - 1; i >= startIdx; i--) {
-                    // Do not include shim elements in the comparison
-                    // Do not include our own element in the comparison.
-                    if (!Ext.fly(nodes[i]).is('.' + me.shimCls) && nodes[i] !== positionEl) {
+                    nodeEl = Ext.fly(nodes[i]);
+                    // Do not include shim elements, modal masks and our own element in the comparison.
+                    if (!nodeEl.hasCls(me.shimCls) && !nodeEl.hasCls(maskCls) && nodes[i] !== positionEl) {
                         // If we've gone back to find a node that should be below us,
                         // grab its next sibling as the refNode to insertBefore.
                         if (alwaysOnTop >= (Ext.get(nodes[i]).getData().alwaysOnTop || 0)) {
@@ -1493,12 +1566,34 @@ Ext.define('Ext.overrides.Widget', {
                 } else {
                     parentEl.dom.insertBefore(positionEl, refNode);
                 }
+            } else if (positionEl.previousSibling) {
+                for (i = len - 2; i >= startIdx; i--) {
+                    // Do not include shim elements in the comparison
+                    // Do not include our own element in the comparison.
+                    if (!Ext.fly(nodes[i]).is('.' + me.shimCls) && nodes[i] !== positionEl) {
+                        // If we've gone back to find a node that should be above us,
+                        // grab it and insert after us
+                        currentAlwaysOnTop = (Ext.get(nodes[i]).getData().alwaysOnTop);
+                        if (alwaysOnTop < currentAlwaysOnTop) {
+                            refNode = nodes[i];
+                            parentEl.dom.insertBefore(refNode, null);
+                            if (nodes[i - 1] && Ext.fly(nodes[i-1]).hasCls(maskCls)) {
+                                parentEl.dom.insertBefore(nodes[i-1], refNode);
+                                i -= 1;
+                            }
+                            alwaysOnTop = currentAlwaysOnTop;
+                        }
+                    }
+                }
             }
 
             // Keep shims in line.
-            me.showModalMask();
+            if (isTopModal) {
+                me.showModalMask();
+            }
             me.syncShim();
-            if (refNode) {
+
+            if (refNode && !Ext.fly(refNode).hasCls(maskCls)) {
                 Ext.Component.from(refNode).syncShim();
             } else {
                 return true;
@@ -1608,6 +1703,7 @@ Ext.define('Ext.overrides.Widget', {
     Ext.getFloatRoot = function() {
         var fp = Ext.floatRoot,
             viewport = Ext['Viewport'], // Hide from Cmd dependency checking
+            prototype = Widget.prototype,
             range = Widget.range;
 
         if (fp) {
@@ -1624,20 +1720,12 @@ Ext.define('Ext.overrides.Widget', {
                 }
             }
         } else {
-            if (viewport) {
-                fp = viewport.floatWrap = viewport.element.createChild({
-                    cls: Widget.prototype.floatWrapCls,
-                    id: 'global-floatWrap',
-                    "data-sticky": true
-                });
-            } else {
-                fp = Ext.getBody().createChild({
-                    cls: Widget.prototype.floatWrapCls,
-                    id: 'global-floatWrap',
-                    "data-sticky": true
-                });
-            }
-            
+            fp = Ext.getBody().createChild({
+                cls: prototype.floatWrapCls + ' ' + prototype.rootCls,
+                id: 'ext-global-floatWrap',
+                "data-sticky": true
+            });
+
             //<debug>
             fp.$skipResourceCheck = true;
             //</debug>

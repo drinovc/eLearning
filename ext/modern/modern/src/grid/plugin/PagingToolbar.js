@@ -19,9 +19,9 @@
  *         title: 'DC Personnel',
  *
  *         store: store,
- *         plugins: [{
- *             type: 'pagingtoolbar'
- *         }],
+ *         plugins: {
+ *             pagingtoolbar: true
+ *         },
  *
  *         columns: [
  *             { text: 'First Name', dataIndex: 'fname',  flex: 1 },
@@ -46,12 +46,14 @@ Ext.define('Ext.grid.plugin.PagingToolbar', {
 
     config: {
         /**
+         * @cfg grid
          * @private
          */
         grid: null,
         currentPage: 1,
 
         /**
+         * @cfg pageSize
          * @inheritdoc Ext.data.AbstractStore#cfg!pageSize
          */
         pageSize: 0,
@@ -62,9 +64,9 @@ Ext.define('Ext.grid.plugin.PagingToolbar', {
 
         /**
          * @cfg {Number|'dragend'} buffer
-         * If a number, this is the number of milliseconds to delay after dragging stops but the drag
-         * has not ended.
-         * If it is 'dragend', fetches from the remote server will be suspended until dragging is completed.
+         * If a number, this is the number of milliseconds to delay after dragging stops
+         * but the drag has not ended. If it is 'dragend', fetches from the remote server
+         * will be suspended until dragging is completed.
          */
         buffer: 250,
 
@@ -352,6 +354,7 @@ Ext.define('Ext.grid.plugin.PagingToolbar', {
 
             sliderField.setMaxValue(totalPages || 1);
             sliderField.setValue(currentPage);
+            sliderField.setDisabled(totalPages <= 1);
 
             pageTopRecord = me.getPageTopRecord(currentPage);
             if (grid && !me.preventGridScroll && pageTopRecord) {

@@ -3,7 +3,7 @@
  * triggers descending sorting on that column.
  */
 Ext.define('Ext.grid.menu.SortDesc', {
-    extend: 'Ext.menu.Item',
+    extend: 'Ext.menu.RadioItem',
 
     xtype: 'gridsortdescmenuitem',
 
@@ -16,5 +16,9 @@ Ext.define('Ext.grid.menu.SortDesc', {
      */
     text: 'Sort Descending',
 
-    direction: 'DESC'
+    value: 'DESC',
+
+    allowUncheck: true,
+
+    group: 'grid-sorters'
 });

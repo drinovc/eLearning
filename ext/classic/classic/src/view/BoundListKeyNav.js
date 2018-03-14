@@ -202,7 +202,7 @@ Ext.define('Ext.view.BoundListKeyNav', {
 
     /**
      * Highlights the item at the given index.
-     * @param {Number} index
+     * @param {Number} item
      */
     focusItem: function(item) {
         var me = this,
@@ -214,7 +214,9 @@ Ext.define('Ext.view.BoundListKeyNav', {
         if (item) {
             item = item.dom;
             boundList.highlightItem(item);
-            boundList.getScrollable().scrollIntoView(item, false);
+            boundList.getScrollable().ensureVisible(item, {
+                x: false
+            });
         }
     },
 

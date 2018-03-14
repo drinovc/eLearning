@@ -41,7 +41,8 @@ Ext.define('Ext.selection.Model', {
 
         /**
          * @private
-         * The {@link Ext.util.Bag/Ext.util.Collection} to use as the collection of selected records.
+         * The {@link Ext.util.Collection collection} or {@link Ext.util.Bag bag} of
+         * selected records.
          */
         selected: {}
     },
@@ -360,7 +361,7 @@ Ext.define('Ext.selection.Model', {
             record = e.record,
             lastFocused = e.previousRecord,
             isSelected = me.isSelected(record),
-            from = (me.selectionStart && me.isSelected(me.selectionStart)) ? me.selectionStart : (me.selectionStart = e.previousRecord),
+            from = (me.selectionStart && me.isSelected(e.previousRecord)) ? me.selectionStart : (me.selectionStart = e.previousRecord),
             fromIdx = e.previousRecordIndex,
             key = keyEvent.getCharCode(),
             isSpace = key === keyEvent.SPACE,
@@ -889,8 +890,8 @@ Ext.define('Ext.selection.Model', {
 
     /**
      * Returns true if the specified row is selected.
-     * @param {Ext.data.Model/Number} from The start of the range to check.
-     * @param {Ext.data.Model/Number} to The end of the range to check.
+     * @param {Ext.data.Model/Number} startRow The start of the range to check.
+     * @param {Ext.data.Model/Number} endRow The end of the range to check.
      * @return {Boolean}
      */
     isRangeSelected: function(startRow, endRow) {
@@ -933,8 +934,7 @@ Ext.define('Ext.selection.Model', {
     refresh: function() {
         var me = this,
             store = me.store,
-            toBeSelected = [],
-            toBeReAdded = [],
+            toBeRemoved = [],
             oldSelections = me.getSelection(),
             len = oldSelections.length,
 
@@ -971,41 +971,31 @@ Ext.define('Ext.selection.Model', {
             selection = oldSelections[i];
             rec = storeData.get(selection.getId());
             if (rec) {
-                toBeSelected.push(rec);
-            }
+                // If the record instance referenced by that ID has changed,
+                // silently replace it in the collection
+                if (rec !== selection) {
+                    if (selected.replace) {
+                        selected.replace(rec);
+                    } else {
+                        selected.add(rec);
+                    }
+                }
 
+                if (!me.lastSelected) {
+                    me.lastSelected = rec;
+                }
+            }
             // Selected records no longer represented in Store must be retained
-            else if (!me.pruneRemoved) {
-                toBeReAdded.push(selection);
-            }
-
-            // In single select mode, only one record may be selected
-            if (me.mode === 'SINGLE' && toBeReAdded.length) {
-                break;
+            else if (me.pruneRemoved) {
+                toBeRemoved.push(selection);
             }
         }
 
         // there was a change from the old selected and
         // the new selection
-        if (selected.getCount() !== (toBeSelected.length + toBeReAdded.length)) {
+        if (toBeRemoved.length) {
             change = true;
-        }
-
-        me.clearSelections();
-
-        if (toBeSelected.length) {
-            // perform the selection again
-            me.doSelect(toBeSelected, false, true);
-        }
-
-        // If some of the selections were not present in the Store, but pruneRemoved is false, we must add them back
-        if (toBeReAdded.length) {
-            selected.add(toBeReAdded);
-
-            // No records reselected.
-            if (!me.lastSelected) {
-                me.lastSelected = toBeReAdded[toBeReAdded.length - 1];
-            }
+            selected.remove(toBeRemoved);
         }
 
         me.resumeChanges();

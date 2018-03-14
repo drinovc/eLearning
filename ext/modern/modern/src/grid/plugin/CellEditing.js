@@ -18,9 +18,9 @@
  *         title: 'DC Personnel',
  *
  *         store: store,
- *         plugins: [{
- *            type: 'cellediting'
- *         }],
+ *         plugins: {
+ *             cellediting: true
+ *         },
  *         columns: [
  *             { text: 'First Name', dataIndex: 'fname',  flex: 1, editable: true },
  *             { text: 'Last Name',  dataIndex: 'lname',  flex: 1 },
@@ -53,7 +53,14 @@ Ext.define('Ext.grid.plugin.CellEditing', {
          * By default, cell editing begins when actionable mode is entered by pressing
          * `ENTER` or `F2` when focused on the cell.
          */
-        triggerEvent: 'doubletap'
+        triggerEvent: 'doubletap',
+
+        /**
+         * @cfg {Boolean} [selectOnEdit=false]
+         * Configure as `true` to have the cell editor *select* the cell it is editing (If
+         * cell selection enabled), or the record it is editing (if row selection enabled)
+         */
+        selectOnEdit: null
     },
 
     init: function(grid) {
@@ -68,8 +75,10 @@ Ext.define('Ext.grid.plugin.CellEditing', {
 
     getEditor: function(location) {
         var column = location.column,
+            fieldName = column.getDataIndex(),
+            record = location.record,
             editable = column.getEditable(),
-            editor;
+            editor, field;
 
         if (!(editor = editable !== false && column.getEditor(location.record)) && editable) {
             editor = Ext.create(column.getDefaultEditor());
@@ -85,7 +94,11 @@ Ext.define('Ext.grid.plugin.CellEditing', {
             column.setEditor(editor);
             editor.editingPlugin = this;
 
-            editor.getField().addUi('celleditor');
+            field = editor.getField();
+            field.addUi('celleditor');
+
+            // Enforce the Model's validation rules
+            field.setValidationField(record.getField(fieldName), record);
         }
 
         return editor;
@@ -112,23 +125,51 @@ Ext.define('Ext.grid.plugin.CellEditing', {
      * Callback called by the NavigationModel on entry into actionable mode at the specified
      * position.
      * @param {Ext.grid.Location} location The position at which to enter actionable mode.
-     * @returns {Ext.grid.Location} The location where actionable mode was successfully started.
+     * @return {Ext.grid.Location} The location where actionable mode was successfully started.
      */
     activateCell: function(location) {
         var me = this,
-            editor;
+            activeEditor = me.activeEditor,
+            previousEditor = me.$previousEditor,
+            editor, selModel, result;
 
-        if (location) {
+        //<debug>
+        if (!location) {
+            Ext.raise('A grid Location must be passed into CellEditing#activateCell');
+        }
+        //</debug>
+
+        // Do not restart editor on the same cell. This may happen when an actionable's
+        // triggerEvent happens in a cell editor, and the event bubbles up to the
+        // NavigationModel which will try to activate the owning cell.
+        // In this case, we return the location to indicate that it's still a successful edit.
+        if (activeEditor && activeEditor.$activeLocation.cell === location.cell) {
+            return activeEditor.$activeLocation;
+        } else {
             editor = me.getEditor(location);
             if (editor) {
-                if (me.$previousEditor) {
-                    me.$previousEditor.cancelEdit();
+                if (previousEditor) {
+                    if (previousEditor.isCancelling) {
+                        previousEditor.cancelEdit();
+                    } else {
+                        previousEditor.completeEdit();
+                    }
                 }
 
-                editor.startEdit(location);
+                result = editor.startEdit(location);
                 if (editor.editing) {
+
+                    // Select the edit location if possible if we have been configured to do so.
+                    if (me.getSelectOnEdit()) {
+                        selModel = me.getGrid().getSelectable();
+                        if (selModel.getCells()) {
+                            selModel.selectCells(location, location);
+                        } else if (selModel.getRows()) {
+                            selModel.select(location.record);
+                        }
+                    }
                     me.$previousEditor = editor;
-                    return new Ext.grid.Location(me.getGrid(), editor.getField().getFocusEl());
+                    return result;
                 }
             }
         }

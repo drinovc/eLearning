@@ -66,6 +66,7 @@ Ext.define('Ext.draw.gradient.Linear', {
     },
 
     /**
+     * @method generateGradient
      * @inheritdoc
      */
     generateGradient: function (ctx, bbox) {

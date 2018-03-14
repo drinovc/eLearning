@@ -57,10 +57,11 @@
  *         rootVisible: false,
  *         renderTo: document.body,
  *         viewConfig: {
- *             plugins: [{
- *                 ptype: 'treeviewdragdrop',
- *                 dragText: 'Drag and drop to reorganize'
- *             }]
+ *             plugins: {
+ *                 treeviewdragdrop: {
+ *                     dragText: 'Drag and drop to reorganize'
+ *                 }
+ *             }
  *         }
  *     });
  */

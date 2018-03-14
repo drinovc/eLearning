@@ -23,7 +23,7 @@ Ext.define('Ext.draw.Point', {
          * @method
          * @static
          * Creates a flyweight Ext.draw.Point instance.
-         * Takes the same parameters as the {@link Ext.draw.Point#constructor}.
+         * Takes the same parameters as the {@link Ext.draw.Point#method!constructor}.
          * Do not hold the instance of the flyweight point.
          *
          * @param {Number/Number[]/Object/Ext.draw.Point} point
@@ -118,7 +118,7 @@ Ext.define('Ext.draw.Point', {
 
     /**
      * Sets coordinates of the point.
-     * Takes the same parameters as the {@link #constructor}.
+     * Takes the same parameters as the {@link #method!constructor}.
      * @param {Number/Number[]/Object/Ext.draw.Point} x
      * @param {Number/Number[]/Object/Ext.draw.Point} y
      */

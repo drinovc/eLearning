@@ -62,6 +62,7 @@ describe("Ext.data.validator.Number", function() {
             expect(validate('0.1001010101')).toBe(true);
             expect(validate('-0.1001010101')).toBe(true);
             expect(validate('+0.1001010101')).toBe(true);
+            expect(validate('1.')).toBe(true);
         });
     });
 

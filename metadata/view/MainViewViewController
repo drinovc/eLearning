@@ -23,23 +23,99 @@
             },
             "codeClass": null,
             "userConfig": {
+                "designer|params": [
+                    "opts"
+                ],
+                "fn": "load",
+                "implHandler": [
+                    "opts = Ext.applyIf(opts || {}, {",
+                    "    program: null",
+                    "});",
+                    "",
+                    "var me = this,",
+                    "    refs = me.getReferences();",
+                    "",
+                    "refs.panelHeader.setTitle(opts.program.get('name'));"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "load",
+            "designerId": "f5968103-06e3-45db-a38d-81d61a9431a8"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "newSection",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    store = me.getStore('TreeStoreSlides');",
+                    "",
+                    "var data = {",
+                    "    id: createGUID(),",
+                    "    sequence: null,",
+                    "    title: 'New Section',",
+                    "    content: null,",
+                    "    expanded: true,",
+                    "    children: []",
+                    "};",
+                    "",
+                    "var parentNode = /*refs.treeSlides.getSelection()[0] ||*/ store.getRoot();",
+                    "",
+                    "slide = parentNode.appendChild(data);",
+                    "refs.treeSlides.setSelection(slide);",
+                    "",
+                    "//me.saveSlideState(slide);"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "newSection",
+            "designerId": "c55f916c-ddb4-4738-9181-b9564d04f730"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
                 "fn": "newSlide",
                 "implHandler": [
                     "var me = this,",
                     "    refs = me.getReferences(),",
-                    "    store = me.getStore('StoreSlides'),",
-                    "    sequence = Ext.Array.max(Ext.pluck2(store.data.items, 'data.sequence')) || 0,",
-                    "    content = '';",
+                    "    store = me.getStore('TreeStoreSlides'),",
+                    "    parentNode = refs.treeSlides.getSelection()[0] || store.getRoot(),",
+                    "    slide,",
+                    "    data = {",
+                    "        id: createGUID(),",
+                    "        // sequence: sequence,",
+                    "        title: 'New Slide', // + sequence,",
+                    "        content: null,",
+                    "        expanded: true,",
+                    "        leaf: true",
+                    "    };",
                     "",
-                    "sequence++;",
+                    "if(parentNode.isLeaf()) {",
+                    "    parentNode = parentNode.parentNode;",
+                    "}",
                     "",
-                    "var slide = store.add({",
-                    "    sequence: sequence,",
-                    "    title: 'New Slide ' + sequence,",
-                    "    content: content",
-                    "})[0];",
+                    "slide = parentNode.appendChild(data);",
+                    "refs.treeSlides.setSelection(slide);",
                     "",
-                    "refs.gridSlides.setSelection(slide);"
+                    "me.saveSlideState(slide);"
                 ]
             },
             "configAlternates": {
@@ -63,27 +139,29 @@
                 "fn": "deleteSlide",
                 "implHandler": [
                     "var me = this,",
-                    "    refs = me.getReferences();",
+                    "    refs = me.getReferences(),",
+                    "    store = me.getStore('TreeStoreSlides');",
                     "",
                     "slide = slide || me.getCurrentSlide();",
                     "",
                     "if(slide) {",
-                    "    var nextSlideIdx = slide.store.indexOf(slide) - 1,",
-                    "        nextSlide = slide.store.getAt(nextSlideIdx >= 0 ? nextSlideIdx : 1);",
+                    "    var nextSlideIdx = store.indexOf(slide) - 1,",
+                    "        nextSlide = store.getAt(nextSlideIdx >= 0 ? nextSlideIdx : 1),",
+                    "        components = (Ext.decode(slide.get('content') || '{}').components);",
                     "",
-                    "    if(refs.panelContent.items.items.length > 0) {",
+                    "    if(components && components.length > 0) {",
                     "        Ext.Msg.confirm('Delete slide', 'Are you sure?', function(btn) {",
                     "            if(btn == 'yes') {",
-                    "                slide.store.remove(slide);",
-                    "                refs.panelContent.removeAll();",
-                    "                refs.gridSlides.setSelection(nextSlide);",
+                    "                store.remove(slide);",
+                    "                me.clearSlidePanel();",
+                    "                refs.treeSlides.setSelection(nextSlide);",
                     "            }",
                     "        });",
                     "    }",
                     "    else {",
-                    "        slide.store.remove(slide);",
-                    "        refs.panelContent.removeAll();",
-                    "        refs.gridSlides.setSelection(nextSlide);",
+                    "        store.remove(slide);",
+                    "        me.clearSlidePanel();",
+                    "        refs.treeSlides.setSelection(nextSlide);",
                     "    }",
                     "}"
                 ]
@@ -109,7 +187,7 @@
                     "var me = this,",
                     "    refs = me.getReferences();",
                     "",
-                    "return refs.gridSlides.getSelection()[0];"
+                    "return refs.treeSlides.getSelection()[0];"
                 ]
             },
             "configAlternates": {
@@ -131,13 +209,13 @@
                 "implHandler": [
                     "var me = this,",
                     "    refs = me.getReferences(),",
-                    "    store = refs.gridSlides.store,",
+                    "    store = me.getStore('TreeStoreSlides'),",
                     "    slide = me.getCurrentSlide(),",
                     "    nextSlideIdx = store.indexOf(slide) + 1,",
                     "    nextSlide = store.getAt(nextSlideIdx);",
                     "",
                     "if(nextSlide) {",
-                    "    refs.gridSlides.setSelection(nextSlide);",
+                    "    refs.treeSlides.setSelection(nextSlide);",
                     "}"
                 ]
             },
@@ -160,13 +238,13 @@
                 "implHandler": [
                     "var me = this,",
                     "    refs = me.getReferences(),",
-                    "    store = refs.gridSlides.store,",
+                    "    store = me.getStore('TreeStoreSlides'),",
                     "    slide = me.getCurrentSlide(),",
                     "    nextSlideIdx = store.indexOf(slide) - 1,",
                     "    nextSlide = store.getAt(nextSlideIdx);",
                     "",
                     "if(nextSlide) {",
-                    "    refs.gridSlides.setSelection(nextSlide);",
+                    "    refs.treeSlides.setSelection(nextSlide);",
                     "}"
                 ]
             },
@@ -176,6 +254,40 @@
             },
             "name": "prevSlide",
             "designerId": "f834b7e3-63c8-479f-a995-55bdbac8e041"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "src"
+                ],
+                "fn": "setBackground",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences();",
+                    "",
+                    "me._pageSetup.background = src;",
+                    "",
+                    "if(src) {",
+                    "    Ext.getCmp('panelContent').setStyle('background', 'url(' + src + ')');",
+                    "}",
+                    "else {",
+                    "    Ext.getCmp('panelContent').setStyle('background', null);",
+                    "}"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "setBackground",
+            "designerId": "476e4a6a-5cf9-4c21-adf3-90537fa42a9d"
         },
         {
             "type": "basicfunction",
@@ -202,8 +314,8 @@
                     "refs.panelSlide.setMargin(preview ? '10' : '10 10 10 0');",
                     "",
                     "if(preview) {",
-                    "    me.saveState(refs.gridSlides.getSelection()[0]);",
-                    "    refs.gridSlides.setSelection(refs.gridSlides.store.getAt(0));",
+                    "    me.saveSlideState(me.getCurrentSlide());",
+                    "    refs.treeSlides.setSelection(refs.treeSlides.store.getAt(0));",
                     "}"
                 ]
             },
@@ -227,16 +339,16 @@
                 "implHandler": [
                     "var me = this,",
                     "    refs = me.getReferences(),",
-                    "    snap = 25,",
+                    "    snap = me._pageSetup.snap,",
                     "    pos = {",
                     "        x: snap*2,",
                     "        y: snap*2,",
-                    "        width: refs.panelContent.el.getWidth() - 2*snap*2,",
-                    "        height: 0",
+                    "        width: me.round(refs.panelContent.el.getWidth() - 2*snap*2),",
+                    "        height: snap*2",
                     "    };",
                     "",
-                    "Ext.each(refs.panelContent.items.items, function(component) {",
-                    "    pos.y = Math.max(pos.y, component.y + component.el.getHeight() + snap);",
+                    "Ext.each(refs.panelContent.el.query('.html-component'), function(component) {",
+                    "    pos.y = me.round(Math.max(pos.y, component.y + component.height + snap));",
                     "});",
                     "",
                     "return pos;"
@@ -257,47 +369,77 @@
             },
             "codeClass": null,
             "userConfig": {
-                "designer|params": [
-                    "slide"
-                ],
-                "fn": "saveState",
+                "fn": "getSlideComponents",
+                "implHandler": [
+                    "return this.getReferences().panelContent.el.query('.html-component');"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "getSlideComponents",
+            "designerId": "8d55f6ff-5854-4d26-a233-3bf13ec351ec"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "getCurrentState",
                 "implHandler": [
                     "var me = this,",
                     "    refs = me.getReferences(),",
-                    "    components = [];",
+                    "    slides = Ext.clone(Ext.pluck(refs.treeSlides.store.getRange(), 'data')).map(function(node) { return cleanTreeNodeData(node); });",
+                    "    data = {",
+                    "        slides: slides,",
+                    "        pageSetup: me._pageSetup",
+                    "    };",
+                    "",
+                    "return data;"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "getCurrentState",
+            "designerId": "02450dc0-5cb5-4c97-ae26-d68f110b7eab"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "slide"
+                ],
+                "fn": "saveSlideState",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    content = {",
+                    "        components: []",
+                    "    };",
                     "",
                     "slide = slide || me.getCurrentSlide();",
                     "",
                     "if(slide) {",
-                    "    Ext.each(refs.panelContent.items.items, function(cmp) {",
-                    "        var layout = cmp.config.layout;",
-                    "        var items = cmp.config.items;",
                     "",
-                    "        if(layout) {",
-                    "            delete layout.owner;",
-                    "        }",
-                    "",
-                    "        var item = {",
-                    "            xtype: cmp.xtype,",
-                    "            draggable: cmp.draggable,",
-                    "            resizable: cmp.resizable,",
-                    "            cls: cmp.cls,",
-                    "            width: cmp.width,",
-                    "            height: cmp.height,",
-                    "            x: cmp.x,",
-                    "            y: cmp.y,",
-                    "            style: cmp.style,",
-                    "            //",
-                    "            html: cmp._html,",
-                    "            //",
-                    "            layout: layout || undefined,",
-                    "            items: items || undefined",
-                    "        };",
-                    "",
-                    "        components.push(item);",
+                    "    Ext.each(me.getSlideComponents(), function(component) {",
+                    "        content.components.push(component._opts);",
                     "    });",
                     "",
-                    "    slide.set('content', Ext.encode(components));",
+                    "    slide.set('content', Ext.encode(content));",
+                    "",
+                    "    // save state to offline storage - switch to indexdb at some point?",
+                    "    localStorage.setItem('mxp_elearning_slide', Ext.encode(me.getCurrentState()));",
                     "}"
                 ]
             },
@@ -306,8 +448,74 @@
                 "fn": "string",
                 "implHandler": "code"
             },
-            "name": "saveState",
+            "name": "saveSlideState",
             "designerId": "8676e14d-874e-4d0c-9266-74ae11a54e22"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "slide"
+                ],
+                "fn": "loadSlideState",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    parentEl = refs.panelContent.el.down('#html-slide');",
+                    "",
+                    "me.clearSlidePanel();",
+                    "",
+                    "if(slide) {",
+                    "    var content = Ext.decode(slide.get('content') || '{}');",
+                    "",
+                    "    Ext.each(content.components, function(component) {",
+                    "        this.insertComponent(component);",
+                    "    }, this);",
+                    "",
+                    "    me._selectedComponent = null;",
+                    "}"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "loadSlideState",
+            "designerId": "339747a2-bc5e-45c9-9584-d767adecee0f"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "clearSlidePanel",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    parentEl = refs.panelContent.el.down('#html-slide');",
+                    "",
+                    "me.hideComponentTools();",
+                    "",
+                    "Ext.each(parentEl.query('.html-component'), function(component) {",
+                    "    parentEl.removeChild(component);",
+                    "}, this);"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "clearSlidePanel",
+            "designerId": "a1f0ebf3-2c0d-4188-a3a0-bda6aeaac392"
         },
         {
             "type": "basicfunction",
@@ -322,18 +530,37 @@
                 ],
                 "fn": "addComponentListeners",
                 "implHandler": [
-                    "var me = this;",
+                    "var me = this,",
                     "",
-                    "item.el.on('click', function(e, t) {",
+                    "item = Ext.get(item);",
+                    "",
+                    "item.on('click', function(e, t) {",
                     "    if(me._selectedComponent) {",
                     "        me._selectedComponent.removeCls('selected');",
+                    "        if(me._tools) {",
+                    "            me._tools = null;",
+                    "        }",
                     "    }",
                     "    me._selectedComponent = item;",
                     "    me._selectedComponent.addCls('selected');",
+                    "    me.showComponentTools(item);",
                     "});",
                     "",
-                    "item.el.on('dblclick', function(e, t) {",
-                    "    me.editComponent();",
+                    "item.on('dblclick', function(e, t) {",
+                    "    me.editComponent(item);",
+                    "});",
+                    "",
+                    "item.on('_edit', function(e, t) {",
+                    "    me.editComponent(item);",
+                    "});",
+                    "",
+                    "item.on('_duplicate', function(e, t) {",
+                    "    me.duplicateComponent(item);",
+                    "});",
+                    "",
+                    "item.on('_delete', function(e, t) {",
+                    "    me.deleteComponent(item);",
+                    "    me.hideComponentTools(item);",
                     "});"
                 ]
             },
@@ -354,57 +581,16 @@
             "codeClass": null,
             "userConfig": {
                 "designer|params": [
-                    "opts"
+                    "component"
                 ],
-                "fn": "insertComponent",
+                "fn": "showComponentTools",
                 "implHandler": [
-                    "this.insertHTMLComponent(opts);",
+                    "var me = this;",
                     "",
-                    "// opts = Ext.applyIf(opts || {}, {",
-                    "//     height: null,",
-                    "//     width: null,",
-                    "//     x: null,",
-                    "//     y: null,",
-                    "//     html: '',",
-                    "//     style: null",
-                    "// });",
-                    "",
-                    "// var me = this,",
-                    "//     refs = me.getReferences(),",
-                    "//     pos = me.getFreePosition(),",
-                    "//     component = {",
-                    "//         xtype: \"container\",",
-                    "//         cls: [",
-                    "//             \"component\",",
-                    "//             \"draggable\"",
-                    "//         ],",
-                    "//         draggable: true,",
-                    "//         resizable: {",
-                    "//             preserveRatio: false,",
-                    "//             dynamic: true,",
-                    "//             snap: {",
-                    "//                 x: 25,",
-                    "//                 y: 25",
-                    "//             }",
-                    "//         },",
-                    "//         //",
-                    "//         height: opts.height || pos.height,",
-                    "//         width: opts.width || pos.width,",
-                    "//         x: opts.x || pos.x,",
-                    "//         y: opts.y || pos.y,",
-                    "//         html: opts.html,",
-                    "//         style: opts.style,",
-                    "//         //",
-                    "//         _html: opts.html",
-                    "//     };",
-                    "",
-                    "// if(!me.getCurrentSlide()) {",
-                    "//     me.newSlide();",
-                    "// }",
-                    "",
-                    "// var cmp = refs.panelContent.add(component);",
-                    "// me.addComponentListeners(cmp);",
-                    "// cmp.el.fireEvent('click', cmp);"
+                    "if(!me._componentTools) {",
+                    "    me._componentTools = me.getView().add({ xtype: 'edittools' });",
+                    "}",
+                    "me._componentTools.getController().show({ component: component });"
                 ]
             },
             "configAlternates": {
@@ -412,8 +598,37 @@
                 "fn": "string",
                 "implHandler": "code"
             },
-            "name": "insertComponent",
-            "designerId": "23db492c-9a35-4905-b307-50cd813d7b16"
+            "name": "showComponentTools",
+            "designerId": "4ce18fa7-c7d5-4c16-a98e-e033445f46b4"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "component"
+                ],
+                "fn": "hideComponentTools",
+                "implHandler": [
+                    "var me = this;",
+                    "",
+                    "if(!me._componentTools) {",
+                    "    me._componentTools = me.getView().add({ xtype: 'edittools' });",
+                    "}",
+                    "me._componentTools.close();"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "hideComponentTools",
+            "designerId": "3b30e3b6-e512-469a-8ed3-ad1a2ec5bc90"
         },
         {
             "type": "basicfunction",
@@ -426,43 +641,107 @@
                 "designer|params": [
                     "opts"
                 ],
-                "fn": "insertHTMLComponent",
+                "fn": "insertComponent",
                 "implHandler": [
                     "opts = Ext.applyIf(opts || {}, {",
+                    "    type: null,",
                     "    height: null,",
                     "    width: null,",
                     "    x: null,",
                     "    y: null,",
                     "    html: '',",
+                    "    options: [],",
+                    "    multi: false,",
+                    "    src: '',",
+                    "    cls: null,",
                     "    style: null",
                     "});",
                     "",
-                    "var snap = 25;",
+                    "if(!opts.type) {",
+                    "    Ext.Msg.alert('Error', 'No component type');",
+                    "}",
+                    "",
+                    "if(opts.cls && typeof opts.cls == \"string\") {",
+                    "    opts.cls = [opts.cls];",
+                    "}",
                     "",
                     "var me = this,",
                     "    refs = me.getReferences(),",
                     "    pos = me.getFreePosition(),",
-                    "    parentEl = refs.panelContent.el.down('#html-slide');",
+                    "    snap = me._pageSetup.snap,",
+                    "    parentEl = refs.panelContent.el.down('#html-slide'),",
+                    "    cmp = document.createElement('div');",
                     "",
                     "if(!me.getCurrentSlide()) {",
                     "    me.newSlide();",
                     "}",
                     "",
-                    "var cmp = document.createElement(\"div\");",
-                    "// var cmp = document.createElement(\"img\");",
+                    "// set size",
+                    "// if(opts.type == 'image' && opts.src) {",
+                    "//     // determine image size",
+                    "//     var img = new Image();",
                     "",
+                    "//     img.onload = function() {",
+                    "//         cmp.width = me.round(isNull(opts.width, img.width));",
+                    "//         cmp.height = me.round(isNull(opts.height, img.height));",
+                    "//         cmp.style.width = cmp.width + 'px';",
+                    "//         cmp.style.height = cmp.height + 'px';",
+                    "//     };",
+                    "//     img.src = opts.src;",
+                    "",
+                    "//     // show image as background",
+                    "//      cmp.style.backgroundImage = 'url(' + opts.src + ')';",
+                    "// }",
+                    "// else {",
+                    "    cmp.width = opts.width = me.round(isNull(opts.width, pos.width));",
+                    "    cmp.height = opts.height = me.round(isNull(opts.height, pos.height));",
+                    "    cmp.style.width = cmp.width + 'px';",
+                    "    cmp.style.height = cmp.height + 'px';",
+                    "// }",
+                    "",
+                    "// set classes",
                     "cmp.classList.add('html-component');",
-                    "//cmp.src = 'resources/images/example.jpg';",
-                    "cmp.width = 400;",
-                    "cmp.height = 300;",
-                    "cmp.style.width = '400px';",
-                    "cmp.style.height = '300px';",
-                    "cmp.style.left = pos.x + 'px';",
-                    "cmp.style.top = pos.y + 'px';",
                     "",
-                    "cmp.innerHTML = opts.html;",
+                    "// set position",
+                    "cmp.x = opts.x = isNull(opts.x, pos.x);",
+                    "cmp.y = opts.y = isNull(opts.y, pos.y);",
+                    "",
+                    "cmp.style.left = cmp.x + 'px';",
+                    "cmp.style.top = cmp.y + 'px';",
+                    "",
+                    "// set content",
+                    "var content = document.createElement('div');",
+                    "var html = opts.html;",
+                    "",
+                    "content.classList.add('html-content');",
+                    "Ext.each(opts.cls, function(cls) { content.classList.add(cls); });",
+                    "",
+                    "if(opts.type == me.cmpTypes.SELECTION && opts.options) {",
+                    "    html = '<div clas=\"text\">' + html + '</div>';",
+                    "",
+                    "    Ext.each(opts.options, function(option) {",
+                    "        var cls = ['option', (opts.multi ? 'check' : 'radio')];",
+                    "",
+                    "        if(option.correct) {",
+                    "            cls.push('correct');",
+                    "        }",
+                    "        html += '<div class=\"' + cls.join(' ') + '\">' + option.text + '</div>';",
+                    "    });",
+                    "}",
+                    "",
+                    "if(opts.type == me.cmpTypes.IMAGE && opts.src) {",
+                    "    content.style.backgroundImage = 'url(' + opts.src + ')';",
+                    "}",
+                    "",
+                    "content.innerHTML = html;",
+                    "content = cmp.appendChild(content);",
                     "",
                     "cmp = parentEl.dom.appendChild(cmp);",
+                    "",
+                    "cmp._opts = opts;",
+                    "cmp.type = opts.type;",
+                    "Ext.get(cmp)._opts = opts;",
+                    "Ext.get(cmp).type = opts.type;",
                     "",
                     "cmp._dragger = new Ext.drag.Source({",
                     "    element: Ext.get(cmp),",
@@ -487,9 +766,12 @@
                     "        },",
                     "        dragmove: function(component, info, event, eOpts) {",
                     "            var pos = info.element.current,",
-                    "                msg = Ext.String.format('X: {0}, Y: {1}', pos.x, pos.y);",
+                    "                x = pos.x - parentEl.getX(),",
+                    "                y = pos.y - parentEl.getY();",
                     "",
-                    "            console.log(msg);",
+                    "            cmp._opts.x = x;",
+                    "            cmp._opts.y = y;",
+                    "//             console.log(Ext.String.format('dragmove X: {0}, Y: {1}', x, y));",
                     "        },",
                     "        dragstart: function(component, info, event, eOpts) {",
                     "            console.log('dragstart', arguments);",
@@ -499,7 +781,7 @@
                     "",
                     "cmp._resizer = Ext.create('Ext.create', 'Ext.resizer.Resizer', {",
                     "    target: Ext.get(cmp),",
-                    "    pinned:true,",
+                    "    //pinned:true,",
                     "    minWidth: snap,",
                     "    minHeight: snap,",
                     "    heightIncrement: snap,",
@@ -507,8 +789,23 @@
                     "    preserveRatio: false,",
                     "    dynamic:true,",
                     "    transparent: false,",
-                    "    handles: 'all' // shorthand for 'n s e w ne nw se sw'",
-                    "});"
+                    "    handles: 'all', // shorthand for 'n s e w ne nw se sw'",
+                    "    listeners: {",
+                    "        resize: function(component, width, height, e, eOpts) {",
+                    "            cmp.width = width;",
+                    "            cmp.height = height;",
+                    "",
+                    "            cmp._opts.width = width;",
+                    "            cmp._opts.height = height;",
+                    "//             console.log(Ext.String.format('W: {0}, H: {1}', width, height));",
+                    "        }",
+                    "    }",
+                    "});",
+                    "",
+                    "me.addComponentListeners(cmp);",
+                    "me.saveSlideState();",
+                    "",
+                    "return Ext.get(cmp);"
                 ]
             },
             "configAlternates": {
@@ -516,8 +813,8 @@
                 "fn": "string",
                 "implHandler": "code"
             },
-            "name": "insertHTMLComponent",
-            "designerId": "1f9b75f3-042b-4b1c-9deb-6e29475b9987"
+            "name": "insertComponent",
+            "designerId": "23db492c-9a35-4905-b307-50cd813d7b16"
         },
         {
             "type": "basicfunction",
@@ -533,22 +830,29 @@
                 "fn": "editComponent",
                 "implHandler": [
                     "var me = this,",
-                    "    refs = me.getReferences(),",
-                    "    wnd = me.getView().add({",
-                    "        xtype: 'texteditor'",
-                    "    });",
+                    "    refs = me.getReferences();",
                     "",
                     "component = component || me._selectedComponent;",
                     "",
                     "if(component) {",
-                    "    wnd.getController().show({",
-                    "        value: component._html,",
-                    "        callback: function(value) {",
-                    "            component._html = value;",
-                    "            component.update(value);",
-                    "        },",
-                    "        scope: me",
-                    "    });",
+                    "    if(component.type == me.cmpTypes.SELECTION) {",
+                    "        me.editSelection(component);",
+                    "    }",
+                    "    else {",
+                    "        var wnd = me.getView().add({",
+                    "            xtype: 'texteditor'",
+                    "        });",
+                    "",
+                    "        wnd.getController().show({",
+                    "            value: component.el.down('.html-content').dom.innerHTML,",
+                    "            callback: function(value) {",
+                    "                component.el.down('.html-content').dom.innerHTML = value;",
+                    "                component._opts.html = value;",
+                    "                me.saveSlideState();",
+                    "            },",
+                    "            scope: me",
+                    "        });",
+                    "    }",
                     "}"
                 ]
             },
@@ -568,20 +872,58 @@
             },
             "codeClass": null,
             "userConfig": {
+                "designer|params": [
+                    "component"
+                ],
+                "fn": "duplicateComponent",
+                "implHandler": [
+                    "var opts = Ext.clone(component._opts);",
+                    "",
+                    "delete opts.x;",
+                    "delete opts.y;",
+                    "",
+                    "var cmp = this.insertComponent(opts);",
+                    "",
+                    "cmp.fireEvent('click');"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "duplicateComponent",
+            "designerId": "a0b53224-f010-4e9b-a933-3fc0a49be5f7"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "component"
+                ],
                 "fn": "deleteComponent",
                 "implHandler": [
                     "var me = this,",
                     "    refs = this.getReferences();",
                     "",
-                    "if(me._selectedComponent) {",
-                    "    refs.panelContent.remove(me._selectedComponent);",
+                    "component = component || me._selectedComponent;",
+                    "",
+                    "if(component) {",
+                    "    me._selectedComponent.destroy();",
                     "    me._selectedComponent = null;",
+                    "    me.saveSlideState();",
                     "}"
                 ]
             },
             "configAlternates": {
                 "fn": "string",
-                "implHandler": "code"
+                "implHandler": "code",
+                "designer|params": "typedarray"
             },
             "name": "deleteComponent",
             "designerId": "9486e375-6af4-4efb-8028-4a6cd92db917"
@@ -594,19 +936,26 @@
             },
             "codeClass": null,
             "userConfig": {
+                "designer|params": [
+                    "value"
+                ],
                 "fn": "insertTitle",
                 "implHandler": [
-                    "var me = this;",
+                    "var me = this,",
+                    "    cmp = me.insertComponent({",
+                    "        type: me.cmpTypes.TITLE,",
+                    "        cls: 'title',",
+                    "        html: value || 'Title',",
+                    "        height: 50",
+                    "    });",
                     "",
-                    "me.insertComponent({",
-                    "    html: '<font face=\"tahoma\" size=\"6\">Title</font>',",
-                    "    height: 50",
-                    "});"
+                    "// me.editComponent(cmp);"
                 ]
             },
             "configAlternates": {
                 "fn": "string",
-                "implHandler": "code"
+                "implHandler": "code",
+                "designer|params": "typedarray"
             },
             "name": "insertTitle",
             "designerId": "f72da6be-83e0-4a06-9ce6-4759c97acf8c"
@@ -619,19 +968,26 @@
             },
             "codeClass": null,
             "userConfig": {
+                "designer|params": [
+                    "value"
+                ],
                 "fn": "insertText",
                 "implHandler": [
-                    "var me = this;",
+                    "var me = this,",
+                    "    cmp = me.insertComponent({",
+                    "        type: me.cmpTypes.TEXT,",
+                    "        cls: 'text',",
+                    "        html: value || 'Text',",
+                    "        height: 425",
+                    "    });",
                     "",
-                    "me.insertComponent({",
-                    "    html: '<font face=\"tahoma\" size=\"4\">Text</font>',",
-                    "    height: 100",
-                    "});"
+                    "// me.editComponent(cmp);"
                 ]
             },
             "configAlternates": {
                 "fn": "string",
-                "implHandler": "code"
+                "implHandler": "code",
+                "designer|params": "typedarray"
             },
             "name": "insertText",
             "designerId": "04cc2175-1969-4641-94b3-5f9e6402fe44"
@@ -646,14 +1002,14 @@
             "userConfig": {
                 "fn": "insertImage",
                 "implHandler": [
-                    "var me = this;",
-                    "",
-                    "me.insertComponent({",
-                    "    //html: '<img src=\"resources/images/example.jpg\"></img>',",
-                    "    html: '',",
-                    "    style: 'background-image:url(resources/images/example.jpg);',",
-                    "    height: 275,",
-                    "});"
+                    "var me = this,",
+                    "    cmp = me.insertComponent({",
+                    "        type: me.cmpTypes.IMAGE,",
+                    "        cls: 'image',",
+                    "        html: '',",
+                    "        src: 'resources/images/example.jpg',",
+                    "        height: 275,",
+                    "    });"
                 ]
             },
             "configAlternates": {
@@ -676,20 +1032,46 @@
                 ],
                 "fn": "insertSelection",
                 "implHandler": [
+                    "this.editSelection(null, opts);"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "insertSelection",
+            "designerId": "a77caf07-026f-417f-84d4-46e60b6f0194"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "component",
+                    "opts"
+                ],
+                "fn": "editSelection",
+                "implHandler": [
                     "opts = Ext.applyIf(opts || {}, {",
                     "    multi: false",
                     "});",
                     "",
                     "var me = this,",
                     "    refs = me.getReferences(),",
-                    "    pos = me.getFreePosition(),",
-                    "    wnd = me.getView().add({",
-                    "        xtype: 'selectioneditor'",
-                    "    });",
+                    "    state = component && component._opts,",
+                    "    multi = state && state.multi || opts.multi,",
+                    "    wnd = me.getView().add({ xtype: 'selectioneditor' });",
                     "",
                     "wnd.getController().show({",
-                    "    multi: opts.multi,",
-                    "    callback: function(answers) {",
+                    "    text: state && state.html,",
+                    "    options: state && state.options,",
+                    "    multi: multi,",
+                    "    callback: function(text, answers) {",
                     "",
                     "        if(answers.length === 0) {",
                     "            return 'Please specify at least one answer';",
@@ -697,45 +1079,29 @@
                     "        if(answers.filter(function(item) { return item.correct; }).length === 0) {",
                     "            return 'Please mark at least one answer as correct';",
                     "        }",
-                    "        if(!opts.multi && answers.filter(function(item) { return item.correct; }).length > 1) {",
+                    "        if(!multi && answers.filter(function(item) { return item.correct; }).length > 1) {",
                     "            return 'Only one correct answer is allowed for single selection';",
                     "        }",
                     "",
-                    "        var component = {",
-                    "            xtype: opts.multi ? 'checkboxgroup' : 'radiogroup',",
-                    "            fieldLabel: '',",
-                    "            cls: [",
-                    "                'draggable'",
-                    "            ],",
-                    "            draggable: true,",
-                    "            resizable: true,",
-                    "            layout: {",
-                    "                type: 'vbox',",
-                    "                align: 'stretch'",
-                    "            },",
-                    "            items: [],",
-                    "            //",
-                    "            x: pos.x,",
-                    "            y: pos.y,",
-                    "            width: pos.width",
-                    "        };",
+                    "        if(component) {",
+                    "            var state = component._opts;",
                     "",
-                    "        Ext.each(answers, function(answer) {",
-                    "            component.items.push({",
-                    "                xtype: opts.multi ? 'checkboxfield' : 'radiofield',",
-                    "                boxLabel: answer.text,",
-                    "                cls: answer.correct ? 'correct' : null,",
-                    "                _correct: answer.correct",
-                    "            });",
-                    "        });",
+                    "            me.deleteComponent(component);",
+                    "            state.html = text;",
+                    "            state.options = answers;",
                     "",
-                    "        if(!me.getCurrentSlide()) {",
-                    "            me.newSlide();",
+                    "            component = me.insertComponent(state);",
                     "        }",
-                    "",
-                    "        var cmp = refs.panelContent.add(component);",
-                    "        me.addComponentListeners(cmp);",
-                    "        cmp.el.fireEvent('click', cmp);",
+                    "        else {",
+                    "            component = me.insertComponent({",
+                    "                type: me.cmpTypes.SELECTION,",
+                    "                cls: 'selection',",
+                    "                html: text,",
+                    "                options: answers,",
+                    "                multi: multi,",
+                    "                height: 100",
+                    "            });",
+                    "        }",
                     "",
                     "    },",
                     "    scope: me",
@@ -747,8 +1113,56 @@
                 "fn": "string",
                 "implHandler": "code"
             },
-            "name": "insertSelection",
-            "designerId": "a77caf07-026f-417f-84d4-46e60b6f0194"
+            "name": "editSelection",
+            "designerId": "8e42a451-708f-431d-a041-a958e1b3e416"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "value"
+                ],
+                "fn": "round",
+                "implHandler": [
+                    "var snap = this._pageSetup.snap;",
+                    "",
+                    "return Math.round(value / snap) * snap;"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "round",
+            "designerId": "c7c30285-30ba-4e96-a29e-bc8c0a3841d7"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "ceil",
+                "implHandler": [
+                    "var snap = this._pageSetup.snap;",
+                    "",
+                    "return Math.ceil(value / snap) * snap;"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "ceil",
+            "designerId": "7c4331e9-e1db-47ca-ac99-000d97f6fb90"
         }
     ]
 }

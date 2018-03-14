@@ -18,7 +18,7 @@ Ext.define('Ext.util.paintmonitor.Abstract', {
     monitorClass: '',
 
     constructor: function(config) {
-        this.onElementPainted = Ext.Function.bind(this.onElementPainted, this);
+        this.onElementPainted = this.onElementPainted.bind(this);
 
         this.initConfig(config);
     },

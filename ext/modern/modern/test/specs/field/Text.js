@@ -6,7 +6,8 @@ topSuite("Ext.field.Text", [
     'Ext.field.trigger.Expand',
     'Ext.field.InputMask',
     'Ext.app.ViewController',
-    'Ext.app.ViewModel'
+    'Ext.app.ViewModel',
+    'Ext.data.validator.*'
 ],
 function () {
     var field, el, ct;
@@ -441,11 +442,24 @@ function () {
 
                 field.setValue('hello');
                 expect(trigger.isVisible()).toBe(true);
-                field.onClearIconTap();
+                Ext.testHelper.tap(trigger.element);
 
                 var v = field.getValue();
                 expect(v).toBe('');
                 expect(trigger.isVisible()).toBe(false);
+            });
+
+            it("should be able to clear while focused and tapping the clear button", function() {
+                create({
+                    clearable: true
+                });
+                field.setValue('foo');
+                jasmine.focusAndWait(field);
+                runs(function() {
+                    Ext.testHelper.tap(field.getTriggers().clear.element);
+                    expect(field.getValue()).toBe('');
+                    expect(field.inputElement.dom.value).toBe('');
+                });
             });
         });
 
@@ -2108,7 +2122,7 @@ function () {
             });
 
             it("should call the handler when the trigger is clicked", function() {
-                var spy = jasmine.createSpy();
+                var spy = jasmine.createSpy('trigger tap spy');
 
                 makeField({
                     triggers: {
@@ -2120,11 +2134,11 @@ function () {
 
                 Ext.testHelper.tap(triggers.foo.el);
 
-                expect(spy).toHaveBeenCalled();
+                waitsForSpy(spy);
             });
 
             it("should use the field as the default scope", function() {
-                var spy = jasmine.createSpy();
+                var spy = jasmine.createSpy('trigger tap spy');
 
                 makeField({
                     triggers: {
@@ -2136,7 +2150,11 @@ function () {
 
                 Ext.testHelper.tap(triggers.foo.el);
 
-                expect(spy.mostRecentCall.scope).toBe(field);
+                waitsForSpy(spy);
+
+                runs(function() {
+                    expect(spy.mostRecentCall.scope).toBe(field);
+                });
             });
 
             it("should call the handler using the specified scope", function() {
@@ -2154,9 +2172,13 @@ function () {
 
                 Ext.testHelper.tap(triggers.foo.el);
 
-                expect(spy.mostRecentCall.scope).toBe(scope);
+                waitsForSpy(spy);
 
-                scope.destroy();
+                runs(function() {
+                    expect(spy.mostRecentCall.scope).toBe(scope);
+
+                    scope.destroy();
+                });
             });
         });
     });

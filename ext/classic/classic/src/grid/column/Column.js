@@ -561,10 +561,11 @@ Ext.define('Ext.grid.column.Column', {
      *                 allowBlank: false
      *             }
      *         }],
-     *         plugins: [{
-     *             ptype: 'rowediting',
-     *             clicksToEdit: 1
-     *         }],
+     *         plugins: {
+     *             rowediting: {
+     *                 clicksToEdit: 1
+     *             }
+     *         },
      *         height: 200,
      *         width: 400,
      *         renderTo: document.body
@@ -863,7 +864,7 @@ Ext.define('Ext.grid.column.Column', {
 
     /**
      * @property {Boolean} isHeader
-     * @deprecated see isColumn
+     * @deprecated 6.5.0 see isColumn
      * Set in this class to identify, at runtime, instances which are not instances of the
      * HeaderContainer base class, but are in fact, the subclass: Header.
      */
@@ -961,7 +962,7 @@ Ext.define('Ext.grid.column.Column', {
                 me.minWidth = me.minWidth || Ext.grid.plugin.HeaderResizer.prototype.minColWidth;
             }
         }
-        me.addCls(Ext.baseCSSPrefix + 'column-header-align-' + me.align);
+        me.addCls(Ext.baseCSSPrefix + 'column-header-align-' + me.getMappedAlignment(me.align));
 
         // Set up the renderer types: 'renderer', 'editRenderer', and 'summaryRenderer'
         me.setupRenderer();
@@ -969,7 +970,7 @@ Ext.define('Ext.grid.column.Column', {
         me.setupRenderer('summary');
 
         // Initialize as a HeaderContainer
-        me.callParent(arguments);
+        me.callParent();
     },
     
     beforeLayout: function() {
@@ -1054,7 +1055,7 @@ Ext.define('Ext.grid.column.Column', {
     applySorter: function (sorter) {
         var me = this,
             sorterFn = sorter ? sorter.sorterFn : null,
-            ret;
+            tablepanel, ret;
 
         if (typeof sorterFn === 'string') {
             // Instead of treating a string as a fieldname, it makes more sense to
@@ -1067,9 +1068,9 @@ Ext.define('Ext.grid.column.Column', {
             ret.column = me;
         }
         else {
+            tablepanel = me.getRootHeaderCt().up('tablepanel');
             // Have the sorter spec decoded by the collection that will host it.
-            ret = me.getRootHeaderCt().up('tablepanel').store.getData().
-                    getSorters().decodeSorter(sorter);
+            ret = tablepanel.store.getData().getSorters().decodeSorter(sorter);
         }
 
         return ret;
@@ -1078,11 +1079,7 @@ Ext.define('Ext.grid.column.Column', {
     updateAlign: function(align) {
         // Translate according to the locale.
         // This property is read by Ext.view.Table#renderCell
-        // Defer this until after render so we're not invoking the inherited
-        // state too early. calculateTextAlign is called in beforeRender.
-        if (this.rendered) {
-            this.calculateTextAlign(align);
-        }
+        this.textAlign = this.getMappedAlignment(align);
     },
 
     bindFormatter: function (format) {
@@ -1397,7 +1394,7 @@ Ext.define('Ext.grid.column.Column', {
             labels = [],
             ariaAttr;
 
-        me.calculateTextAlign(me.getAlign());
+        me.textAlign = me.getMappedAlignment(me.getAlign());
 
         me.callParent();
 
@@ -1812,7 +1809,10 @@ Ext.define('Ext.grid.column.Column', {
      * and as such will *not* have the {@link #locked} flag set.
      */
     isLocked: function() {
-        return this.locked || this.getInherited().inLockedGrid;
+        if (this.locked == null) {
+            this.locked = this.getInherited().inLockedGrid;
+        }
+        return this.locked;
     },
 
     hasMultipleVisibleChildren: function(result) {
@@ -2093,8 +2093,8 @@ Ext.define('Ext.grid.column.Column', {
             me.configureStateInfo();
         },
 
-        calculateTextAlign: function(align) {
-            this.textAlign = this._alignMap[align] || align;
+        getMappedAlignment: function(align) {
+            return this._alignMap[align] || align;
         },
 
         configureStateInfo: function () {

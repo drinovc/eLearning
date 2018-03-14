@@ -1,7 +1,6 @@
 (Ext.isIE8 ? xtopSuite : topSuite)("Ext.route.Mixin", function() {
     var Router = Ext.route.Router,
-        helper = Ext.testHelper,
-        instance, win;
+        instance;
 
     beforeAll(function () {
         Ext.define('MixinSpecTest', {
@@ -30,8 +29,7 @@
     beforeEach(function () {
         instance = new MixinSpecTest();
 
-        win = Ext.util.History.win;
-        Ext.util.History.win = helper.createHashMock();
+        Ext.testHelper.hash.init();
     });
 
     afterEach(function () {
@@ -40,12 +38,7 @@
             instance = null;
         }
 
-        Ext.util.History.win = win;
-        win = null;
-
-        Ext.util.History.currentToken =
-            Ext.util.History.hash =
-            window.location.hash = '';
+        Ext.testHelper.hash.reset();
     });
 
     afterAll(function () {
@@ -315,6 +308,45 @@
                 runs(function () {
                     expect(Ext.util.History.getHash()).toBe('users|foo/bar');
                 });
+            });
+        });
+
+        describe("force", function () {
+            function createSpecs (opt) {
+                describe(opt === true ? "force with boolean" : "force with object", function () {
+                    it("should force without current match hash", function () {
+                        instance.redirectTo('foo', opt);
+
+                        waitsFor(function () {
+                            return Ext.util.History.getHash() === 'foo';
+                        }, 'Hash never updated to foo');
+
+                        runs(function () {
+                            expect(Ext.util.History.getHash()).toBe('foo');
+                        });
+                    });
+
+                    it("should force with current matched hash", function () {
+                        instance.redirectTo('bar', opt);
+
+                        waitsFor(function () {
+                            return Ext.util.History.getHash() === 'bar';
+                        }, 'Hash never updated to bar');
+
+                        runs(function () {
+                            var spy = spyOn(Ext.route.Router, 'onStateChange');
+
+                            instance.redirectTo('bar', opt);
+
+                            expect(spy).toHaveBeenCalled();
+                        });
+                    });
+                });
+            }
+
+            createSpecs(true); // test backwards compat
+            createSpecs({
+                force: true
             });
         });
 

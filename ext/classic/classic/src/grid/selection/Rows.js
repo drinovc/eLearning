@@ -248,13 +248,9 @@ Ext.define('Ext.grid.selection.Rows', {
             selection = me.selectedRecords,
             view = me.view,
             columns = view.ownerGrid.getVisibleColumnManager().getColumns(),
-            colCount,
-            i,
-            j,
-            context,
-            range,
-            recCount,
-            abort = false;
+            abort = false,
+            colCount, i, j, context, range, recCount;
+
 
         if (columns) {
             colCount = columns.length;
@@ -275,8 +271,11 @@ Ext.define('Ext.grid.selection.Rows', {
             }
             
             // If called during a drag select, or SHIFT+arrow select, include the drag range
-            if (!abort && me.rangeStart != null) {
+            if (!abort) {
                 range = me.getRange();
+                if (range[0] === range[1]) {
+                    return;
+                }
                 me.view.dataSource.getRange(range[0], range[1], {
                     forRender: false,
                     callback: function(records) {

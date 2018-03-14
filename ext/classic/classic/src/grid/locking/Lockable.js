@@ -36,30 +36,32 @@ Ext.define('Ext.grid.locking.Lockable', {
     ],
 
     /**
-     * @cfg {Boolean} syncRowHeight Synchronize rowHeight between the normal and
-     * locked grid view. This is turned on by default. If your grid is guaranteed
-     * to have rows of all the same height, you should set this to false to
-     * optimize performance.
+     * @cfg {Boolean} syncRowHeight
+     * Synchronize rowHeight between the normal and locked grid view. This is turned on
+     * by default. If your grid is guaranteed to have rows of all the same height, you
+     * should set this to false to optimize performance.
      */
     syncRowHeight: true,
 
     /**
-     * @cfg {String} subGridXType The xtype of the subgrid to specify. If this is
-     * not specified lockable will determine the subgrid xtype to create by the
-     * following rule. Use the superclasses xtype if the superclass is NOT
-     * tablepanel, otherwise use the xtype itself.
+     * @cfg {String} subGridXType
+     * The xtype of the subgrid to specify. If this is not specified lockable will 
+     * determine the subgrid xtype to create by the following rule. Use the superclasses
+     * xtype if the superclass is NOT tablepanel, otherwise use the xtype itself.
      */
 
     /**
-     * @cfg {Object} lockedViewConfig A view configuration to be applied to the
-     * locked side of the grid. Any conflicting configurations between lockedViewConfig
-     * and viewConfig will be overwritten by the lockedViewConfig.
+     * @cfg {Object} lockedViewConfig
+     * A view configuration to be applied to the locked side of the grid. Any conflicting
+     * configurations between lockedViewConfig and viewConfig will be overwritten by the
+     * lockedViewConfig.
      */
 
     /**
-     * @cfg {Object} normalViewConfig A view configuration to be applied to the
-     * normal/unlocked side of the grid. Any conflicting configurations between normalViewConfig
-     * and viewConfig will be overwritten by the normalViewConfig.
+     * @cfg {Object} normalViewConfig
+     * A view configuration to be applied to the normal/unlocked side of the grid. Any
+     * conflicting configurations between normalViewConfig and viewConfig will be
+     * overwritten by the normalViewConfig.
      */
 
     headerCounter: 0,
@@ -81,7 +83,7 @@ Ext.define('Ext.grid.locking.Lockable', {
      */
 
     /**
-     * @cfg {Object} [layout]
+     * @cfg {Object} layout
      * By default, a lockable grid uses an {@link Ext.layout.container.HBox HBox} layout to arrange
      * the two grids (possibly separated by a splitter).
      *
@@ -166,31 +168,17 @@ Ext.define('Ext.grid.locking.Lockable', {
      */
 
     determineXTypeToCreate: function(lockedSide) {
-        var me = this,
-            typeToCreate,
-            xtypes, xtypesLn, xtype, superxtype;
+        var me = this;
 
         if (me.subGridXType) {
-            typeToCreate = me.subGridXType;
-        } else {
-            // Treeness only moves down into the locked side.
+            return me.subGridXType;
+        } else if (!lockedSide) {
+            // Tree columns only moves down into the locked side.
             // The normal side is always just a grid
-            if (!lockedSide) {
-                return 'gridpanel';
-            }
-            xtypes     = me.getXTypes().split('/');
-            xtypesLn   = xtypes.length;
-            xtype      = xtypes[xtypesLn - 1];
-            superxtype = xtypes[xtypesLn - 2];
-
-            if (superxtype !== 'tablepanel') {
-                typeToCreate = superxtype;
-            } else {
-                typeToCreate = xtype;
-            }
+            return 'gridpanel'; 
         }
 
-        return typeToCreate;
+        return me.isXType('treepanel') ? 'treepanel' : 'gridpanel';
     },
 
     // injectLockable will be invoked before initComponent's parent class implementation
@@ -552,7 +540,7 @@ Ext.define('Ext.grid.locking.Lockable', {
         if (el.firstChild !== locked.view.el.dom) {
             el.appendChild(locked.view.el.dom);
         }
-        locked.body.dom.style.overflowX = this.normalGrid.headerCt.tooNarrow ? 'scroll' : '';
+
         locked.body.dom.scrollTop = this.getScrollable().getPosition().y;
     },
 
@@ -566,7 +554,7 @@ Ext.define('Ext.grid.locking.Lockable', {
             this.lockedGrid.headerCt.minHeight = this.normalGrid.headerCt.minHeight = null;
         }
         this.lockedScrollbarClipper.appendChild(locked.view.el.dom);
-        this.syncLockableLayout();
+        this.doSyncLockableLayout();
     },
 
     beforeLayout: function() {
@@ -634,7 +622,7 @@ Ext.define('Ext.grid.locking.Lockable', {
             normalViewX, hasVerticalScrollbar, hasHorizontalScrollbar,
             scrollContainerHeight, scrollBodyHeight, lockedScrollbar, normalScrollbar,
             scrollbarVisibleCls, scrollHeight, lockedGridVisible, normalGridVisible, scrollBodyDom,
-            viewRegion, scrollerElHeight;
+            viewRegion, scrollerElHeight, scrollable;
 
         me.afterLayoutListener = null;
 
@@ -658,13 +646,14 @@ Ext.define('Ext.grid.locking.Lockable', {
             scrollbarWidth = scrollbarSize.width;
             scrollbarHeight = scrollerElHeight = scrollbarSize.height;
             normalViewWidth = normalGridVisible ? normalViewRegion.width : 0;
-            normalViewX = lockedGridVisible ? normalViewRegion.x - lockedViewRegion.x : 0;
+            normalViewX = lockedGridVisible ? (normalGridVisible ? normalViewRegion.x - lockedViewRegion.x : lockedViewRegion.width) : 0;
             hasHorizontalScrollbar = (normalGrid.headerCt.tooNarrow || lockedGrid.headerCt.tooNarrow) ? scrollbarHeight : 0;
             scrollContainerHeight = normalViewRegion.height || lockedViewRegion.height;
             scrollBodyHeight = scrollContainerHeight;
             lockedScrollbar = me.lockedScrollbar;
             normalScrollbar = me.normalScrollbar;
             scrollbarVisibleCls = me.scrollbarVisibleCls;
+            scrollable = me.getScrollable();
     
             // EXTJS-23301 IE10/11 does not allow an overflowing element to scroll
             // if the element height is the same as the scrollbar height. This
@@ -726,7 +715,10 @@ Ext.define('Ext.grid.locking.Lockable', {
 
             me.onSyncLockableLayout(hasVerticalScrollbar, viewRegion.width);
 
-            me.getScrollable().scrollTo(me.lastScrollPos);
+            // We should only scroll if necessary
+            if (!Ext.Object.equals(scrollable.position, me.lastScrollPos)) {
+                scrollable.scrollTo(me.lastScrollPos);
+            }
         }
     },
 
@@ -917,6 +909,8 @@ Ext.define('Ext.grid.locking.Lockable', {
             // Synchronize the scrollTop positions of the two views
             scrollTop = normalView.getScrollY();
             lockedView.setScrollY(scrollTop);
+
+            me.syncRowHeightOnNextLayout = false;
         }
     },
 
@@ -1128,10 +1122,11 @@ Ext.define('Ext.grid.locking.Lockable', {
     /**
      * Locks the activeHeader as determined by which menu is open OR a header
      * as specified.
-     * @param {Ext.grid.column.Column} [header] Header to unlock from the locked section.
+     * @param {Ext.grid.column.Column} [activeHd] Header to unlock from the locked section.
      * Defaults to the header which has the menu open currently.
      * @param {Number} [toIdx] The index to move the unlocked header to.
      * Defaults to appending as the last item.
+     * @param toCt
      * @private
      */
     lock: function(activeHd, toIdx, toCt) {
@@ -1213,6 +1208,9 @@ Ext.define('Ext.grid.locking.Lockable', {
         lockedGrid.reconfiguring = normalGrid.reconfiguring = false;
 
         activeHd.ownerCmp = null;
+        activeHd.rootHeaderCt = null;
+
+        activeHd.view = lockedView;
 
         refreshFlags = me.syncLockedWidth();
 
@@ -1244,9 +1242,10 @@ Ext.define('Ext.grid.locking.Lockable', {
     /**
      * Unlocks the activeHeader as determined by which menu is open OR a header
      * as specified.
-     * @param {Ext.grid.column.Column} [header] Header to unlock from the locked section.
+     * @param {Ext.grid.column.Column} [activeHd] Header to unlock from the locked section.
      * Defaults to the header which has the menu open currently.
      * @param {Number} [toIdx=0] The index to move the unlocked header to.
+     * @param toCt
      * @private
      */
     unlock: function(activeHd, toIdx, toCt) {
@@ -1295,9 +1294,13 @@ Ext.define('Ext.grid.locking.Lockable', {
         }
         activeHd.locked = false;
         toCt.insert(toIdx, activeHd);
+
         lockedGrid.reconfiguring = normalGrid.reconfiguring = false;
 
         activeHd.ownerCmp = null;
+        activeHd.rootHeaderCt = null;
+
+        activeHd.view = normalView;
 
         // syncLockedWidth returns visible column counts for both grids.
         // only refresh what needs refreshing
@@ -1391,7 +1394,7 @@ Ext.define('Ext.grid.locking.Lockable', {
             // binding mask to new store
             loadMask = me.view.loadMask;
             if (loadMask && loadMask.isLoadMask) {
-               loadMask.bindStore(store);
+                loadMask.bindStore(store);
             }
             me.view.bindStore(normalGrid.view.dataSource, false, 'dataSource');
             lockedGrid.view.blockRefresh = normalGrid.view.blockRefresh = false;

@@ -39,7 +39,9 @@ Ext.define('Ext.tree.ViewDropZone', {
      */
     expandNode : function(node) {
         var view = this.view;
+
         this.expandProcId = false;
+
         if (!node.isLeaf() && !node.isExpanded()) {
             view.expand(node);
             this.expandProcId = false;
@@ -50,17 +52,14 @@ Ext.define('Ext.tree.ViewDropZone', {
      * @private
      */
     queueExpand : function(node) {
-        this.expandProcId = Ext.Function.defer(this.expandNode, this.expandDelay, this, [node]);
+        this.expandProcId = Ext.defer(this.expandNode, this.expandDelay, this, [node]);
     },
 
     /**
      * @private
      */
     cancelExpand : function() {
-        if (this.expandProcId) {
-            clearTimeout(this.expandProcId);
-            this.expandProcId = false;
-        }
+        this.expandProcId = Ext.undefer(this.expandProcId);
     },
 
     getPosition: function(e, node) {

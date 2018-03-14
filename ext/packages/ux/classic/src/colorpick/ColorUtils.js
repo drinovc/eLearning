@@ -40,12 +40,22 @@ Ext.define('Ext.ux.colorpick.ColorUtils', function (ColorUtils) {
         },
 
         // parse and format functions under objects that match supported format config
-        // values of the color picker; parse() methods recieve the supplied color value
+        // values of the color picker; parse() methods receive the supplied color value
         // as a string (i.e "FFAAAA") and return an object form, just like the one
         // ColorPickerModel vm "selectedColor" uses. That same object form is used as a
         // parameter to the format() methods, where the appropriate string form is expected
         // for the return result
         formats: {
+            // "RGB(100,100,100)"
+            RGB: function (colorO) {
+                return ColorUtils.getRGBString(colorO).toUpperCase();
+            },
+            
+            // "RGBA(100,100,100,0.5)"
+            RGBA: function (colorO) {
+                return ColorUtils.getRGBAString(colorO).toUpperCase();
+            },
+            
             // "FFAA00"
             HEX6: function(colorO) {
                 return ColorUtils.rgb2hex(colorO.r, colorO.g, colorO.b);
@@ -66,10 +76,10 @@ Ext.define('Ext.ux.colorpick.ColorUtils', function (ColorUtils) {
             }
         },
 
-        hexRe: /#?([0-9a-f]{3,8})/i,
-        rgbaAltRe: /rgba\(\s*([\w#\d]+)\s*,\s*([\d\.]+)\s*\)/,
-        rgbaRe: /rgba\(\s*([\d\.]+)\s*,\s*([\d\.]+)\s*,\s*([\d\.]+)\s*,\s*([\d\.]+)\s*\)/,
-        rgbRe: /rgb\(\s*([\d\.]+)\s*,\s*([\d\.]+)\s*,\s*([\d\.]+)\s*\)/,
+        hexRe: /^#?(([0-9a-f]{8})|((?:[0-9a-f]{3}){1,2}))$/i,
+        rgbaAltRe: /^rgba\(\s*([\w#\d]+)\s*,\s*([\d\.]+)\s*\)$/i,
+        rgbaRe: /^rgba\(\s*([\d\.]+)\s*,\s*([\d\.]+)\s*,\s*([\d\.]+)\s*,\s*([\d\.]+)\s*\)$/i,
+        rgbRe: /^rgb\(\s*([\d\.]+)\s*,\s*([\d\.]+)\s*,\s*([\d\.]+)\s*\)$/i,
 
         /**
          * Turn a string to a color object. Supports these formats:
@@ -85,6 +95,7 @@ Ext.define('Ext.ux.colorpick.ColorUtils', function (ColorUtils) {
          * - "rgba(#ABCDEF, 0.8)"
          *
          * @param {String} color The color string to parse.
+         * @param {String} alphaFormat The format of decimal places for the Alpha channel.
          * @return {Object} Object with various color properties.
          * @return {Number} return.r The red component (0-255).
          * @return {Number} return.g The green component (0-255).
@@ -94,11 +105,11 @@ Ext.define('Ext.ux.colorpick.ColorUtils', function (ColorUtils) {
          * @return {Number} return.s The saturation component (0-1).
          * @return {Number} return.v The value component (0-1).
          */
-        parseColor: function (color) {
+        parseColor: function (color, alphaFormat) {
             if (!color) {
                 return null;
             }
-
+            
             var me = this,
                 rgb = me.colorMap[color],
                 match, ret, hsv;
@@ -184,10 +195,19 @@ Ext.define('Ext.ux.colorpick.ColorUtils', function (ColorUtils) {
                     }
                 }
             }
+            
+            // format alpha channel
+            if (alphaFormat) {
+                ret.a = Ext.util.Format.number(ret.a, alphaFormat);
+            }
 
             hsv = this.rgb2hsv(ret.r, ret.g, ret.b);
 
             return Ext.apply(ret, hsv);
+        },
+        
+        isValid: function (color) {
+            return ColorUtils.parseColor(color) !== null;
         },
 
         /**

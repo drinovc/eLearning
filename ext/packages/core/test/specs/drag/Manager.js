@@ -511,37 +511,35 @@ topSuite("Ext.drag.Manager", ['Ext.drag.*', 'Ext.dom.Element', 'Ext.scroll.Scrol
 
         describe("scroll", function() {
             it("should match targets when the document is scrolled", function() {
-                var Scroller = Ext.scroll.Scroller,
-                    stretcher;
+                var stretcher, s;
 
                 makeDragEl(405, 405);
                 makeDropEl(450, 450);
 
                 setup();
-                if (Scroller && Scroller.viewport) {
-                    stretcher = Ext.getBody().createChild({
-                        style: {
-                            width: '5000px',
-                            height: '5000px',
-                            border: '1px solid red'
-                        }
-                    });
-                    Scroller.viewport.scrollTo(0, 400);
+                s = Ext.getViewportScroller();
 
-                    waitsForEvent(Scroller.viewport, 'scrollend');
+                stretcher = Ext.getBody().insertFirst({
+                    style: {
+                        width: '5000px',
+                        height: '5000px',
+                        border: '1px solid red'
+                    }
+                });
 
-                    startDrag();
-                    moveBy(50, 50);
-                    runsExpectCallCount(enterSpy, 1);
-                    moveBy(-20, -20);
-                    runsExpectCallCount(leaveSpy, 1);
-                    endDrag();
-                    runs(function() {
-                        stretcher.remove();
-                        
-                        Scroller.viewport = Ext.destroy(Scroller.viewport);
-                    });
-                }
+                s.scrollTo(0, 400);
+
+                waitsForEvent(s, 'scrollend');
+
+                startDrag();
+                moveBy(50, 50);
+                runsExpectCallCount(enterSpy, 1);
+                moveBy(-20, -20);
+                runsExpectCallCount(leaveSpy, 1);
+                endDrag();
+                runs(function() {
+                    stretcher.remove();
+                });
             });
         });
     });

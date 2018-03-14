@@ -7,7 +7,7 @@ Ext.define('Ext.grid.SummaryRow', {
     xtype: 'gridsummaryrow',
 
     requires: [
-        'Ext.data.summary.Base'  // at least get the Ext.Factory.dataSummary
+        'Ext.data.summary.*'
     ],
 
     isSummaryRow: true,

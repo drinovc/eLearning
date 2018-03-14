@@ -11,6 +11,7 @@ Ext.define('Ext.draw.gradient.Gradient', {
 
     config: {
         /**
+         * @cfg {Object[]} stops
          * Defines the stops of the gradient.
          */
         stops: []

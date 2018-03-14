@@ -318,7 +318,8 @@ Ext.define('Ext.data.Store', {
                 }
                 //</debug>
 
-                return new Ext.data.BufferedStore(config);
+                // Hide this from Cmd
+                return new Ext.data['BufferedStore'](config);
             }
 
             //<debug>
@@ -464,6 +465,7 @@ Ext.define('Ext.data.Store', {
      */
     
     onCollectionAdd: function(collection, info) {
+        this.loadCount = this.loadCount || 1;
         this.onCollectionAddItems(collection, info.items, info);
     },
 

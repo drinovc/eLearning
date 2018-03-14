@@ -78,6 +78,7 @@ Ext.define('Ext.util.Memento', (function () {
          * Captures the specified properties from the target object in this memento.
          * @param {String/String[]} props The property or array of properties to capture.
          * @param {Object} target The object from which to capture properties.
+         * @param {String} prefix
          */
         capture: function (props, target, prefix) {
             var me = this;
@@ -99,6 +100,7 @@ Ext.define('Ext.util.Memento', (function () {
          * @param {Boolean} clear True to remove the restored properties from this memento or
          * false to keep them (default is true).
          * @param {Object} target The object to which to restore properties.
+         * @param {String} prefix
          */
         restore: function (props, clear, target, prefix) {
             doMany(restoreOne, this.data, target || this.target, props, prefix);

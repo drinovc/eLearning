@@ -10,58 +10,45 @@ Ext.define('Ext.panel.Date', {
 
     requires: [
         'Ext.layout.Carousel',
-        'Ext.layout.HBox',
         'Ext.panel.DateView',
-        'Ext.util.DelayedTask'
+        'Ext.panel.DateTitle',
+        'Ext.panel.YearPicker'
     ],
 
     config: {
         /**
-         * @cfg {Number} [panes=1] Number of calendar panes to display in the picker.
-         */
-        panes: 1,
-
-        /**
-         * @cfg {Boolean} [autoConfirm=false] When set to `true`, clicking or tapping on
-         * a date cell in the calendar will confirm selection and dismiss the picker.
-         * When set to `false`, user will have to click OK button after selecting the date.
-         */
-        autoConfirm: null,
-
-        /**
-         * @cfg {Boolean} [showFooter] Set to `true` to always show footer bar with OK,
-         * Cancel, and Today buttons. If this config is not provided, footer will be shown
-         * or hidden automatically depending on {@link #autoConfirm}.
-         */
-        showFooter: null,
-
-        /**
-         * @cfg {Boolean} [showTodayButton] Set to `true` to show the Today button. Location
-         * will depend on {@link #showFooter} config: if the footer is shown, Today button
-         * will be placed in the footer; otherwise the button will be placed in picker header.
-         */
-        showTodayButton: null,
-
-        /**
-         * @cfg {Boolean} [animation=true] Set to `false` to disable animations.
+         * @cfg {Boolean} [animation=true]
+         * Set to `false` to disable animations.
          */
         animation: true,
 
         /**
-         * @cfg {Date[]/String[]/RegExp[]} [specialDates] An array of Date objects, strings, or
-         * RegExp patterns designating special dates like holidays. These dates will have
-         * 'x-special-day' CSS class added to their cells, allowing for visually distinct styling.
-         *
-         * If you want to disallow selecting these dates you would need to include them in
-         * {@link #disabledDates} config as well.
+         * @cfg {Boolean} [autoConfirm=false]
+         * When set to `true`, clicking or tapping on
+         * a date cell in the calendar will confirm selection and dismiss the picker.
+         * When set to `false`, user will have to click OK button after selecting the date.
          */
-        specialDates: [],
+        autoConfirm: false,
 
         /**
-         * @cfg {Number[]} [disabledDays]
-         * An array of days to disable, 0-based. For example, [0, 6] disables Sunday and Saturday.
+         * @cfg {String} [captionFormat="F Y"]
+         * Date format for calendar pane captions.
          */
-        disabledDays: [],
+        captionFormat: {
+            $value: 'F Y',
+            cached: true
+        },
+
+        /**
+         * @cfg {String} dateCellFormat
+         * The date format to use for date cells, compatible with {@link Ext.Date#format} method.
+         * This format usually includes only day of month information.
+         * @locale
+         */
+        dateCellFormat: {
+            $value: 'j',
+            cached: true
+        },
 
         /**
          * @cfg {Date[]/String[]/RegExp} disabledDates
@@ -80,13 +67,79 @@ Ext.define('Ext.panel.Date', {
          * Note that the format of the dates included in the array should exactly match the
          * {@link #format} config.
          */
-        disabledDates: [],
+        disabledDates: null,
 
         /**
-         * @cfg {Date/String} [minDate]
-         * Minimum allowable date as Date object or a string in {@link #format}.
+         * @cfg {Number[]} [disabledDays]
+         * An array of days to disable, 0-based. For example, [0, 6] disables Sunday and Saturday.
+         * See {@link #disabledDates}.
          */
-        minDate: null,
+        disabledDays: null,
+
+        /**
+         * @cfg {Date} focusableDate
+         * The date that is currently focusable.
+         *
+         * @private
+         * @since 6.5.1
+         */
+        focusableDate: null,
+
+        /**
+         * @cfg {String} format
+         * The default date format string which can be overriden for localization support.
+         * The format must be valid according to {@link Ext.Date#parse}
+         * (defaults to {@link Ext.Date#defaultFormat}).
+         * @locale
+         */
+        format: {
+            $value: Ext.Date.defaultFormat,
+            cached: true
+        },
+
+        /**
+         * @cfg {Function} [handler]
+         * A function that will handle the change in value.
+         * The function will receive the following parameters:
+         *
+         * @param {Ext.panel.Date} handler.this this
+         * @param {Date} handler.date The selected date
+         */
+        handler: null,
+
+        /**
+         * @cfg {String} headerFormat
+         * The format to display the current value in the title.
+         * The format must be valid according to {@link Ext.Date#parse}.
+         *
+         * @locale
+         */
+        headerFormat: {
+            $value: 'D, M j Y',
+            cached: true
+        },
+
+        /**
+         * @cfg {Number} [headerLength=1]
+         * Length of day names in header cells.
+         */
+        headerLength: 1,
+
+        /**
+         * @cfg {Boolean} hideCaptions
+         * Set to `true` to hide calendar pane captions displaying
+         * the month and year shown in each pane.
+         */
+        hideCaptions: true,
+
+        /**
+         * @cfg {Boolean} hideOutside
+         * `true` to hide dates outside of the current month. This means no classes
+         * (other than the base cell class) will be used on the cells.
+         *
+         * @since 6.5.1
+         */
+        hideOutside: false,
 
         /**
          * @cfg {Date/String} [maxDate]
@@ -95,39 +148,18 @@ Ext.define('Ext.panel.Date', {
         maxDate: null,
 
         /**
-         * @cfg {Boolean} [showBeforeMinDate=false] Set to `true` to allow navigating
-         * to months preceding {@link #minDate}. This has no effect when `minDate` is not set.
+         * @cfg {Date/String} [minDate]
+         * Minimum allowable date as Date object or a string in {@link #format}.
          */
-        showBeforeMinDate: false,
+        minDate: null,
 
         /**
-         * @cfg {Boolean} [showAfterMaxDate=false] Set to `true` to allow navigating
-         * to months coming after {@link #maxDate}. This has no effect when `maxDate` is not set.
-         */
-        showAfterMaxDate: false,
-
-        /**
-         * @cfg {Date} [value] Initial value of this picker. Defaults to today.
-         */
-        value: false,
-
-        /**
-         * @cfg {Date} [focusedDate] Date to receive focus when the picker is focused
-         * for the first time. Subsequent navigation via keyboard will update this value.
+         * @cfg {'header'/'caption'} navigationPosition
+         * The position for the {@link #tools}.
          *
-         * This config cannot be null. Default is today.
-         * @private
+         * @since 6.5.1
          */
-        focusedDate: {
-            $value: false,
-            lazy: true
-        },
-
-        /**
-         * @cfg {Boolean} Set to `true` to hide calendar pane captions displaying
-         * the month and year shown in each pane.
-         */
-        hideCaptions: null,
+        navigationPosition: 'header',
 
         /**
          * @cfg {String} nextText
@@ -137,11 +169,84 @@ Ext.define('Ext.panel.Date', {
         nextText: 'Next Month (Control+Right)',
 
         /**
+         * @cfg {Number} [panes=1]
+         * Number of calendar panes to display in the picker.
+         */
+        panes: 1,
+
+        /**
          * @cfg {String} prevText
          * The previous month navigation button tooltip.
          * @locale
          */
         prevText: 'Previous Month (Control+Left)',
+
+        /**
+         * @cfg {Boolean} selectOnNavigate
+         * `true` to keep the selection on the current pane.
+         *
+         * @since  6.5.1
+         */
+        selectOnNavigate: true,
+
+        /**
+         * @cfg {Boolean} [showAfterMaxDate]
+         * Set to `true` to allow navigating to months coming after {@link #maxDate}.
+         * This has no effect when `maxDate` is not set.
+         */
+        showAfterMaxDate: false,
+
+        /**
+         * @cfg {Boolean} [showBeforeMinDate]
+         * Set to `true` to allow navigating to months preceding {@link #minDate}.
+         * This has no effect when `minDate` is not set.
+         */
+        showBeforeMinDate: false,
+
+        /**
+         * @cfg {Boolean} [showFooter]
+         * Set to `true` to always show footer bar with OK,
+         * Cancel, and Today buttons. If this config is not provided, footer will be shown
+         * or hidden automatically depending on {@link #autoConfirm}.
+         */
+        showFooter: null,
+
+        /**
+         * @cfg {Boolean} [showTodayButton]
+         * Set to `true` to show the Today button. Location
+         * will depend on {@link #showFooter} config: if the footer is shown, Today button
+         * will be placed in the footer; otherwise the button will be placed in picker header.
+         */
+        showTodayButton: null,
+
+        /**
+         * @cfg {Date[]/String[]/RegExp[]} [specialDates]
+         * An array of Date objects, strings, or
+         * RegExp patterns designating special dates like holidays. These dates will have
+         * 'x-special-day' CSS class added to their cells, allowing for visually distinct styling.
+         *
+         * If you want to disallow selecting these dates you would need to include them in
+         * {@link #disabledDates} config as well.
+         */
+        specialDates: null,
+
+        /**
+         * @cfg {Number[]} [specialDays]
+         * An array of days to mark as special, 0-based. For example, [0, 6] disables Sunday and Saturday.
+         * See {@link #specialDates}.
+         *
+         * @since 6.5.1
+         */
+        specialDays: null,
+
+        /**
+         * @cfg {Boolean} splitTitle
+         * `true` to split the year vertically from the main title. The {@link #headerFormat}
+         * should be modified to reflect this.
+         *
+         * @since 6.5.1
+         */
+        splitTitle: false,
 
         /**
          * @cfg {Number} [startDay]
@@ -156,7 +261,24 @@ Ext.define('Ext.panel.Date', {
         },
 
         /**
-         * @cfg {Number[]} [weekendDays] Array of weekend day indices, 0-based.
+         * @cfg {Boolean/Object} titleAnimation
+         * The animation for the title. If not specified, the default
+         * {@link #animation} configuration is used. This is not compatible
+         * when using splitting titles using {@link #splitTitle}.
+         *
+         * @since 6.5.1
+         */
+        titleAnimation: null,
+
+        /**
+         * @cfg {Date} [value]
+         * The value of this picker. Defaults to today.
+         */
+        value: undefined,
+
+        /**
+         * @cfg {Number[]} [weekendDays]
+         * Array of weekend day indices, 0-based.
          *
          * Defaults to the value of {@link Ext.Date.weekendDays}
          * @locale
@@ -167,74 +289,38 @@ Ext.define('Ext.panel.Date', {
         },
 
         /**
-         * @cfg {String} format
-         * The default date format string which can be overriden for localization support.
-         * The format must be valid according to {@link Ext.Date#parse}
-         * (defaults to {@link Ext.Date#defaultFormat}).
-         * @locale
+         * @cfg {Object} yearPicker
+         * A configuration for the {@link Ext.panel.YearPicker}. `null` to
+         * disable the year picker.
+         *
+         * @since 6.5.1
          */
-        format: {
-            $value: Ext.Date.defaultFormat,
-            cached: true
-        },
-
-        headerFormat: {
-            $value: 'D, M j Y',
-            cached: true
+        yearPicker: {
+            lazy: true,
+            $value: {}
         },
 
         /**
-         * @cfg {String} [paneCaptionFormat="F Y"] Date format for calendar pane captions.
+         * @cfg {Object} yearPickerDefaults
+         * The default configuration options for the {@link #yearPicker}.
+         *
+         * @since 6.5.1
          */
-        paneCaptionFormat: {
-            $value: 'F Y',
-            cached: true
-        },
-
-        /**
-         * @cfg {String} monthYearFormat
-         * The date format for the header month.
-         * @locale
-         */
-        monthYearFormat: {
-            $value: 'F Y',
-            cached: true
-        },
-
-        /**
-         * @cfg {String} dateCellFormat The date format to use for date cells,
-         * compatible with {@link Ext.Date#format} method.
-         * This format usually includes only day of month information.
-         * @locale
-         */
-        dateCellFormat: {
-            $value: 'j',
-            cached: true
-        },
-
-        /**
-         * @cfg {Number} [headerLength=1] Length of day names in header cells.
-         */
-        headerLength: 1
+        yearPickerDefaults: null
     },
 
     /**
-     * @cfg {Function} [handler] A function that will handle the select event of this picker.
-     * The function will receive the following parameters:
-     *
-     * @params {Ext.picker.Calendar} handler.this The Picker instance
-     * @params {Date} handler.date The selected date
+     * @cfg {Object} scope
+     * The scope in which {@link #handler} function will be called.
      */
 
     /**
-     * @cfg {Object} [scope] The scope in which {@link #handler} function will be called.
-     */
-
-    /**
-     * @cfg {Function} [transformCellCls] A function that will be called during cell rendering
+     * @cfg {Function} [transformCellCls]
+     * A function that will be called during cell rendering
      * to allow modifying CSS classes applied to the cell.
      *
-     * @param {Date} transformCellCls.date Date for which a cell is being rendered.
+     * @param {Date} transformCellCls.date
+     * Date for which a cell is being rendered.
      * @param {String[]} transformCellCls.classes Array of standard CSS classes for this cell,
      * including class names for {@link #specialDates}, {@link #disabledDates}, etc.
      * You can add custom classes or remove some standard class names as desired.
@@ -243,17 +329,86 @@ Ext.define('Ext.panel.Date', {
     focusable: true,
     tabIndex: 0,
 
+    border: false,
     mouseWheelBuffer: 500,
 
     autoSize: null,
+
+    headerCls: Ext.baseCSSPrefix + 'datepanelheader',
+    titleCls: Ext.baseCSSPrefix + 'datetitle',
+    toolCls: [
+        Ext.baseCSSPrefix + 'paneltool',
+        Ext.baseCSSPrefix + 'datepaneltool'
+    ],
+
+    header: {
+        title: {
+            xtype: 'datetitle'
+        }
+    },
+
+    tools: {
+        previousMonth: {
+            reference: 'navigatePrevMonth',
+            iconCls: 'x-fa fa-angle-left',
+            cls: Ext.baseCSSPrefix + 'left-year-tool ',
+            weight: -100,
+            increment: -1,
+            focusable: false,
+            tabIndex: null,
+            forceTabIndex: true,
+            listeners: {
+                click: 'onMonthToolClick'
+            }
+        },
+        previousYear: {
+            reference: 'navigatePrevYear',
+            iconCls: 'x-fa fa-angle-double-left',
+            cls: Ext.baseCSSPrefix + 'left-month-tool',
+            weight: -90,
+            increment: -12,
+            focusable: false,
+            tabIndex: null,
+            forceTabIndex: true,
+            listeners: {
+                click: 'onMonthToolClick'
+            }
+        },
+        nextYear: {
+            reference: 'navigateNextYear',
+            iconCls: 'x-fa fa-angle-double-right',
+            cls: Ext.baseCSSPrefix + 'right-month-tool',
+            weight: 90,
+            increment: 12,
+            focusable: false,
+            tabIndex: null,
+            forceTabIndex: true,
+            listeners: {
+                click: 'onMonthToolClick'
+            }
+        },
+        nextMonth: {
+            reference: 'navigateNextMonth',
+            iconCls: 'x-fa fa-angle-right',
+            cls: Ext.baseCSSPrefix + 'right-year-tool',
+            weight: 100,
+            increment: 1,
+            focusable: false,
+            tabIndex: null,
+            forceTabIndex: true,
+            listeners: {
+                click: 'onMonthToolClick'
+            }
+        }
+    },
 
     keyMapTarget: 'bodyElement',
 
     // Ctrl-PageUp and Ctrl-PageDown are often used in browser to switch tabs
     // so we support both Shift- and Ctrl-PageUp/PageDown for switching years
     keyMap: {
-        LEFT: 'onLeftArrowKey',
-        RIGHT: 'onRightArrowKey',
+        '*+LEFT': 'onLeftArrowKey',
+        '*+RIGHT': 'onRightArrowKey',
         UP: 'onUpArrowKey',
         DOWN: 'onDownArrowKey',
         "*+PAGE_UP": 'onPageUpKey',
@@ -268,7 +423,7 @@ Ext.define('Ext.panel.Date', {
         scope: 'this'
     },
 
-    paneXtype: 'datepanelview',
+    paneXtype: 'dateview',
 
     classCls: Ext.baseCSSPrefix + 'datepanel',
 
@@ -282,65 +437,10 @@ Ext.define('Ext.panel.Date', {
     defaultListenerScope: true,
     referenceHolder: true,
 
-    header: {
-        titleAlign: 'center'
-    },
-
-    tools: {
-        previousMonth: {
-            iconCls: 'x-fa fa-angle-left',
-            cls: Ext.baseCSSPrefix + 'left-year-tool ',
-            weight: -100,
-            increment: -1,
-            tabIndex: null,
-            listeners: {
-                click: 'onMonthToolClick'
-            }
-        },
-        previousYear: {
-            iconCls: 'x-fa fa-angle-double-left',
-            cls: Ext.baseCSSPrefix + 'left-month-tool',
-            weight: -90,
-            increment: -12,
-            tabIndex: null,
-            listeners: {
-                click: 'onMonthToolClick'
-            }
-        },
-        headerTodayButton: {
-            xtype: 'button',
-            weight: 0,
-            text: 'Today',
-            handler: 'onTodayButtonClick',
-            tabIndex: -1,
-            hidden: true
-        },
-        nextYear: {
-            iconCls: 'x-fa fa-angle-double-right',
-            cls: Ext.baseCSSPrefix + 'right-month-tool',
-            weight: 90,
-            increment: 12,
-            tabIndex: null,
-            listeners: {
-                click: 'onMonthToolClick'
-            }
-        },
-        nextMonth: {
-            iconCls: 'x-fa fa-angle-right',
-            cls: Ext.baseCSSPrefix + 'right-year-tool',
-            weight: 100,
-            increment: 1,
-            tabIndex: null,
-            listeners: {
-                click: 'onMonthToolClick'
-            }
-        }
-    },
-
     buttonToolbar: {
         enableFocusableContainer: false,
         cls: Ext.baseCSSPrefix + 'datepanel-footer',
-        itemId: 'footer'
+        reference: 'footer'
     },
 
     buttons: {
@@ -349,61 +449,61 @@ Ext.define('Ext.panel.Date', {
             tabIndex: -1,
             hidden: true,
             weight: -20,
-            handler: 'onTodayButtonClick'
+            handler: 'onTodayButtonClick',
+            reference: 'footerTodayButton'
         },
         spacer: {
             xtype: 'component',
             weight: -10,
             flex: 1
         },
-        okButton: {
-            text: 'OK',
+        ok: {
             tabIndex: -1,
-            weight: 10,
             handler: 'onOkButtonClick'
         },
-        cancelButton: {
-            text: 'Cancel',
+        cancel: {
             tabIndex: -1,
-            weight: 20,
             handler: 'onCancelButtonClick'
         }
     },
 
-    getTemplate: function() {
-        var template = this.callParent();
-
-        // Create focus park element *outside* the bodyElement so that we
-        // do not key keyboard nav commands during navigation animations
-        // when focus is parked.
-        template.push({
-            reference: 'focusParkingElement',
-            cls: Ext.baseCSSPrefix + 'hidden-clip',
-            tabIndex: -1,
-            'aria-hidden': 'true'
-        });
-
-        return template;
-    },
-
     initialize: function() {
-        var me = this;
+        var me = this,
+            value = me.getValue();
 
         me.callParent();
 
-        me.updateToolText('prev', me.getPrevText());
-        me.updateToolText('next', me.getNextText());
+        me.setToolText('navigatePrevMonth', me.getPrevText());
+        me.setToolText('navigateNextMonth', me.getNextText());
 
         me.bodyElement.on({
-            click: 'onDateClick',
+            click: {
+                delegate: me.cellSelector,
+                fn: 'onDateClick'
+            },
             focus: 'onBodyFocus',
-            wheel: 'onMouseWheel',
+
+            // Some browsers/platforms like desktop Mac will send a lot of
+            // wheel events in sequence, causing very rapid calendar transitions.
+            // Throttled functions begin executing immediately upon call and
+            // thereafter, repeated calls are throttled to the passed buffer quantum.
+            wheel: Ext.Function.createThrottled(me.onMouseWheel, me.mouseWheelBuffer),
             scope: me
         });
 
         // Make sure the panes are refreshed
         me.getShowFooter();
-        me.getFocusedDate();
+
+        me.preventAnim = true;
+        me.setFocusableDate(value);
+        me.preventAnim = false;
+        me.setTitleByDate(value);
+        Ext.fly(me.getCellByDate(value)).addCls(me.selectedCls);
+    },
+
+    onRender: function() {
+        this.callParent();
+        this.measurePaneSize();
     },
 
     doDestroy: function() {
@@ -414,70 +514,12 @@ Ext.define('Ext.panel.Date', {
         me.callParent();
     },
 
-    getPaneTemplate: function(offset) {
+    focusDate: function(date) {
         var me = this;
 
-        return {
-            xtype: me.paneXtype,
-            monthOffset: offset,
-            hideCaption: me.getHideCaptions(),
-            startDay: me.getStartDay(),
-            weekendDays: me.getWeekendDays(),
-            specialDates: me.getSpecialDates(),
-            disabledDays: me.getDisabledDays(),
-            disabledDates: me.getDisabledDates(),
-            minDate: me.getMinDate(),
-            maxDate: me.getMaxDate(),
-            format: me.getFormat(),
-            captionFormat: me.getPaneCaptionFormat(),
-            dateCellFormat: me.getDateCellFormat(),
-            headerLength: me.getHeaderLength(),
-            transformCellCls: me.transformCellCls
-        };
-    },
-
-    getPaneItems: function() {
-        return this.query(this.paneXtype);
-    },
-
-    getCenterIndex: function() {
-        var count = this.getPanes(),
-            index = count - 1;
-
-        return !index ? index : index % 2 ? Math.floor(index / 2) + 1 : Math.floor(index / 2);
-    },
-
-    updateToolText: function(type, text) {
-        var tool = this.getHeader().down('tool[type=' + type + ']');
-
-        if (tool) {
-            tool.setTooltip(text);
-        }
-    },
-
-    updateNextText: function(text) {
-        this.updateToolText('next', text);
-    },
-
-    updatePrevText: function(text) {
-        this.updateToolText('prev', text);
-    },
-
-    applyPanes: function(count) {
-        //<debug>
-        if (count < 1) {
-            Ext.raise("Cannot configure less than 1 pane for Calendar picker");
-        }
-        //</debug>
-
-        return count;
-    },
-
-    updatePanes: function(count) {
-        var me = this;
-
-        me.getLayout().setVisibleChildren(count);
-        me.initPanes(0);
+        me.doFocus = true;
+        me.setFocusableDate(date);
+        me.doFocus = false;
     },
 
     updateAnimation: function(animate) {
@@ -487,82 +529,28 @@ Ext.define('Ext.panel.Date', {
     updateAutoConfirm: function(autoConfirm) {
         var me = this;
 
-        me.getTools();
         me.getButtons();
 
         if (!autoConfirm) {
             me.setShowFooter(true);
-        }
-        else {
+        } else {
             me.setShowFooter(me.initialConfig.showFooter);
         }
     },
 
-    updateShowFooter: function(showFooter) {
-        this.down('#footer').setHidden(!showFooter);
-        this.getShowTodayButton();
-    },
-
-    updateShowTodayButton: function(showButton) {
-        var me = this,
-            headerBtn, footerBtn;
-
-        me.getTools();
-        me.getButtons();
-
-        headerBtn = me.down('#headerTodayButton');
-        footerBtn = me.down('#footerTodayButton');
-
-        if (!showButton) {
-            headerBtn.hide();
-            footerBtn.hide();
-        }
-        else {
-            // May not be visible yet so we check hidden
-            if (!me.down('#footer').isHidden()) {
-                footerBtn.show();
-                headerBtn.hide();
-            }
-            else {
-                headerBtn.show();
-                footerBtn.hide();
-            }
-        }
-    },
-
-    applyWeekendDays: function(days) {
-        return Ext.Array.toMap(days);
-    },
-
-    updateWeekendDays: function(daysMap) {
-        this.broadcastConfig('weekendDays', daysMap);
-    },
-
-    applyDisabledDays: function(days) {
-        return Ext.Array.toMap(days);
-    },
-
-    updateDisabledDays: function(daysMap) {
-        this.broadcastConfig('disabledDays', daysMap);
-    },
-
-    updatePaneCaptionFormat: function(format) {
+    updateCaptionFormat: function(format) {
         this.broadcastConfig('captionFormat', format);
     },
 
-    updateStartDay: function(day) {
-        this.broadcastConfig('startDay', day);
-    },
-
-    applySpecialDates: function(dates) {
-        return this.applyDisabledDates(dates);
-    },
-
-    updateSpecialDates: function(cfg) {
-        this.broadcastConfig('specialDates', cfg);
+    updateDateCellFormat: function(format) {
+        this.broadcastConfig('dateCellFormat', format);
     },
 
     applyDisabledDates: function(dates) {
+        if (!dates) {
+            return dates;
+        }
+
         var cfg = {
                 dates: {}
             },
@@ -600,20 +588,29 @@ Ext.define('Ext.panel.Date', {
         return cfg;
     },
 
-    updateDisabledDates: function(cfg) {
-        this.broadcastConfig('disabledDates', cfg);
+    updateDisabledDates: function() {
+        this.refreshPanes();
     },
 
-    applyMinDate: function(date) {
-        if (typeof date === 'string') {
-            date = Ext.Date.parse(date, this.getFormat());
-        }
-
-        return date;
+    applyDisabledDays: function(days) {
+        return days ? Ext.Array.toMap(days) : days;
     },
 
-    updateMinDate: function(date) {
-        this.broadcastConfig('minDate', date);
+    updateDisabledDays: function() {
+        this.refreshPanes();
+    },
+
+    updateFormat: function(format) {
+        this.broadcastConfig('format', format);
+    },
+
+    updateHeader: function(header, oldHeader) {
+        this.callParent([header, oldHeader]);
+        header.getTitle().on({
+            scope: this,
+            yeartap: 'onYearTitleTap',
+            titletap: 'onTitleTap'
+        });
     },
 
     applyMaxDate: function(date) {
@@ -624,35 +621,135 @@ Ext.define('Ext.panel.Date', {
         return date;
     },
 
-    updateMaxDate: function(date) {
-        this.broadcastConfig('maxDate', date);
+    updateMaxDate: function() {
+        this.refreshPanes();
     },
 
-    updateFormat: function(format) {
-        this.broadcastConfig('format', format);
+    applyMinDate: function(date) {
+        if (typeof date === 'string') {
+            date = Ext.Date.parse(date, this.getFormat());
+        }
+
+        return date;
     },
 
-    updateDateCellFormat: function(format) {
-        this.broadcastConfig('dateCellFormat', format);
+    updateMinDate: function() {
+        this.refreshPanes();
     },
 
-    broadcastConfig: function(config, value) {
-        if (this.isConfiguring) {
+    updateNavigationPosition: function(pos) {
+        var me = this,
+            toolList = me.toolList,
+            len = toolList.length,
+            isHeader = pos === 'header',
+            ct = isHeader ? me.toolCt : me.getHeader(),
+            tools, i, c;
+
+        if (isHeader && me.isConfiguring) {
             return;
         }
 
-        var panes = this.getPaneItems(),
-            setter, pane, i, len;
+        me.getTools();
 
-        setter = Ext.Config.map[config].names.set;
-
-        for (i = 0, len = panes.length; i < len; i++) {
-            pane = panes[i];
-
-            if (pane[setter]) {
-                pane[setter](value);
+        tools = [];
+        for (i = 0; i < len; ++i) {
+            c = me.lookup(toolList[i]);
+            if (c) {
+                tools.push(c);
+                ct.remove(c, false);
+                c.toggleCls(me.toolCls, isHeader);
             }
         }
+
+        me.toolCt = Ext.destroy(me.toolCt);
+
+        if (pos === 'header') {
+            me.getHeader().add(tools);
+        } else {
+            tools.push({
+                xtype: 'component',
+                flex: 1,
+                weight: 0
+            });
+
+            me.toolCt = me.add({
+                xtype: 'container',
+                cls: Ext.baseCSSPrefix + 'navigation-tools',
+                defaultType: 'tool',
+                weighted: true,
+                layout: 'hbox',
+                // Used to make the box positioned
+                bottom: 'auto',
+                items: tools
+            });
+        }
+    },
+
+    updateNextText: function(text) {
+        this.setToolText('navigateNextMonth', text);
+    },
+
+    updatePrevText: function(text) {
+        this.setToolText('navigatePrevMonth', text);
+    },
+
+    //<debug>
+    applyPanes: function(count) {
+        if (count < 1) {
+            Ext.raise("Cannot configure less than 1 pane for Calendar picker");
+        }
+        return count;
+    },
+    //</debug>
+
+    updatePanes: function(count) {
+        var me = this;
+
+        me.getLayout().setVisibleChildren(count);
+        me.initPanes(0);
+        me.singlePane = count === 1;
+        me.toggleCls(Ext.baseCSSPrefix + 'single', me.singlePane);
+    },
+
+    updateShowFooter: function(showFooter) {
+        this.lookup('footer').setHidden(!showFooter);
+        this.getShowTodayButton();
+    },
+
+    updateShowTodayButton: function(showButton) {
+        var footerBtn;
+
+        this.getButtons();
+
+        footerBtn = this.lookup('footerTodayButton');
+
+        if (footerBtn) {
+            footerBtn.setHidden(!showButton);
+        }
+    },
+
+    applySpecialDates: function(dates) {
+        return this.applyDisabledDates(dates);
+    },
+
+    updateSpecialDates: function(cfg) {
+        this.broadcastConfig('specialDates', cfg);
+    },
+
+    applySpecialDays: function(days) {
+        return days ? Ext.Array.toMap(days) : days;
+    },
+
+    updateSpecialDays: function(daysMap) {
+        this.broadcastConfig('specialDays', daysMap);
+    },
+
+    updateSplitTitle: function(splitTitle) {
+        this.getHeader().getTitle().setSplit(splitTitle);
+    },
+
+    updateStartDay: function(day) {
+        this.broadcastConfig('startDay', day);
     },
 
     applyValue: function(date) {
@@ -670,23 +767,29 @@ Ext.define('Ext.panel.Date', {
 
     updateValue: function(value, oldValue) {
         var me = this,
-            handler = me.handler,
+            handler = me.getHandler(),
             selectedCls = me.selectedCls,
             cell;
 
         if (oldValue) {
             cell = me.getCellByDate(oldValue);
             if (cell) {
-                cell.removeCls(selectedCls);
+                Ext.fly(cell).removeCls(selectedCls);
             }
         }
 
-        cell = me.getCellByDate(value);
-        if (cell) {
-            cell.addCls(selectedCls);
-        }
-
         if (!me.isConfiguring) {
+            if (me.hasFocus) {
+                me.focusDate(value);
+            } else {
+                me.setFocusableDate(value);
+            }
+            cell = me.getCellByDate(value);
+            if (cell) {
+                Ext.fly(cell).addCls(selectedCls);
+            }
+            me.setTitleByDate(value);
+
             me.fireEvent('change', me, value, oldValue);
 
             if (handler) {
@@ -695,126 +798,27 @@ Ext.define('Ext.panel.Date', {
         }
     },
 
-    applyFocusedDate: function(date, oldDate) {
-        var me = this,
-            D = Ext.Date,
-            boundary;
-
-        // Null is a valid value to set onFocusLeave in order to clear the focused cell
-        // and allow the value to be set the next time the panel is displayed.
-        if (date !== null) {
-            // Should check default value (today) as well, it could be that
-            // allowed selection is in the past or in the future.
-            date = D.clearTime(date || new Date());
-
-            if ((boundary = me.getMinDate()) && !me.getShowBeforeMinDate() &&
-                date.getTime() < boundary.getTime()) {
-                date = boundary;
-            }
-            else if ((boundary = me.getMaxDate()) && !me.getShowAfterMaxDate() &&
-                date.getTime() > boundary.getTime()) {
-                date = boundary;
-            }
-
-            if (oldDate && D.isEqual(date, oldDate)) {
-                me.getCellByDate(date).focus();
-                date = undefined;
-            }
-        }
-
-        return date;
+    applyWeekendDays: function(days) {
+        return Ext.Array.toMap(days);
     },
 
-    updateFocusedDate: function(date, oldDate) {
-        var me = this,
-            toPane, text;
-
-        if (me.destroying || me.destroyed) {
-            return;
-        }
-
-        if (oldDate) {
-            me.updateCellTabIndex(oldDate, -1);
-        }
-
-        // No action necessary if we are clearing the focused date.
-        // This happens on panel blur so that the focused cell is set back to
-        // default rendition, and also so that the next focus call works if
-        // the requested date is the same.
-        if (date) {
-            toPane = me.getPaneByDate(date);
-            text = Ext.Date.format(date, me.getHeaderFormat());
-
-            me.setTitleText(text, date, oldDate);
-
-            // New date will be immediately visible, or is in same pane.
-            // Simply activate the pane and focus. Do not animate title change.
-            if (!me.getAnimation() || me.getLayout().getFrontItem() === toPane) {
-                me.navigateTo(date);
-                me.getCellByDate(date).focus();
-            }
-
-            // There's an animation in the way before we can focus, so
-            // temporarily park the focus so we don't get more nav keystrokes.
-            // focusParkingElement is outside the bodyElement so we we ill not get
-            // keyEvents during this time.
-            else {
-                me.parkFocus();
-                me.navigateTo(date).then(function () {
-                    me.getCellByDate(date).focus();
-                });
-            }
-
-            me.updateCellTabIndex(date, me.getTabIndex());
-        }
+    updateWeekendDays: function(daysMap) {
+        this.broadcastConfig('weekendDays', daysMap);
     },
 
-    onRender: function() {
-        var me = this,
-            count = me.getPanes(),
-            borderWidth;
-
-        me.callParent();
-
-        // Okay this is a hack but will do for now because Carousel layout
-        // needs the container to be widthed
-        if (me.self.prototype.$paneWidth == null) {
-            me.cachePaneWidth();
-        }
-
-        borderWidth = me.el.getBorderWidth('lr');
-        me.setWidth(borderWidth + count * me.self.prototype.$paneWidth);
+    applyYearPicker: function(yearPicker, oldYearPicker) {
+        return Ext.updateWidget(oldYearPicker, yearPicker, this, 'createYearPicker', 'yearPickerDefaults');
     },
 
-    setTitleText: function(text, date, oldDate, animate) {
-        var me = this,
-            title, direction;
-
-        if (me.destroying || me.destroyed) {
-            return;
-        }
-
-        if (animate === undefined) {
-            animate = me.getAnimation();
-        }
-
-        animate = me.rendered ? animate : false;
-
-        title = me.getHeader().getTitle();
-
-        if (animate) {
-            direction = (oldDate || date).getTime() < date.getTime() ? 'bottom' : 'top';
-            me.animateVertical(title.textElement, direction, '150%', function() {
-                title.setText(text);
-            }, 'animTitle');
-        } else {
-            title.setText(text);
+    updateYearPicker: function(yearPicker) {
+        if (yearPicker) {
+            this.add(yearPicker);
         }
     },
 
     replacePanes: function(increment, animate) {
         var me = this,
-            panes, cb, direction;
+            panes, cb, direction, ret;
 
         if (me.destroying || me.destroyed) {
             return;
@@ -838,10 +842,12 @@ Ext.define('Ext.panel.Date', {
 
         if (animate) {
             direction = increment < 0 ? 'up' : 'down';
-            me.animateVertical(me.carouselElement, direction, 0, cb, 'animBody');
+            ret = me.animateVertical(me.carouselElement, direction, 0, cb, 'animBody');
         } else {
             cb();
+            ret = Ext.Deferred.getCachedResolved();
         }
+        return ret;
     },
 
     initPanes: function(offset) {
@@ -857,7 +863,7 @@ Ext.define('Ext.panel.Date', {
             panes.push(me.getPaneTemplate((i + offset) - center));
         }
 
-        oldPanes = me.getPaneItems();
+        oldPanes = me.getInnerItems();
 
         for (i = 0; i < oldPanes.length; i++) {
             me.remove(oldPanes[i], true);
@@ -869,7 +875,7 @@ Ext.define('Ext.panel.Date', {
 
     getPaneByDate: function(date) {
         var me = this,
-            panes = me.getPaneItems(),
+            panes = me.getInnerItems(),
             month, pane, i, len;
 
         month = Ext.Date.getFirstDateOfMonth(date);
@@ -892,17 +898,10 @@ Ext.define('Ext.panel.Date', {
     },
 
     updateCellTabIndex: function(date, tabIndex) {
-        var cell = this.getCellByDate(date);
+        var cell = date && this.getCellByDate(date);
 
         if (cell) {
-            cell.setTabIndex(tabIndex);
-
-            if (tabIndex > -1) {
-                this.bodyElement.setTabIndex(null);
-            }
-        }
-        else if (tabIndex > -1) {
-            this.bodyElement.setTabIndex(tabIndex);
+            Ext.fly(cell).setTabIndex(tabIndex);
         }
         return cell;
     },
@@ -948,11 +947,9 @@ Ext.define('Ext.panel.Date', {
         // Assignment is intentional
         if (date.getTime() < (month = layout.getFirstVisibleItem().getMonth()).getTime()) {
             boundary = month;
-        }
-        else if (date.getTime() > (month = layout.getLastVisibleItem().getMonth()).getTime()) {
+        } else if (date.getTime() > (month = layout.getLastVisibleItem().getMonth()).getTime()) {
             boundary = month;
-        }
-        else {
+        } else {
             boundary = date;
         }
 
@@ -979,14 +976,7 @@ Ext.define('Ext.panel.Date', {
             }
         }
 
-        if (Math.abs(increment) === 1) {
-            return me.switchPanes(increment, animate);
-        } else {
-            if (increment !== 0) {
-                me.replacePanes(increment, animate);
-            }
-            return Ext.Deferred.getCachedResolved();
-        }
+        return me.navigateByIncrement(increment, animate, 0);
     },
 
     switchPanes: function(increment, animate) {
@@ -1004,91 +994,80 @@ Ext.define('Ext.panel.Date', {
 
     onMonthToolClick: function(tool) {
         var me = this,
-            panes = me.getPaneItems(),
+            panes = me.getInnerItems(),
+            D = Ext.Date,
             increment = tool.increment,
+            date = D.add(me.getFocusableDate(), D.MONTH, increment),
+            hasFocus = me.hasFocus,
             index, pane, month;
 
         index = me.getCenterIndex();
         pane = panes[index];
 
-        month = Ext.Date.add(pane.getMonth(), Ext.Date.MONTH, increment);
+        month = D.add(pane.getMonth(), D.MONTH, increment);
 
         if (!me.canSwitchTo(month, increment)) {
             return;
         }
 
-        if (Math.abs(increment) <= me.getPanes()) {
-            me.switchPanes(increment);
-        }
-        else {
-            me.refreshCellTabIndex();
-            me.replacePanes(increment);
-        }
-    },
-
-    refreshCellTabIndex: function() {
-        var me = this,
-            focusedDate = me.getFocusedDate(),
-            cell;
-
-        cell = me.updateCellTabIndex(focusedDate, me.getTabIndex());
-
-        // If we had a previously focused cell and switched panes so that
-        // it is no longer in view, there will be no cell to focus.
-        // Unlike keyboard navigation, clicking is allowed to "lose" focus;
-        // in fact it's going to be parked within the bodyElement.
-        if (cell) {
-            cell.focus();
+        me.navIncrement = me.singlePane ? 0 : increment;
+        if (hasFocus || me.getSelectOnNavigate()) {
+            me.setValue(date);
         } else {
-            me.parkFocus();
+            me.doFocus = hasFocus;
+            me.setFocusableDate(date);
+            me.doFocus = false;
         }
+        me.navIncrement = 0;
     },
 
     onDateClick: function(e) {
         var me = this,
-            cell = e.getTarget('.' + Ext.baseCSSPrefix + 'cell', 2);
+            cell = e.getTarget(me.cellSelector, me.bodyElement),
+            date = cell && cell.date,
+            focus = true,
+            disabled = cell && cell.disabled;
 
         // Click could land on element other than date cell
-        if (!cell || !cell.date || me.getDisabled()) {
+        if (!date || me.getDisabled()) {
             return;
         }
 
-        if (!cell.disabled && me.getAutoConfirm()) {
-            me.setValue(cell.date);
+        if (!disabled) {
+            me.setValue(date);
+
+            if (me.getAutoConfirm()) {
+                // Touch events change focus on tap.
+                // Prevent this as we are just about to hide.
+                // PickerFields revert focus to themselves in a beforehide handler.
+                if (e.pointerType === 'touch') {
+                    e.preventDefault();
+                }
+                focus = false;
+                me.fireEvent('select', me, date);
+            }
         }
 
-        // Clicking on a date should focus its cell even if the date is disabled.
-        // Setting the value could have destroyed the picker, so need to check.
-        if (!me.destroyed) {
-            me.setFocusedDate(cell.date);
+        if (focus) {
+            // Even though setValue might focus the date, we may
+            // either be in a position where the date is disabled
+            // or already set.
+            me.focusDate(date);
         }
     },
 
     onMouseWheel: function (e) {
-        var me = this,
-            dy = e.browserEvent.deltaY,
-            elapsed;
+        var dy = e.browserEvent.deltaY;
 
-        if (dy) {
-            // Some browsers/platforms like desktop Mac will send a lot of
-            // wheel events in sequence, causing very rapid calendar transitions.
-            // Buffering the event causes delayed scrolling that we don't want
-            // so instead we do reverse buffering: react to the first event
-            // and then ignore the rest within some fixed buffer time.
-            elapsed = me.mouseWheelTime ? e.timeStamp - me.mouseWheelTime : 1000;
-
-            if (elapsed > me.mouseWheelBuffer) {
-                me.mouseWheelTime = e.timeStamp;
-                me.onMonthToolClick({
-                    increment: dy < 0 ? -1 : 1
-                });
-            }
+        if (dy && !this.pickerVisible) {
+            this.onMonthToolClick({
+                increment: Math.sign(dy)
+            });
         }
     },
 
     onOkButtonClick: function() {
-        // We always have a focused date
-        this.setValue(this.getFocusedDate());
+        this.setValue(this.getFocusableDate());
     },
 
     onCancelButtonClick: function() {
@@ -1097,10 +1076,9 @@ Ext.define('Ext.panel.Date', {
 
     onTodayButtonClick: function() {
         var me = this,
-            frontPane, offset;
+            offset;
 
-        frontPane = me.getLayout().getFrontItem();
-        offset = frontPane.getMonthOffset();
+        offset = me.getLayout().getFrontItem().getMonthOffset();
 
         if (offset !== 0) {
             // This looks smoother if switchPane is used
@@ -1111,16 +1089,15 @@ Ext.define('Ext.panel.Date', {
             }
         }
 
-        me.setFocusedDate(Ext.Date.clearTime(new Date()));
+        me.setValue(Ext.Date.clearTime(new Date()));
     },
 
     getFocusEl: function() {
         if (!this.initialized) {
             return null;
         }
-        var date = this.getFocusedDate();
 
-        return date ? this.getCellByDate(this.getFocusedDate()) : this.el;
+        return this.getCellByDate(this.getFocusableDate());
     },
 
     onLeftArrowKey: function(e) {
@@ -1185,10 +1162,12 @@ Ext.define('Ext.panel.Date', {
     },
 
     onEnterKey: function(e) {
-        var target = e.target;
+        var target = e.target,
+            date = target && target.date;
 
-        if (target && target.date && !target.disabled) {
-            this.setValue(target.date);
+        if (date && !target.disabled) {
+            this.setValue(date);
+            this.fireEvent('select', this, target.date);
         }
     },
 
@@ -1239,32 +1218,29 @@ Ext.define('Ext.panel.Date', {
             newDate;
 
         if (!me.getDisabled()) {
-            // The event can come from focus parking element
-            date = date || me.getFocusedDate();
+            date = me.getFocusableDate();
             newDate = unit ? Ext.Date.add(date, unit, increment) : date;
 
-            me.setFocusedDate(newDate);
+            if (me.isDateDisabled(newDate)) {
+                me.focusDate(newDate);
+            } else {
+                me.setValue(newDate);
+            }
         }
     },
 
     onBodyFocus: function(e) {
-        var date, cell;
-
-        date = this.getFocusedDate() || Ext.Date.clearTime(new Date());
-        cell = this.getCellByDate(date);
+        var me = this,
+            date = me.getFocusableDate(),
+            cell = me.getCellByDate(date);
 
         // Make sure there is a focusable cell in the view
         if (!cell) {
-            this.navigateTo(date);
+            me.navigateTo(date, false);
         }
 
-        cell = this.updateCellTabIndex(date, this.getTabIndex());
-
-        this.focusCell(cell);
-    },
-
-    parkFocus: function() {
-        this.focusParkingElement.focus();
+        cell = me.updateCellTabIndex(date, me.getTabIndex());
+        cell.focus();
     },
 
     getTabIndex: function() {
@@ -1286,21 +1262,105 @@ Ext.define('Ext.panel.Date', {
     },
 
     onFocusLeave: function(e) {
-        // Must clear our value on blur to clear the selected rendition
-        // and also to allow DO focusing to proceed next time in case the
-        // same value is requested to take focus.
-        this.setFocusedDate(null);
         this.onBlur(e);
         this.callParent([e]);
     },
 
     privates: {
+        cellSelector: '.' + Ext.baseCSSPrefix + 'cell',
         clonedCls: Ext.baseCSSPrefix + 'cloned',
+        lastNavigate: 0,
+        hideFocusCls: Ext.baseCSSPrefix + 'hide-focus',
         selectedCls: Ext.baseCSSPrefix + 'selected',
+        toolList: ['navigatePrevMonth', 'navigatePrevYear', 'navigateNextYear', 'navigateNextMonth'],
+
+        paneWidthMap: {},
+        pickerVisible: false,
+
+        applyFocusableDate: function(date) {
+            var me = this,
+                D = Ext.Date,
+                boundary;
+
+            // Null is a valid value to set onFocusLeave in order to clear the focused cell
+            // and allow the value to be set the next time the panel is displayed.
+            if (date) {
+                // Should check default value (today) as well, it could be that
+                // allowed selection is in the past or in the future.
+                date = D.clearTime(date || new Date());
+
+                if ((boundary = me.getMinDate()) && !me.getShowBeforeMinDate() &&
+                    date.getTime() < boundary.getTime()) {
+                    date = boundary;
+                }
+                else if ((boundary = me.getMaxDate()) && !me.getShowAfterMaxDate() &&
+                    date.getTime() > boundary.getTime()) {
+                    date = boundary;
+                }
+            }
+
+            return date;
+        },
+
+        updateFocusableDate: function(date, oldDate) {
+            var me = this,
+                focus = me.doFocus,
+                layout = me.getLayout(),
+                cls = me.hideFocusCls,
+                increment = me.navIncrement,
+                visibleItems, toPane, anim, navigate, oldCell, p;
+
+            if (me.destroying || me.destroyed) {
+                return;
+            }
+
+            if (oldDate) {
+                oldCell = me.getCellByDate(oldDate);
+                me.updateCellTabIndex(oldDate, -1);
+            }
+
+            if (date) {
+                toPane = me.getPaneByDate(date);
+
+                if (!me.preventAnim) {
+                    anim = me.getAnimation();
+                }
+
+                visibleItems = layout.getVisibleItems();
+
+                // New date will be immediately visible, or is in same pane.
+                // Simply activate the pane and focus. Do not animate title change.
+                me.lastNavigate = navigate = Date.now();
+                if (!increment && (!anim || visibleItems.indexOf(toPane) > -1)) {
+                    me.navigateTo(date, false);
+                    if (focus) {
+                        me.getCellByDate(date).focus();
+                    }
+                } else {
+                    // Temporarily remove the focus styling while we're moving away
+                    if (oldCell) {
+                        Ext.fly(oldCell).addCls(cls);
+                    }
+                    p = increment ? me.navigateByIncrement(increment) : me.navigateTo(date);
+                    p.then(function() {
+                        oldCell = me.getCellByDate(oldDate);
+                        if (oldCell) {
+                            Ext.fly(oldCell).removeCls(cls);
+                        }
+                        // Make sure the frontItem hasn't changed
+                        if (focus && me.lastNavigate === navigate) {
+                            me.getCellByDate(date).focus();
+                        }
+                    });
+                }
+                me.updateCellTabIndex(date, me.getTabIndex());
+            }
+        },
 
         animateVertical: function(el, direction, offset, beforeFn, prop) {
             var me = this,
-                clone = el.dom.cloneNode(true);
+                clone = el.dom.cloneNode(true),
+                ret = new Ext.Deferred();
 
             clone.id = '';
 
@@ -1327,28 +1387,255 @@ Ext.define('Ext.panel.Date', {
                 callback: function() {
                     Ext.fly(clone).destroy();
                     me[prop] = null;
+                    ret.resolve();
                 }
             }]);
+
+            return ret.promise;
         },
 
-        cachePaneWidth: function(pane) {
-            var container = new Ext.Container({
-                cls: this.classCls,
-                items: [this.getPaneTemplate(0)]
-            });
+        broadcastConfig: function(config, value) {
+            if (this.isConfiguring) {
+                return;
+            }
 
-            container.el.setStyle({
-                position: 'absolute',
-                top: '-10000px',
-                'border-width': 0
-            });
+            var panes = this.getInnerItems(),
+                setter, pane, i, len;
 
-            container.render(Ext.getBody());
+            setter = Ext.Config.get(config).names.set;
 
-            pane = container.down(this.paneXtype);
+            for (i = 0, len = panes.length; i < len; i++) {
+                pane = panes[i];
 
-            this.self.prototype.$paneWidth = parseInt(window.getComputedStyle(pane.el.dom).width);
-            Ext.destroy(container);
+                if (pane[setter]) {
+                    pane[setter](value);
+                }
+            }
+        },
+
+        createYearPicker: function(config) {
+            return Ext.apply({
+                xtype: 'yearpicker',
+                hidden: true,
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+                listeners: {
+                    yeartap: 'onYearPickerTap'
+                }
+            }, config);
+        },
+
+        getCenterIndex: function() {
+            var count = this.getPanes(),
+                index = count - 1;
+
+            return !index ? index : index % 2 ? Math.floor(index / 2) + 1 : Math.floor(index / 2);
+        },
+
+        getPaneTemplate: function(offset) {
+            var me = this;
+
+            return {
+                xtype: me.paneXtype,
+                monthOffset: offset,
+                hideOutside: me.getHideOutside(),
+                hideCaption: me.getHideCaptions(),
+                startDay: me.getStartDay(),
+                weekendDays: me.getWeekendDays(),
+                specialDates: me.getSpecialDates(),
+                specialDays: me.getSpecialDays(),
+                format: me.getFormat(),
+                captionFormat: me.getCaptionFormat(),
+                dateCellFormat: me.getDateCellFormat(),
+                headerLength: me.getHeaderLength(),
+                transformCellCls: me.transformCellCls
+            };
+        },
+
+        getPositionedItemTarget: function () {
+            return this.bodyElement;
+        },
+
+        isDateDisabled: function(date) {
+            var me = this,
+                ms = date.getTime(),
+                minDate = me.getMinDate(),
+                maxDate = me.getMaxDate(),
+                disabled = false,
+                disabledDays, disabledDates, formatted, re;
+
+            disabled = (minDate && ms < minDate.getTime()) || (maxDate && ms > maxDate.getTime());
+
+            if (!disabled) {
+                disabledDays = me.getDisabledDays();
+                if (disabledDays) {
+                    disabled = disabledDays[date.getDay()];
+                }
+            }
+
+            if (!disabled) {
+                disabledDates = me.getDisabledDates();
+                if (disabledDates) {
+                    disabled = disabledDates.dates[ms];
+                    re = disabledDates.re;
+                    if (!disabled && re) {
+                        formatted = Ext.Date.format(date, me.getFormat());
+                        disabled = re.test(formatted);
+                    }
+                }
+            }
+
+            return !!disabled;
+        },
+
+        measurePaneSize: function() {
+            var me = this,
+                count = me.getPanes(),
+                ui = me.getUi() || 'default',
+                map = me.paneWidthMap,
+                borderWidth;
+
+            // Okay this is a hack but will do for now because Carousel layout
+            // needs the container to be widthed
+            if (!map.hasOwnProperty(ui)) {
+                map[ui] = this.getLayout().getFrontItem().measurePaneSize();
+            }
+
+            borderWidth = me.el.getBorderWidth('lr');
+            me.setWidth(borderWidth + count * map[ui]);
+        },
+
+        navigateByIncrement: function(increment, animate) {
+            var ret;
+
+            if (Math.abs(increment) === 1) {
+                ret = this.switchPanes(increment, animate);
+            } else {
+                if (increment !== 0) {
+                    ret = this.replacePanes(increment, animate);
+                } else if (!animate) {
+                    this.getLayout().cancelAnimation();
+                    ret = Ext.Deferred.getCachedResolved();
+                }
+            }
+            return ret;
+        },
+
+        onTitleTap: function() {
+            var visible;
+
+            if (this.getSplitTitle()) {
+                visible = false;
+            } else {
+                visible = !this.pickerVisible;
+            }
+            this.toggleYearPicker(visible);
+        },
+
+        onYearPickerTap: function(picker, year) {
+            this.toggleYearPicker(false);
+            var d = Ext.Date.clone(this.getFocusableDate());
+            d.setFullYear(year);
+            this.setValue(d);
+        },
+
+        onYearTitleTap: function() {
+            this.toggleYearPicker(!this.pickerVisible);
+        },
+
+        refreshPanes: function() {
+            if (this.isConfiguring) {
+                return;
+            }
+
+            var panes = this.getPanes(),
+                len = panes.length,
+                i;
+
+            for (i = 0; i < len; ++i) {
+                panes[i].refresh();
+            }
+        },
+
+        setTitleByDate: function(date) {
+            var me = this,
+                prev = me.lastTitleDate,
+                anim;
+
+            if (prev && prev.getTime() === date.getTime()) {
+                anim = false;
+            }
+
+            me.setTitleText(Ext.Date.format(date, me.getHeaderFormat()), date, prev, anim);
+
+            me.lastTitleDate = date;
+        },
+
+        setTitleText: function(text, date, oldDate, animate) {
+            var me = this,
+                title, direction, titleAnim;
+
+            if (me.destroying || me.destroyed) {
+                return;
+            }
+
+            if (animate === undefined) {
+                titleAnim = me.getTitleAnimation();
+                if (titleAnim !== null) {
+                    animate = titleAnim;
+                } else {
+                    animate = me.getAnimation();
+                }
+            }
+
+            animate = me.rendered ? animate : false;
+
+            title = me.getHeader().getTitle();
+
+            if (animate) {
+                //<debug>
+                if (me.getSplitTitle()) {
+                    Ext.raise('Animation is not supported with title split');
+                }
+                //</debug>
+                direction = (oldDate || date).getTime() < date.getTime() ? 'bottom' : 'top';
+                me.animateVertical(title.textElement, direction, '150%', function() {
+                    title.setText(text);
+                }, 'animTitle');
+            } else {
+                if (me.getSplitTitle()) {
+                    title.setYear(date.getFullYear());
+                    title.setText(text);
+                } else {
+                    title.setText(text);
+                }
+            }
+        },
+
+        setToolText: function(type, text) {
+            var tool = this.lookup(type);
+
+            if (tool) {
+                tool.setTooltip(text);
+            }
+        },
+
+        toggleYearPicker: function(visible) {
+            var me = this,
+                picker = me.getYearPicker();
+
+            if (picker) {
+                if (me.getSplitTitle()) {
+                    me.getHeader().getTitle().setTitleActive(!visible);
+                }
+                picker.setHidden(!visible);
+                if (visible) {
+                    picker.focusYear(me.getFocusableDate().getFullYear());
+                }
+                me.pickerVisible = visible;
+            }
         }
     }
 });

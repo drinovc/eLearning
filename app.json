@@ -51,6 +51,10 @@
          "includeInBundle": true
       },
       {
+         "path": "database.js",
+         "includeInBundle": true
+      },
+      {
          "path": "app.js",
          "bundle": true
       }

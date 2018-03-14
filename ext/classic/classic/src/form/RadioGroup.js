@@ -319,10 +319,9 @@ Ext.define('Ext.form.RadioGroup', {
             for (i = 0, len = items.length; i < len; ++i) {
                 cmp = items.items[i];
 
-                if (cmp.inputValue === value) {
-                    cmp.setValue(true);
-                    break;
-                }
+                cmp.$groupChange = true;
+                cmp.setValue(cmp.inputValue === value);
+                delete cmp.$groupChange;
             }
         }
         else if (Ext.isObject(value)) {
