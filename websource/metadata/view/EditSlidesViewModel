@@ -1,0 +1,46 @@
+{
+    "type": "Ext.app.ViewModel",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "editslides",
+        "designer|userClassName": "EditSlidesViewModel"
+    },
+    "configAlternates": {
+        "designer|userAlias": "string",
+        "designer|userClassName": "string"
+    },
+    "designerId": "e003305b-d8cd-4ae1-9a89-33526cc237da",
+    "cn": [
+        {
+            "type": "Ext.data.TreeStore",
+            "reference": {
+                "name": "stores",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "defaultRootText": "Slides",
+                "model": "Slide",
+                "name": "TreeStoreSlides",
+                "root": [
+                    "{",
+                    "    expanded: true,",
+                    "    children: []",
+                    "}"
+                ]
+            },
+            "configAlternates": {
+                "model": "model",
+                "name": "string",
+                "root": "object",
+                "defaultRootText": "string"
+            },
+            "name": "MyTreeStore",
+            "designerId": "b2f37da4-75d4-40f1-a493-a97a697efefb"
+        }
+    ]
+}

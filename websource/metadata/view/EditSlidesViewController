@@ -1,0 +1,1174 @@
+{
+    "type": "Ext.app.ViewController",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "editslides",
+        "designer|userClassName": "EditSlidesViewController"
+    },
+    "configAlternates": {
+        "designer|userAlias": "string",
+        "designer|userClassName": "string"
+    },
+    "designerId": "2b4061c2-eb58-419f-b864-9ad1d450e59a",
+    "cn": [
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "opts"
+                ],
+                "fn": "load",
+                "implHandler": [
+                    "opts = Ext.applyIf(opts || {}, {",
+                    "    program: null",
+                    "});",
+                    "",
+                    "var me = this,",
+                    "    refs = me.getReferences();",
+                    "",
+                    "refs.panelHeader.setTitle(opts.program.get('name'));"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "load",
+            "designerId": "3a109293-4c40-4ae9-b70b-a9e4862c5a6d"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "newSection",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    store = me.getStore('TreeStoreSlides');",
+                    "",
+                    "var data = {",
+                    "    id: createGUID(),",
+                    "    sequence: null,",
+                    "    title: 'New Section',",
+                    "    content: null,",
+                    "    expanded: true,",
+                    "    children: []",
+                    "};",
+                    "",
+                    "var parentNode = /*refs.treeSlides.getSelection()[0] ||*/ store.getRoot();",
+                    "",
+                    "slide = parentNode.appendChild(data);",
+                    "refs.treeSlides.setSelection(slide);",
+                    "",
+                    "//me.saveSlideState(slide);"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "newSection",
+            "designerId": "38a76c16-9fd4-47cd-a852-2c0c3a0d563b"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "newSlide",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    store = me.getStore('TreeStoreSlides'),",
+                    "    parentNode = refs.treeSlides.getSelection()[0] || store.getRoot(),",
+                    "    slide,",
+                    "    data = {",
+                    "        id: createGUID(),",
+                    "        // sequence: sequence,",
+                    "        title: 'New Slide', // + sequence,",
+                    "        content: null,",
+                    "        expanded: true,",
+                    "        leaf: true",
+                    "    };",
+                    "",
+                    "if(parentNode.isLeaf()) {",
+                    "    parentNode = parentNode.parentNode;",
+                    "}",
+                    "",
+                    "slide = parentNode.appendChild(data);",
+                    "refs.treeSlides.setSelection(slide);",
+                    "",
+                    "me.saveSlideState(slide);"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "newSlide",
+            "designerId": "e32a7673-ef8a-4a0e-ba19-619cae353298"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "slide"
+                ],
+                "fn": "deleteSlide",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    store = me.getStore('TreeStoreSlides');",
+                    "",
+                    "slide = slide || me.getCurrentSlide();",
+                    "",
+                    "if(slide) {",
+                    "    var nextSlideIdx = store.indexOf(slide) - 1,",
+                    "        nextSlide = store.getAt(nextSlideIdx >= 0 ? nextSlideIdx : 1),",
+                    "        components = (Ext.decode(slide.get('content') || '{}').components);",
+                    "",
+                    "    if(components && components.length > 0) {",
+                    "        Ext.Msg.confirm('Delete slide', 'Are you sure?', function(btn) {",
+                    "            if(btn == 'yes') {",
+                    "                store.remove(slide);",
+                    "                me.clearSlidePanel();",
+                    "                refs.treeSlides.setSelection(nextSlide);",
+                    "            }",
+                    "        });",
+                    "    }",
+                    "    else {",
+                    "        store.remove(slide);",
+                    "        me.clearSlidePanel();",
+                    "        refs.treeSlides.setSelection(nextSlide);",
+                    "    }",
+                    "}"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "deleteSlide",
+            "designerId": "33300d93-ac72-4d38-927b-db4ac63f130b"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "getCurrentSlide",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences();",
+                    "",
+                    "return refs.treeSlides.getSelection()[0];"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "getCurrentSlide",
+            "designerId": "24e57403-64fb-41f8-bd2a-9a198d0627ec"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "nextSlide",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    store = me.getStore('TreeStoreSlides'),",
+                    "    slide = me.getCurrentSlide(),",
+                    "    nextSlideIdx = store.indexOf(slide) + 1,",
+                    "    nextSlide = store.getAt(nextSlideIdx);",
+                    "",
+                    "if(nextSlide) {",
+                    "    refs.treeSlides.setSelection(nextSlide);",
+                    "}"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "nextSlide",
+            "designerId": "0d0caea7-be3a-455b-8d67-be9a6795fbf2"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "prevSlide",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    store = me.getStore('TreeStoreSlides'),",
+                    "    slide = me.getCurrentSlide(),",
+                    "    nextSlideIdx = store.indexOf(slide) - 1,",
+                    "    nextSlide = store.getAt(nextSlideIdx);",
+                    "",
+                    "if(nextSlide) {",
+                    "    refs.treeSlides.setSelection(nextSlide);",
+                    "}"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "prevSlide",
+            "designerId": "1e7865c4-3bf9-4485-9dcb-6fc8fd37d7c8"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "src"
+                ],
+                "fn": "setBackground",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences();",
+                    "",
+                    "me._pageSetup.background = src;",
+                    "",
+                    "if(src) {",
+                    "    Ext.getCmp('panelContent').setStyle('background', 'url(' + src + ')');",
+                    "}",
+                    "else {",
+                    "    Ext.getCmp('panelContent').setStyle('background', null);",
+                    "}"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "setBackground",
+            "designerId": "c2dc4a53-5bcd-4cb5-86d7-e77e1bccd594"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "preview"
+                ],
+                "fn": "togglePreview",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences();",
+                    "",
+                    "refs.panelMenu.setVisible(!preview);",
+                    "refs.toolbarEdit.setVisible(!preview);",
+                    "refs.toolbarPreview.setVisible(!!preview);",
+                    "refs.panelContent[preview ? 'removeCls' : 'addCls']('edit');",
+                    "refs.panelContent[preview ? 'addCls' : 'removeCls']('preview');",
+                    "",
+                    "refs.panelSlide.setMargin(preview ? '10' : '10 10 10 0');",
+                    "",
+                    "if(preview) {",
+                    "    me.saveSlideState(me.getCurrentSlide());",
+                    "    refs.treeSlides.setSelection(refs.treeSlides.store.getAt(0));",
+                    "}"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "togglePreview",
+            "designerId": "afda5c45-be0f-4f17-88e9-9fcb15340d19"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "getFreePosition",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    snap = me._pageSetup.snap,",
+                    "    pos = {",
+                    "        x: snap*2,",
+                    "        y: snap*2,",
+                    "        width: me.round(refs.panelContent.el.getWidth() - 2*snap*2),",
+                    "        height: snap*2",
+                    "    };",
+                    "",
+                    "Ext.each(refs.panelContent.el.query('.html-component'), function(component) {",
+                    "    pos.y = me.round(Math.max(pos.y, component.y + component.height + snap));",
+                    "});",
+                    "",
+                    "return pos;"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "getFreePosition",
+            "designerId": "226b6e3c-994a-4b9c-87fc-595c670177af"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "getSlideComponents",
+                "implHandler": [
+                    "return this.getReferences().panelContent.el.query('.html-component');"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "getSlideComponents",
+            "designerId": "60310b0e-9aff-4e1d-89ce-0196b04f74d9"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "getCurrentState",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    slides = Ext.clone(Ext.pluck(refs.treeSlides.store.getRange(), 'data')).map(function(node) { return cleanTreeNodeData(node); });",
+                    "    data = {",
+                    "        slides: slides,",
+                    "        pageSetup: me._pageSetup",
+                    "    };",
+                    "",
+                    "return data;"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "getCurrentState",
+            "designerId": "3f6a4f62-018d-49c9-b824-31b121807d3b"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "slide"
+                ],
+                "fn": "saveSlideState",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    content = {",
+                    "        components: []",
+                    "    };",
+                    "",
+                    "slide = slide || me.getCurrentSlide();",
+                    "",
+                    "if(slide) {",
+                    "",
+                    "    Ext.each(me.getSlideComponents(), function(component) {",
+                    "        content.components.push(component._opts);",
+                    "    });",
+                    "",
+                    "    slide.set('content', Ext.encode(content));",
+                    "",
+                    "    // save state to offline storage - switch to indexdb at some point?",
+                    "    localStorage.setItem('mxp_elearning_slide', Ext.encode(me.getCurrentState()));",
+                    "}"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "saveSlideState",
+            "designerId": "a7888461-de59-4b11-9e34-9a3176f91dc4"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "slide"
+                ],
+                "fn": "loadSlideState",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    parentEl = refs.panelContent.el.down('#html-slide');",
+                    "",
+                    "me.clearSlidePanel();",
+                    "",
+                    "if(slide) {",
+                    "    var content = Ext.decode(slide.get('content') || '{}');",
+                    "",
+                    "    Ext.each(content.components, function(component) {",
+                    "        this.insertComponent(component);",
+                    "    }, this);",
+                    "",
+                    "    me._selectedComponent = null;",
+                    "}"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "loadSlideState",
+            "designerId": "195e5c5e-5bd3-4c30-af87-d0c2cb6c6a33"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "clearSlidePanel",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    parentEl = refs.panelContent.el.down('#html-slide');",
+                    "",
+                    "me.hideComponentTools();",
+                    "",
+                    "Ext.each(parentEl.query('.html-component'), function(component) {",
+                    "    parentEl.removeChild(component);",
+                    "}, this);"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "clearSlidePanel",
+            "designerId": "307a5cc0-e37a-4cce-8bb3-c1f5a9f42a38"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "item"
+                ],
+                "fn": "addComponentListeners",
+                "implHandler": [
+                    "var me = this,",
+                    "",
+                    "item = Ext.get(item);",
+                    "",
+                    "item.on('click', function(e, t) {",
+                    "    var prevItem = me._selectedComponent;",
+                    "    ",
+                    "    if(prevItem) {        ",
+                    "        me._selectedComponent.removeCls('selected');",
+                    "        if(me._tools) {",
+                    "            me._tools = null;",
+                    "        }",
+                    "        ",
+                    "        if(prevItem == item) {",
+                    "            me.hideComponentTools();",
+                    "            me._selectedComponent = null;",
+                    "            return;",
+                    "        }",
+                    "    }",
+                    "    me._selectedComponent = item;",
+                    "    me._selectedComponent.addCls('selected');",
+                    "    me.showComponentTools(item);",
+                    "});",
+                    "",
+                    "item.on('dblclick', function(e, t) {",
+                    "    me.editComponent(item);",
+                    "});",
+                    "",
+                    "item.on('_edit', function(e, t) {",
+                    "    me.editComponent(item);",
+                    "});",
+                    "",
+                    "item.on('_duplicate', function(e, t) {",
+                    "    me.duplicateComponent(item);",
+                    "});",
+                    "",
+                    "item.on('_delete', function(e, t) {",
+                    "    me.deleteComponent(item);",
+                    "    me.hideComponentTools(item);",
+                    "});"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "addComponentListeners",
+            "designerId": "7bf3e380-e8e4-4de7-be94-514ca84c1fdc"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "component"
+                ],
+                "fn": "showComponentTools",
+                "implHandler": [
+                    "var me = this;",
+                    "",
+                    "if(!me._componentTools) {",
+                    "    me._componentTools = me.getView().add({ xtype: 'edittools' });",
+                    "}",
+                    "me._componentTools.getController().show({ component: component });"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "showComponentTools",
+            "designerId": "b44eeee3-6928-4582-a8f8-fdda95781ce8"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "component"
+                ],
+                "fn": "hideComponentTools",
+                "implHandler": [
+                    "var me = this;",
+                    "",
+                    "if(!me._componentTools) {",
+                    "    me._componentTools = me.getView().add({ xtype: 'edittools' });",
+                    "}",
+                    "me._componentTools.close();"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "hideComponentTools",
+            "designerId": "0e46b6d4-ce5e-4aa5-906d-d600242515f7"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "opts"
+                ],
+                "fn": "insertComponent",
+                "implHandler": [
+                    "opts = Ext.applyIf(opts || {}, {",
+                    "    type: null,",
+                    "    height: null,",
+                    "    width: null,",
+                    "    x: null,",
+                    "    y: null,",
+                    "    html: '',",
+                    "    options: [],",
+                    "    multi: false,",
+                    "    src: '',",
+                    "    cls: null,",
+                    "    style: null",
+                    "});",
+                    "",
+                    "if(!opts.type) {",
+                    "    Ext.Msg.alert('Error', 'No component type');",
+                    "}",
+                    "",
+                    "if(opts.cls && typeof opts.cls == \"string\") {",
+                    "    opts.cls = [opts.cls];",
+                    "}",
+                    "",
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    pos = me.getFreePosition(),",
+                    "    snap = me._pageSetup.snap,",
+                    "    parentEl = refs.panelContent.el.down('#html-slide'),",
+                    "    cmp = document.createElement('div');",
+                    "",
+                    "if(!me.getCurrentSlide()) {",
+                    "    me.newSlide();",
+                    "}",
+                    "",
+                    "// set size",
+                    "// if(opts.type == 'image' && opts.src) {",
+                    "//     // determine image size",
+                    "//     var img = new Image();",
+                    "",
+                    "//     img.onload = function() {",
+                    "//         cmp.width = me.round(isNull(opts.width, img.width));",
+                    "//         cmp.height = me.round(isNull(opts.height, img.height));",
+                    "//         cmp.style.width = cmp.width + 'px';",
+                    "//         cmp.style.height = cmp.height + 'px';",
+                    "//     };",
+                    "//     img.src = opts.src;",
+                    "",
+                    "//     // show image as background",
+                    "//      cmp.style.backgroundImage = 'url(' + opts.src + ')';",
+                    "// }",
+                    "// else {",
+                    "    cmp.width = opts.width = me.round(isNull(opts.width, pos.width));",
+                    "    cmp.height = opts.height = me.round(isNull(opts.height, pos.height));",
+                    "    cmp.style.width = cmp.width + 'px';",
+                    "    cmp.style.height = cmp.height + 'px';",
+                    "// }",
+                    "",
+                    "// set classes",
+                    "cmp.classList.add('html-component');",
+                    "",
+                    "// set position",
+                    "cmp.x = opts.x = isNull(opts.x, pos.x);",
+                    "cmp.y = opts.y = isNull(opts.y, pos.y);",
+                    "",
+                    "cmp.style.left = cmp.x + 'px';",
+                    "cmp.style.top = cmp.y + 'px';",
+                    "",
+                    "// set content",
+                    "var content = document.createElement('div');",
+                    "var html = opts.html;",
+                    "",
+                    "content.classList.add('html-content');",
+                    "Ext.each(opts.cls, function(cls) { content.classList.add(cls); });",
+                    "",
+                    "if(opts.type == me.cmpTypes.SELECTION && opts.options) {",
+                    "    html = '<div clas=\"text\">' + html + '</div>';",
+                    "",
+                    "    Ext.each(opts.options, function(option) {",
+                    "        var cls = ['option', (opts.multi ? 'check' : 'radio')];",
+                    "",
+                    "        if(option.correct) {",
+                    "            cls.push('correct');",
+                    "        }",
+                    "        html += '<div class=\"' + cls.join(' ') + '\">' + option.text + '</div>';",
+                    "    });",
+                    "}",
+                    "",
+                    "if(opts.type == me.cmpTypes.IMAGE && opts.src) {",
+                    "    content.style.backgroundImage = 'url(' + opts.src + ')';",
+                    "}",
+                    "",
+                    "content.innerHTML = html;",
+                    "content = cmp.appendChild(content);",
+                    "",
+                    "cmp = parentEl.dom.appendChild(cmp);",
+                    "",
+                    "cmp._opts = opts;",
+                    "cmp.type = opts.type;",
+                    "Ext.get(cmp)._opts = opts;",
+                    "Ext.get(cmp).type = opts.type;",
+                    "",
+                    "cmp._dragger = new Ext.drag.Source({",
+                    "    element: Ext.get(cmp),",
+                    "    constrain: {",
+                    "        element: parentEl,",
+                    "        snap: {",
+                    "            x: snap,",
+                    "            y: snap",
+                    "        },",
+                    "    },",
+                    "    listeners: {",
+                    "        beforedragstart: function(component, info, event, eOpts) {",
+                    "            if(info.eventTarget.classList.contains('x-resizable-handle')) {",
+                    "                return false;",
+                    "            }",
+                    "        },",
+                    "        dragcancel: function(component, info, event, eOpts) {",
+                    "            console.log('dragcancel', arguments);",
+                    "        },",
+                    "        dragend: function(component, info, event, eOpts) {",
+                    "            console.log('dragend', arguments);",
+                    "        },",
+                    "        dragmove: function(component, info, event, eOpts) {",
+                    "            var pos = info.element.current,",
+                    "                x = pos.x - parentEl.getX(),",
+                    "                y = pos.y - parentEl.getY();",
+                    "",
+                    "            cmp._opts.x = x;",
+                    "            cmp._opts.y = y;",
+                    "//             console.log(Ext.String.format('dragmove X: {0}, Y: {1}', x, y));",
+                    "        },",
+                    "        dragstart: function(component, info, event, eOpts) {",
+                    "            console.log('dragstart', arguments);",
+                    "        }",
+                    "    }",
+                    "});",
+                    "",
+                    "cmp._resizer = Ext.create('Ext.create', 'Ext.resizer.Resizer', {",
+                    "    target: Ext.get(cmp),",
+                    "    //pinned:true,",
+                    "    minWidth: snap,",
+                    "    minHeight: snap,",
+                    "    heightIncrement: snap,",
+                    "    widthIncrement: snap,",
+                    "    preserveRatio: false,",
+                    "    dynamic:true,",
+                    "    transparent: false,",
+                    "    handles: 'all', // shorthand for 'n s e w ne nw se sw'",
+                    "    listeners: {",
+                    "        resize: function(component, width, height, e, eOpts) {",
+                    "            cmp.width = width;",
+                    "            cmp.height = height;",
+                    "",
+                    "            cmp._opts.width = width;",
+                    "            cmp._opts.height = height;",
+                    "//             console.log(Ext.String.format('W: {0}, H: {1}', width, height));",
+                    "        }",
+                    "    }",
+                    "});",
+                    "",
+                    "me.addComponentListeners(cmp);",
+                    "me.saveSlideState();",
+                    "",
+                    "return Ext.get(cmp);"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "insertComponent",
+            "designerId": "4bea683f-3541-4c56-b342-b7e4d7fd9cfe"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "component"
+                ],
+                "fn": "editComponent",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences();",
+                    "",
+                    "component = component || me._selectedComponent;",
+                    "",
+                    "if(component) {",
+                    "    if(component.type == me.cmpTypes.SELECTION) {",
+                    "        me.editSelection(component);",
+                    "    }",
+                    "    else {",
+                    "        var wnd = me.getView().add({ xtype: 'texteditor' });",
+                    "",
+                    "        wnd.getController().show({",
+                    "            value: component.el.down('.html-content').dom.innerHTML,",
+                    "            callback: function(value) {",
+                    "                component.el.down('.html-content').dom.innerHTML = value;",
+                    "                component._opts.html = value;",
+                    "                me.saveSlideState();",
+                    "            },",
+                    "            scope: me",
+                    "        });",
+                    "    }",
+                    "}"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "editComponent",
+            "designerId": "a65c2699-c344-4ab7-8c79-bb207a231277"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "component"
+                ],
+                "fn": "duplicateComponent",
+                "implHandler": [
+                    "var opts = Ext.clone(component._opts);",
+                    "",
+                    "delete opts.x;",
+                    "delete opts.y;",
+                    "",
+                    "var cmp = this.insertComponent(opts);",
+                    "",
+                    "cmp.fireEvent('click');"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "duplicateComponent",
+            "designerId": "3126b221-befa-401b-a454-eb2827a15a01"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "component"
+                ],
+                "fn": "deleteComponent",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = this.getReferences();",
+                    "",
+                    "component = component || me._selectedComponent;",
+                    "",
+                    "if(component) {",
+                    "    me._selectedComponent.destroy();",
+                    "    me._selectedComponent = null;",
+                    "    me.saveSlideState();",
+                    "}"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code",
+                "designer|params": "typedarray"
+            },
+            "name": "deleteComponent",
+            "designerId": "11abc80f-a362-40c7-b898-1d12d9e03639"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "value"
+                ],
+                "fn": "insertTitle",
+                "implHandler": [
+                    "var me = this,",
+                    "    cmp = me.insertComponent({",
+                    "        type: me.cmpTypes.TITLE,",
+                    "        cls: 'title',",
+                    "        html: value || 'Title',",
+                    "        height: 50",
+                    "    });",
+                    "",
+                    "// me.editComponent(cmp);"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code",
+                "designer|params": "typedarray"
+            },
+            "name": "insertTitle",
+            "designerId": "e2bff152-6385-4d09-9ca3-2c2bf6f3a06d"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "value"
+                ],
+                "fn": "insertText",
+                "implHandler": [
+                    "var me = this,",
+                    "    cmp = me.insertComponent({",
+                    "        type: me.cmpTypes.TEXT,",
+                    "        cls: 'text',",
+                    "        html: value || 'Text',",
+                    "        height: 425",
+                    "    });",
+                    "",
+                    "// me.editComponent(cmp);"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code",
+                "designer|params": "typedarray"
+            },
+            "name": "insertText",
+            "designerId": "81f4b2d3-41d5-4dc6-8e62-9a8e897966a1"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "insertImage",
+                "implHandler": [
+                    "var me = this,",
+                    "    cmp = me.insertComponent({",
+                    "        type: me.cmpTypes.IMAGE,",
+                    "        cls: 'image',",
+                    "        html: '',",
+                    "        src: 'resources/images/example.jpg',",
+                    "        height: 275,",
+                    "    });"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "insertImage",
+            "designerId": "c9ef8514-cd23-4579-b26f-1d1828434836"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "opts"
+                ],
+                "fn": "insertSelection",
+                "implHandler": [
+                    "this.editSelection(null, opts);"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "insertSelection",
+            "designerId": "6e6a6a7a-6d92-436f-be75-91c4b2f30c53"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "component",
+                    "opts"
+                ],
+                "fn": "editSelection",
+                "implHandler": [
+                    "opts = Ext.applyIf(opts || {}, {",
+                    "    multi: false",
+                    "});",
+                    "",
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    state = component && component._opts,",
+                    "    multi = state && state.multi || opts.multi,",
+                    "    wnd = me.getView().add({ xtype: 'selectioneditor' });",
+                    "",
+                    "wnd.getController().show({",
+                    "    text: state && state.html,",
+                    "    options: state && state.options,",
+                    "    multi: multi,",
+                    "    callback: function(text, answers) {",
+                    "",
+                    "        if(answers.length === 0) {",
+                    "            return 'Please specify at least one answer';",
+                    "        }",
+                    "        if(answers.filter(function(item) { return item.correct; }).length === 0) {",
+                    "            return 'Please mark at least one answer as correct';",
+                    "        }",
+                    "        if(!multi && answers.filter(function(item) { return item.correct; }).length > 1) {",
+                    "            return 'Only one correct answer is allowed for single selection';",
+                    "        }",
+                    "",
+                    "        if(component) {",
+                    "            var state = component._opts;",
+                    "",
+                    "            me.deleteComponent(component);",
+                    "            state.html = text;",
+                    "            state.options = answers;",
+                    "",
+                    "            component = me.insertComponent(state);",
+                    "        }",
+                    "        else {",
+                    "            component = me.insertComponent({",
+                    "                type: me.cmpTypes.SELECTION,",
+                    "                cls: 'selection',",
+                    "                html: text,",
+                    "                options: answers,",
+                    "                multi: multi,",
+                    "                height: 100",
+                    "            });",
+                    "        }",
+                    "",
+                    "    },",
+                    "    scope: me",
+                    "});"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "editSelection",
+            "designerId": "0261ee9e-580e-422e-beaf-6dae04f8894c"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "value"
+                ],
+                "fn": "round",
+                "implHandler": [
+                    "var snap = this._pageSetup.snap;",
+                    "",
+                    "return Math.round(value / snap) * snap;"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "round",
+            "designerId": "68f21160-1e1d-4273-b057-a7122cc60c1c"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "ceil",
+                "implHandler": [
+                    "var snap = this._pageSetup.snap;",
+                    "",
+                    "return Math.ceil(value / snap) * snap;"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "ceil",
+            "designerId": "84f0ba85-985a-483e-b25f-43bfec827df1"
+        }
+    ]
+}
