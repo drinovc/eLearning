@@ -1,5 +1,5 @@
 $app-name:  dynamic( 'eLearning' );
-$image-search-path: 'C:/Work/Projekti/eLearning/build/development/eLearning/resources';
+$image-search-path: 'C:/Work/Projekti/eLearning/websource/build/development/eLearning/resources';
 $theme-name:  dynamic( 'theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d' );
 $include-accordionmenu-application: dynamic(true);;
 $include-accordionmenu-store-personnel: dynamic(true);;
@@ -944,6 +944,9 @@ $include-elearning-model-lookup: dynamic(true);;
 $include-elearning-model-option: dynamic(true);;
 $include-elearning-model-program: dynamic(true);;
 $include-elearning-model-slide: dynamic(true);;
+$include-elearning-view-editslides: dynamic(true);;
+$include-elearning-view-editslidesviewcontroller: dynamic(true);;
+$include-elearning-view-editslidesviewmodel: dynamic(true);;
 $include-elearning-view-edittools: dynamic(true);;
 $include-elearning-view-edittoolsviewcontroller: dynamic(true);;
 $include-elearning-view-edittoolsviewmodel: dynamic(true);;

@@ -21,10 +21,10 @@ Ext.define('eLearning.view.Programs', {
         'eLearning.view.ProgramsViewModel',
         'eLearning.view.ProgramsViewController',
         'Ext.view.Table',
-        'Ext.grid.column.Number',
-        'Ext.form.field.Display',
+        'Ext.form.field.ComboBox',
         'Ext.grid.column.Date',
         'Ext.form.field.Date',
+        'Ext.grid.column.Number',
         'Ext.form.field.Number',
         'Ext.grid.column.Check',
         'Ext.form.field.Checkbox',
@@ -50,6 +50,7 @@ Ext.define('eLearning.view.Programs', {
             xtype: 'gridcolumn',
             flex: 1,
             minWidth: 150,
+            cellWrap: true,
             dataIndex: 'name',
             text: 'Name',
             editor: {
@@ -57,20 +58,30 @@ Ext.define('eLearning.view.Programs', {
             }
         },
         {
-            xtype: 'numbercolumn',
+            xtype: 'gridcolumn',
+            renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+
+                console.log('here');
+                return App.lookups.ProgramCategories.filter(function(item) { return item.id == value; })[0].text;
+            },
             minWidth: 150,
+            cellWrap: true,
             dataIndex: 'categoryId',
             text: 'Category',
-            format: '00',
             editor: {
-                xtype: 'displayfield',
-                value: 'Display Field'
+                xtype: 'combobox',
+                queryMode: 'local',
+                valueField: 'id',
+                bind: {
+                    store: '{StoreProgramCategories}'
+                }
             }
         },
         {
             xtype: 'gridcolumn',
             flex: 2,
             minWidth: 200,
+            cellWrap: true,
             dataIndex: 'description',
             text: 'Description',
             editor: {
@@ -129,7 +140,7 @@ Ext.define('eLearning.view.Programs', {
             dataIndex: 'passScore',
             text: 'Pass Score',
             editor: {
-                xtype: 'textfield'
+                xtype: 'numberfield'
             }
         },
         {
@@ -151,7 +162,11 @@ Ext.define('eLearning.view.Programs', {
     ],
     plugins: [
         {
-            ptype: 'rowediting'
+            ptype: 'rowediting',
+            pluginId: 'rowEditing',
+            listeners: {
+                canceledit: 'onRowEditingCanceledit'
+            }
         }
     ],
     dockedItems: [

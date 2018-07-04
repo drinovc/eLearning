@@ -13,34 +13,5 @@
         "designer|userAlias": "string",
         "designer|userClassName": "string"
     },
-    "designerId": "f4941368-9963-4383-b809-d66d6516ffe3",
-    "cn": [
-        {
-            "type": "Ext.data.TreeStore",
-            "reference": {
-                "name": "stores",
-                "type": "array"
-            },
-            "codeClass": null,
-            "userConfig": {
-                "defaultRootText": "Slides",
-                "model": "Slide",
-                "name": "TreeStoreSlides",
-                "root": [
-                    "{",
-                    "    expanded: true,",
-                    "    children: []",
-                    "}"
-                ]
-            },
-            "configAlternates": {
-                "model": "model",
-                "name": "string",
-                "root": "object",
-                "defaultRootText": "string"
-            },
-            "name": "MyTreeStore",
-            "designerId": "1f0ae143-06f4-4c09-9043-df1ccd5d57bb"
-        }
-    ]
+    "designerId": "f4941368-9963-4383-b809-d66d6516ffe3"
 }

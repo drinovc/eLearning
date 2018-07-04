@@ -36,7 +36,8 @@ Ext.application({
         'FileUpload',
         'Programs',
         'HomePage',
-        'EditTools'
+        'EditTools',
+        'EditSlides'
     ],
     name: 'eLearning',
 

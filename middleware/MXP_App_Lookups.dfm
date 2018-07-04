@@ -2,7 +2,8 @@ object Lookups: TLookups
   OldCreateOrder = False
   Height = 388
   Width = 596
-  object TrainingProgramPageCategories: TADOQueryMX
+  object ProgramPageCategories: TADOQueryMX
+    Connection = ADOConnection1
     Parameters = <>
     SQL.Strings = (
       'SELECT '
@@ -13,11 +14,14 @@ object Lookups: TLookups
       #9', SYS_LOOKUP_ACTIVE AS '#39'active'#39
       'FROM VTraining_Program_Page_Categories'
       'WHERE REC_DELETED = 0')
+    InsertQuery.Connection = ADOConnection1
     InsertQuery.Parameters = <>
+    DeleteQuery.Connection = ADOConnection1
     DeleteQuery.Parameters = <>
+    UpdateQuery.Connection = ADOConnection1
     UpdateQuery.Parameters = <>
-    Left = 176
-    Top = 56
+    Left = 168
+    Top = 64
   end
   object ADOConnection1: TADOConnection
     ConnectionString = 
@@ -30,7 +34,8 @@ object Lookups: TLookups
     Left = 40
     Top = 8
   end
-  object TrainingProgramCategories: TADOQueryMX
+  object ProgramCategories: TADOQueryMX
+    Connection = ADOConnection1
     Parameters = <>
     SQL.Strings = (
       'SELECT '
@@ -40,13 +45,17 @@ object Lookups: TLookups
       #9', ACTIVE AS '#39'active'#39
       'FROM VTraining_Program_Categories'
       'WHERE REC_DELETED = 0')
+    InsertQuery.Connection = ADOConnection1
     InsertQuery.Parameters = <>
+    DeleteQuery.Connection = ADOConnection1
     DeleteQuery.Parameters = <>
+    UpdateQuery.Connection = ADOConnection1
     UpdateQuery.Parameters = <>
-    Left = 176
-    Top = 8
+    Left = 168
+    Top = 16
   end
   object CoursesAndCertificates: TADOQueryMX
+    Connection = ADOConnection1
     Parameters = <>
     SQL.Strings = (
       'SELECT '
@@ -62,13 +71,17 @@ object Lookups: TLookups
       #9', TrainingCategoryAndProgramName'
       'FROM VCourses_and_Certificates'
       'WHERE REC_DELETED = 0')
+    InsertQuery.Connection = ADOConnection1
     InsertQuery.Parameters = <>
+    DeleteQuery.Connection = ADOConnection1
     DeleteQuery.Parameters = <>
+    UpdateQuery.Connection = ADOConnection1
     UpdateQuery.Parameters = <>
-    Left = 176
-    Top = 104
+    Left = 168
+    Top = 112
   end
-  object TrainingProgramStatus: TADOQueryMX
+  object ProgramStatuses: TADOQueryMX
+    Connection = ADOConnection1
     Parameters = <>
     SQL.Strings = (
       'SELECT '
@@ -79,10 +92,13 @@ object Lookups: TLookups
       #9', SYS_LOOKUP_ACTIVE AS '#39'active'#39
       #9'FROM VTraining_Program_Status'
       'WHERE REC_DELETED = 0')
+    InsertQuery.Connection = ADOConnection1
     InsertQuery.Parameters = <>
+    DeleteQuery.Connection = ADOConnection1
     DeleteQuery.Parameters = <>
+    UpdateQuery.Connection = ADOConnection1
     UpdateQuery.Parameters = <>
-    Left = 176
-    Top = 152
+    Left = 168
+    Top = 160
   end
 end

@@ -3,3 +3,5 @@ bootstrap.*
 classic.json*
 modern.json*
 .sencha
+/middleware/__history
+/bin/logs

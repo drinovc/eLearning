@@ -104,10 +104,12 @@
             },
             "codeClass": null,
             "userConfig": {
+                "dateWriteFormat": "c",
                 "name": "validFrom"
             },
             "configAlternates": {
-                "name": "string"
+                "name": "string",
+                "dateWriteFormat": "string"
             },
             "name": "MyDate",
             "designerId": "52636a7d-bd35-414c-93a2-860f2437e754"
@@ -120,10 +122,12 @@
             },
             "codeClass": null,
             "userConfig": {
+                "dateWriteFormat": "c",
                 "name": "validTo"
             },
             "configAlternates": {
-                "name": "string"
+                "name": "string",
+                "dateWriteFormat": "string"
             },
             "name": "MyDate1",
             "designerId": "957c88c6-2459-4afa-9c70-61fd29d038a2"

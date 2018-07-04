@@ -25,14 +25,24 @@ Ext.define('eLearning.view.ProgramsViewModel', {
 
     stores: {
         StorePrograms: {
+            autoSync: true,
             model: 'eLearning.model.Program',
             proxy: {
                 type: 'rest',
+                api: {
+                    create: 'MXP_App_ISAPI.dll/POST/Pub/Programs',
+                    read: 'MXP_App_ISAPI.dll/GET/Pub/Programs',
+                    update: 'MXP_App_ISAPI.dll/POST/Pub/Programs',
+                    destroy: 'MXP_App_ISAPI.dll/DELETE/Pub/Programs'
+                },
                 reader: {
                     type: 'json',
                     rootProperty: 'data'
                 }
             }
+        },
+        StoreProgramCategories: {
+            model: 'eLearning.model.Lookup'
         }
     }
 

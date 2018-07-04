@@ -610,4 +610,256 @@ object Pub: TPub
     Left = 576
     Top = 8
   end
+  object Programs: TADOQueryMX
+    Connection = ADOConnection1
+    Parameters = <>
+    SQL.Strings = (
+      'SELECT'
+      #9'programs.GUID AS '#39'id'#39
+      #9'--'
+      #9', programs.TRAINING_PROGRAM_ID AS '#39'programId'#39
+      #9', programs.TRAINING_PROGRAM_NAME AS '#39'name'#39
+      #9', programs.TRAINING_PROGRAM_CATEGORY_ID AS '#39'categoryId'#39
+      #9', programs.TRAINING_PROGRAM_DESCRIPTION AS '#39'description'#39
+      #9', programs.TRAINING_PROGRAM_VALID_FROM AS '#39'validFrom'#39
+      #9', programs.TRAINING_PROGRAM_VALID_TO AS '#39'validTo'#39
+      #9', programs.MAXIMUM_COMPLETION_TIME AS '#39'completionTime'#39
+      
+        #9', programs.MAX_ATTEMPTS_TRAINING_MODE AS '#39'maxAttemptsTrainingMo' +
+        'de'#39
+      #9', programs.MAX_ATTEMPTS_SCORE_MODE AS '#39'maxAttemptsScoreMode'#39
+      #9', programs.PASS_SCORE AS '#39'passScore'#39
+      
+        #9', programs.CERTIFICATE_REPORT_FILE_NAME AS '#39'certificateFileName' +
+        #39
+      #9', programs.ACTIVE AS '#39'active'#39
+      #9', programs.CREATED_BY_ID AS '#39'createdById'#39
+      #9', programs.CREATED_AT_ID AS '#39'createdAtId'#39
+      #9', programs.CREATED AS '#39'created'#39
+      #9', programs.LAST_CHANGED AS '#39'lastChanges'#39
+      #9', programs.CHANGED AS '#39'changed'#39
+      #9', programs.LAST_CHANGE_LOG_ID AS '#39'lastChangeLogId'#39
+      'FROM Training_Programs AS programs'
+      'WHERE programs.REC_DELETED = 0')
+    InsertQuery.Connection = ADOConnection1
+    InsertQuery.Parameters = <
+      item
+        Name = 'id'
+        DataType = ftGuid
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'programId'
+        DataType = ftInteger
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'name'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 300
+        Value = Null
+      end
+      item
+        Name = 'categoryId'
+        DataType = ftInteger
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'description'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 8000
+        Value = Null
+      end
+      item
+        Name = 'validFrom'
+        DataType = ftDateTime
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'validTo'
+        DataType = ftDateTime
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'completionTime'
+        DataType = ftFloat
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'maxAttemptsTrainingMode'
+        DataType = ftInteger
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'maxAttemptsScoreMode'
+        DataType = ftInteger
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'passScore'
+        DataType = ftFloat
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'certificateFileName'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 200
+        Value = Null
+      end
+      item
+        Name = 'active'
+        DataType = ftBoolean
+        Size = -1
+        Value = Null
+      end>
+    InsertQuery.SQL.Strings = (
+      'DECLARE @id UNIQUEIDENTIFIER = :id'
+      'DECLARE @programId INT = :programId'
+      'DECLARE @name NVARCHAR(300) = :name'
+      'DECLARE @categoryId INT = :categoryId'
+      'DECLARE @description NVARCHAR(MAX)= :description'
+      'DECLARE @validFrom DATETIME = :validFrom'
+      'DECLARE @validTo DATETIME = :validTo'
+      'DECLARE @completionTime NUMERIC(18,2) = :completionTime'
+      'DECLARE @maxAttemptsTrainingMode INT = :maxAttemptsTrainingMode'
+      'DECLARE @maxAttemptsScoreMode INT = :maxAttemptsScoreMode'
+      'DECLARE @passScore NUMERIC(18,2) = :passScore'
+      
+        'DECLARE @certificateFileName NVARCHAR(200) = :certificateFileNam' +
+        'e'
+      'DECLARE @active BIT = :active'
+      ''
+      
+        'SET @programId = (SELECT TRAINING_PROGRAM_ID FROM Training_Progr' +
+        'ams WHERE GUID = @id)'
+      ''
+      'IF @programId IS NULL'
+      'BEGIN'
+      #9'INSERT INTO Training_Programs ('
+      #9#9'GUID'
+      #9#9'--, TRAINING_PROGRAM_ID'
+      #9#9', TRAINING_PROGRAM_NAME'
+      #9#9', TRAINING_PROGRAM_CATEGORY_ID'
+      #9#9', TRAINING_PROGRAM_DESCRIPTION'
+      #9#9', TRAINING_PROGRAM_VALID_FROM'
+      #9#9', TRAINING_PROGRAM_VALID_TO'
+      #9#9', MAXIMUM_COMPLETION_TIME'
+      #9#9', MAX_ATTEMPTS_TRAINING_MODE'
+      #9#9', MAX_ATTEMPTS_SCORE_MODE'
+      #9#9', PASS_SCORE'
+      #9#9', CERTIFICATE_REPORT_FILE_NAME'
+      #9#9', ACTIVE'
+      #9')'
+      #9'VALUES ('
+      #9#9'@id'
+      #9#9'--, @programId'
+      #9#9', @name'
+      #9#9', @categoryId'
+      #9#9', @description'
+      #9#9', @validFrom'
+      #9#9', @validTo'
+      #9#9', @completionTime'
+      #9#9', @maxAttemptsTrainingMode'
+      #9#9', @maxAttemptsScoreMode'
+      #9#9', @passScore'
+      #9#9', @certificateFileName'
+      #9#9', @active'
+      #9')'
+      
+        #9'SET @programId = (SELECT TRAINING_PROGRAM_ID FROM Training_Prog' +
+        'rams WHERE ROW_COUNTER = SCOPE_IDENTITY())'
+      'END'
+      'ELSE'
+      'BEGIN'
+      #9'UPDATE Training_Programs SET'
+      #9#9'TRAINING_PROGRAM_NAME = ISNULL(@name, TRAINING_PROGRAM_NAME)'
+      
+        #9#9', TRAINING_PROGRAM_CATEGORY_ID = ISNULL(@categoryId, TRAINING_' +
+        'PROGRAM_CATEGORY_ID)'
+      
+        #9#9', TRAINING_PROGRAM_DESCRIPTION = ISNULL(@description, TRAINING' +
+        '_PROGRAM_DESCRIPTION)'
+      
+        #9#9', TRAINING_PROGRAM_VALID_FROM = ISNULL(@validFrom, TRAINING_PR' +
+        'OGRAM_VALID_FROM)'
+      
+        #9#9', TRAINING_PROGRAM_VALID_TO = ISNULL(@validTo, TRAINING_PROGRA' +
+        'M_VALID_TO)'
+      
+        #9#9', MAXIMUM_COMPLETION_TIME = ISNULL(@completionTime, MAXIMUM_CO' +
+        'MPLETION_TIME)'
+      
+        #9#9', MAX_ATTEMPTS_TRAINING_MODE = ISNULL(@maxAttemptsTrainingMode' +
+        ', MAX_ATTEMPTS_TRAINING_MODE)'
+      
+        #9#9', MAX_ATTEMPTS_SCORE_MODE = ISNULL(@maxAttemptsScoreMode, MAX_' +
+        'ATTEMPTS_SCORE_MODE)'
+      #9#9', PASS_SCORE = ISNULL(@passScore, PASS_SCORE)'
+      
+        #9#9', CERTIFICATE_REPORT_FILE_NAME = ISNULL(@certificateFileName, ' +
+        'CERTIFICATE_REPORT_FILE_NAME)'
+      #9#9', ACTIVE = ISNULL(@active, ACTIVE)'
+      #9'WHERE TRAINING_PROGRAM_ID = @programId'
+      'END'
+      ''
+      'SELECT'
+      #9'programs.GUID AS '#39'id'#39
+      #9', programs.TRAINING_PROGRAM_ID AS '#39'programId'#39
+      #9', programs.TRAINING_PROGRAM_NAME AS '#39'name'#39
+      #9', programs.TRAINING_PROGRAM_CATEGORY_ID AS '#39'categoryId'#39
+      #9', programs.TRAINING_PROGRAM_DESCRIPTION AS '#39'description'#39
+      #9', programs.TRAINING_PROGRAM_VALID_FROM AS '#39'validFrom'#39
+      #9', programs.TRAINING_PROGRAM_VALID_TO AS '#39'validTo'#39
+      #9', programs.MAXIMUM_COMPLETION_TIME AS '#39'completionTime'#39
+      
+        #9', programs.MAX_ATTEMPTS_TRAINING_MODE AS '#39'maxAttemptsTrainingMo' +
+        'de'#39
+      #9', programs.MAX_ATTEMPTS_SCORE_MODE AS '#39'maxAttemptsScoreMode'#39
+      #9', programs.PASS_SCORE AS '#39'passScore'#39
+      
+        #9', programs.CERTIFICATE_REPORT_FILE_NAME AS '#39'certificateFileName' +
+        #39
+      #9', programs.ACTIVE AS '#39'active'#39
+      #9', programs.CREATED_BY_ID AS '#39'createdById'#39
+      #9', programs.CREATED_AT_ID AS '#39'createdAtId'#39
+      #9', programs.CREATED AS '#39'created'#39
+      #9', programs.LAST_CHANGED AS '#39'lastChanges'#39
+      #9', programs.CHANGED AS '#39'changed'#39
+      #9', programs.LAST_CHANGE_LOG_ID AS '#39'lastChangeLogId'#39
+      'FROM Training_Programs AS programs'
+      'WHERE programs.TRAINING_PROGRAM_ID = @programId')
+    DeleteQuery.Connection = ADOConnection1
+    DeleteQuery.Parameters = <
+      item
+        Name = 'id'
+        DataType = ftGuid
+        NumericScale = 255
+        Precision = 255
+        Size = 16
+        Value = Null
+      end>
+    DeleteQuery.SQL.Strings = (
+      'UPDATE Training_Programs '
+      'SET REC_DELETED = 1'
+      'WHERE GUID = :id')
+    UpdateQuery.Connection = ADOConnection1
+    UpdateQuery.Parameters = <>
+    Left = 216
+    Top = 8
+  end
 end

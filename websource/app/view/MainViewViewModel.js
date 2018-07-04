@@ -15,24 +15,6 @@
 
 Ext.define('eLearning.view.MainViewViewModel', {
     extend: 'Ext.app.ViewModel',
-    alias: 'viewmodel.mainview',
-
-    requires: [
-        'Ext.data.TreeStore'
-    ],
-
-    stores: {
-        TreeStoreSlides: {
-            type: 'tree',
-            model: 'eLearning.model.Slide',
-            defaultRootText: 'Slides',
-            root: {
-                expanded: true,
-                children: [
-                    
-                ]
-            }
-        }
-    }
+    alias: 'viewmodel.mainview'
 
 });

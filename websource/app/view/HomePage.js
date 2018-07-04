@@ -83,7 +83,7 @@ Ext.define('eLearning.view.HomePage', {
                 {
                     xtype: 'button',
                     handler: function(button, e) {
-
+                        Ext.toast('This is a toast message');
                     },
                     text: 'Test'
                 }

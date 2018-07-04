@@ -23,12 +23,14 @@
             },
             "codeClass": null,
             "userConfig": {
+                "autoSync": true,
                 "model": "Option",
                 "name": "StoreOptions"
             },
             "configAlternates": {
                 "model": "model",
-                "name": "string"
+                "name": "string",
+                "autoSync": "boolean"
             },
             "name": "MyStore",
             "designerId": "01009eab-0ea0-43c6-99f3-c36c768f2870"

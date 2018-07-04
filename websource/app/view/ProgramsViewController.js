@@ -18,9 +18,13 @@ Ext.define('eLearning.view.ProgramsViewController', {
     alias: 'controller.programs',
 
     load: function() {
-        var me = this;
+        var me = this,
+            store = me.getStore('StorePrograms');
 
-        me.loadState();
+        me.getStore('StoreProgramCategories').setData(App.lookups.ProgramCategories);
+        store.load();
+
+        //me.loadState();
     },
 
     getCurrentState: function() {
@@ -52,13 +56,27 @@ Ext.define('eLearning.view.ProgramsViewController', {
         localStorage.setItem('mxp_elearning_programs', Ext.encode(data));
     },
 
+    onRowEditingCanceledit: function(editor, context, eOpts) {
+        var me = this,
+            refs = me.getReferences(),
+            store = me.getStore('StorePrograms');
+
+        // Canceling editing of a locally added, unsaved record: remove it
+        if (context.record.phantom) {
+            store.remove(context.record);
+        }
+    },
+
     add: function(button, e) {
         var me = this,
             refs = me.getReferences(),
+            store = me.getStore('StorePrograms'),
+            editor = me.getView().getPlugin('rowEditing'),
             data = {
                 id: createGUID(),
                 name: 'New Training Program',
                 categoryId: -1,
+                description: 'New Training Program Description',
                 validFrom: new Date(),
                 validTo: Ext.Date.add(new Date(), Ext.Date.YEAR, 1),
                 completionTime: 60,
@@ -68,8 +86,12 @@ Ext.define('eLearning.view.ProgramsViewController', {
                 active: true
             };
 
-        me.getStore('StorePrograms').add(data);
-        me.saveState();
+        var rec = store.add(data)[0];
+
+        rec.phantom = true;
+        editor.startEdit(rec);
+
+        //me.saveState();
     },
 
     remove: function(button, e) {

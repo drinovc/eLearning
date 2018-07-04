@@ -236,7 +236,9 @@
                                     "e"
                                 ],
                                 "fn": "handler",
-                                "implHandler": null
+                                "implHandler": [
+                                    "Ext.toast('This is a toast message');"
+                                ]
                             },
                             "configAlternates": {
                                 "designer|params": "typedarray",

@@ -23,12 +23,14 @@
             },
             "codeClass": null,
             "userConfig": {
+                "autoSync": true,
                 "model": "Program",
                 "name": "StorePrograms"
             },
             "configAlternates": {
                 "model": "model",
-                "name": "string"
+                "name": "string",
+                "autoSync": "boolean"
             },
             "name": "MyJsonStore",
             "designerId": "7928ee2e-b904-41ce-97ef-472afb4d2f7b",
@@ -40,6 +42,19 @@
                         "type": "object"
                     },
                     "codeClass": null,
+                    "userConfig": {
+                        "api": [
+                            "{",
+                            "    create: 'MXP_App_ISAPI.dll/POST/Pub/Programs',",
+                            "    read: 'MXP_App_ISAPI.dll/GET/Pub/Programs',",
+                            "    update: 'MXP_App_ISAPI.dll/POST/Pub/Programs',",
+                            "    destroy: 'MXP_App_ISAPI.dll/DELETE/Pub/Programs'",
+                            "}"
+                        ]
+                    },
+                    "configAlternates": {
+                        "api": "object"
+                    },
                     "name": "MyRestProxy",
                     "designerId": "260b5f6e-27e8-47dc-ac16-82b2681d8ea1",
                     "cn": [
@@ -62,6 +77,24 @@
                     ]
                 }
             ]
+        },
+        {
+            "type": "Ext.data.Store",
+            "reference": {
+                "name": "stores",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "model": "Lookup",
+                "name": "StoreProgramCategories"
+            },
+            "configAlternates": {
+                "model": "model",
+                "name": "string"
+            },
+            "name": "MyStore1",
+            "designerId": "85a19d5b-1265-4227-ab6a-200c61c7465f"
         }
     ]
 }

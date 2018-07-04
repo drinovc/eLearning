@@ -24,6 +24,7 @@ type
     Info: TADOQueryMX;
     UserAccessRights: TADOQueryMX;
     _Library: TADOQueryMX;
+    Programs: TADOQueryMX;
     function Download(const Params: TWideStrings; InStream: TMemoryStream; var ContentType: WideString): variant;
     function ResizeImage(var imageStream: TMemoryStream; maxWidth, maxHeight : Integer; Out width: Integer; Out height: Integer; const picType: String; const rotateDegrees: Integer = 0): boolean;
     function UploadImage(const Params: TWideStrings; InStream: TMemoryStream; var ContentType: WideString): variant;

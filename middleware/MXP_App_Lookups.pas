@@ -7,11 +7,11 @@ uses
 
 type
   TLookups = class(TDataModule)
-    TrainingProgramPageCategories: TADOQueryMX;
+    ProgramPageCategories: TADOQueryMX;
     ADOConnection1: TADOConnection;
-    TrainingProgramCategories: TADOQueryMX;
+    ProgramCategories: TADOQueryMX;
     CoursesAndCertificates: TADOQueryMX;
-    TrainingProgramStatus: TADOQueryMX;
+    ProgramStatuses: TADOQueryMX;
   private
     { Private declarations }
   public

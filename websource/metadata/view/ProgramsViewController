@@ -25,9 +25,13 @@
             "userConfig": {
                 "fn": "load",
                 "implHandler": [
-                    "var me = this;",
+                    "var me = this,",
+                    "    store = me.getStore('StorePrograms');",
                     "",
-                    "me.loadState();"
+                    "me.getStore('StoreProgramCategories').setData(App.lookups.ProgramCategories);",
+                    "store.load();",
+                    "",
+                    "//me.loadState();"
                 ]
             },
             "configAlternates": {

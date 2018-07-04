@@ -18,6 +18,7 @@
         "designer|userClassName": "EditTools",
         "header": false,
         "layout": "anchor",
+        "resizable": false,
         "title": "Component",
         "width": 150
     },
@@ -30,7 +31,8 @@
         "header": "boolean",
         "layout": "string",
         "title": "string",
-        "width": "auto"
+        "width": "auto",
+        "resizable": "boolean"
     },
     "name": "MyWindow",
     "designerId": "3b3afd49-502c-4a38-845a-ed5d1b76fe2e",

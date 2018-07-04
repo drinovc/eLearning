@@ -29,6 +29,7 @@ Ext.define('eLearning.view.EditTools', {
     viewModel: {
         type: 'edittools'
     },
+    resizable: false,
     width: 150,
     defaults: {
         anchor: '100%',

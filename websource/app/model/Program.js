@@ -45,11 +45,13 @@ Ext.define('eLearning.model.Program', {
         },
         {
             type: 'date',
-            name: 'validFrom'
+            name: 'validFrom',
+            dateWriteFormat: 'c'
         },
         {
             type: 'date',
-            name: 'validTo'
+            name: 'validTo',
+            dateWriteFormat: 'c'
         },
         {
             type: 'float',

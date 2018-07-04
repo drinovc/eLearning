@@ -23,6 +23,7 @@ Ext.define('eLearning.view.SelectionEditorViewModel', {
 
     stores: {
         StoreOptions: {
+            autoSync: true,
             model: 'eLearning.model.Option'
         }
     }
