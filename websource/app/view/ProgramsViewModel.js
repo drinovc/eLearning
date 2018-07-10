@@ -30,10 +30,10 @@ Ext.define('eLearning.view.ProgramsViewModel', {
             proxy: {
                 type: 'rest',
                 api: {
-                    create: 'MXP_App_ISAPI.dll/POST/Pub/Programs',
-                    read: 'MXP_App_ISAPI.dll/GET/Pub/Programs',
-                    update: 'MXP_App_ISAPI.dll/POST/Pub/Programs',
-                    destroy: 'MXP_App_ISAPI.dll/DELETE/Pub/Programs'
+                    create: '/Pub/Programs',
+                    read: '/Pub/Programs',
+                    update: '/Pub/Programs',
+                    destroy: '/Pub/Programs'
                 },
                 reader: {
                     type: 'json',

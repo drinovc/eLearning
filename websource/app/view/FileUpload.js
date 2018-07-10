@@ -20,6 +20,8 @@ Ext.define('eLearning.view.FileUpload', {
     requires: [
         'eLearning.view.FileUploadViewModel',
         'eLearning.view.FileUploadViewController',
+        'Ext.tab.Panel',
+        'Ext.tab.Tab',
         'Ext.form.Panel',
         'Ext.form.field.File',
         'Ext.form.field.FileButton',
@@ -36,54 +38,112 @@ Ext.define('eLearning.view.FileUpload', {
 
     items: [
         {
-            xtype: 'form',
-            bodyPadding: 10,
-            title: '',
+            xtype: 'tabpanel',
+            activeTab: 0,
             items: [
                 {
-                    xtype: 'textfield',
-                    anchor: '1',
-                    fieldLabel: 'Name',
-                    name: 'name'
+                    xtype: 'panel',
+                    title: 'From Computer',
+                    items: [
+                        {
+                            xtype: 'form',
+                            bodyPadding: 10,
+                            title: '',
+                            items: [
+                                {
+                                    xtype: 'textfield',
+                                    anchor: '1',
+                                    fieldLabel: 'Name',
+                                    name: 'name'
+                                },
+                                {
+                                    xtype: 'filefield',
+                                    anchor: '100%',
+                                    fieldLabel: 'File',
+                                    name: 'file',
+                                    emptyText: 'Select a file',
+                                    buttonConfig: {
+                                        xtype: 'filebutton',
+                                        iconCls: 'x-fa fa-paperclip',
+                                        text: ''
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    dockedItems: [
+                        {
+                            xtype: 'toolbar',
+                            dock: 'bottom',
+                            ui: 'footer',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'button',
+                                    handler: 'btnSaveHandler',
+                                    itemId: 'btnSave',
+                                    minWidth: 100,
+                                    text: 'Upload'
+                                },
+                                {
+                                    xtype: 'button',
+                                    handler: 'btnCancelHandler',
+                                    itemId: 'btnCancel',
+                                    minWidth: 100,
+                                    text: 'Cancel'
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
-                    xtype: 'filefield',
-                    anchor: '100%',
-                    fieldLabel: 'File',
-                    name: 'file',
-                    emptyText: 'Select a file',
-                    buttonConfig: {
-                        xtype: 'filebutton',
-                        iconCls: 'x-fa fa-paperclip',
-                        text: ''
-                    }
-                }
-            ]
-        }
-    ],
-    dockedItems: [
-        {
-            xtype: 'toolbar',
-            dock: 'bottom',
-            ui: 'footer',
-            layout: {
-                type: 'hbox',
-                pack: 'center'
-            },
-            items: [
-                {
-                    xtype: 'button',
-                    handler: 'btnSaveHandler',
-                    itemId: 'btnSave',
-                    minWidth: 100,
-                    text: 'Upload'
-                },
-                {
-                    xtype: 'button',
-                    handler: 'btnCancelHandler',
-                    itemId: 'btnCancel',
-                    minWidth: 100,
-                    text: 'Cancel'
+                    xtype: 'panel',
+                    title: 'From URL',
+                    items: [
+                        {
+                            xtype: 'form',
+                            bodyPadding: 10,
+                            title: '',
+                            items: [
+                                {
+                                    xtype: 'textfield',
+                                    anchor: '1',
+                                    fieldLabel: 'URL',
+                                    name: 'url'
+                                }
+                            ]
+                        }
+                    ],
+                    dockedItems: [
+                        {
+                            xtype: 'toolbar',
+                            dock: 'bottom',
+                            ui: 'footer',
+                            layout: {
+                                type: 'hbox',
+                                pack: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'button',
+                                    handler: 'btnSelectHandler',
+                                    itemId: 'btnSelect',
+                                    minWidth: 100,
+                                    text: 'Select'
+                                },
+                                {
+                                    xtype: 'button',
+                                    handler: 'btnCancelHandler',
+                                    itemId: 'btnCancel',
+                                    minWidth: 100,
+                                    text: 'Cancel'
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }

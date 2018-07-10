@@ -1,0 +1,49 @@
+{
+	"ver": "",
+	"success": true,
+	"total": 2,
+	"data": [
+		{
+			"categoryId": 30231143,
+			"active": true,
+			"validFrom": "2018-03-20T00:00:00.000",
+			"maxAttemptsTrainingMode": 1,
+			"validTo": "2019-03-20T00:00:00.000",
+			"created": "2018-03-20T17:32:48.427",
+			"completionTime": 60,
+			"description": "New Training Program Description",
+			"id": "{B10BA1D7-4235-4FF3-88AF-1F86E2B252A1}",
+			"changed": "Y",
+			"lastChangeLogId": "191071581",
+			"maxAttemptsScoreMode": 1,
+			"name": "New Training Program",
+			"passScore": 75,
+			"createdById": null,
+			"createdAtId": 3,
+			"certificateFileName": "",
+			"lastChanges": "2018-03-20T18:06:21.837",
+			"programId": 30000009
+		},
+		{
+			"categoryId": 30231143,
+			"active": true,
+			"validFrom": "2018-03-20T00:00:00.000",
+			"maxAttemptsTrainingMode": 1,
+			"validTo": "2019-03-20T00:00:00.000",
+			"created": "2018-03-20T18:10:20.187",
+			"completionTime": 60,
+			"description": "New Training Program Description",
+			"id": "{9FA02E17-91C4-4DD5-B229-B38199E1CCEF}",
+			"changed": "Y",
+			"lastChangeLogId": "191071596",
+			"maxAttemptsScoreMode": 1,
+			"name": "New Training Program",
+			"passScore": 75,
+			"createdById": null,
+			"createdAtId": 3,
+			"certificateFileName": "",
+			"lastChanges": "2018-03-20T18:10:20.187",
+			"programId": 30000010
+		}
+	]
+}

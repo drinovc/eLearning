@@ -1,0 +1,21 @@
+{
+	"ver": "",
+	"success": true,
+	"total": 2,
+	"data": [
+		{
+			"active": true,
+			"id": 1,
+			"text": "Chapter",
+			"code": null,
+			"category": null
+		},
+		{
+			"active": true,
+			"id": 2,
+			"text": "Page",
+			"code": null,
+			"category": null
+		}
+	]
+}

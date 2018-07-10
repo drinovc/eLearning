@@ -26,6 +26,9 @@ Ext.application({
         'Lookup',
         'Program'
     ],
+    stores: [
+        'MyVirtualStore'
+    ],
     views: [
         'MainView',
         'TextEditor',

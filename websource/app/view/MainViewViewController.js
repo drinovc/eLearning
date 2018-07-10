@@ -18,6 +18,29 @@ Ext.define('eLearning.view.MainViewViewController', {
     alias: 'controller.mainview',
 
     load: function() {
+        // Config variable for using mockup data
+        var MOCKUP = false;
+        if (MOCKUP){
+            console.warn("App is using mockup data.");
+        }
+
+        // BEFORE EVERY REQUEST
+
+        Ext.Ajax.on("beforerequest", function(conn, options, eOpts) {
+            if(options.url) {
+                // check if url hasn't been modified yet
+                if (options.url.split('/')[0] === ""){
+                    if(MOCKUP) {
+                        options.url = 'mockup' + options.url.split('?')[0] + '.json';
+                    }
+                    else{
+                         options.url = 'MXP_App_ISAPI.dll' + options.url.split('?')[0];
+                    }
+                }
+            }
+        });
+
+
         App = {
             lookups: {},
             shared: {}
@@ -67,10 +90,10 @@ Ext.define('eLearning.view.MainViewViewController', {
         var me = this;
 
         Ext.Promise.all([
-        	me.getAjax('MXP_App_ISAPI.dll/Lookups/ProgramCategories', {}, 'ProgramCategories'),
-        	me.getAjax('MXP_App_ISAPI.dll/Lookups/ProgramPageCategories', {}, 'ProgramPageCategories'),
-        	me.getAjax('MXP_App_ISAPI.dll/Lookups/CoursesAndCertificates', {}, 'CoursesAndCertificates'),
-        	me.getAjax('MXP_App_ISAPI.dll/Lookups/ProgramStatuses', {}, 'ProgramStatuses')
+        	me.getAjax('/Lookups/ProgramCategories', {}, 'ProgramCategories'),
+        	me.getAjax('/Lookups/ProgramPageCategories', {}, 'ProgramPageCategories'),
+        	me.getAjax('/Lookups/CoursesAndCertificates', {}, 'CoursesAndCertificates'),
+        	me.getAjax('/Lookups/ProgramStatuses', {}, 'ProgramStatuses')
         ]).then(function(data) {
             Ext.each(data, function(data) {
                 App.lookups[data.name] = data.data;

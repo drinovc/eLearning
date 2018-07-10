@@ -60,8 +60,6 @@ Ext.define('eLearning.view.Programs', {
         {
             xtype: 'gridcolumn',
             renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-
-                console.log('here');
                 return App.lookups.ProgramCategories.filter(function(item) { return item.id == value; })[0].text;
             },
             minWidth: 150,
@@ -183,6 +181,16 @@ Ext.define('eLearning.view.Programs', {
                     xtype: 'button',
                     handler: 'remove',
                     text: 'Remove'
+                },
+                {
+                    xtype: 'button',
+                    handler: 'duplicate',
+                    text: 'Duplicate'
+                },
+                {
+                    xtype: 'button',
+                    handler: 'bookmark',
+                    text: 'Bookmark'
                 },
                 {
                     xtype: 'tbseparator'

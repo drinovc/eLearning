@@ -26,6 +26,7 @@
                 "defaultRootText": "Slides",
                 "model": "Slide",
                 "name": "TreeStoreSlides",
+                "parentIdProperty": "parentId",
                 "root": [
                     "{",
                     "    expanded: true,",
@@ -37,10 +38,24 @@
                 "model": "model",
                 "name": "string",
                 "root": "object",
-                "defaultRootText": "string"
+                "defaultRootText": "string",
+                "clearOnLoad": "boolean",
+                "parentIdProperty": "string"
             },
             "name": "MyTreeStore",
-            "designerId": "b2f37da4-75d4-40f1-a493-a97a697efefb"
+            "designerId": "b2f37da4-75d4-40f1-a493-a97a697efefb",
+            "cn": [
+                {
+                    "type": "Ext.data.proxy.Memory",
+                    "reference": {
+                        "name": "proxy",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyMemoryProxy",
+                    "designerId": "c58f2f47-f466-41a0-a967-33abc75ac302"
+                }
+            ]
         }
     ]
 }

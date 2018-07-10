@@ -13,6 +13,9 @@
             "Program"
         ],
         "name": "eLearning",
+        "stores": [
+            "MyVirtualStore"
+        ],
         "views": [
             "MainView",
             "TextEditor",
@@ -30,7 +33,8 @@
     "configAlternates": {
         "name": "string",
         "views": "typedarray",
-        "models": "typedarray"
+        "models": "typedarray",
+        "stores": "typedarray"
     },
     "name": "Application",
     "designerId": "application",

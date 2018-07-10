@@ -73,7 +73,9 @@
             "e003305b-d8cd-4ae1-9a89-33526cc237da",
             "2b4061c2-eb58-419f-b864-9ad1d450e59a"
         ],
-        "store": [],
+        "store": [
+            "2714aef4-8e05-4849-8c3f-b98ac5f29da5"
+        ],
         "controller": [],
         "model": [
             "6ef1d73d-f30c-41ff-9f94-ee89ca8b070d",
@@ -82,12 +84,14 @@
             "e3d85810-e71c-47e4-ab27-7d87c29b8456"
         ],
         "resource": [
-            "2e2ab772-c689-48df-b822-22468fde3acd",
+            "a6c31cf2-b654-45e5-9af0-24320d49d219",
             "ed1b2218-96e3-4f67-afee-45be463f92e9",
             "b879178c-fc84-4884-b934-bcb78d02c77d",
             "98fb3144-3565-436a-8267-a80378797a66",
             "a2d45e2c-548a-4406-9a8d-e179277f4fe3",
-            "96ad019f-13af-4dda-8c3f-7b61281aef6e"
+            "96ad019f-13af-4dda-8c3f-7b61281aef6e",
+            "1aeb9c30-b39d-4301-9202-a73c17fe98e7",
+            "328669aa-2162-4bb7-9327-d4c1adbc8fd6"
         ],
         "app": [
             "application"

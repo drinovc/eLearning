@@ -1,0 +1,42 @@
+{
+	"ver": "",
+	"success": true,
+	"total": 5,
+	"data": [
+		{
+			"active": true,
+			"id": 1,
+			"text": "In Progress",
+			"code": null,
+			"category": null
+		},
+		{
+			"active": true,
+			"id": 2,
+			"text": "Passed",
+			"code": null,
+			"category": null
+		},
+		{
+			"active": true,
+			"id": 3,
+			"text": "Failed",
+			"code": null,
+			"category": null
+		},
+		{
+			"active": true,
+			"id": 4,
+			"text": "Repeat",
+			"code": null,
+			"category": null
+		},
+		{
+			"active": true,
+			"id": 5,
+			"text": "Discontinued",
+			"code": null,
+			"category": null
+		}
+	]
+}

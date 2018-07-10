@@ -64,6 +64,39 @@ Ext.define('eLearning.view.FileUploadViewController', {
             view = me.getView();
 
         view.close();
+    },
+
+    btnSelectHandler: function(button, e) {
+        var me = this,
+            refs = me.getReferences(),
+            view = me.getView(),
+            opts = view._opts,
+            form = view.down('form').getForm();
+
+        if(form.isValid()) {
+            //form.submit({
+            //    url: opts.uploadUrl,
+            //    waitMsg: 'Uploading...',
+            //    success: function(form, action) {
+            //        console.log(arguments);
+            //        opts.callback.call(view.opts);
+            //        view.close();
+            //    },
+            //    failure: function(form, action) {
+            //        console.log(arguments);
+            //    }
+            //});
+
+            console.log("URL upload unsupported");
+        }
+    },
+
+    btnCancelHandler: function(button, e) {
+        var me = this,
+            refs = me.getReferences(),
+            view = me.getView();
+
+        view.close();
     }
 
 });

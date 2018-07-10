@@ -114,7 +114,7 @@ Ext.define('eLearning.view.EditSlides', {
                             text: 'Set background',
                             menu: {
                                 xtype: 'menu',
-                                width: 120,
+                                width: 150,
                                 items: [
                                     {
                                         xtype: 'menuitem',
@@ -199,9 +199,60 @@ Ext.define('eLearning.view.EditSlides', {
                                     {
                                         xtype: 'menuitem',
                                         handler: function(item, e) {
+                                            // TODO - make function for these lines
+                                            var me = this.up('#editSlides'),
+                                                refs = me.getReferences(),
+                                                data = me.getController().getCurrentState();
+                                            wnd = me.add({ xtype: 'fileupload' });
+
+                                            wnd.getController().show({
+                                                uploadUrl: 'nonExistingTestUrl'
+                                            });
+
+
+
                                             this.up('#editSlides').getController().insertImage();
+
+
                                         },
                                         text: 'Image'
+                                    },
+                                    {
+                                        xtype: 'menuitem',
+                                        handler: function(item, e) {
+                                            // TODO - make function for these lines
+                                            var me = this.up('#editSlides'),
+                                                refs = me.getReferences(),
+                                                data = me.getController().getCurrentState();
+                                            wnd = me.add({ xtype: 'fileupload' });
+
+                                            wnd.getController().show({
+                                                uploadUrl: 'nonExistingTestUrl'
+                                            });
+
+
+                                            this.up('#editSlides').getController().insertAudio();
+                                        },
+                                        text: 'Audio'
+                                    },
+                                    {
+                                        xtype: 'menuitem',
+                                        handler: function(item, e) {
+                                            // TODO - make function for these lines
+                                            var me = this.up('#editSlides'),
+                                                refs = me.getReferences(),
+                                                data = me.getController().getCurrentState();
+                                            wnd = me.add({ xtype: 'fileupload' });
+
+                                            wnd.getController().show({
+                                                uploadUrl: 'nonExistingTestUrl'
+                                            });
+
+
+
+                                            this.up('#editSlides').getController().insertVideo();
+                                        },
+                                        text: 'Video'
                                     },
                                     {
                                         xtype: 'menuseparator',
@@ -338,6 +389,13 @@ Ext.define('eLearning.view.EditSlides', {
                             flex: 1
                         },
                         {
+                            xtype: 'tbtext',
+                            id: 'timerCountdown',
+                            bind: {
+                                html: '10:00'
+                            }
+                        },
+                        {
                             xtype: 'button',
                             handler: function(button, e) {
                                 this.up('#editSlides').getController().togglePreview(false);
@@ -375,6 +433,7 @@ Ext.define('eLearning.view.EditSlides', {
                     title: '',
                     emptyText: 'No slides to show.<br>Create new with button <i>New slide</i>.<br><br>Double click on slide name to rename it.',
                     hideHeaders: true,
+                    rootVisible: false,
                     useArrows: true,
                     bind: {
                         store: '{TreeStoreSlides}'
@@ -385,7 +444,10 @@ Ext.define('eLearning.view.EditSlides', {
                             {
                                 ptype: 'treeviewdragdrop'
                             }
-                        ]
+                        ],
+                        listeners: {
+                            drop: 'onTreeViewDragDrop'
+                        }
                     },
                     columns: [
                         {

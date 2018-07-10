@@ -55,6 +55,14 @@
          "includeInBundle": true
       },
       {
+         "path": "indexedDbProxy.js",
+         "includeInBundle": true
+      },
+      {
+         "path": "IndexedDB.js",
+         "includeInBundle": true
+      },
+      {
          "path": "app.js",
          "bundle": true
       }

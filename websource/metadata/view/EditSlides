@@ -356,7 +356,7 @@
                                     },
                                     "codeClass": null,
                                     "userConfig": {
-                                        "width": 120
+                                        "width": 150
                                     },
                                     "configAlternates": {
                                         "width": "auto"
@@ -849,7 +849,21 @@
                                                         ],
                                                         "fn": "handler",
                                                         "implHandler": [
-                                                            "this.up('#editSlides').getController().insertImage();"
+                                                            "// TODO - make function for these lines",
+                                                            "var me = this.up('#editSlides'),",
+                                                            "    refs = me.getReferences(),",
+                                                            "    data = me.getController().getCurrentState();",
+                                                            "    wnd = me.add({ xtype: 'fileupload' });",
+                                                            "",
+                                                            "wnd.getController().show({",
+                                                            "    uploadUrl: 'nonExistingTestUrl'",
+                                                            "});",
+                                                            "",
+                                                            "",
+                                                            "",
+                                                            "this.up('#editSlides').getController().insertImage();",
+                                                            "",
+                                                            ""
                                                         ]
                                                     },
                                                     "configAlternates": {
@@ -859,6 +873,115 @@
                                                     },
                                                     "name": "handler",
                                                     "designerId": "131d4cfb-258b-4b51-be71-6195ca8ff417"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "Ext.menu.Item",
+                                            "reference": {
+                                                "name": "items",
+                                                "type": "array"
+                                            },
+                                            "codeClass": null,
+                                            "userConfig": {
+                                                "text": "Audio"
+                                            },
+                                            "configAlternates": {
+                                                "text": "string"
+                                            },
+                                            "name": "MyMenuItem5",
+                                            "designerId": "e275a8a8-ec64-46bb-ab19-aa2d790fb477",
+                                            "cn": [
+                                                {
+                                                    "type": "fixedfunction",
+                                                    "reference": {
+                                                        "name": "items",
+                                                        "type": "array"
+                                                    },
+                                                    "codeClass": null,
+                                                    "userConfig": {
+                                                        "designer|params": [
+                                                            "item",
+                                                            "e"
+                                                        ],
+                                                        "fn": "handler",
+                                                        "implHandler": [
+                                                            "// TODO - make function for these lines",
+                                                            "var me = this.up('#editSlides'),",
+                                                            "    refs = me.getReferences(),",
+                                                            "    data = me.getController().getCurrentState();",
+                                                            "    wnd = me.add({ xtype: 'fileupload' });",
+                                                            "",
+                                                            "wnd.getController().show({",
+                                                            "    uploadUrl: 'nonExistingTestUrl'",
+                                                            "});",
+                                                            "",
+                                                            "",
+                                                            "this.up('#editSlides').getController().insertAudio();"
+                                                        ]
+                                                    },
+                                                    "configAlternates": {
+                                                        "designer|params": "typedarray",
+                                                        "fn": "string",
+                                                        "implHandler": "code"
+                                                    },
+                                                    "name": "handler",
+                                                    "designerId": "06ffa8bd-ec51-483e-8010-5df15a1bd2b5"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "Ext.menu.Item",
+                                            "reference": {
+                                                "name": "items",
+                                                "type": "array"
+                                            },
+                                            "codeClass": null,
+                                            "userConfig": {
+                                                "text": "Video"
+                                            },
+                                            "configAlternates": {
+                                                "text": "string"
+                                            },
+                                            "name": "MyMenuItem15",
+                                            "designerId": "b1dce9db-d47b-4f35-905f-8ba89901e39d",
+                                            "cn": [
+                                                {
+                                                    "type": "fixedfunction",
+                                                    "reference": {
+                                                        "name": "items",
+                                                        "type": "array"
+                                                    },
+                                                    "codeClass": null,
+                                                    "userConfig": {
+                                                        "designer|params": [
+                                                            "item",
+                                                            "e"
+                                                        ],
+                                                        "fn": "handler",
+                                                        "implHandler": [
+                                                            "// TODO - make function for these lines",
+                                                            "var me = this.up('#editSlides'),",
+                                                            "    refs = me.getReferences(),",
+                                                            "    data = me.getController().getCurrentState();",
+                                                            "    wnd = me.add({ xtype: 'fileupload' });",
+                                                            "",
+                                                            "wnd.getController().show({",
+                                                            "    uploadUrl: 'nonExistingTestUrl'",
+                                                            "});",
+                                                            "",
+                                                            "",
+                                                            "",
+                                                            "this.up('#editSlides').getController().insertVideo();"
+                                                        ]
+                                                    },
+                                                    "configAlternates": {
+                                                        "designer|params": "typedarray",
+                                                        "fn": "string",
+                                                        "implHandler": "code"
+                                                    },
+                                                    "name": "handler",
+                                                    "designerId": "ea5016d6-a9c0-4e5b-ac3c-b69478aa3a65"
                                                 }
                                             ]
                                         },
@@ -1410,6 +1533,30 @@
                             "designerId": "8f15684c-5c98-4b0c-9acf-243fc83043a3"
                         },
                         {
+                            "type": "Ext.toolbar.TextItem",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|displayName": "countdown",
+                                "html": [
+                                    "10:00"
+                                ],
+                                "id": "timerCountdown",
+                                "layout|flex": null
+                            },
+                            "configAlternates": {
+                                "html": "binding",
+                                "designer|displayName": "string",
+                                "id": "string",
+                                "layout|flex": "number"
+                            },
+                            "name": "MyTextItem2",
+                            "designerId": "1f2d66e0-0e6a-4468-9fd3-54e2ef1e8e30"
+                        },
+                        {
                             "type": "Ext.button.Button",
                             "reference": {
                                 "name": "items",
@@ -1514,6 +1661,7 @@
                         "itemId": "treeSlides",
                         "padding": 10,
                         "reference": "treeSlides",
+                        "rootVisible": false,
                         "store": [
                             "{TreeStoreSlides}"
                         ],
@@ -1562,7 +1710,37 @@
                                     },
                                     "codeClass": null,
                                     "name": "MyTreeDragDropPlugin",
-                                    "designerId": "69f7a8fb-6f76-4f97-9074-305180151bbf"
+                                    "designerId": "69f7a8fb-6f76-4f97-9074-305180151bbf",
+                                    "cn": [
+                                        {
+                                            "type": "viewcontrollereventbinding",
+                                            "reference": {
+                                                "name": "listeners",
+                                                "type": "array"
+                                            },
+                                            "codeClass": null,
+                                            "userConfig": {
+                                                "designer|params": [
+                                                    "treeviewdragdrop"
+                                                ],
+                                                "fn": "onTreeViewDragDrop",
+                                                "implHandler": [
+                                                    "this.saveState();"
+                                                ],
+                                                "name": "drop",
+                                                "scope": "me"
+                                            },
+                                            "configAlternates": {
+                                                "designer|params": "typedarray",
+                                                "fn": "string",
+                                                "implHandler": "code",
+                                                "name": "string",
+                                                "scope": "string"
+                                            },
+                                            "name": "onTreeViewDragDrop",
+                                            "designerId": "85fa343a-d0e8-498b-b891-915e2db1bc49"
+                                        }
+                                    ]
                                 }
                             ]
                         },
@@ -1624,7 +1802,8 @@
                                     "else {",
                                     "    this.clearSlidePanel();",
                                     "    this.insertTitle('Section ' + record.get('title'));",
-                                    "}"
+                                    "}",
+                                    ""
                                 ],
                                 "name": "select",
                                 "scope": "me"
@@ -1744,51 +1923,89 @@
             "userConfig": {
                 "fn": "onEditSlidesBoxReady",
                 "implHandler": [
+                    "",
                     "var me = this,",
-                    "    refs = me.getReferences();",
+                    "     refs = me.getReferences();",
                     "",
-                    "me._selectedComponent = null;",
+                    " me._selectedComponent = null;",
+                    " me.previewing = false; // used for toggling event actions when previewing or not",
                     "",
-                    "me._pageSetup = {",
-                    "    snap: 25,",
-                    "    width: 800,",
-                    "    height: 600,",
-                    "    headerHeight: 50,",
-                    "    footerHeight: 50,",
-                    "    padding: 50,",
-                    "    background: null",
-                    "};",
                     "",
-                    "me.cmpTypes = {",
-                    "    HTML: 'html',",
-                    "    TITLE: 'title',",
-                    "    TEXT: 'text',",
-                    "    IMAGE: 'image',",
-                    "    SELECTION: 'selection'",
-                    "};",
+                    " me._pageSetup = {",
+                    "     snap: 25,",
+                    "     width: 800,",
+                    "     height: 600,",
+                    "     headerHeight: 50,",
+                    "     footerHeight: 50,",
+                    "     padding: 50,",
+                    "     background: null",
+                    " };",
                     "",
-                    "refs.panelContent.removeAll();",
-                    "refs.toolbarPreview.hide();",
+                    " me.cmpTypes = {",
+                    "     HTML: 'html',",
+                    "     TITLE: 'title',",
+                    "     TEXT: 'text',",
+                    "     IMAGE: 'image',",
+                    "     AUDIO: 'audio',",
+                    "     VIDEO: 'video',",
+                    "     SELECTION: 'selection'",
+                    " };",
                     "",
-                    "// load state from offline storage - switch to indexdb at some point?",
-                    "var data = localStorage.getItem('mxp_elearning_slide');",
+                    " refs.panelContent.removeAll();",
+                    " refs.toolbarPreview.hide();",
                     "",
-                    "if(data) {",
-                    "    data = Ext.decode(data);",
-                    "    if(data.pageSetup) {",
-                    "        me._pageSetup = Ext.applyIf(data.pageSetup, me._pageSetup);",
+                    " // load state from offline storage - switch to indexdb at some point?",
+                    " var data = localStorage.getItem('mxp_elearning_slide');",
+                    "",
+                    " if(data) {",
+                    "     data = Ext.decode(data);",
+                    "     if(data.pageSetup) {",
+                    "",
+                    "         me._pageSetup = Ext.applyIf(data.pageSetup, me._pageSetup);",
+                    "     }",
+                    "     if(data.slides) {",
+                    "         console.log(\"printing slides on page load\", data.slides);",
+                    "",
+                    "         //replace empty folders' children category 'undefined' with []",
+                    "         data.slides.forEach((o, i, a) => {",
+                    "             if (!a[i].children){",
+                    "               a[i].children = [];",
+                    "             }",
+                    "         });",
+                    "",
+                    "         // if (data.slides[0].rootId === 'root'){ data.slides.shift(); }",
+                    "         me.getStore('TreeStoreSlides').getProxy().setData(data.slides);",
+                    "         me.getStore('TreeStoreSlides').load();",
+                    "",
+                    "         Ext.defer(function() {",
+                    "             me.nextSlide();",
+                    "         }, 100);",
+                    "     }",
+                    " }",
+                    "",
+                    " me.setBackground(me._pageSetup.background);",
+                    " refs.panelContent.setWidth(me._pageSetup.width);",
+                    " refs.panelContent.setHeight(me._pageSetup.height);",
+                    "",
+                    "",
+                    "component.el.on('click', function(e, t) {",
+                    "    // hiding component tools if component itself (like bodyPanel, ImageComponent...) didn't stop click event to backpropagate",
+                    "     me.hideComponentTools();",
+                    "",
+                    "});",
+                    "",
+                    "",
+                    "document.addEventListener(\"keydown\", function onPress(event) {",
+                    "    console.log(\"Caller - onEditSlidesBoxReady\", \"body keydown\", event.keyCode);",
+                    "    var KEY_DELETE = 46;",
+                    "    if(me._selectedComponent){",
+                    "        if(event.keyCode === KEY_DELETE){",
+                    "            me._componentTools.getController().delete();",
+                    "        }",
                     "    }",
-                    "    if(data.slides) {",
-                    "        me.getStore('TreeStoreSlides').setData(data.slides);",
-                    "        Ext.defer(function() {",
-                    "            me.nextSlide();",
-                    "        }, 100);",
-                    "    }",
-                    "}",
                     "",
-                    "me.setBackground(me._pageSetup.background);",
-                    "refs.panelContent.setWidth(me._pageSetup.width);",
-                    "refs.panelContent.setHeight(me._pageSetup.height);"
+                    "});",
+                    ""
                 ],
                 "name": "boxready",
                 "scope": "me"

@@ -138,8 +138,6 @@
                         ],
                         "fn": "renderer",
                         "implHandler": [
-                            "",
-                            "console.log('here');",
                             "return App.lookups.ProgramCategories.filter(function(item) { return item.id == value; })[0].text;"
                         ]
                     },
@@ -625,6 +623,100 @@
                             },
                             "name": "handler",
                             "designerId": "316dd8c4-7302-46ca-87dd-2abd7ec145c0"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "layout|flex": null,
+                        "text": "Duplicate"
+                    },
+                    "configAlternates": {
+                        "layout|flex": "number",
+                        "text": "string"
+                    },
+                    "name": "MyButton2",
+                    "designerId": "aa418fe0-c0c4-4358-bfa6-49f06a25618a",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "designer|viewControllerFn": "duplicate",
+                                "fn": "handler",
+                                "implHandler": [
+                                    "console.log(\"Duplicate unsupported\");"
+                                ]
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "designer|viewControllerFn": "string",
+                                "fn": "string",
+                                "implHandler": "code"
+                            },
+                            "name": "handler",
+                            "designerId": "79f83b33-65b9-47a2-b97f-3efcf5dca88b"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "layout|flex": null,
+                        "text": "Bookmark"
+                    },
+                    "configAlternates": {
+                        "layout|flex": "number",
+                        "text": "string"
+                    },
+                    "name": "MyButton",
+                    "designerId": "a971485e-b6fb-4cc5-a5c5-923c5d64dec3",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "designer|viewControllerFn": "bookmark",
+                                "fn": "handler",
+                                "implHandler": [
+                                    "console.log(\"Bookmark unsupported\");"
+                                ]
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "designer|viewControllerFn": "string",
+                                "fn": "string",
+                                "implHandler": "code"
+                            },
+                            "name": "handler",
+                            "designerId": "0d1f5ed6-37f3-40fd-a649-3d8b7e634b1e"
                         }
                     ]
                 },

@@ -101,6 +101,14 @@ Ext.define('eLearning.view.ProgramsViewController', {
         me.saveState();
     },
 
+    duplicate: function(button, e) {
+        console.log("Duplicate unsupported");
+    },
+
+    bookmark: function(button, e) {
+        console.log("Bookmark unsupported");
+    },
+
     editSlides: function(button, e) {
         var me = this,
             view = me.getView(),

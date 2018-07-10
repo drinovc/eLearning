@@ -18,7 +18,8 @@ Ext.define('eLearning.view.EditSlidesViewModel', {
     alias: 'viewmodel.editslides',
 
     requires: [
-        'Ext.data.TreeStore'
+        'Ext.data.TreeStore',
+        'Ext.data.proxy.Memory'
     ],
 
     stores: {
@@ -26,11 +27,15 @@ Ext.define('eLearning.view.EditSlidesViewModel', {
             type: 'tree',
             model: 'eLearning.model.Slide',
             defaultRootText: 'Slides',
+            parentIdProperty: 'parentId',
             root: {
                 expanded: true,
                 children: [
                     
                 ]
+            },
+            proxy: {
+                type: 'memory'
             }
         }
     }
