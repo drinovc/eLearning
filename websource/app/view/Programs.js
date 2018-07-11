@@ -211,7 +211,8 @@ Ext.define('eLearning.view.Programs', {
         }
     ],
     listeners: {
-        activate: 'onGridProgramsActivate'
+        activate: 'onGridProgramsActivate',
+        boxready: 'onGridProgramsBoxReady'
     }
 
 });

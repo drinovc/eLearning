@@ -4,6 +4,7 @@ Ext.define('Lib.data.proxy.IndexedDB',{
     alternateClassName: 'Lib.IndexedDB',
 
     db: null,
+    
 
     config:{
         /**
@@ -54,6 +55,7 @@ Ext.define('Lib.data.proxy.IndexedDB',{
 
     updateModel: function(model) {
         if (model) {
+            
             var modelName = model.modelName,
                 defaultDateFormat = this.getDefaultDateFormat(),
                 table = modelName.slice(modelName.lastIndexOf('.') + 1);

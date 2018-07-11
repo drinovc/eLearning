@@ -13,9 +13,6 @@
             "Program"
         ],
         "name": "eLearning",
-        "stores": [
-            "MyVirtualStore"
-        ],
         "views": [
             "MainView",
             "TextEditor",

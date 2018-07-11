@@ -948,7 +948,6 @@ $include-elearning-model-lookup: dynamic(true);;
 $include-elearning-model-option: dynamic(true);;
 $include-elearning-model-program: dynamic(true);;
 $include-elearning-model-slide: dynamic(true);;
-$include-elearning-store-myvirtualstore: dynamic(true);;
 $include-elearning-view-editslides: dynamic(true);;
 $include-elearning-view-editslidesviewcontroller: dynamic(true);;
 $include-elearning-view-editslidesviewmodel: dynamic(true);;

@@ -235,6 +235,12 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
         refs.panelSlide.setMargin(preview ? '10' : '10 10 10 0');
 
+
+        // retarget this slide - this redraws current slide without dragger and sizer
+        refs.treeSlides.setSelection(null);
+        refs.treeSlides.setSelection(me.getCurrentSlide());
+
+
         if(preview) {
             me.saveSlideState(me.getCurrentSlide());
             var firstSlide = refs.treeSlides.store.getAt(0);
@@ -247,7 +253,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             // we / timer toggled preview off - validate forms and submit
 
 
-
+            me.evaluate();
 
 
         }
@@ -259,7 +265,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
         // Switching countdown timer when toggling preview - preview automatically closes when timer turns to 0
         // TODO - is this secure - should't countdown occur on server side - is it?
-        var counter = 60;
+        var counter = 1000;
 
         var taskPoll = {
             run: function(){
@@ -379,7 +385,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         item.on('click', function(e, t) {
             if(e.stopPropagation){
                 e.stopPropagation();
-
             }
 
 
@@ -406,17 +411,11 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 // previewing
 
                 // Handle checkboxes and radio buttons
-                var SELECTED_VALUE = t.getAttribute('idx'); // TEST SELECTED VALUE to check how radio buttons or checkboxes react
+                var SELECTED_VALUE = t.getAttribute('idx'); // idx have checboxes and radio buttons
                 if (SELECTED_VALUE){
-                    console.log("add component listeners:",item);
-                    //console.log("add component listeners:",item.dom.children[0]);
-
-                    //console.log("add component listeners:",item.dom.children[0].children);
-
-
                     // getting array from html collection
                     var answers = Array.from(item.dom.children[0].children); // to change dom style
-                    var answers_js = item.el._opts.options; // to update javascript object and set answer to true/false
+                    var answers_js =  item.el._opts.options; // to update javascript object and set answer to true/false
 
 
                     answers.shift(); // remove first text item (text) - all other are radio / check buttons
@@ -425,9 +424,9 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
                     switch(type) {
                     case 'radio':
-                        for (const [index, value] of answers.entries()) {
-                            answers[index].classList.remove('selected');
-                            answers_js[SELECTED_VALUE].answer = false;
+                        for (var i = 0, len = answers.length; i < len; i++) {
+                            answers[i].classList.remove('selected');
+                            answers_js[i].answer = false;
                         }
                         answers[SELECTED_VALUE].classList.add('selected');
                         answers_js[SELECTED_VALUE].answer = true;
@@ -437,44 +436,43 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                         answers_js[SELECTED_VALUE].answer = !answers_js[SELECTED_VALUE].answer;
                         break;
                     default:
-                        console.err("Caller - addComponentListeners", "Unsupported component type" ,type);
+                        console.error("Caller - addComponentListeners", "Unsupported component type" ,type);
                     }
-
-                    console.log("Caller addComponentListeners", "printing answes_js",item.el._opts.options);
-
                     me.saveState();
-                    console.err("Caller addComponentListeners","save state for answer isnt saving properly - maybe because of js copy object?");
-
                 }
 
 
             }
-
-
-
-
-
-
         });
 
-        if(!me.previewing){
-            item.on('dblclick', function(e, t) {
-                me.editComponent(item);
-            });
+        // if(!me.previewing){ - is in each of these 4 functions which checks for condition when event is fired - this is usefull
+        // when switching back and forth from preview and remaining on same slide
 
-            item.on('_edit', function(e, t) {
+        item.on('dblclick', function(e, t) {
+            if(!me.previewing){
                 me.editComponent(item);
-            });
+            }
+        });
 
-            item.on('_duplicate', function(e, t) {
+        item.on('_edit', function(e, t) {
+            if(!me.previewing){
+                me.editComponent(item);
+            }
+        });
+
+        item.on('_duplicate', function(e, t) {
+            if(!me.previewing){
                 me.duplicateComponent(item);
-            });
+            }
+        });
 
-            item.on('_delete', function(e, t) {
+        item.on('_delete', function(e, t) {
+            if(!me.previewing){
                 me.deleteComponent(item);
                 me.hideComponentTools(item);
-            });
-        }
+            }
+        });
+
     },
 
     showComponentTools: function(component) {
@@ -511,11 +509,11 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             style: null
         });
 
-        if(!opts.type) {
+        if (!opts.type) {
             Ext.Msg.alert('Error', 'No component type');
         }
 
-        if(opts.cls && typeof opts.cls == "string") {
+        if (opts.cls && typeof opts.cls == "string") {
             opts.cls = [opts.cls];
         }
 
@@ -526,7 +524,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             parentEl = refs.panelContent.el.down('#html-slide'),
             cmp = document.createElement('div');
 
-        if(!me.getCurrentSlide()) {
+        if (!me.getCurrentSlide()) {
             me.newSlide();
         }
 
@@ -547,10 +545,10 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         //      cmp.style.backgroundImage = 'url(' + opts.src + ')';
         // }
         // else {
-            cmp.width = opts.width = me.round(isNull(opts.width, pos.width));
-            cmp.height = opts.height = me.round(isNull(opts.height, pos.height));
-            cmp.style.width = cmp.width + 'px';
-            cmp.style.height = cmp.height + 'px';
+        cmp.width = opts.width = me.round(isNull(opts.width, pos.width));
+        cmp.height = opts.height = me.round(isNull(opts.height, pos.height));
+        cmp.style.width = cmp.width + 'px';
+        cmp.style.height = cmp.height + 'px';
         // }
 
         // set classes
@@ -568,35 +566,34 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         var html = opts.html;
 
         content.classList.add('html-content');
-        Ext.each(opts.cls, function(cls) { content.classList.add(cls); });
+        Ext.each(opts.cls, function (cls) {
+            content.classList.add(cls);
+        });
 
-        if(opts.type == me.cmpTypes.SELECTION && opts.options) {
+        if (opts.type == me.cmpTypes.SELECTION && opts.options) {
 
             html = '<div clas="text">' + html + '</div>';
 
-
-            Ext.each(opts.options, function(option,index, allItems) {
+            Ext.each(opts.options, function (option, index, allItems) {
                 var cls = ['option', (opts.multi ? 'check' : 'radio')];
 
-                if(option.correct) {
+                if (option.correct) {
                     cls.push('correct');
                 }
+                if (option.answer) {
+                    cls.push('selected');
+                } else {
+                    // add answer parameter that is getting set when checking and unchecking answer
+                    option.answer = false;
+                }
                 // added two custom attributes idx which is index of element (starting with 0) and type which can contain chech or radio
-                html += '<div class="' + cls.join(' ') + '" idx=' + index + ' type=' + (opts.multi ? 'check' : 'radio') +'>' + option.text + '</div>';
-
-                // add answer parameter that is getting set when checking and unchecking answer
-                option.answer = false;
+                html += '<div class="' + cls.join(' ') + '" idx=' + index + ' type=' + (opts.multi ? 'check' : 'radio') + '>' + option.text + '</div>';
             });
         }
 
-        if(opts.type == me.cmpTypes.IMAGE && opts.src) {
+        if (opts.type == me.cmpTypes.IMAGE && opts.src) {
             content.style.backgroundImage = 'url(' + opts.src + ')';
         }
-
-
-
-
-
         content.innerHTML = html;
         content = cmp.appendChild(content);
 
@@ -610,15 +607,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         extCmp.type = opts.type;
 
 
+        if (!me.previewing) {
 
-
-
-
-
-
-
-
-        if(!this.previewing){
 
             cmp._dragger = new Ext.drag.Source({
                 element: extCmp,
@@ -627,30 +617,30 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     snap: {
                         x: snap,
                         y: snap
-                    },
+                    }
                 },
                 listeners: {
-                    beforedragstart: function(component, info, event, eOpts) {
-                        if(info.eventTarget.classList.contains('x-resizable-handle')) {
+                    beforedragstart: function (component, info, event, eOpts) {
+                        if (info.eventTarget.classList.contains('x-resizable-handle')) {
                             return false;
                         }
                     },
-                    dragcancel: function(component, info, event, eOpts) {
+                    dragcancel: function (component, info, event, eOpts) {
                         console.log('dragcancel', arguments);
                     },
-                    dragend: function(component, info, event, eOpts) {
+                    dragend: function (component, info, event, eOpts) {
                         console.log('dragend', arguments);
                     },
-                    dragmove: function(component, info, event, eOpts) {
+                    dragmove: function (component, info, event, eOpts) {
                         var pos = info.element.current,
                             x = pos.x - parentEl.getX(),
                             y = pos.y - parentEl.getY();
 
                         cmp._opts.x = x;
                         cmp._opts.y = y;
-            //             console.log(Ext.String.format('dragmove X: {0}, Y: {1}', x, y));
+                        //             console.log(Ext.String.format('dragmove X: {0}, Y: {1}', x, y));
                     },
-                    dragstart: function(component, info, event, eOpts) {
+                    dragstart: function (component, info, event, eOpts) {
                         console.log('dragstart', arguments);
                     }
                 }
@@ -664,22 +654,23 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 heightIncrement: snap,
                 widthIncrement: snap,
                 preserveRatio: false,
-                dynamic:true,
+                dynamic: true,
                 transparent: false,
                 handles: 'all', // shorthand for 'n s e w ne nw se sw'
                 listeners: {
-                    resize: function(component, width, height, e, eOpts) {
+
+                    resize: function (component, width, height, e, eOpts) {
                         cmp.width = width;
                         cmp.height = height;
-
                         cmp._opts.width = width;
                         cmp._opts.height = height;
-            //             console.log(Ext.String.format('W: {0}, H: {1}', width, height));
+                        //console.log(Ext.String.format('W: {0}, H: {1}', width, height));
+
                     }
                 }
             });
-
         }
+
 
         me.addComponentListeners(cmp);
         me.saveSlideState();
@@ -688,21 +679,26 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     },
 
     editComponent: function(component) {
-
         var me = this,
             refs = me.getReferences();
 
         component = component || me._selectedComponent;
-        if(component) {
-            if(component.type == me.cmpTypes.SELECTION) {
+        if (component) {
+            if ((component.type == me.cmpTypes.IMAGE) || (component.type == me.cmpTypes.VIDEO) || (component.type == me.cmpTypes.AUDIO) ){
+                console.log("Cannot edit image, video or audio");
+                return;
+            }
+
+            if (component.type == me.cmpTypes.SELECTION) {
                 me.editSelection(component);
             }
+
             else {
-                var wnd = me.getView().add({ xtype: 'texteditor' });
+                var wnd = me.getView().add({xtype: 'texteditor'});
 
                 wnd.getController().show({
                     value: component.el.down('.html-content').dom.innerHTML,
-                    callback: function(value) {
+                    callback: function (value) {
                         component.el.down('.html-content').dom.innerHTML = value;
                         component._opts.html = value;
                         me.saveSlideState();
@@ -890,6 +886,120 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             }
         }
         return countSlides;
+    },
+
+    evaluate: function() {
+        // returns [singleSelectionCorrect, singleSelectionQuestions, multipleSelectionScore, multipleSelectionScoreUsingNegative]
+        // multipleSelectionScore -> if answer_correct -> answer_score += 1/num_answers
+        //							 else: answer_score = (answer_score - 1/num_answers).clamp(0, num_answers)
+        //multipleSelectionScoreUsingNegative -> dont clamp incorrectly answered
+        Number.prototype.clamp = function (min, max) {
+            return Math.min(Math.max(this, min), max);
+        };
+
+        // iterate through slides and questions and check score:
+        var me = this,
+            usingNegativeScore = false, // config variable which determines if each answer can have negative return points
+            totalUserScore = 0;
+
+        me.saveState(); // TODO - latest addition - is it necessary?
+
+        var data = localStorage.getItem('mxp_elearning_slide');
+        if (data) {
+            data = Ext.decode(data);
+            if (data.slides) {
+                data.slides.forEach(function (value) {
+                    if (value.isSlide) {
+                        var questions = Ext.decode(value.content).components;
+                        questions.forEach(function (question) {
+                            totalUserScore += me.getScore(question, usingNegativeScore);
+                            console.log("printing new user score", totalUserScore);
+                        });
+                    }
+                });
+                console.log("printing final user score:", totalUserScore);
+            }
+        }
+
+
+
+    },
+
+    getScore: function(question, usingNegativeScore) {
+
+        var answerScore = 0;
+        var correctAnswer;
+        var usersAnswer;
+        var _question = question.options;
+        var questionNumAnswers = _question.length;
+
+        if (question.multi) {
+            // make a pre-pass counting num_correct_answers
+            var numCorrectAnswers = 0;
+            _question.forEach(function (option) {
+
+                if (option.correct) {
+                    numCorrectAnswers += 1;
+                }
+            });
+            // go through all questions in this form
+
+            _question.forEach(function (option) {
+                usersAnswer = option.answer;
+                correctAnswer = option.correct;
+                if (usersAnswer == correctAnswer) {
+                    if (correctAnswer === true) {
+                        // if we checked correct answer - add percent of all correct answers to his score
+                        answerScore += (1 / numCorrectAnswers);
+                    }
+                    // no else - we are not rewarding for not checking not-correct answers
+                }
+                else{
+                    // we didnt click what is correct
+
+                    if (correctAnswer === true) {
+                        // if we clicked no but answer was yes, punish user by subtracting percent of all correct answers from his score
+                        answerScore -= (1 / numCorrectAnswers);
+                    }
+                    else{
+                        // if we clicked yes but answer was no, punish user by subtracting only percent of num answers
+                        answerScore -= (1/ questionNumAnswers);
+                    }
+                }
+            });
+
+            // append score of this questionary to totalScore
+            console.log("user score appended with", answerScore);
+            if(!usingNegativeScore){
+                // clamp between 0 and max
+                answerScore = (answerScore).clamp(0, questionNumAnswers);
+            }
+
+        } else {
+            // evaluate
+            _question.forEach(function (option) {
+
+                usersAnswer = option.answer;
+                correctAnswer = option.correct;
+
+                if ((correctAnswer === true) && (usersAnswer == correctAnswer)) {
+                    answerScore = 1;
+                }
+                else {
+                    if(usersAnswer == correctAnswer){
+                        // this is not right answer but we checked right one
+
+                        if(usingNegativeScore){
+                            // returns -1 - is this too much?
+                            answerScore = -1;
+                        }
+                        // else return 0
+                    }
+                }
+            });
+        }
+
+        return answerScore;
     },
 
     close: function(owner, tool, event) {
