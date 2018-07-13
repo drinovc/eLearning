@@ -320,6 +320,8 @@ Ext.define('eLearning.view.EditSlides', {
 
                                 Ext.each(data.slides, function(slide) {
                                     if(slide.content) {
+
+                                        console.log("caller - ViewSource button handler", "printing slide content", slide.content);
                                         slide.content = Ext.decode(slide.content);
                                     }
                                 });

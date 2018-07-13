@@ -862,4 +862,391 @@ object Pub: TPub
     Left = 216
     Top = 8
   end
+  object Pages: TADOQueryMX
+    Connection = ADOConnection1
+    Parameters = <>
+    SQL.Strings = (
+      ''
+      ''
+      ''
+      'SELECT '#9'pages.ACTIVE AS '#39'active'#39
+      #9', pages.CAN_NAVIGATE_TO_NEXT_PAGE AS '#39'canNextPage'#39
+      #9', pages.CAN_NAVIGATE_TO_PREVIOUS_PAGE AS '#39'canPrevPage'#39
+      #9', pages.CHANGED AS '#39'changed'#39
+      #9', pages.CREATED AS '#39'created'#39
+      #9', pages.CREATED_AT_ID AS '#39'createdAtId'#39
+      #9', pages.CREATED_BY_ID AS '#39'createdById'#39
+      #9', pages.GUID AS '#39'id'#39
+      #9', pages.LAST_CHANGED AS '#39'lastChanged'#39
+      #9', pages.LAST_CHANGE_LOG_ID AS '#39'lastChangedLog'#39
+      #9', pages.MAXIMUM_COMPLETION_TIME AS '#39'completionTime'#39
+      #9', pages.MINIMUM_REVIEW_TIME AS '#39'reviewTime'#39
+      #9', pages.REC_DELETED AS '#39'deleted'#39
+      #9', pages.ROW_COUNTER AS '#39'rowCounter'#39
+      #9', pages.TRAINING_PROGRAM_ID AS '#39'programId'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_CATEGORY_ID AS '#39'categoryId'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_CONTENT AS '#39'content'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_ID AS '#39'pageId'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_MULTI_SELECT AS '#39'multiSelect'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_NAME AS '#39'name'#39
+      ''
+      #9', (   '
+      #9'-- todo - inefficient '
+      #9'CASE WHEN '
+      
+        #9'(SELECT GUID FROM Training_Program_Pages WHERE TRAINING_PROGRAM' +
+        '_PAGE_ID = pages.TRAINING_PROGRAM_PAGE_PARENT_ID)'
+      #9'IS NULL THEN '
+      #9'NULL'
+      #9'ELSE '
+      #9'CONCAT('#39'{'#39
+      
+        #9', CAST((SELECT GUID FROM Training_Program_Pages WHERE TRAINING_' +
+        'PROGRAM_PAGE_ID = pages.TRAINING_PROGRAM_PAGE_PARENT_ID) AS char' +
+        '(36))'
+      #9', '#39'}'#39
+      #9')'
+      #9
+      #9'END'
+      #9#9') AS '#39'parentId'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_SCORE_METHOD AS '#39'scoreMethod'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_SEQUENCE AS '#39'sequence'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_SOUND AS '#39'sound'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_SOUND_URL AS '#39'soundUrl'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_TEMPLATE_ID AS '#39'templateId'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_VIDEO AS '#39'video'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_VIDEO_URL AS '#39'videoUrl'#39
+      ''
+      ''
+      #9'-- below are custom arguments to give to tree'
+      #9' , 1 AS '#39'expanded'#39
+      #9' ,('
+      #9#9'CASE WHEN '
+      #9#9'TRAINING_PROGRAM_PAGE_CATEGORY_ID = 2 -- page'
+      #9#9'THEN '
+      #9#9'1'
+      #9#9'ELSE '
+      #9#9'0 -- chapter'
+      #9#9'END'
+      #9#9') AS '#39'leaf'#39
+      ''
+      ''
+      ''
+      'FROM Training_Program_Pages AS pages'
+      'WHERE pages.REC_DELETED = 0')
+    InsertQuery.Connection = ADOConnection1
+    InsertQuery.Parameters = <
+      item
+        Name = 'id'
+        DataType = ftGuid
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'parentId'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 38
+        Value = Null
+      end
+      item
+        Name = 'content'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 8000
+        Value = Null
+      end>
+    InsertQuery.SQL.Strings = (
+      'DECLARE @pageId INT = NULL'
+      'DECLARE @id UNIQUEIDENTIFIER = :id'
+      'DECLARE @parentIdGuid NVARCHAR(38) = :parentId'
+      'DECLARE @parentId INT = NULL'
+      'DECLARE @content NVARCHAR(MAX) = :content'
+      ''
+      'DECLARE @categoryId INT =2 '
+      ''
+      '-- temp my variables'
+      'DECLARE @programId INT = 1'
+      'DECLARE @name NVARCHAR(200) = '#39'TestPageName'#39
+      'DECLARE @sequence NUMERIC(18,0) = 123456789012345678'
+      'DECLARE @multiSelect BIT = 1'
+      'DECLARE @scoreMethod VARCHAR(1) = '#39'A'#39
+      'DECLARE @active BIT = 1'
+      'DECLARE @deleted BIT = 0'
+      'DECLARE @created DATETIME = GETDATE()'
+      'DECLARE @lastChanged DATETIME = GETDATE()'
+      'DECLARE @changed CHAR(1) = 0'
+      ''
+      ''
+      ''
+      ''
+      '-- get page id from guid'
+      
+        'SET @pageId = (SELECT TRAINING_PROGRAM_PAGE_ID FROM Training_Pro' +
+        'gram_Pages WHERE GUID = @id)'
+      '-- get parent id from guid'
+      'BEGIN TRY  '
+      
+        '    SET @parentId = (SELECT TRAINING_PROGRAM_PAGE_ID FROM Traini' +
+        'ng_Program_Pages WHERE GUID = @parentIdGuid)'
+      'END TRY  '
+      'BEGIN CATCH  '
+      
+        #9'-- catch if there is conversion error - "root" cannot be conver' +
+        'ted into unique identifier'
+      
+        '    SET @parentId = -1 -- TODO - root element sets -1 but it sho' +
+        'uld be null - but field TRAINING_PROGRAM_PAGE_PARENT_ID cannot b' +
+        'e null as of 2018-07-12'
+      #9'--SET @parentId = NULL'
+      'END CATCH'
+      ''
+      
+        '-- set content - it may be empty if we created slide and not sec' +
+        'tion'
+      ''
+      ''
+      ''
+      '-- set parentId'
+      ''
+      'IF @pageId IS NULL'
+      'BEGIN'
+      #9'INSERT INTO Training_Program_Pages ('
+      #9#9'GUID'
+      #9#9'--, TRAINING_PROGRAM_PAGE_ID'
+      #9#9', TRAINING_PROGRAM_ID'
+      #9#9', TRAINING_PROGRAM_PAGE_PARENT_ID'
+      #9#9', TRAINING_PROGRAM_PAGE_NAME'
+      #9#9', TRAINING_PROGRAM_PAGE_SEQUENCE'
+      #9#9', TRAINING_PROGRAM_PAGE_CATEGORY_ID'
+      #9#9'--, TRAINING_PROGRAM_PAGE_TEMPLATE_ID'
+      #9#9', TRAINING_PROGRAM_PAGE_CONTENT'
+      #9#9'--, MINIMUM_REVIEW_TIME'
+      #9#9'--, MAXIMUM_COMPLETION_TIME'
+      #9#9', TRAINING_PROGRAM_PAGE_MULTI_SELECT'
+      #9#9', TRAINING_PROGRAM_PAGE_SCORE_METHOD'
+      #9#9'--, TRAINING_PROGRAM_PAGE_SOUND'
+      #9#9'--, TRAINING_PROGRAM_PAGE_SOUND_URL'
+      #9#9'--, TRAINING_PROGRAM_PAGE_VIDEO'
+      #9#9'--, TRAINING_PROGRAM_PAGE_VIDEO_URL'
+      #9#9'--, CAN_NAVIGATE_TO_NEXT_PAGE'
+      #9#9'--, CAN_NAVIGATE_TO_PREVIOUS_PAGE'
+      #9#9', ACTIVE'
+      #9#9', REC_DELETED'
+      #9#9'--, CREATED_AT_ID'
+      #9#9'--, CREATED_BY_ID'
+      #9#9', CREATED'
+      #9#9', LAST_CHANGED'
+      #9#9', CHANGED'
+      #9#9'--, LAST_CHANGE_LOG_ID'
+      #9')'
+      #9'VALUES ('
+      #9#9'@id'
+      #9#9'--, @pageId'
+      #9#9', @programId '
+      #9#9', @parentId'
+      #9#9', @name'
+      #9#9', @sequence'
+      #9#9', @categoryId'
+      #9#9'--, @templateId'
+      ''
+      ''
+      
+        #9#9'-- TODO - inefficient - slide may have empty content but empty' +
+        ' content is not allowed'
+      ''
+      #9#9' ,('
+      #9#9#9'CASE WHEN '
+      #9#9#9'@content'
+      #9#9#9'IS NULL THEN '
+      #9#9#9#39#39' '
+      #9#9#9'ELSE '
+      #9#9#9'@content'
+      #9#9#9'END'
+      #9#9' )'
+      ''
+      ''
+      ''
+      #9#9'--, @reviewTime'
+      #9#9'--, @completionTime'
+      #9#9', @multiSelect'
+      #9#9', @scoreMethod'
+      #9#9'--, @sound'
+      #9#9'--, @soundUrl'
+      #9#9'--, @video'
+      #9#9'--, @videoUrl'
+      #9#9'--, @canNextPage'
+      #9#9'--, @canPrevPage'
+      #9#9', @active '
+      #9#9', @deleted '
+      #9#9'--, @createdAtId'
+      #9#9'--, @createdById'
+      #9#9', @created'
+      #9#9', @lastChanged'
+      #9#9', @changed '
+      #9#9'--, @lastChangedLog'
+      #9')'
+      
+        #9'SET @pageId = (SELECT TRAINING_PROGRAM_PAGE_ID FROM Training_Pr' +
+        'ogram_Pages WHERE ROW_COUNTER = SCOPE_IDENTITY())'
+      'END'
+      'ELSE'
+      'BEGIN'
+      #9'UPDATE Training_Program_Pages SET'
+      
+        #9#9'--, TRAINING_PROGRAM_PAGE_ID = ISNULL(@pageId, TRAINING_PROGRA' +
+        'M_PAGE_ID)'
+      #9#9'TRAINING_PROGRAM_ID = ISNULL(@programId, TRAINING_PROGRAM_ID)'
+      
+        #9#9', TRAINING_PROGRAM_PAGE_PARENT_ID = ISNULL(@parentId, TRAINING' +
+        '_PROGRAM_PAGE_PARENT_ID)'
+      
+        #9#9', TRAINING_PROGRAM_PAGE_NAME = ISNULL(@name, TRAINING_PROGRAM_' +
+        'PAGE_NAME)'
+      
+        #9#9', TRAINING_PROGRAM_PAGE_SEQUENCE = ISNULL(@sequence, TRAINING_' +
+        'PROGRAM_PAGE_SEQUENCE)'
+      
+        #9#9', TRAINING_PROGRAM_PAGE_CATEGORY_ID = ISNULL(@categoryId, TRAI' +
+        'NING_PROGRAM_PAGE_CATEGORY_ID)'
+      
+        #9#9'--, TRAINING_PROGRAM_PAGE_TEMPLATE_ID = ISNULL(@templateId, TR' +
+        'AINING_PROGRAM_PAGE_TEMPLATE_ID)'
+      
+        #9#9', TRAINING_PROGRAM_PAGE_CONTENT = ISNULL(@content, TRAINING_PR' +
+        'OGRAM_PAGE_CONTENT)'
+      
+        #9#9'--, MINIMUM_REVIEW_TIME = ISNULL(@reviewTime, MINIMUM_REVIEW_T' +
+        'IME)'
+      
+        #9#9'--, MAXIMUM_COMPLETION_TIME = ISNULL(@completionTime, MAXIMUM_' +
+        'COMPLETION_TIME)'
+      
+        #9#9', TRAINING_PROGRAM_PAGE_MULTI_SELECT = ISNULL(@multiSelect, TR' +
+        'AINING_PROGRAM_PAGE_MULTI_SELECT)'
+      
+        #9#9', TRAINING_PROGRAM_PAGE_SCORE_METHOD = ISNULL(@scoreMethod, TR' +
+        'AINING_PROGRAM_PAGE_SCORE_METHOD)'
+      
+        #9#9'--, TRAINING_PROGRAM_PAGE_SOUND = ISNULL(@sound, TRAINING_PROG' +
+        'RAM_PAGE_SOUND)'
+      
+        #9#9'--, TRAINING_PROGRAM_PAGE_SOUND_URL = ISNULL(@soundUrl, TRAINI' +
+        'NG_PROGRAM_PAGE_SOUND_URL)'
+      
+        #9#9'--, TRAINING_PROGRAM_PAGE_VIDEO = ISNULL(@video, TRAINING_PROG' +
+        'RAM_PAGE_VIDEO)'
+      
+        #9#9'--, TRAINING_PROGRAM_PAGE_VIDEO_URL = ISNULL(@videoUrl, TRAINI' +
+        'NG_PROGRAM_PAGE_VIDEO_URL)'
+      
+        #9#9'--, CAN_NAVIGATE_TO_NEXT_PAGE = ISNULL(@canNextPage, CAN_NAVIG' +
+        'ATE_TO_NEXT_PAGE)'
+      
+        #9#9'--, CAN_NAVIGATE_TO_PREVIOUS_PAGE = ISNULL(@canPrevPage, CAN_N' +
+        'AVIGATE_TO_PREVIOUS_PAGE)'
+      #9#9', ACTIVE = ISNULL(@active, ACTIVE)'
+      #9#9', REC_DELETED = ISNULL(@deleted, REC_DELETED)'
+      #9#9'--, CREATED_AT_ID = ISNULL(@createdAtId, CREATED_AT_ID)'
+      #9#9'--, CREATED_BY_ID = ISNULL(@createdById, CREATED_BY_ID)'
+      #9#9', CREATED = ISNULL(@created, CREATED)'
+      #9#9', LAST_CHANGED= ISNULL(@lastChanged, LAST_CHANGED)'
+      #9#9', CHANGED = ISNULL(@changed, CHANGED)'
+      
+        #9#9'--, LAST_CHANGE_LOG_ID = ISNULL(@lastChangedLog, LAST_CHANGE_L' +
+        'OG_ID)'
+      #9'WHERE TRAINING_PROGRAM_PAGE_ID = @pageId'
+      'END'
+      ''
+      ''
+      ''
+      ''
+      ''
+      ''
+      'SELECT'
+      #9'pages.ACTIVE AS '#39'active'#39
+      #9', pages.CAN_NAVIGATE_TO_NEXT_PAGE AS '#39'canNextPage'#39
+      #9', pages.CAN_NAVIGATE_TO_PREVIOUS_PAGE AS '#39'canPrevPage'#39
+      #9', pages.CHANGED AS '#39'changed'#39
+      #9', pages.CREATED AS '#39'created'#39
+      #9', pages.CREATED_AT_ID AS '#39'createdAtId'#39
+      #9', pages.CREATED_BY_ID AS '#39'createdById'#39
+      #9', pages.GUID AS '#39'id'#39
+      #9', pages.LAST_CHANGED AS '#39'lastChanged'#39
+      #9', pages.LAST_CHANGE_LOG_ID AS '#39'lastChangedLog'#39
+      #9', pages.MAXIMUM_COMPLETION_TIME AS '#39'completionTime'#39
+      #9', pages.MINIMUM_REVIEW_TIME AS '#39'reviewTime'#39
+      #9', pages.REC_DELETED AS '#39'deleted'#39
+      #9', pages.ROW_COUNTER AS '#39'rowCounter'#39
+      #9', pages.TRAINING_PROGRAM_ID AS '#39'programId'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_CATEGORY_ID AS '#39'categoryId'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_CONTENT AS '#39'content'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_ID AS '#39'pageId'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_MULTI_SELECT AS '#39'multiSelect'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_NAME AS '#39'name'#39
+      ''
+      #9', (   '
+      #9'-- todo - inefficient '
+      #9'CASE WHEN '
+      
+        #9'(SELECT GUID FROM Training_Program_Pages WHERE TRAINING_PROGRAM' +
+        '_PAGE_ID = pages.TRAINING_PROGRAM_PAGE_PARENT_ID)'
+      #9'IS NULL THEN '
+      #9'NULL '
+      #9'ELSE '
+      #9'CONCAT('#39'{'#39
+      
+        #9', CAST((SELECT GUID FROM Training_Program_Pages WHERE TRAINING_' +
+        'PROGRAM_PAGE_ID = pages.TRAINING_PROGRAM_PAGE_PARENT_ID) AS char' +
+        '(36))'
+      #9', '#39'}'#39
+      #9')'
+      #9
+      #9'END'
+      #9#9') AS '#39'parentId'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_SCORE_METHOD AS '#39'scoreMethod'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_SEQUENCE AS '#39'sequence'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_SOUND AS '#39'sound'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_SOUND_URL AS '#39'soundUrl'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_TEMPLATE_ID AS '#39'templateId'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_VIDEO AS '#39'video'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_VIDEO_URL AS '#39'videoUrl'#39
+      ''
+      #9'-- below are custom arguments to give to tree'
+      #9' , 1 AS '#39'expanded'#39
+      #9' ,('
+      #9#9'CASE WHEN '
+      #9#9'TRAINING_PROGRAM_PAGE_CATEGORY_ID = 2 -- page'
+      #9#9'THEN '
+      #9#9'0'
+      #9#9'ELSE '
+      #9#9'1 -- chapter'
+      #9#9'END'
+      #9#9') AS '#39'leaf'#39
+      ''
+      'FROM Training_Program_Pages AS pages'
+      'WHERE pages.REC_DELETED = 0'
+      'AND pages.TRAINING_PROGRAM_PAGE_ID = @pageId')
+    DeleteQuery.Connection = ADOConnection1
+    DeleteQuery.Parameters = <
+      item
+        Name = 'id'
+        DataType = ftGuid
+        NumericScale = 255
+        Precision = 255
+        Size = 38
+        Value = Null
+      end>
+    DeleteQuery.SQL.Strings = (
+      'UPDATE Training_Program_Pages'
+      'SET REC_DELETED = 1'
+      'WHERE GUID = :id'
+      '')
+    UpdateQuery.Connection = ADOConnection1
+    UpdateQuery.Parameters = <>
+    Left = 216
+    Top = 56
+  end
 end

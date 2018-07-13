@@ -9,9 +9,7 @@
       "font-awesome"
    ],
    "indexHtmlPath": "index.html",
-   "classpath": [
-      "app"
-   ],
+   "classpath": "${app.dir}/app,${app.dir}/node_modules/html2canvas/dist/",
    "overrides": [
       "overrides"
    ],

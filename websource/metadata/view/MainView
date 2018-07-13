@@ -6,7 +6,6 @@
     },
     "codeClass": null,
     "userConfig": {
-        "designer|initialView": true,
         "designer|userAlias": "mainview",
         "designer|userClassName": "MainView",
         "itemId": "mainView",

@@ -80,6 +80,22 @@
             },
             "name": "MyInteger",
             "designerId": "63b37613-717a-4c18-a37c-0cefe10da228"
+        },
+        {
+            "type": "Ext.data.field.Integer",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "category"
+            },
+            "configAlternates": {
+                "name": "string"
+            },
+            "name": "MyInteger3",
+            "designerId": "ccd6ff9b-3c6d-4345-a1e3-9e616a7d066e"
         }
     ]
 }

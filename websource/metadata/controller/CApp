@@ -1,0 +1,69 @@
+{
+    "type": "Ext.app.Controller",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userClassName": "CApp"
+    },
+    "configAlternates": {
+        "designer|userClassName": "string"
+    },
+    "name": "MyController",
+    "designerId": "9d9416d8-07e3-4650-a286-9261975bc853",
+    "cn": [
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "appLaunch",
+                "implHandler": [
+                    "App = this;",
+                    "",
+                    "// Config variable for using mockup data",
+                    "var MOCKUP = false;",
+                    "if (MOCKUP){",
+                    "    console.warn(\"App is using mockup data.\");",
+                    "}",
+                    "",
+                    "App = Ext.merge(App, {",
+                    "    lookups: {},",
+                    "    shared: {}",
+                    "});",
+                    "",
+                    "// BEFORE EVERY REQUEST",
+                    "",
+                    "Ext.Ajax.on(\"beforerequest\", function(conn, options, eOpts) {",
+                    "    if(options.url) {",
+                    "        // check if url hasn't been modified yet",
+                    "        if (options.url.split('/')[0] === \"\"){",
+                    "            if(MOCKUP) {",
+                    "                options.url = 'mockup' + options.url.split('?')[0] + '.json';",
+                    "            }",
+                    "            else{",
+                    "                 options.url = 'MXP_App_ISAPI.dll' + options.url.split('?')[0];",
+                    "            }",
+                    "        }",
+                    "    }",
+                    "});",
+                    "",
+                    "var grid = Ext.create(\"eLearning.view.MainView\");",
+                    "",
+                    ""
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "appLaunch",
+            "designerId": "71102653-8429-4f76-8806-1cd5864e9c38"
+        }
+    ]
+}

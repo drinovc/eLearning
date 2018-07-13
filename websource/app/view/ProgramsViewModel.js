@@ -32,7 +32,7 @@ Ext.define('eLearning.view.ProgramsViewModel', {
                 api: {
                     create: '/Pub/Programs',
                     read: '/Pub/Programs',
-                    update: '/Pub/Programs',
+                    update: '/POST/Pub/Programs',
                     destroy: '/Pub/Programs'
                 },
                 reader: {

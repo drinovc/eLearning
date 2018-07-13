@@ -6,6 +6,9 @@
     },
     "codeClass": null,
     "userConfig": {
+        "controllers": [
+            "CApp"
+        ],
         "models": [
             "Slide",
             "Option",
@@ -31,7 +34,8 @@
         "name": "string",
         "views": "typedarray",
         "models": "typedarray",
-        "stores": "typedarray"
+        "stores": "typedarray",
+        "controllers": "typedarray"
     },
     "name": "Application",
     "designerId": "application",
@@ -45,6 +49,31 @@
             "codeClass": null,
             "name": "Loader243",
             "designerId": "c4853406-6a59-4b51-84be-bf6073c863c8"
+        },
+        {
+            "type": "fixedfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "launch",
+                "implHandler": [
+                    "// All functions from Application were moved to controller CApp but they can be called as they are directly on Application",
+                    "// EXAMPLE: function App.CApp.mask() can be called App.mask()",
+                    "",
+                    "this.getController(\"CApp\").appLaunch.call(this);",
+                    "",
+                    ""
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "launch",
+            "designerId": "3d333db8-1e58-4718-8366-b92f4e1f692d"
         }
     ]
 }

@@ -23,16 +23,17 @@
             },
             "codeClass": null,
             "userConfig": {
+                "autoSync": true,
                 "defaultRootText": "Slides",
                 "model": "Slide",
                 "name": "TreeStoreSlides",
                 "parentIdProperty": "parentId",
                 "root": [
                     "{",
-                    "    expanded: true,",
-                    "    children: []",
+                    "    expanded: true",
                     "}"
-                ]
+                ],
+                "rootVisible": true
             },
             "configAlternates": {
                 "model": "model",
@@ -40,20 +41,53 @@
                 "root": "object",
                 "defaultRootText": "string",
                 "clearOnLoad": "boolean",
-                "parentIdProperty": "string"
+                "parentIdProperty": "string",
+                "autoSync": "boolean",
+                "rootVisible": "boolean"
             },
             "name": "MyTreeStore",
             "designerId": "b2f37da4-75d4-40f1-a493-a97a697efefb",
             "cn": [
                 {
-                    "type": "Ext.data.proxy.Memory",
+                    "type": "Ext.data.proxy.Rest",
                     "reference": {
                         "name": "proxy",
                         "type": "object"
                     },
                     "codeClass": null,
-                    "name": "MyMemoryProxy",
-                    "designerId": "c58f2f47-f466-41a0-a967-33abc75ac302"
+                    "userConfig": {
+                        "api": [
+                            "{",
+                            "    create: '/Pub/Pages',",
+                            "    read: '/Pub/Pages',",
+                            "    update: '/POST/Pub/Pages',",
+                            "    destroy: '/Pub/Pages'",
+                            "}"
+                        ]
+                    },
+                    "configAlternates": {
+                        "api": "object"
+                    },
+                    "name": "MyRestProxy1",
+                    "designerId": "c58f2f47-f466-41a0-a967-33abc75ac302",
+                    "cn": [
+                        {
+                            "type": "Ext.data.reader.Json",
+                            "reference": {
+                                "name": "reader",
+                                "type": "object"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "rootProperty": "data"
+                            },
+                            "configAlternates": {
+                                "rootProperty": "string"
+                            },
+                            "name": "MyJsonReader1",
+                            "designerId": "bc8e5eee-c14c-4444-a2c2-57c04e7f9a6a"
+                        }
+                    ]
                 }
             ]
         }

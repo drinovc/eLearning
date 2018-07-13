@@ -75,7 +75,7 @@ Ext.define('eLearning.view.ProgramsViewController', {
             data = {
                 id: createGUID(),
                 name: 'New Training Program',
-                categoryId: -1,
+                categoryId: null,
                 description: 'New Training Program Description',
                 validFrom: new Date(),
                 validTo: Ext.Date.add(new Date(), Ext.Date.YEAR, 1),
@@ -89,6 +89,7 @@ Ext.define('eLearning.view.ProgramsViewController', {
         var rec = store.add(data)[0];
 
         rec.phantom = true;
+        //store.sync();
         editor.startEdit(rec);
 
         //me.saveState();

@@ -38,6 +38,10 @@ Ext.define('eLearning.model.Slide', {
         {
             type: 'int',
             name: 'sequence'
+        },
+        {
+            type: 'int',
+            name: 'category'
         }
     ]
 });

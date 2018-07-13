@@ -39,6 +39,9 @@ Ext.application({
         'EditTools',
         'EditSlides'
     ],
+    controllers: [
+        'CApp'
+    ],
     name: 'eLearning',
 
     requires: [
@@ -46,7 +49,12 @@ Ext.application({
     ],
 
     launch: function() {
-        Ext.create('eLearning.view.MainView');
+        // All functions from Application were moved to controller CApp but they can be called as they are directly on Application
+        // EXAMPLE: function App.CApp.mask() can be called App.mask()
+
+        this.getController("CApp").appLaunch.call(this);
+
+
     }
 
 });

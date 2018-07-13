@@ -26,9 +26,11 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             refs = me.getReferences();
 
         refs.panelHeader.setTitle(opts.program.get('name'));
+
     },
 
     newSection: function() {
+        console.log("creating new section" ,"TODO -leaf is here set to true, but it should be pulled from database if this section has any children");
         var me = this,
             refs = me.getReferences(),
             store = me.getStore('TreeStoreSlides');
@@ -38,16 +40,23 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             sequence: null,
             title: 'New Section',
             content: null,
-            expanded: true,
-            children: []
+            expanded: false,
+            children: [],
+
+            //leaf: true, // TODO - debuging purposes
+            category : me.ProgramPageCategoriesEnum.Chapter
+
         };
 
         var parentNode = /*refs.treeSlides.getSelection()[0] ||*/ store.getRoot();
 
         slide = parentNode.appendChild(data);
+
+
         refs.treeSlides.setSelection(slide);
 
         //me.saveSlideState(slide);
+
     },
 
     newSlide: function() {
@@ -63,7 +72,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 content: null,
                 expanded: true,
                 leaf: true,
-                isSlide : true
+                isSlide : true,
+                category : me.ProgramPageCategoriesEnum.Page
             };
 
         if(parentNode.isLeaf()) {
@@ -93,16 +103,21 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             if(components && components.length > 0) {
                 Ext.Msg.confirm('Delete slide', 'Are you sure?', function(btn) {
                     if(btn == 'yes') {
-                        slide.parentNode.removeChild(slide);
-                        //store.remove(slide);
-                        me.clearSlidePanel();
-                        refs.treeSlides.setSelection(nextSlide);
+                        if(slide.parentNode){
+                            slide.parentNode.removeChild(slide);
+                            me.saveState();
+                            me.clearSlidePanel();
+                            refs.treeSlides.setSelection(nextSlide);
+                        }else{
+                            console.error("Caller - EditSlides/deleteSlide", "No parent node exists", " printing slide:", slide);
+                        }
+
                     }
                 });
             }
             else {
                 slide.parentNode.removeChild(slide);
-                //store.remove(slide);
+                me.saveState();
                 me.clearSlidePanel();
                 refs.treeSlides.setSelection(nextSlide);
 
@@ -842,6 +857,41 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     saveState: function() {
           // save state to offline storage - switch to indexdb at some point?
             localStorage.setItem('mxp_elearning_slide', Ext.encode(this.getCurrentState()));
+
+
+
+
+
+
+        // Testing connecting delphi Programs module to TreeStoreSlides - Jernej Habjan 2018-07-12
+
+        store = this.getStore('TreeStoreSlides');
+        store.sync(
+        {
+            callback: function(){
+
+                // Enable button
+                console.log("TODO - enabling button back on sync callback");
+
+                // cRegisterSave is a button id
+
+
+                // IF the button is Extjs component then use
+        //
+                // Ext.getCmp('btnAdd').disable();
+                // If it is not Ext js Component then use
+        //
+                // Ext.get('btnAdd').setDisabled(true);
+                // I hope this will help.
+
+            },
+            success: function(){
+                console.log("success callback");
+            }
+        });
+
+
+
     },
 
     insertAudio: function() {
@@ -1011,6 +1061,11 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     },
 
     onTreeSlidesSelect: function(rowmodel, record, index, eOpts) {
+
+
+
+
+
         if(record.isLeaf()) {
             this.loadSlideState(record);
         }
@@ -1019,6 +1074,74 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             this.insertTitle('Section ' + record.get('title'));
         }
 
+        return;
+        // TODO - Jernej Habjan 2018-07-12
+        // Trying to replace slide icon in treeview by rendered content
+
+        var me = this,
+            refs = me.getReferences();
+
+        console.log("printign refs",refs.treeSlides);
+
+        console.log("ext get", Ext.get(refs.treeSlides));
+
+        // todo - check if there are any children - possible crash here
+        console.log("printign children",refs.treeSlides.el.dom.children[0].children[1].children[0].children[1].children);
+
+
+        // get all currently shown nodes in tree view - only parent of collapsed nodes is visible
+        var treeView = refs.treeSlides.el.dom.children[0].children[1].children[0].children[1].children;
+        for (var i=0, n=treeView.length; i < n; i++){
+
+            var children = treeView[i].children[0].children[0].children[0].children[0].children;
+
+            var slide = children[children.length - 2]; // slots before that occupy indents in tree view, slot after that is text
+
+
+
+            console.log("printing all kids", treeView[i].children[0].children[0].children[0].children[0].children);
+            console.log("printing slide", slide);
+
+
+            console.log("printing slide class list", slide.classList);
+
+            // uncomment this if to allow rendering on all tree nodes - and not only on slides
+            if(slide.classList.contains("x-tree-icon-leaf")){ // check if it is slide
+                slide.outerHTML = '<div role="presentation" class="  x-tree-icon"><img src="https://www.vaporfi.com.au/media/catalog/product/cache/34/thumbnail/600x600/9df78eab33525d08d6e5fb8d27136e95/v/z/vz_eliquid_juicy_red_apple.jpg" style="width:20px; height:20px;"></div>';
+
+                // Todo - replace apple photo with rendered slide with scale of 20, 20
+
+
+            }
+
+        }
+
+        // Part 2 - rendering slides in appropriate slots:
+
+
+        // var data = localStorage.getItem('mxp_elearning_slide');
+        // if(data) {
+        //     data = Ext.decode(data);
+        //     if(data.slides) {
+        //         data.slides.forEach(function (value) {
+        //             if(value.isSlide){
+        //                 console.log("printing slide",value);
+        //             }
+        //         });
+        //     }
+        // }
+
+        // Part 3 - slide html to canvas - http://html2canvas.hertzen.com/
+
+        // document.body.innerHTML += '<div id="capture" style="padding: 10px; background: #f5da55">    <h4 style="color: #000; ">Hello world!</h4></div>';
+        //
+        //
+        // html2canvas(document.querySelector("#capture")).then(canvas => {
+        //     document.body.appendChild(canvas);
+        // });
+
+
+
     },
 
     onTreeSlidesDeselect: function(rowmodel, record, index, eOpts) {
@@ -1026,9 +1149,20 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     },
 
     onEditSlidesBoxReady: function(component, width, height, eOpts) {
-
         var me = this,
             refs = me.getReferences();
+
+        // Getting ProgramPageCategories into enum where key is text ('Chapter', 'Page') and value is id (1, 2)
+        me.ProgramPageCategoriesEnum = {};
+
+        console.log("printing program categories",App.lookups.ProgramPageCategories);
+        App.lookups.ProgramPageCategories.forEach((obj)=>{
+            me.ProgramPageCategoriesEnum[obj.text] = obj.id;
+        });
+        Object.freeze(me.ProgramPageCategoriesEnum);
+
+
+
 
         me._selectedComponent = null;
         me.previewing = false; // used for toggling event actions when previewing or not
@@ -1077,14 +1211,54 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 });
 
                 // if (data.slides[0].rootId === 'root'){ data.slides.shift(); }
-                me.getStore('TreeStoreSlides').getProxy().setData(data.slides);
-                me.getStore('TreeStoreSlides').load();
+
+                // TODO - Jernej Habjan - commented below line because TreeStoreSlides doesn't have memory proxy but rest proxy
+
+
+                //me.getStore('TreeStoreSlides').getProxy().setData(data.slides);
+
+                // TODO - Jernej Habjan - added data
+                me.getStore('TreeStoreSlides').add(data.slides);
+
+                console.log("calling sync on box ready after adding data", data.slides);
+                me.getStore('TreeStoreSlides').sync(
+                {
+                    callback: function(){
+                        console.log("Successfully added slides after being offline");
+                    }
+                });
+
+
+
+
 
                 Ext.defer(function() {
                     me.nextSlide();
                 }, 100);
             }
         }
+
+
+
+        var store = me.getStore('TreeStoreSlides');
+        store.load(
+
+        {
+
+            success : function(bb) { console.log("printing params", "store load success",bb); },
+            failure : function(bb) { console.log("printing params", "store load failure",bb); },
+            callback : function(bb) {console.log("printing params", "store load callback", bb); }
+        }
+        );
+
+
+
+        console.log("called store load");
+
+
+
+
+
 
         me.setBackground(me._pageSetup.background);
         refs.panelContent.setWidth(me._pageSetup.width);

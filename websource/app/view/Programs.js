@@ -60,7 +60,9 @@ Ext.define('eLearning.view.Programs', {
         {
             xtype: 'gridcolumn',
             renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
-                return App.lookups.ProgramCategories.filter(function(item) { return item.id == value; })[0].text;
+
+                return !value ? '' : App.lookups.ProgramCategories.filter(function(item) { return item.id == value; })[0].text;
+
             },
             minWidth: 150,
             cellWrap: true,
