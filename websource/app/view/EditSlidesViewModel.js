@@ -20,20 +20,19 @@ Ext.define('eLearning.view.EditSlidesViewModel', {
     requires: [
         'Ext.data.TreeStore',
         'Ext.data.proxy.Rest',
-        'Ext.data.reader.Json'
+        'Ext.data.reader.Json',
+        'Ext.data.writer.Json'
     ],
 
     stores: {
         TreeStoreSlides: {
             type: 'tree',
-            autoSync: true,
             model: 'eLearning.model.Slide',
             defaultRootText: 'Slides',
             parentIdProperty: 'parentId',
             root: {
                 expanded: true
             },
-            rootVisible: true,
             proxy: {
                 type: 'rest',
                 api: {
@@ -41,6 +40,27 @@ Ext.define('eLearning.view.EditSlidesViewModel', {
                     read: '/Pub/Pages',
                     update: '/POST/Pub/Pages',
                     destroy: '/Pub/Pages'
+                },
+                reader: {
+                    type: 'json',
+                    rootProperty: 'data'
+                },
+                writer: {
+                    type: 'json',
+                    writeAllFields: true,
+                    rootProperty: 'data'
+                }
+            }
+        },
+        QuestionsStoreSlides: {
+            model: 'eLearning.model.Question',
+            proxy: {
+                type: 'ajax',
+                api: {
+                    create: '/Pub/Questions',
+                    read: '/Pub/Questions',
+                    update: '/POST/Pub/Questions',
+                    destroy: '/Pub/Questions'
                 },
                 reader: {
                     type: 'json',

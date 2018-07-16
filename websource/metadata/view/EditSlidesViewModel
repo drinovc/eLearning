@@ -23,7 +23,6 @@
             },
             "codeClass": null,
             "userConfig": {
-                "autoSync": true,
                 "defaultRootText": "Slides",
                 "model": "Slide",
                 "name": "TreeStoreSlides",
@@ -32,8 +31,7 @@
                     "{",
                     "    expanded: true",
                     "}"
-                ],
-                "rootVisible": true
+                ]
             },
             "configAlternates": {
                 "model": "model",
@@ -86,6 +84,85 @@
                             },
                             "name": "MyJsonReader1",
                             "designerId": "bc8e5eee-c14c-4444-a2c2-57c04e7f9a6a"
+                        },
+                        {
+                            "type": "Ext.data.writer.Json",
+                            "reference": {
+                                "name": "writer",
+                                "type": "object"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "rootProperty": "data",
+                                "writeAllFields": true
+                            },
+                            "configAlternates": {
+                                "rootProperty": "string",
+                                "writeAllFields": "boolean"
+                            },
+                            "name": "MyJsonWriter",
+                            "designerId": "d5f0f00a-a1a0-4099-9e72-fc1759ea3199"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "jsonstore",
+            "reference": {
+                "name": "stores",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "model": "Question",
+                "name": "QuestionsStoreSlides"
+            },
+            "configAlternates": {
+                "model": "model",
+                "name": "string"
+            },
+            "name": "MyJsonStore1",
+            "designerId": "2b340d21-6c78-4a37-9f1a-44e597f2a692",
+            "cn": [
+                {
+                    "type": "Ext.data.proxy.Ajax",
+                    "reference": {
+                        "name": "proxy",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "api": [
+                            "{",
+                            "    create: '/Pub/Questions',",
+                            "    read: '/Pub/Questions',",
+                            "    update: '/POST/Pub/Questions',",
+                            "    destroy: '/Pub/Questions'",
+                            "}"
+                        ]
+                    },
+                    "configAlternates": {
+                        "api": "object"
+                    },
+                    "name": "MyAjaxProxy",
+                    "designerId": "0543a20f-8f9d-499a-b621-f371ce6d2baa",
+                    "cn": [
+                        {
+                            "type": "Ext.data.reader.Json",
+                            "reference": {
+                                "name": "reader",
+                                "type": "object"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "rootProperty": "data"
+                            },
+                            "configAlternates": {
+                                "rootProperty": "string"
+                            },
+                            "name": "MyJsonReader2",
+                            "designerId": "5df6fb6d-0563-4072-b2e9-17619fd1b0f9"
                         }
                     ]
                 }

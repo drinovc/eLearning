@@ -13,7 +13,8 @@
             "Slide",
             "Option",
             "Lookup",
-            "Program"
+            "Program",
+            "Question"
         ],
         "name": "eLearning",
         "views": [

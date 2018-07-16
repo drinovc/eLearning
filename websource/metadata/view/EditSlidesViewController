@@ -64,14 +64,13 @@
                     "",
                     "var data = {",
                     "    id: createGUID(),",
-                    "    sequence: null,",
                     "    title: 'New Section',",
                     "    content: null,",
                     "    expanded: false,",
                     "    children: [],",
-                    "",
-                    "    //leaf: true, // TODO - debuging purposes",
-                    "    category : me.ProgramPageCategoriesEnum.Chapter",
+                    "    categoryId : me.ProgramPageCategoriesEnum.Chapter,",
+                    "    scoreMethod: 'A',",
+                    "    sequence: 1234",
                     "",
                     "};",
                     "",
@@ -116,7 +115,9 @@
                     "        expanded: true,",
                     "        leaf: true,",
                     "        isSlide : true,",
-                    "        category : me.ProgramPageCategoriesEnum.Page",
+                    "        categoryId : me.ProgramPageCategoriesEnum.Page,",
+                    "        scoreMethod: 'A',",
+                    "        sequence: 1234",
                     "    };",
                     "",
                     "if(parentNode.isLeaf()) {",
@@ -125,8 +126,7 @@
                     "",
                     "slide = parentNode.appendChild(data);",
                     "refs.treeSlides.setSelection(slide);",
-                    "",
-                    "me.saveSlideState(slide);"
+                    "me.saveSlideState();"
                 ]
             },
             "configAlternates": {
@@ -957,8 +957,6 @@
                     "",
                     "",
                     "if (!me.previewing) {",
-                    "",
-                    "",
                     "    cmp._dragger = new Ext.drag.Source({",
                     "        element: extCmp,",
                     "        constrain: {",
@@ -1022,7 +1020,6 @@
                     "",
                     "",
                     "me.addComponentListeners(cmp);",
-                    "me.saveSlideState();",
                     "",
                     "return extCmp;"
                 ]
@@ -1174,6 +1171,8 @@
                     "        height: 50",
                     "    });",
                     "",
+                    "me.saveSlideState();",
+                    "",
                     "// me.editComponent(cmp);"
                 ]
             },
@@ -1205,6 +1204,7 @@
                     "        html: value || 'Text',",
                     "        height: 425",
                     "    });",
+                    "me.saveSlideState();",
                     "",
                     "// me.editComponent(cmp);"
                 ]
@@ -1234,7 +1234,9 @@
                     "        html: '',",
                     "        src: 'resources/images/example.jpg',",
                     "        height: 275,",
-                    "    });"
+                    "    });",
+                    "me.saveSlideState();",
+                    ""
                 ]
             },
             "configAlternates": {
@@ -1257,7 +1259,9 @@
                 ],
                 "fn": "insertSelection",
                 "implHandler": [
-                    "this.editSelection(null, opts);"
+                    "this.editSelection(null, opts);",
+                    "this.saveSlideState();",
+                    ""
                 ]
             },
             "configAlternates": {
@@ -1308,6 +1312,49 @@
                     "            return 'Only one correct answer is allowed for single selection';",
                     "        }",
                     "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "        // Testing selection insert Jernej Habjan 2018-07-16",
+                    "        console.log(\"Caller editSelection\", \"trying to add this component to store\");",
+                    "",
+                    "        var store = me.getStore('QuestionsStoreSlides');",
+                    "",
+                    "        console.log(\"printing text and answers\", text, answers);",
+                    "        var record = {",
+                    "            //id: createGUID(),",
+                    "            text:text,",
+                    "            answers:Ext.encode(answers)",
+                    "\t\t};",
+                    "        record.phantom = true;",
+                    "       ",
+                    "  ",
+                    "\t\tvar rec = store.add(record)[0];",
+                    "        console.log(\"printing added record\", rec);",
+                    "        store.sync();",
+                    "",
+                    "        //store.load();",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
                     "        if(component) {",
                     "            var state = component._opts;",
                     "",
@@ -1316,6 +1363,7 @@
                     "            state.options = answers;",
                     "",
                     "            component = me.insertComponent(state);",
+                    "",
                     "        }",
                     "        else {",
                     "            component = me.insertComponent({",
@@ -1326,11 +1374,14 @@
                     "                multi: multi,",
                     "                height: 100",
                     "            });",
+                    "",
                     "        }",
                     "",
                     "    },",
                     "    scope: me",
-                    "});"
+                    "});",
+                    "me.saveSlideState();",
+                    ""
                 ]
             },
             "configAlternates": {
@@ -1399,10 +1450,11 @@
             "userConfig": {
                 "fn": "saveState",
                 "implHandler": [
-                    "  // save state to offline storage - switch to indexdb at some point?",
+                    "",
+                    "",
+                    "",
+                    "// save state to offline storage - switch to indexdb at some point?",
                     "    localStorage.setItem('mxp_elearning_slide', Ext.encode(this.getCurrentState()));",
-                    "",
-                    "",
                     "",
                     "",
                     "",
@@ -1412,7 +1464,7 @@
                     "store = this.getStore('TreeStoreSlides');",
                     "store.sync(",
                     "{",
-                    "    callback: function(){",
+                    "    callback: function(records, operation, success){",
                     "",
                     "        // Enable button",
                     "        console.log(\"TODO - enabling button back on sync callback\");",
@@ -1429,7 +1481,7 @@
                     "        // I hope this will help.",
                     "",
                     "    },",
-                    "    success: function(){",
+                    "    success: function(records, operation, success){",
                     "        console.log(\"success callback\");",
                     "    }",
                     "});",

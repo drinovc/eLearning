@@ -45,8 +45,7 @@ Ext.define('eLearning.view.SelectionEditorViewController', {
             opts = me._opts,
             options = refs.grid.store.data.items,
             text = refs.text.getValue(),
-            reason = opts.callback.call(opts.scope, text, Ext.pluck(options, 'data'));
-
+            reason = opts.callback.call(opts.scope, text, Ext.clone(Ext.pluck(options, 'data')));
         if(reason) {
             Ext.Msg.alert('Note', reason);
         }
@@ -69,6 +68,7 @@ Ext.define('eLearning.view.SelectionEditorViewController', {
         sequence++;
 
         refs.grid.store.add({
+            id: createGUID(),
             sequence: sequence,
             text: 'New Answer ' + sequence
         });

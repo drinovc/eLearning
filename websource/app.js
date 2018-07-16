@@ -24,7 +24,8 @@ Ext.application({
         'Slide',
         'Option',
         'Lookup',
-        'Program'
+        'Program',
+        'Question'
     ],
     views: [
         'MainView',

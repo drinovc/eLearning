@@ -15,6 +15,22 @@
     "designerId": "4242b633-1593-46be-a5b7-4056d0c44646",
     "cn": [
         {
+            "type": "Ext.data.field.String",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "id"
+            },
+            "configAlternates": {
+                "name": "string"
+            },
+            "name": "MyString8",
+            "designerId": "f0403d6b-92f3-4b09-8d23-8a53edc0729a"
+        },
+        {
             "type": "Ext.data.field.Integer",
             "reference": {
                 "name": "fields",

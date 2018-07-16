@@ -29,6 +29,10 @@ Ext.define('eLearning.model.Slide', {
         },
         {
             type: 'string',
+            name: 'parentId'
+        },
+        {
+            type: 'string',
             name: 'title'
         },
         {
@@ -41,7 +45,15 @@ Ext.define('eLearning.model.Slide', {
         },
         {
             type: 'int',
-            name: 'category'
+            name: 'categoryId'
+        },
+        {
+            type: 'string',
+            name: 'scoreMethod'
+        },
+        {
+            type: 'int',
+            name: 'multiSelect'
         }
     ]
 });

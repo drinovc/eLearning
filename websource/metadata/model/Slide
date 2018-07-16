@@ -41,6 +41,23 @@
             },
             "codeClass": null,
             "userConfig": {
+                "name": "parentId"
+            },
+            "configAlternates": {
+                "name": "string",
+                "unique": "boolean"
+            },
+            "name": "MyString2",
+            "designerId": "36e85f3a-a592-4cfb-9ea9-22a4268cbef1"
+        },
+        {
+            "type": "Ext.data.field.String",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
                 "name": "title"
             },
             "configAlternates": {
@@ -89,13 +106,45 @@
             },
             "codeClass": null,
             "userConfig": {
-                "name": "category"
+                "name": "categoryId"
             },
             "configAlternates": {
                 "name": "string"
             },
             "name": "MyInteger3",
             "designerId": "ccd6ff9b-3c6d-4345-a1e3-9e616a7d066e"
+        },
+        {
+            "type": "Ext.data.field.String",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "scoreMethod"
+            },
+            "configAlternates": {
+                "name": "string"
+            },
+            "name": "MyString5",
+            "designerId": "10e4590e-1e1a-47ab-b12d-4945fe403863"
+        },
+        {
+            "type": "Ext.data.field.Integer",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "multiSelect"
+            },
+            "configAlternates": {
+                "name": "string"
+            },
+            "name": "MyInteger11",
+            "designerId": "980c62b8-6e4b-4e69-a5dc-9248bda43127"
         }
     ]
 }

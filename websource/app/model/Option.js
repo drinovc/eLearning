@@ -17,12 +17,16 @@ Ext.define('eLearning.model.Option', {
     extend: 'Ext.data.Model',
 
     requires: [
-        'Ext.data.field.Integer',
         'Ext.data.field.String',
+        'Ext.data.field.Integer',
         'Ext.data.field.Boolean'
     ],
 
     fields: [
+        {
+            type: 'string',
+            name: 'id'
+        },
         {
             type: 'int',
             name: 'sequence'

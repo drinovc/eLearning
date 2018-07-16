@@ -867,8 +867,6 @@ object Pub: TPub
     Parameters = <>
     SQL.Strings = (
       ''
-      ''
-      ''
       'SELECT '#9'pages.ACTIVE AS '#39'active'#39
       #9', pages.CAN_NAVIGATE_TO_NEXT_PAGE AS '#39'canNextPage'#39
       #9', pages.CAN_NAVIGATE_TO_PREVIOUS_PAGE AS '#39'canPrevPage'#39
@@ -888,7 +886,7 @@ object Pub: TPub
       #9', pages.TRAINING_PROGRAM_PAGE_CONTENT AS '#39'content'#39
       #9', pages.TRAINING_PROGRAM_PAGE_ID AS '#39'pageId'#39
       #9', pages.TRAINING_PROGRAM_PAGE_MULTI_SELECT AS '#39'multiSelect'#39
-      #9', pages.TRAINING_PROGRAM_PAGE_NAME AS '#39'name'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_NAME AS '#39'title'#39
       ''
       #9', (   '
       #9'-- todo - inefficient '
@@ -920,16 +918,48 @@ object Pub: TPub
       ''
       #9'-- below are custom arguments to give to tree'
       #9' , 1 AS '#39'expanded'#39
-      #9' ,('
-      #9#9'CASE WHEN '
-      #9#9'TRAINING_PROGRAM_PAGE_CATEGORY_ID = 2 -- page'
+      ''
+      #9' ,(CASE WHEN '
+      
+        #9#9'(SELECT COUNT(*) AS numChildren FROM Training_Program_Pages AS' +
+        ' CurrentPage'
+      #9#9'INNER JOIN Training_Program_Pages  AS ParentPage '
+      
+        #9#9'ON (CurrentPage.TRAINING_PROGRAM_PAGE_PARENT_ID = ParentPage.T' +
+        'RAINING_PROGRAM_PAGE_ID)'
+      
+        #9#9'WHERE ParentPage.TRAINING_PROGRAM_PAGE_ID = pages.TRAINING_PRO' +
+        'GRAM_PAGE_ID'
+      #9#9') > 0  -- if numChildren > 0 -> leaf = False else leaf = True'
       #9#9'THEN '
-      #9#9'1'
+      #9#9'0'
       #9#9'ELSE '
-      #9#9'0 -- chapter'
+      #9#9'1 '
       #9#9'END'
       #9#9') AS '#39'leaf'#39
       ''
+      ''
+      ''
+      ''
+      #9#9
+      #9#9',(CASE WHEN '
+      
+        #9#9'(SELECT COUNT(*) AS numChildren FROM Training_Program_Pages AS' +
+        ' CurrentPage'
+      #9#9'INNER JOIN Training_Program_Pages  AS ParentPage '
+      
+        #9#9'ON (CurrentPage.TRAINING_PROGRAM_PAGE_PARENT_ID = ParentPage.T' +
+        'RAINING_PROGRAM_PAGE_ID)'
+      
+        #9#9'WHERE ParentPage.TRAINING_PROGRAM_PAGE_ID = pages.TRAINING_PRO' +
+        'GRAM_PAGE_ID'
+      
+        #9#9') = 0  -- if numChildren = 0 -> set variable children as empty' +
+        ' array'
+      #9#9'THEN '
+      #9#9#39'{[]}'#39' --todo return empty array'
+      #9#9'END'
+      #9#9') AS '#39'children'#39
       ''
       ''
       'FROM Training_Program_Pages AS pages'
@@ -957,6 +987,38 @@ object Pub: TPub
         Precision = 255
         Size = 8000
         Value = Null
+      end
+      item
+        Name = 'categoryId'
+        DataType = ftSmallint
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'title'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 200
+        Value = Null
+      end
+      item
+        Name = 'sequence'
+        DataType = ftLargeint
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'multiSelect'
+        DataType = ftBoolean
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'scoreMethod'
+        DataType = ftFixedChar
+        Size = -1
+        Value = Null
       end>
     InsertQuery.SQL.Strings = (
       'DECLARE @pageId INT = NULL'
@@ -964,15 +1026,12 @@ object Pub: TPub
       'DECLARE @parentIdGuid NVARCHAR(38) = :parentId'
       'DECLARE @parentId INT = NULL'
       'DECLARE @content NVARCHAR(MAX) = :content'
-      ''
-      'DECLARE @categoryId INT =2 '
-      ''
-      '-- temp my variables'
+      'DECLARE @categoryId INT = :categoryId'
       'DECLARE @programId INT = 1'
-      'DECLARE @name NVARCHAR(200) = '#39'TestPageName'#39
-      'DECLARE @sequence NUMERIC(18,0) = 123456789012345678'
-      'DECLARE @multiSelect BIT = 1'
-      'DECLARE @scoreMethod VARCHAR(1) = '#39'A'#39
+      'DECLARE @name NVARCHAR(200) = :title'
+      'DECLARE @sequence NUMERIC(18,0) = :sequence'
+      'DECLARE @multiSelect BIT = :multiSelect'
+      'DECLARE @scoreMethod VARCHAR(1) = :scoreMethod'
       'DECLARE @active BIT = 1'
       'DECLARE @deleted BIT = 0'
       'DECLARE @created DATETIME = GETDATE()'
@@ -1013,6 +1072,16 @@ object Pub: TPub
       ''
       'IF @pageId IS NULL'
       'BEGIN'
+      
+        #9'SET @content = ( CASE WHEN @content IS NULL THEN '#39#39' ELSE @conte' +
+        'nt END ) -- TODO - inefficient - slide may have empty content bu' +
+        't empty content is not allowed'
+      #9'SET @active = 1'
+      #9'SET @deleted = 0'
+      #9'SET @created = GETDATE()'
+      #9'SET @lastChanged = GETDATE()'
+      #9'SET @changed = GETDATE()'
+      ''
       #9'INSERT INTO Training_Program_Pages ('
       #9#9'GUID'
       #9#9'--, TRAINING_PROGRAM_PAGE_ID'
@@ -1051,24 +1120,7 @@ object Pub: TPub
       #9#9', @sequence'
       #9#9', @categoryId'
       #9#9'--, @templateId'
-      ''
-      ''
-      
-        #9#9'-- TODO - inefficient - slide may have empty content but empty' +
-        ' content is not allowed'
-      ''
-      #9#9' ,('
-      #9#9#9'CASE WHEN '
-      #9#9#9'@content'
-      #9#9#9'IS NULL THEN '
-      #9#9#9#39#39' '
-      #9#9#9'ELSE '
-      #9#9#9'@content'
-      #9#9#9'END'
-      #9#9' )'
-      ''
-      ''
-      ''
+      #9#9', @content'
       #9#9'--, @reviewTime'
       #9#9'--, @completionTime'
       #9#9', @multiSelect'
@@ -1152,13 +1204,14 @@ object Pub: TPub
       #9#9'--, CREATED_AT_ID = ISNULL(@createdAtId, CREATED_AT_ID)'
       #9#9'--, CREATED_BY_ID = ISNULL(@createdById, CREATED_BY_ID)'
       #9#9', CREATED = ISNULL(@created, CREATED)'
-      #9#9', LAST_CHANGED= ISNULL(@lastChanged, LAST_CHANGED)'
-      #9#9', CHANGED = ISNULL(@changed, CHANGED)'
+      #9#9', LAST_CHANGED= GETDATE()'
+      #9#9', CHANGED = 1'
       
         #9#9'--, LAST_CHANGE_LOG_ID = ISNULL(@lastChangedLog, LAST_CHANGE_L' +
         'OG_ID)'
       #9'WHERE TRAINING_PROGRAM_PAGE_ID = @pageId'
       'END'
+      ''
       ''
       ''
       ''
@@ -1185,7 +1238,7 @@ object Pub: TPub
       #9', pages.TRAINING_PROGRAM_PAGE_CONTENT AS '#39'content'#39
       #9', pages.TRAINING_PROGRAM_PAGE_ID AS '#39'pageId'#39
       #9', pages.TRAINING_PROGRAM_PAGE_MULTI_SELECT AS '#39'multiSelect'#39
-      #9', pages.TRAINING_PROGRAM_PAGE_NAME AS '#39'name'#39
+      #9', pages.TRAINING_PROGRAM_PAGE_NAME AS '#39'title'#39
       ''
       #9', (   '
       #9'-- todo - inefficient '
@@ -1220,9 +1273,9 @@ object Pub: TPub
       #9#9'CASE WHEN '
       #9#9'TRAINING_PROGRAM_PAGE_CATEGORY_ID = 2 -- page'
       #9#9'THEN '
-      #9#9'0'
+      #9#9'1'
       #9#9'ELSE '
-      #9#9'1 -- chapter'
+      #9#9'0 '
       #9#9'END'
       #9#9') AS '#39'leaf'#39
       ''
@@ -1248,5 +1301,204 @@ object Pub: TPub
     UpdateQuery.Parameters = <>
     Left = 216
     Top = 56
+  end
+  object Questions: TADOQueryMX
+    Connection = ADOConnection1
+    Parameters = <>
+    SQL.Strings = (
+      'SELECT'
+      #9'TRAINING_PROGRAM_QUESTION_ID AS '#39'id'#39
+      #9', TRAINING_PROGRAM_PAGE_ID AS '#39'pageId'#39
+      #9', TRAINING_PROGRAM_QUESTION_SEQUENCE AS '#39'sequence'#39
+      #9', TRAINING_PROGRAM_QUESTION AS '#39'question'#39
+      #9', TRAINING_PROGRAM_QUESTION_FIELD_TYPE AS '#39'fieldType'#39
+      #9', TRAINING_PROGRAM_QUESTION_FIELD_SIZE AS '#39'fieldSize'#39
+      #9', TRAINING_PROGRAM_QUESTION_REQUIRED AS '#39'required'#39
+      #9', TRAINING_PROGRAM_QUESTION_LOOKUPS AS '#39'lookups'#39
+      #9', TRAINING_PROGRAM_QUESTION_CORRECT_VALUE AS '#39'correctValue'#39
+      #9', TRAINING_PROGRAM_QUESTION_SCORE AS '#39'score'#39
+      #9', ACTIVE AS '#39'active'#39
+      #9', REC_DELETED AS '#39'deleted'#39
+      #9', CREATED_AT_ID AS '#39'createdAtId'#39
+      #9', CREATED_BY_ID AS '#39'createdById'#39
+      #9', CREATED AS '#39'created'#39
+      #9', LAST_CHANGED AS '#39'lastChanged'#39
+      #9', CHANGED AS '#39'changed'#39
+      #9', LAST_CHANGE_LOG_ID AS '#39'changeLogId'#39
+      ''
+      'FROM Training_Program_Questions AS questions'
+      'WHERE questions.REC_DELETED = 0')
+    InsertQuery.Connection = ADOConnection1
+    InsertQuery.Parameters = <
+      item
+        Name = 'id'
+        DataType = ftGuid
+        Size = -1
+        Value = Null
+      end>
+    InsertQuery.SQL.Strings = (
+      'DECLARE @id UNIQUEIDENTIFIER = :id -- this is question id'
+      'DECLARE @questionId INT = NULL -- gets set later'
+      'DECLARE @pageId INT = 1 -- todo test page id'
+      'DECLARE @questionSequence INT = NULL'
+      'DECLARE @question NVARCHAR(500) = '#39'Test question'#39
+      'DECLARE @fieldType VARCHAR(20) = '#39'Test field type'#39
+      'DECLARE @fieldSize INT = NULL'
+      'DECLARE @required BIT = 1'
+      'DECLARE @lookups NVARCHAR(1000) = NULL'
+      'DECLARE @correctValue NVARCHAR(100) = '#39'Test correct value'#39
+      'DECLARE @score NUMERIC(18,2) = NULL'
+      'DECLARE @active BIT = 1'
+      'DECLARE @deleted BIT = 0'
+      'DECLARE @createdAtId INT = NULL'
+      'DECLARE @createdById INT = NULL'
+      'DECLARE @created DATETIME = GETDATE()'
+      'DECLARE @lastChanged DATETIME = GETDATE()'
+      'DECLARE @changed CHAR(1) = 0'
+      'DECLARE @changeLogId BIGINT = 1'
+      ''
+      
+        'SET @questionId = (SELECT TRAINING_PROGRAM_QUESTION_ID FROM Trai' +
+        'ning_Program_Questions WHERE GUID = @id)'
+      ''
+      'IF @questionId IS NULL'
+      'BEGIN'
+      #9'INSERT INTO Training_Program_Questions('
+      #9#9'  GUID'
+      #9#9'  -- , TRAINING_PROGRAM_QUESTION_ID'
+      #9#9'  , TRAINING_PROGRAM_PAGE_ID'
+      #9#9'  -- , TRAINING_PROGRAM_QUESTION_SEQUENCE'
+      #9#9'  , TRAINING_PROGRAM_QUESTION'
+      #9#9'  , TRAINING_PROGRAM_QUESTION_FIELD_TYPE'
+      #9#9'  -- , TRAINING_PROGRAM_QUESTION_FIELD_SIZE'
+      #9#9'  , TRAINING_PROGRAM_QUESTION_REQUIRED'
+      #9#9'  -- , TRAINING_PROGRAM_QUESTION_LOOKUPS'
+      #9#9'  -- , TRAINING_PROGRAM_QUESTION_CORRECT_VALUE'
+      #9#9'  -- , TRAINING_PROGRAM_QUESTION_SCORE'
+      #9#9'  , ACTIVE'
+      #9#9'  , REC_DELETED'
+      #9#9'  -- , CREATED_AT_ID'
+      #9#9'  -- , CREATED_BY_ID'
+      #9#9'  , CREATED'
+      #9#9'  , LAST_CHANGED'
+      #9#9'  , CHANGED'
+      #9#9'  -- , LAST_CHANGE_LOG_ID'
+      #9#9')'
+      #9'VALUES ('
+      #9#9'@id'
+      #9#9'-- , @questionId'
+      #9#9', @pageId'
+      #9#9'-- , @questionSequence'
+      #9#9', @question'
+      #9#9', @fieldType'
+      #9#9'-- , @fieldSize'
+      #9#9', @required'
+      #9#9'-- , @lookups'
+      #9#9'-- , @correctValue'
+      #9#9'-- , @score'
+      #9#9', @active'
+      #9#9', @deleted'
+      #9#9'-- , @createdAtId'
+      #9#9'-- , @createdById'
+      #9#9', @created'
+      #9#9', @lastChanged'
+      #9#9', @changed'
+      #9#9'-- , @changeLogId'
+      #9')'
+      
+        #9'SET @questionId = (SELECT TRAINING_PROGRAM_QUESTION_ID FROM Tra' +
+        'ining_Program_Questions WHERE ROW_COUNTER = SCOPE_IDENTITY())'
+      'END'
+      'ELSE'
+      'BEGIN'
+      #9'SET @deleted = 1'
+      #9'SET @changed = 1'
+      ''
+      ''
+      #9'UPDATE Training_Program_Questions SET'
+      
+        #9#9'TRAINING_PROGRAM_QUESTION_ID = ISNULL(@questionId, TRAINING_PR' +
+        'OGRAM_QUESTION_ID)'
+      
+        #9#9', TRAINING_PROGRAM_PAGE_ID = ISNULL(@pageId, TRAINING_PROGRAM_' +
+        'PAGE_ID)'
+      
+        #9#9', TRAINING_PROGRAM_QUESTION_SEQUENCE = ISNULL(@questionSequenc' +
+        'e, TRAINING_PROGRAM_QUESTION_SEQUENCE)'
+      
+        #9#9', TRAINING_PROGRAM_QUESTION = ISNULL(@question, TRAINING_PROGR' +
+        'AM_QUESTION)'
+      
+        #9#9', TRAINING_PROGRAM_QUESTION_FIELD_TYPE = ISNULL(@fieldType, TR' +
+        'AINING_PROGRAM_QUESTION_FIELD_TYPE)'
+      
+        #9#9', TRAINING_PROGRAM_QUESTION_FIELD_SIZE = ISNULL(@fieldSize, TR' +
+        'AINING_PROGRAM_QUESTION_FIELD_SIZE)'
+      
+        #9#9', TRAINING_PROGRAM_QUESTION_REQUIRED = ISNULL(@required, TRAIN' +
+        'ING_PROGRAM_QUESTION_REQUIRED)'
+      
+        #9#9', TRAINING_PROGRAM_QUESTION_LOOKUPS = ISNULL(@lookups, TRAININ' +
+        'G_PROGRAM_QUESTION_LOOKUPS)'
+      
+        #9#9', TRAINING_PROGRAM_QUESTION_CORRECT_VALUE = ISNULL(@correctVal' +
+        'ue, TRAINING_PROGRAM_QUESTION_CORRECT_VALUE)'
+      
+        #9#9', TRAINING_PROGRAM_QUESTION_SCORE = ISNULL(@score, TRAINING_PR' +
+        'OGRAM_QUESTION_SCORE)'
+      #9#9', ACTIVE = ISNULL(@active, ACTIVE)'
+      #9#9', REC_DELETED = ISNULL(@deleted, REC_DELETED)'
+      #9#9', CREATED_AT_ID = ISNULL(@createdAtId, CREATED_AT_ID)'
+      #9#9', CREATED_BY_ID = ISNULL(@createdById, CREATED_BY_ID)'
+      #9#9', CREATED = ISNULL(@created, CREATED)'
+      #9#9', LAST_CHANGED = ISNULL(@lastChanged, LAST_CHANGED)'
+      #9#9', CHANGED = ISNULL(@changed, CHANGED)'
+      
+        #9#9', LAST_CHANGE_LOG_ID = ISNULL(@changeLogId, LAST_CHANGE_LOG_ID' +
+        ')'
+      #9'WHERE TRAINING_PROGRAM_QUESTION_ID = @questionId'
+      'END'
+      ''
+      'SELECT'
+      #9'TRAINING_PROGRAM_QUESTION_ID AS '#39'id'#39
+      #9', TRAINING_PROGRAM_PAGE_ID AS '#39'pageId'#39
+      #9', TRAINING_PROGRAM_QUESTION_SEQUENCE AS '#39'sequence'#39
+      #9', TRAINING_PROGRAM_QUESTION AS '#39'question'#39
+      #9', TRAINING_PROGRAM_QUESTION_FIELD_TYPE AS '#39'fieldType'#39
+      #9', TRAINING_PROGRAM_QUESTION_FIELD_SIZE AS '#39'fieldSize'#39
+      #9', TRAINING_PROGRAM_QUESTION_REQUIRED AS '#39'required'#39
+      #9', TRAINING_PROGRAM_QUESTION_LOOKUPS AS '#39'lookups'#39
+      #9', TRAINING_PROGRAM_QUESTION_CORRECT_VALUE AS '#39'correctValue'#39
+      #9', TRAINING_PROGRAM_QUESTION_SCORE AS '#39'score'#39
+      #9', ACTIVE AS '#39'active'#39
+      #9', REC_DELETED AS '#39'deleted'#39
+      #9', CREATED_AT_ID AS '#39'createdAtId'#39
+      #9', CREATED_BY_ID AS '#39'createdById'#39
+      #9', CREATED AS '#39'created'#39
+      #9', LAST_CHANGED AS '#39'lastChanged'#39
+      #9', CHANGED AS '#39'changed'#39
+      #9', LAST_CHANGE_LOG_ID AS '#39'changeLogId'#39
+      ''
+      'FROM Training_Program_Questions AS questions'
+      'WHERE questions.REC_DELETED = 0'
+      'AND questions.TRAINING_PROGRAM_QUESTION_ID = @questionId')
+    DeleteQuery.Connection = ADOConnection1
+    DeleteQuery.Parameters = <
+      item
+        Name = 'id'
+        DataType = ftGuid
+        NumericScale = 255
+        Precision = 255
+        Size = 16
+        Value = Null
+      end>
+    DeleteQuery.SQL.Strings = (
+      'UPDATE Training_Program_Questions'
+      'SET REC_DELETED = 1'
+      'WHERE GUID = :id')
+    UpdateQuery.Connection = ADOConnection1
+    UpdateQuery.Parameters = <>
+    Left = 216
+    Top = 104
   end
 end

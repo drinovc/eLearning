@@ -23,7 +23,6 @@
             },
             "codeClass": null,
             "userConfig": {
-                "autoSync": true,
                 "model": "Option",
                 "name": "StoreOptions"
             },

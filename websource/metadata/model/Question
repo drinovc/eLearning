@@ -1,0 +1,66 @@
+{
+    "type": "Ext.data.Model",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userClassName": "Question"
+    },
+    "configAlternates": {
+        "designer|userClassName": "string"
+    },
+    "name": "Option1",
+    "designerId": "467d4086-d8e1-4def-97e4-26811601f474",
+    "cn": [
+        {
+            "type": "Ext.data.field.String",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "id"
+            },
+            "configAlternates": {
+                "name": "string"
+            },
+            "name": "MyString7",
+            "designerId": "9c5881ad-9172-491f-99fc-bc364d5eacc9"
+        },
+        {
+            "type": "Ext.data.field.Integer",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "sequence"
+            },
+            "configAlternates": {
+                "name": "string"
+            },
+            "name": "MyInteger13",
+            "designerId": "f7349e40-1693-4044-935e-094858d128ef"
+        },
+        {
+            "type": "Ext.data.field.String",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "text"
+            },
+            "configAlternates": {
+                "name": "string"
+            },
+            "name": "MyString2",
+            "designerId": "9a3746e7-26dd-40f3-bfbf-2f83dcedc3f7"
+        }
+    ]
+}

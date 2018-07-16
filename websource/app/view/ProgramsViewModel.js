@@ -25,6 +25,7 @@ Ext.define('eLearning.view.ProgramsViewModel', {
 
     stores: {
         StorePrograms: {
+            autoLoad: false,
             autoSync: true,
             model: 'eLearning.model.Program',
             proxy: {

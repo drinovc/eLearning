@@ -23,6 +23,7 @@
             },
             "codeClass": null,
             "userConfig": {
+                "autoLoad": false,
                 "autoSync": true,
                 "model": "Program",
                 "name": "StorePrograms"
@@ -30,7 +31,8 @@
             "configAlternates": {
                 "model": "model",
                 "name": "string",
-                "autoSync": "boolean"
+                "autoSync": "boolean",
+                "autoLoad": "boolean"
             },
             "name": "MyJsonStore",
             "designerId": "7928ee2e-b904-41ce-97ef-472afb4d2f7b",
