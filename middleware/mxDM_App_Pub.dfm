@@ -962,6 +962,8 @@ object Pub: TPub
       #9#9') AS '#39'children'#39
       ''
       ''
+      #9#9',1 AS '#39'loaded'#39
+      ''
       'FROM Training_Program_Pages AS pages'
       'WHERE pages.REC_DELETED = 0')
     InsertQuery.Connection = ADOConnection1
@@ -1279,6 +1281,8 @@ object Pub: TPub
       #9#9'END'
       #9#9') AS '#39'leaf'#39
       ''
+      ', 1 AS '#39'loaded'#39
+      ''
       'FROM Training_Program_Pages AS pages'
       'WHERE pages.REC_DELETED = 0'
       'AND pages.TRAINING_PROGRAM_PAGE_ID = @pageId')
@@ -1304,8 +1308,22 @@ object Pub: TPub
   end
   object Questions: TADOQueryMX
     Connection = ADOConnection1
-    Parameters = <>
+    Parameters = <
+      item
+        Name = 'pageId'
+        DataType = ftGuid
+        Size = -1
+        Value = Null
+      end>
     SQL.Strings = (
+      'DECLARE @pageIdGuid NVARCHAR(38) = :pageId'
+      'DECLARE @pageId INT = NULL -- gets set later'
+      ''
+      
+        'SET @pageId = (SELECT TRAINING_PROGRAM_ID FROM Training_Program_' +
+        'Pages WHERE GUID = @pageIdGuid) -- get actuall id of page this q' +
+        'uestion belongs to'
+      ''
       'SELECT'
       #9'TRAINING_PROGRAM_QUESTION_ID AS '#39'id'#39
       #9', TRAINING_PROGRAM_PAGE_ID AS '#39'pageId'#39
@@ -1327,26 +1345,72 @@ object Pub: TPub
       #9', LAST_CHANGE_LOG_ID AS '#39'changeLogId'#39
       ''
       'FROM Training_Program_Questions AS questions'
-      'WHERE questions.REC_DELETED = 0')
+      'WHERE questions.REC_DELETED = 0'
+      'AND TRAINING_PROGRAM_PAGE_ID = @pageId')
     InsertQuery.Connection = ADOConnection1
     InsertQuery.Parameters = <
       item
-        Name = 'id'
+        Name = 'idGuid'
         DataType = ftGuid
         Size = -1
         Value = Null
+      end
+      item
+        Name = 'pageId'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 38
+        Value = Null
+      end
+      item
+        Name = 'question'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 500
+        Value = Null
+      end
+      item
+        Name = 'fieldType'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 20
+        Value = Null
+      end
+      item
+        Name = 'answers'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 1000
+        Value = Null
+      end
+      item
+        Name = 'correctValue'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 100
+        Value = Null
       end>
     InsertQuery.SQL.Strings = (
-      'DECLARE @id UNIQUEIDENTIFIER = :id -- this is question id'
+      'DECLARE @id UNIQUEIDENTIFIER = :idGuid -- this is question id'
       'DECLARE @questionId INT = NULL -- gets set later'
-      'DECLARE @pageId INT = 1 -- todo test page id'
+      'DECLARE @pageIdGuid NVARCHAR(38) = :pageId'
+      'DECLARE @pageId INT = NULL -- gets set later'
       'DECLARE @questionSequence INT = NULL'
-      'DECLARE @question NVARCHAR(500) = '#39'Test question'#39
-      'DECLARE @fieldType VARCHAR(20) = '#39'Test field type'#39
+      'DECLARE @question NVARCHAR(500) = :question'
+      'DECLARE @fieldType VARCHAR(20) = :fieldType'
       'DECLARE @fieldSize INT = NULL'
       'DECLARE @required BIT = 1'
-      'DECLARE @lookups NVARCHAR(1000) = NULL'
-      'DECLARE @correctValue NVARCHAR(100) = '#39'Test correct value'#39
+      
+        'DECLARE @lookups NVARCHAR(1000) = :answers -- here are written a' +
+        'll answers with their guids, values, text...'
+      
+        'DECLARE @correctValue NVARCHAR(100) = :correctValue -- written a' +
+        'll guids for correct answers'
       'DECLARE @score NUMERIC(18,2) = NULL'
       'DECLARE @active BIT = 1'
       'DECLARE @deleted BIT = 0'
@@ -1361,49 +1425,57 @@ object Pub: TPub
         'SET @questionId = (SELECT TRAINING_PROGRAM_QUESTION_ID FROM Trai' +
         'ning_Program_Questions WHERE GUID = @id)'
       ''
+      
+        '--SET @pageIdGuid = CONCAT('#39'{'#39', CAST(@pageIdGuid AS CHAR(36))'#9', ' +
+        #39'}'#39')'
+      
+        'SET @pageId = (SELECT TRAINING_PROGRAM_ID FROM Training_Program_' +
+        'Pages WHERE GUID = @pageIdGuid) -- get actuall id of page this q' +
+        'uestion belongs to'
+      ''
       'IF @questionId IS NULL'
       'BEGIN'
       #9'INSERT INTO Training_Program_Questions('
       #9#9'  GUID'
-      #9#9'  -- , TRAINING_PROGRAM_QUESTION_ID'
+      #9#9'  , TRAINING_PROGRAM_QUESTION_ID'
       #9#9'  , TRAINING_PROGRAM_PAGE_ID'
-      #9#9'  -- , TRAINING_PROGRAM_QUESTION_SEQUENCE'
+      #9#9'  , TRAINING_PROGRAM_QUESTION_SEQUENCE'
       #9#9'  , TRAINING_PROGRAM_QUESTION'
       #9#9'  , TRAINING_PROGRAM_QUESTION_FIELD_TYPE'
-      #9#9'  -- , TRAINING_PROGRAM_QUESTION_FIELD_SIZE'
+      #9#9'  , TRAINING_PROGRAM_QUESTION_FIELD_SIZE'
       #9#9'  , TRAINING_PROGRAM_QUESTION_REQUIRED'
-      #9#9'  -- , TRAINING_PROGRAM_QUESTION_LOOKUPS'
-      #9#9'  -- , TRAINING_PROGRAM_QUESTION_CORRECT_VALUE'
-      #9#9'  -- , TRAINING_PROGRAM_QUESTION_SCORE'
+      #9#9'  , TRAINING_PROGRAM_QUESTION_LOOKUPS'
+      #9#9'  , TRAINING_PROGRAM_QUESTION_CORRECT_VALUE'
+      #9#9'  , TRAINING_PROGRAM_QUESTION_SCORE'
       #9#9'  , ACTIVE'
       #9#9'  , REC_DELETED'
-      #9#9'  -- , CREATED_AT_ID'
-      #9#9'  -- , CREATED_BY_ID'
+      #9#9'  , CREATED_AT_ID'
+      #9#9'  , CREATED_BY_ID'
       #9#9'  , CREATED'
       #9#9'  , LAST_CHANGED'
       #9#9'  , CHANGED'
-      #9#9'  -- , LAST_CHANGE_LOG_ID'
+      #9#9'  , LAST_CHANGE_LOG_ID'
       #9#9')'
       #9'VALUES ('
       #9#9'@id'
-      #9#9'-- , @questionId'
+      #9#9', @questionId'
       #9#9', @pageId'
-      #9#9'-- , @questionSequence'
+      #9#9', @questionSequence'
       #9#9', @question'
       #9#9', @fieldType'
-      #9#9'-- , @fieldSize'
+      #9#9', @fieldSize'
       #9#9', @required'
-      #9#9'-- , @lookups'
-      #9#9'-- , @correctValue'
-      #9#9'-- , @score'
+      #9#9', @lookups'
+      #9#9', @correctValue'
+      #9#9', @score'
       #9#9', @active'
       #9#9', @deleted'
-      #9#9'-- , @createdAtId'
-      #9#9'-- , @createdById'
+      #9#9', @createdAtId'
+      #9#9', @createdById'
       #9#9', @created'
       #9#9', @lastChanged'
       #9#9', @changed'
-      #9#9'-- , @changeLogId'
+      #9#9', @changeLogId'
       #9')'
       
         #9'SET @questionId = (SELECT TRAINING_PROGRAM_QUESTION_ID FROM Tra' +

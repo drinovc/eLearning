@@ -26,7 +26,7 @@ var database = {
         };
         
         request.onsuccess = function(event) {
-            console.log('DB onsuccess', event);
+            //console.log('DB onsuccess', event);
 
             database.db = event.target.result;
 

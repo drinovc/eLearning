@@ -67,8 +67,10 @@ Ext.define('eLearning.view.SelectionEditorViewController', {
 
         sequence++;
 
+        console.log("selectionEditor - button add handler printing sequence", sequence);
+
         refs.grid.store.add({
-            id: createGUID(),
+            id: sequence, // id of this answer is its sequence number
             sequence: sequence,
             text: 'New Answer ' + sequence
         });

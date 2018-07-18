@@ -41,7 +41,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             content: null,
             expanded: false,
             children: [],
-            categoryId : me.ProgramPageCategoriesEnum.Chapter,
+            categoryId : App.ProgramPageCategoriesEnum.Chapter,
             scoreMethod: 'A',
             sequence: 1234
 
@@ -72,7 +72,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 expanded: true,
                 leaf: true,
                 isSlide : true,
-                categoryId : me.ProgramPageCategoriesEnum.Page,
+                categoryId : App.ProgramPageCategoriesEnum.Page,
                 scoreMethod: 'A',
                 sequence: 1234
             };
@@ -103,14 +103,12 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             if(components && components.length > 0) {
                 Ext.Msg.confirm('Delete slide', 'Are you sure?', function(btn) {
                     if(btn == 'yes') {
-                        if(slide.parentNode){
-                            slide.parentNode.removeChild(slide);
-                            me.saveState();
-                            me.clearSlidePanel();
-                            refs.treeSlides.setSelection(nextSlide);
-                        }else{
-                            console.error("Caller - EditSlides/deleteSlide", "No parent node exists", " printing slide:", slide);
-                        }
+
+                        slide.parentNode.removeChild(slide);
+                        me.saveState();
+                        me.clearSlidePanel();
+                        refs.treeSlides.setSelection(nextSlide);
+
 
                     }
                 });
@@ -607,7 +605,13 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         }
 
         if (opts.type == me.cmpTypes.IMAGE && opts.src) {
-            content.style.backgroundImage = 'url(' + opts.src + ')';
+            if(navigator.onLine){
+                  content.style.backgroundImage = 'url(' + opts.src + ')';
+            }else{
+                content.style.backgroundColor = 'powderblue';
+                html = 'Image cannot be loaded - go online to view photo';
+            }
+
         }
         content.innerHTML = html;
         content = cmp.appendChild(content);
@@ -756,8 +760,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 html: value || 'Title',
                 height: 50
             });
-
-        me.saveSlideState();
+         me.saveSlideState();
 
         // me.editComponent(cmp);
     },
@@ -770,7 +773,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 html: value || 'Text',
                 height: 425
             });
-        me.saveSlideState();
+         me.saveSlideState();
 
         // me.editComponent(cmp);
     },
@@ -784,13 +787,12 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 src: 'resources/images/example.jpg',
                 height: 275,
             });
-        me.saveSlideState();
+         me.saveSlideState();
 
     },
 
     insertSelection: function(opts) {
         this.editSelection(null, opts);
-        this.saveSlideState();
 
     },
 
@@ -822,48 +824,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 }
 
 
-
-
-
-
-
-
-
-                // Testing selection insert Jernej Habjan 2018-07-16
-                console.log("Caller editSelection", "trying to add this component to store");
-
-                var store = me.getStore('QuestionsStoreSlides');
-
-                console.log("printing text and answers", text, answers);
-                var record = {
-                    //id: createGUID(),
-                    text:text,
-                    answers:Ext.encode(answers)
-        		};
-                record.phantom = true;
-
-
-        		var rec = store.add(record)[0];
-                console.log("printing added record", rec);
-                store.sync();
-
-                //store.load();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 if(component) {
                     var state = component._opts;
 
@@ -872,6 +832,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     state.options = answers;
 
                     component = me.insertComponent(state);
+
+                    console.log("condition went into if");
 
                 }
                 else {
@@ -883,8 +845,105 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                         multi: multi,
                         height: 100
                     });
+                    console.log("condition went into else");
 
                 }
+
+
+
+
+                console.log("printing returned answers", answers);
+
+
+
+
+
+
+
+
+
+                     // Testing selection insert Jernej Habjan 2018-07-16
+
+                var store = me.getStore('QuestionsStoreSlides');
+
+                // getting all correct answers
+                var correctAnswersIds = []; // this array stores ids of correct answers, where ids are generated as sequence numbers
+
+                for (var i = 0; i < answers.length; i++) {
+                    var element = answers[i];
+                    //console.log("printing each element", element);
+                    if (element.correct === true){
+                        correctAnswersIds.push(element.id); // adds sequence number of this question
+                    }
+                }
+
+
+
+                console.log("printing question info", text, answers);
+
+                // getting page id
+
+                var refs = this.getReferences(),
+                    selection = refs.treeSlides.getSelection()[0];
+
+
+                var pageGuid = selection.data.id; // todo use this pageGuid instead of fixed bottom one
+
+                console.log("printing slelection of tree slides in editSelection", "TODO - pageId is changing to 1 when addint to record",pageGuid);
+
+                var record = {
+                    idGuid : createGUID(),
+                    pageId: pageGuid,
+                    question: text,
+                    answers:Ext.encode(answers),
+                    correctValue: Ext.encode(correctAnswersIds),
+                    fieldType: component._opts.type
+
+        		};
+
+
+
+        		var rec = store.add(record)[0];
+                console.log("printing added record pageId", rec.data.pageId);
+                store.sync();
+
+
+                store.load(function() {
+
+
+
+                    // getting info for question from database
+                    store.each(function(record){
+
+                        var height = 100;
+                        var multi = true; // todo we dont store in database if question is multi answer or not
+                        var options = record.data.lookups;
+                        var html = record.data.question;
+                        var type = record.data.fieldType;
+
+
+
+
+
+                        console.log("printing whole record on store load", record);
+                        //console.log("printing record id", record.get('id'));
+
+                        console.log("printing record decoded options", options, Ext.decode(options), JSON.parse(options));
+
+                        component = me.insertComponent({
+                                type: me.cmpTypes.SELECTION,
+                                cls: 'selection',
+                                html: text,
+                                options: JSON.parse(options),
+                                multi: multi,
+                                height: height
+                            });
+
+                    });
+                });
+
+                console.log("printing new component", component._opts);
+                me.saveSlideState();
 
             },
             scope: me
@@ -905,42 +964,149 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         return Math.ceil(value / snap) * snap;
     },
 
-    saveState: function() {
+    syncState: function() {
+        // this function is used to sync localstorage and database storage.
+        // All data remains in localstorage at all times, but if user is online, content is synced with database
+
+
+        // save current state to localstorage
+
+        // if online
+        // get all data from server and add it to store
+        // get all data from localstorage and add it to store
+        // sync store
+        // set all this data to localstorage
+
+        // if offline
+        // current state is saved to localstorage, so do nothing
 
 
 
         // save state to offline storage - switch to indexdb at some point?
-            localStorage.setItem('mxp_elearning_slide', Ext.encode(this.getCurrentState()));
 
 
 
 
-        // Testing connecting delphi Programs module to TreeStoreSlides - Jernej Habjan 2018-07-12
+        var me = this,
+            localStorageData = localStorage.getItem('mxp_elearning_slide'),
+            treeStoreSlides = me.getStore('TreeStoreSlides');
 
-        store = this.getStore('TreeStoreSlides');
-        store.sync(
-        {
+
+        if (!navigator.onLine){
+            console.log("You are offline - cannot sync with server");
+            return;
+
+        }
+
+        var me = this,
+            localStorageData = Ext.decode(localStorage.getItem('mxp_elearning_slide')),
+            treeStoreSlides = me.getStore('TreeStoreSlides');
+
+        // test load so i can get data to try viewing it in console - remove this later
+        treeStoreSlides.load({
+
             callback: function(records, operation, success){
-
-                // Enable button
-                console.log("TODO - enabling button back on sync callback");
-
-                // cRegisterSave is a button id
+                console.log("printing localstorage data", localStorageData);
 
 
-                // IF the button is Extjs component then use
-        //
-                // Ext.getCmp('btnAdd').disable();
-                // If it is not Ext js Component then use
-        //
-                // Ext.get('btnAdd').setDisabled(true);
-                // I hope this will help.
 
-            },
-            success: function(records, operation, success){
-                console.log("success callback");
+                if(treeStoreSlides.data.length === 0){
+                    // no return data, check if there are any locally saved slides
+                    console.log("returned no slides from server", localStorageData.slides);
+                    if(localStorageData.slides){
+
+                        // remove duplicates - this may be redundant?
+                        localStorageData.slides = Array.from(new Set(localStorageData.slides));
+
+
+
+                        console.log("we have locally saved slides, syncing with server");
+                        me.updateServerStore();
+                    }
+
+
+                    return;
+                }
+
+
+
+                // here we have valid return data from server, so we can update localstorage and sync localstorage back with server
+
+                treeStoreSlides.data.items.forEach((o, i, a) => {
+                    if (!a[i].data.children){
+                        a[i].data.children = [];
+                    }
+                });
+
+
+                if(!localStorageData){
+                    console.log("no data yet in localstorage", treeStoreSlides.data, treeStoreSlides);
+                    localStorageData = me.getCurrentState();
+                    treeStoreSlides.data.items.forEach(function(entry){
+                        localStorageData.slides.push(entry.data);
+                    });
+                    localStorage.setItem('mxp_elearning_slide', Ext.encode(localStorageData));
+                    return;
+                }
+
+                if(!localStorageData.slides){
+                    console.log("no slides yet in localstorage");
+                    // localstorage slides are empty - set recieved data from server to localstorage - even if it is empty
+                    localStorageData.slides = Ext.encode(treeStoreSlides.data);
+                    localStorage.setItem('mxp_elearning_slide', Ext.encode(localStorageData));
+                    return;
+                }
+
+                // here we have valid localstorage and may need syncing
+                localStorageData.slides = Array.from(new Set(localStorageData.slides));
+                localStorageData.slides.forEach((o, i, a) => {
+                    if (!a[i].children){
+                        a[i].children = [];
+                    }
+                });
+
+
+
+
+
+                // Updating localstorage:
+                for (var i =0; i < treeStoreSlides.data.items.length; i++){
+                    var slide = treeStoreSlides.data.items[i];
+                    console.log("printing each slide data",slide.data);
+                    // check if item is not yet in localstorage
+                    console.log("printing item id", localStorageData.slides, slide);
+                    if(localStorageData.slides.some(item => item.id === slide.data.id)){
+
+                    }else{
+                        console.log("adding new slide to localstorage");
+                        localStorageData.slides.push(slide.data);
+                    }
+                }
+                // setting modified data back to localstorage
+                localStorage.mxp_elearning_slide = Ext.encode(localStorageData);
+
+
+
+                // Updating server store:
+                me.updateServerStore();
+
             }
         });
+
+
+
+
+        return;
+
+        // Todo - Custom indexedDb database
+        var proxy = Ext.create('Lib.data.proxy.IndexedDB',{
+            model: 'Program',
+            reader: 'json'
+        });
+        //proxy.setModel(component.getStore().getModel());
+        component.getStore().setProxy(proxy);
+        component.getStore().load();
+
 
 
 
@@ -957,6 +1123,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 height: 50,
             });
         console.log("inserting audio unsupported");
+         me.saveSlideState();
 
     },
 
@@ -970,6 +1137,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 height: 240,
             });
         console.log("inserting video unsupported");
+         me.saveSlideState();
+
     },
 
     getNumSlides: function() {
@@ -1104,6 +1273,32 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         return answerScore;
     },
 
+    saveState: function() {
+        // sets current state to localstorage and calls sync with server
+
+        localStorage.setItem('mxp_elearning_slide', Ext.encode(this.getCurrentState()));
+        this.syncState();
+
+    },
+
+    updateServerStore: function() {
+        // updates treestore using localstorage and syncs with server
+        var me = this,
+            localStorageData = Ext.decode(localStorage.getItem('mxp_elearning_slide')),
+            treeStoreSlides = me.getStore('TreeStoreSlides');
+
+        // Updating server store:
+        // setting data from localstorage to store
+        treeStoreSlides.setData(localStorageData.slides);
+        // setting all records' phantom state to true
+        for (var i = 0; i < treeStoreSlides.data.items.length; i++){
+            var rec = treeStoreSlides.data.items[i];
+            rec.phantom = true;
+        }
+        // sync data back to server
+        treeStoreSlides.sync();
+    },
+
     close: function(owner, tool, event) {
         this.getView().up('#mainView').setActiveItem('gridPrograms');
     },
@@ -1113,18 +1308,22 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     },
 
     onTreeSlidesSelect: function(rowmodel, record, index, eOpts) {
+        // loading slide state for both sections and slides, because creating title every time caused sync with database
+        this.loadSlideState(record);
 
 
 
+        // if(record.isLeaf()) {
+        //     this.loadSlideState(record);
+        // }
+        // else {
+        //     this.clearSlidePanel();
+        //
+        //     // Todo -insert title is causing another sync with database
+        //     this.insertTitle('Section ' + record.get('title'));
+        // }
 
 
-        if(record.isLeaf()) {
-            this.loadSlideState(record);
-        }
-        else {
-            this.clearSlidePanel();
-            this.insertTitle('Section ' + record.get('title'));
-        }
 
         return;
         // TODO - Jernej Habjan 2018-07-12
@@ -1197,28 +1396,15 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     },
 
     onTreeSlidesDeselect: function(rowmodel, record, index, eOpts) {
-        this.saveSlideState(record);
+        //this.saveSlideState(record);
     },
 
     onEditSlidesBoxReady: function(component, width, height, eOpts) {
         var me = this,
             refs = me.getReferences();
 
-        // Getting ProgramPageCategories into enum where key is text ('Chapter', 'Page') and value is id (1, 2)
-        me.ProgramPageCategoriesEnum = {};
-
-        console.log("printing program categories",App.lookups.ProgramPageCategories);
-        App.lookups.ProgramPageCategories.forEach((obj)=>{
-            me.ProgramPageCategoriesEnum[obj.text] = obj.id;
-        });
-        Object.freeze(me.ProgramPageCategoriesEnum);
-
-
-
-
         me._selectedComponent = null;
         me.previewing = false; // used for toggling event actions when previewing or not
-
 
         me._pageSetup = {
             snap: 25,
@@ -1243,59 +1429,28 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         refs.panelContent.removeAll();
         refs.toolbarPreview.hide();
 
-        // load state from offline storage - switch to indexdb at some point?
-        var data = localStorage.getItem('mxp_elearning_slide');
-
-        if(data) {
-            data = Ext.decode(data);
-            if(data.pageSetup) {
-
-                me._pageSetup = Ext.applyIf(data.pageSetup, me._pageSetup);
-            }
-            if(data.slides) {
-                console.log("printing slides on page load", data.slides);
-
-                //replace empty folders' children category 'undefined' with []
-                data.slides.forEach((o, i, a) => {
-                    if (!a[i].children){
-                        a[i].children = [];
-                    }
-                });
-
-                // if (data.slides[0].rootId === 'root'){ data.slides.shift(); }
-
-                // TODO - Jernej Habjan - commented below line because TreeStoreSlides doesn't have memory proxy but rest proxy
+        // call sync state here and not save state, as we dont have anything to save yet
 
 
-                //me.getStore('TreeStoreSlides').getProxy().setData(data.slides);
-
-                // TODO - Jernej Habjan - added data
-                me.getStore('TreeStoreSlides').add(data.slides);
-
-                console.log("Caller Edit Slides - on Box Ready", "Todo save local stored slides back online and update localstorage");
-                /*
-                console.log("calling sync on box ready after adding data", data.slides);
 
 
-                me.getStore('TreeStoreSlides').loadData(
-                {
-                callback: function(){
-                console.log("callback of loadData");
-                },
-                success: function(){
-                console.log("Successfully added slides to existing in store after being offline - clearing localstorage - TODO - localstorage slides may be outdated");
-                localstorage.removeItem('mxp_elearning_slide');
-                }
-                }, false);
 
-                */
 
-                Ext.defer(function() {
-                    me.nextSlide();
-                }, 100);
-            }
+        if (navigator.onLine){
+            me.syncState();
+        }
+        else{
+            // set localstorage data to tree store
+            var me = this,
+                localStorageData = Ext.decode(localStorage.getItem('mxp_elearning_slide')),
+                treeStoreSlides = me.getStore('TreeStoreSlides');
+            treeStoreSlides.setData(localStorageData.slides);
         }
 
+        // switch to first slide
+        Ext.defer(function() {
+            me.nextSlide();
+        }, 100);
 
         me.setBackground(me._pageSetup.background);
         refs.panelContent.setWidth(me._pageSetup.width);
@@ -1305,21 +1460,35 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         component.el.on('click', function(e, t) {
             // hiding component tools if component itself (like bodyPanel, ImageComponent...) didn't stop click event to backpropagate
             me.hideComponentTools();
-
         });
 
-
         document.addEventListener("keydown", function onPress(event) {
-            console.log("Caller - onEditSlidesBoxReady", "body keydown", event.keyCode);
+            // console.log("Caller - onEditSlidesBoxReady", "body keydown", event.keyCode);
             var KEY_DELETE = 46;
             if(me._selectedComponent){
                 if(event.keyCode === KEY_DELETE){
                     me._componentTools.getController().delete();
                 }
             }
-
         });
 
+
+
+        // create online / offline event listenere - when coming back online, we want to sync localstorage with database
+        function connectionChange() {
+            if (navigator.onLine){
+                me.syncState();
+                me.getReferences().treeSlides.setSelection(null);
+                me.getReferences().treeSlides.setSelection(me.getCurrentSlide()); // retrigger current slide to update
+                Ext.toast('Welcome back online! Content saved on server.');
+
+            }else{
+                Ext.toast('We went offline! Content is still saved locally. Reconnect to save content with server.');
+            }
+        }
+        // Update the online status icon based on connectivity
+        window.addEventListener('online',  connectionChange);
+        window.addEventListener('offline', connectionChange);
     }
 
 });

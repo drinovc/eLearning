@@ -62,14 +62,27 @@ Ext.define('eLearning.view.MainViewViewController', {
         var me = this;
 
         Ext.Promise.all([
-        	me.getAjax('/Lookups/ProgramCategories', {}, 'ProgramCategories'),
-        	me.getAjax('/Lookups/ProgramPageCategories', {}, 'ProgramPageCategories'),
-        	me.getAjax('/Lookups/CoursesAndCertificates', {}, 'CoursesAndCertificates'),
-        	me.getAjax('/Lookups/ProgramStatuses', {}, 'ProgramStatuses')
+            me.getAjax('/Lookups/ProgramCategories', {}, 'ProgramCategories'),
+            me.getAjax('/Lookups/ProgramPageCategories', {}, 'ProgramPageCategories'),
+            me.getAjax('/Lookups/CoursesAndCertificates', {}, 'CoursesAndCertificates'),
+            me.getAjax('/Lookups/ProgramStatuses', {}, 'ProgramStatuses')
         ]).then(function(data) {
             Ext.each(data, function(data) {
                 App.lookups[data.name] = data.data;
             });
+
+            // Getting ProgramPageCategories into enum where key is text ('Chapter', 'Page') and value is id (1, 2)
+            App.ProgramPageCategoriesEnum = {};
+            for(var i = 0; i < App.lookups.ProgramPageCategories.length; i++){
+                var obj = App.lookups.ProgramPageCategories[i];
+                App.ProgramPageCategoriesEnum[obj.text] = obj.id;
+            }
+            Object.freeze(App.ProgramPageCategoriesEnum); // freezing enum so it cannot be changed later
+
+
+
+
+
         }, function(err) {
             Ext.Msg.alert('Load Lookups Error', err);
         });

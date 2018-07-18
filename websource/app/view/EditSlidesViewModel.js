@@ -31,7 +31,8 @@ Ext.define('eLearning.view.EditSlidesViewModel', {
             defaultRootText: 'Slides',
             parentIdProperty: 'parentId',
             root: {
-                expanded: true
+                expanded: true,
+                loaded: true
             },
             proxy: {
                 type: 'rest',

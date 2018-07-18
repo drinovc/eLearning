@@ -29,7 +29,8 @@
                 "parentIdProperty": "parentId",
                 "root": [
                     "{",
-                    "    expanded: true",
+                    "    expanded: true,",
+                    "    loaded: true",
                     "}"
                 ]
             },

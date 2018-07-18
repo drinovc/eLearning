@@ -129,56 +129,6 @@ Ext.define('eLearning.view.ProgramsViewController', {
     onGridProgramsActivate: function(component, eOpts) {
         this.load();
 
-    },
-
-    onGridProgramsBoxReady: function(component, width, height, eOpts) {
-
-        return;
-
-        // TODO
-
-
-        var online = null;
-        function updateIndicator() {
-
-            // Show a different icon based on offline/online
-
-            online = navigator.onLine;
-            console.log("changed online status", online);
-        }
-
-        // Update the online status icon based on connectivity
-        window.addEventListener('online',  updateIndicator);
-        window.addEventListener('offline', updateIndicator);
-        updateIndicator();
-
-
-
-        // TESTING Jernej Habjan 2018-07-11
-        var me = this;
-
-        //if(!online){
-        //console.log("NOT ONLINE");
-
-        //console.log("printing model", component.getStore().getModel());
-
-        console.log("Todo - set model to proxy create");
-
-        var proxy = Ext.create('Lib.data.proxy.IndexedDB',{
-            model: 'Program',
-            reader: 'json'
-        });
-
-
-
-        //proxy.setModel(component.getStore().getModel());
-
-        component.getStore().setProxy(proxy);
-        component.getStore().load();
-
-
-        //}
-
     }
 
 });

@@ -24,7 +24,11 @@ Ext.define('eLearning.model.Question', {
     fields: [
         {
             type: 'string',
-            name: 'id'
+            name: 'idGuid'
+        },
+        {
+            type: 'string',
+            name: 'pageId'
         },
         {
             type: 'int',
@@ -33,6 +37,30 @@ Ext.define('eLearning.model.Question', {
         {
             type: 'string',
             name: 'text'
+        },
+        {
+            type: 'string',
+            name: 'type'
+        },
+        {
+            type: 'string',
+            name: 'options'
+        },
+        {
+            type: 'int',
+            name: 'height'
+        },
+        {
+            type: 'int',
+            name: 'width'
+        },
+        {
+            type: 'int',
+            name: 'x'
+        },
+        {
+            type: 'int',
+            name: 'y'
         }
     ]
 });
