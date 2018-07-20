@@ -48,14 +48,9 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         };
 
         var parentNode = /*refs.treeSlides.getSelection()[0] ||*/ store.getRoot();
-
         slide = parentNode.appendChild(data);
-
-
         refs.treeSlides.setSelection(slide);
-
-        //me.saveSlideState(slide);
-
+        me.saveSlideState(slide);
     },
 
     newSlide: function() {
@@ -83,7 +78,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
         slide = parentNode.appendChild(data);
         refs.treeSlides.setSelection(slide);
-        me.saveSlideState();
+        me.saveSlideState(slide);
     },
 
     deleteSlide: function(slide) {
@@ -107,8 +102,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                         slide.parentNode.removeChild(slide);
                         me.saveState();
                         me.clearSlidePanel();
-                        refs.treeSlides.setSelection(nextSlide);
-
+                        me.nextSlide();
 
                     }
                 });
@@ -117,7 +111,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 slide.parentNode.removeChild(slide);
                 me.saveState();
                 me.clearSlidePanel();
-                refs.treeSlides.setSelection(nextSlide);
+                me.nextSlide();
 
             }
         }
@@ -271,9 +265,57 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             if (firstSlide.data.leaf === false){
                 me.nextSlide();
             }
+
+
+
+
+
+
+
+            // Create PersonProgram or update it here
+
+            var PersonProgramsStore = me.getStore('PersonPrograms');
+
+
+
+
+
+
+
+
         }else{
             // we / timer toggled preview off - validate forms and submit
-            me.evaluate();
+
+
+
+            // get scores for each question and total
+            var programScore = me.evaluate();
+            var questionsScores = programScore.questions;
+            var totalProgramScore = programScore.totalProgramScore;
+
+
+            // get stores
+            var PersonProgramsStore = me.getStore('PersonPrograms');
+            var personAnswersStore = me.getStore('PersonAnswers');
+
+
+
+            // iterate through questions and submit them to server
+            var data = localStorage.getItem('mxp_elearning_slide');
+            if(data) {
+                data = Ext.decode(data);
+                if(data.questions) {
+
+                    for (var key in data.questions){
+                        console.log("printing question",key);
+                        console.log("todo - post answer here for specific used on program");
+                    }
+                }else{
+                    console.error("no questions yet exist in localstorage");
+                }
+            }
+
+
         }
 
 
@@ -291,7 +333,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     me.togglePreview();
                 } else {
                     var timerCountdownText = refs.toolbarPreview.el.down('#timerCountdown');
-                    timerCountdownText.dom.innerHTML = "00:" + counter.toString();
+                    timerCountdownText.dom.innerHTML = "Remaining: " + counter.toString();
                 }
             },
             interval: 1000
@@ -334,7 +376,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             slides = Ext.clone(Ext.pluck(refs.treeSlides.store.getRange(), 'data')).map(function(node) {
 
 
-                console.log("printing current state node", node);
+                //console.log("printing current state node", node);
 
                 return cleanTreeNodeData(node);
 
@@ -367,31 +409,23 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     var _opts = Ext.clone(component._opts);
 
                     var _optsNew = {"type": _opts.type, "questionGuid": _opts.questionGuid };
-                    console.log("printing opts", _opts);
-                    console.log("printing new opts", _optsNew);
+                    //console.log("printing opts", _opts);
+                    //console.log("printing new opts", _optsNew);
 
                     content.components.push(_optsNew);
 
-
-
-
                     // uncomment line below to append whole question content to slide instead of only id
                     //content.components.push(component._opts); // TODO TEMP
-
-
                 }else{
                      content.components.push(component._opts);
                 }
-                console.log("saveSlideState  printing content.componentss.push(comonent._opts)",content.components );
+                //console.log("saveSlideState  printing content.componentss.push(comonent._opts)",content.components );
 
 
             });
 
             slide.set('content', Ext.encode(content));
-
             me.saveState();
-
-
         }
     },
 
@@ -404,7 +438,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
         if(slide) {
 
-            console.log("loadSlideState - printing slide", slide);
+            //console.log("loadSlideState - printing slide", slide);
             var content = Ext.decode(slide.get('content') || '{}');
 
             Ext.each(content.components, function(component) {
@@ -429,7 +463,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
     addComponentListeners: function(item) {
         var me = this,
-        item = Ext.get(item);
+            item = Ext.get(item);
 
         item.on('click', function(e, t) {
             if(e.stopPropagation){
@@ -469,29 +503,53 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
                     answers.shift(); // remove first text item (text) - all other are radio / check buttons
 
-                    var type = answers[0].getAttribute('type');
 
+
+
+                    var type = answers[0].getAttribute('type');
                     switch(type) {
-                    case 'radio':
-                        for (var i = 0, len = answers.length; i < len; i++) {
-                            answers[i].classList.remove('selected');
-                            answers_js[i].answer = false;
-                        }
-                        answers[SELECTED_VALUE].classList.add('selected');
-                        answers_js[SELECTED_VALUE].answer = true;
-                        break;
-                    case 'check':
-                        answers[SELECTED_VALUE].classList.toggle("selected");
-                        answers_js[SELECTED_VALUE].answer = !answers_js[SELECTED_VALUE].answer;
-                        break;
-                    default:
-                        console.error("Caller - addComponentListeners", "Unsupported component type" ,type);
+                        case 'radio':
+                            for (var i = 0, len = answers.length; i < len; i++) {
+                                answers[i].classList.remove('selected');
+                                answers_js[i].answer = false;
+                            }
+                            answers[SELECTED_VALUE].classList.add('selected');
+                            answers_js[SELECTED_VALUE].answer = true;
+                            break;
+                        case 'check':
+                            answers[SELECTED_VALUE].classList.toggle("selected");
+                            answers_js[SELECTED_VALUE].answer = !answers_js[SELECTED_VALUE].answer;
+
+
+
+                            break;
+                        default:
+                            console.error("Caller - addComponentListeners", "Unsupported component type" ,type);
                     }
                     //me.saveState();
 
 
+
+
                     console.log("Todo - get question id here and call post request to store on table TrainingProgramsAnswers");
-                    console.log("printing question id", item._opts.questionGuid);
+
+                     var recordAnswers = {};
+                    // create record
+                    for (var i = 0, len = answers_js.length; i < len; i++) {
+                        recordAnswers[i] = answers_js[i].answer;
+                    }
+
+                    console.log("printing record", recordAnswers);
+
+                    console.log("adding new record of answers to localstorage", recordAnswers);
+                    var storageData = localStorage.getItem('mxp_elearning_slide');
+                    storageData = Ext.decode(storageData);
+                    if(!storageData.answers){
+                        storageData.answers = {};
+                    }
+                    storageData.answers[item._opts.questionGuid] = recordAnswers;
+                    me.saveState(storageData);
+
 
 
                 }
@@ -550,7 +608,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     },
 
     insertComponent: function(opts) {
-        console.log("called insert component with opts", opts);
+        //console.log("called insert component with opts", opts);
 
         opts = Ext.applyIf(opts || {}, {
             type: null,
@@ -631,7 +689,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 
 
-            console.log("printing opts in insert component", opts);
+            //console.log("printing opts in insert component", opts);
             if(!opts.questionGuid){
                 console.log("no question guid yet.. return -- maybe insert new component here");
                 /*console.log("inserting new selection component here - this below is org code");
@@ -682,10 +740,11 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 
             // insert selection has been called with specific id, so we must retrieve it from database end spawn it here
-            var store = me.getStore('QuestionsStoreSlides');
+            var store = me.getStore('QuestionsStoreSlides'),
+                storageData = Ext.decode(localStorage.getItem('mxp_elearning_slide') );
 
-            console.log("todo -add id which question should we request from server which is in opts somewhere", opts );
-            console.log("getting this question", opts.questionGuid);
+
+            //console.log("getting this question", opts.questionGuid);
             store.load({
                 params:{questionGuid: opts.questionGuid},// maybe this way param??????
 
@@ -699,16 +758,21 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     opts.type = record.fieldType;
                     opts.options = Ext.decode(record.lookups);
                     html = record.question;
-
-                    opts.multi = true; // todo we dont store in database if question is multi answer or not
+                    // todo we dont store in database if question is multi answer or not so in editSelection this text is rendered
+                    opts.multi = opts.type == "Multi selection"; // checks against string if its multi selection
                     opts.html = html;
                     opts.cls = [me.cmpTypes.SELECTION];
                     opts.id = opts.questionGuid;
 
 
 
+
+
                     // same as below - TODO
                     html = '<div clas="text">' + html + '</div>';
+
+
+
 
                     Ext.each(opts.options, function (option, index, allItems) {
                         // console.log("printing each option", option);
@@ -717,12 +781,33 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                         if (option.correct) {
                             cls.push('correct');
                         }
+
+                        // new setting answer selected from localstorage
+
+                        if(storageData && storageData.answers && storageData.answers[opts.questionGuid] !== undefined){
+                            console.log("answers for this question are stored in localstorage");
+                            if(storageData.answers[opts.questionGuid][index] === true){
+                                cls.push('selected');
+                            }
+
+                        }
+
+
+
+
+
+                        // old setting answer selected directly from question content
+                        /*
                         if (option.answer) {
                             cls.push('selected');
                         } else {
                             // add answer parameter that is getting set when checking and unchecking answer
                             option.answer = false;
-                        }
+                        }*/
+
+
+
+
                         // added two custom attributes idx which is index of element (starting with 0) and type which can contain chech or radio
                         html += '<div class="' + cls.join(' ') + '" idx=' + index + ' type=' + (opts.multi ? 'check' : 'radio') + '>' + option.text + '</div>';
                     });
@@ -744,15 +829,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     extCmp = Ext.get(cmp);
                     extCmp._opts = opts;
                     extCmp.type = opts.type;
-
-
-
-
-                    me.addComponentListeners(cmp);
-
-                    return extCmp;
-
-
                 }
             });
 
@@ -991,9 +1067,9 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 /*console.log("printing selection in editSelection at callback",  selection);*/
 
                 /*if(!me.getCurrentSlide()){
-                     console.log("setting new current selection");
-                     me.getReferences().treeSlides.setSelection(selection);
-                 }*/
+                             console.log("setting new current selection");
+                             me.getReferences().treeSlides.setSelection(selection);
+                         }*/
 
 
 
@@ -1028,17 +1104,29 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     question: text,
                     answers:Ext.encode(answers),
                     correctValue: Ext.encode(correctAnswersIds),
-                    fieldType: me.cmpTypes.SELECTION
+                    fieldType:  (multi? "Multi" : "Single") + " " + me.cmpTypes.SELECTION
+                    // this renders to string "Multi selection" or "Single selection"
 
                 };
+
+                console.log("adding new record to localstorage", record);
+                var storageData = localStorage.getItem('mxp_elearning_slide');
+                storageData = Ext.decode(storageData);
+                if(!storageData){
+                    storageData = {};
+                }
+                if(!storageData.questions){
+                    storageData.questions = {};
+                }
+                storageData.questions[componentGuid] = record;
+                me.saveState(storageData);
+
+
                 console.log("adding new record to store:", record);
-
-
                 store.add(record);
                 record.phantom = true; // todo - this may be unnecessarry
 
                 // after adding to database add component to view
-
                 store.sync({
                     callback: function(){
 
@@ -1071,7 +1159,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                             console.log("condition went into else");
 
                         }
-                        //console.log("printing new component", component._opts);
+
                         me.saveSlideState();
 
 
@@ -1084,7 +1172,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             },
             scope: me
         });
-
     },
 
     round: function(value) {
@@ -1176,7 +1263,9 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     treeStoreSlides.data.items.forEach(function(entry){
                         localStorageData.slides.push(entry.data);
                     });
-                    localStorage.setItem('mxp_elearning_slide', Ext.encode(localStorageData));
+                    me.saveState(localStorageData);
+
+                    // localStorage.setItem('mxp_elearning_slide', Ext.encode(localStorageData));
                     // set initial data
                     me.setInitialSlide();
                     return;
@@ -1186,7 +1275,9 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     console.log("no slides yet in localstorage");
                     // localstorage slides are empty - set recieved data from server to localstorage - even if it is empty
                     localStorageData.slides = Ext.encode(treeStoreSlides.data);
-                    localStorage.setItem('mxp_elearning_slide', Ext.encode(localStorageData));
+
+                    me.saveState(localStorageData);
+                    //localStorage.setItem('mxp_elearning_slide', Ext.encode(localStorageData));
                     // set initial data
                     me.setInitialSlide();
                     return;
@@ -1218,7 +1309,9 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     }
                 }
                 // setting modified data back to localstorage
-                localStorage.mxp_elearning_slide = Ext.encode(localStorageData);
+
+                me.saveState(localStorageData);
+                // localStorage.mxp_elearning_slide = Ext.encode(localStorageData);
 
                 // Updating server store:
                 me.updateServerStore();
@@ -1310,7 +1403,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         // iterate through slides and questions and check score:
         var me = this,
             usingNegativeScore = false, // config variable which determines if each answer can have negative return points
-            totalUserScore = 0;
+            programScore = {"questions":{}, "totalProgramScore": 0};
 
         me.saveState(); // TODO - latest addition - is it necessary?
 
@@ -1320,19 +1413,26 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             if (data.slides) {
                 data.slides.forEach(function (value) {
                     if (value.isSlide) {
-                        var questions = Ext.decode(value.content).components;
-                        questions.forEach(function (question) {
-                            totalUserScore += me.getScore(question, usingNegativeScore);
-                            console.log("printing new user score", totalUserScore);
-                        });
+                        var questions = value.content.components;
+                        if(questions){
+                            questions.forEach(function (question) {
+                                programScore.questions[question.questionGuid] = me.getScore(question, usingNegativeScore);
+                                console.log("printing new user score", programScore);
+                            });
+                        }
+
                     }
                 });
-                console.log("printing final user score:", totalUserScore);
+
+
+                // suming questions scores to total score
+                var totalProgramScore = sumDict(programScore.questions);
+                console.log("printing final user score:", totalProgramScore);
+                programScore.totalProgramScore = totalProgramScore;
+
             }
         }
-
-
-
+        return programScore;
     },
 
     getScore: function(question, usingNegativeScore) {
@@ -1412,13 +1512,19 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         return answerScore;
     },
 
-    saveState: function() {
-        // sets current state to localstorage and calls update with server
+    saveState: function(specificData) {
+        var data = specificData || this.getCurrentState();
 
-        localStorage.setItem('mxp_elearning_slide', Ext.encode(this.getCurrentState()));
-        // TODO - this may remain as comment as if syncing state,
-        // we are retrieving data from server for no reason and possibly overwriting current state
-        //this.syncState();
+        var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning_slide'));
+        if(!localStorageData){
+            localStorageData = {};
+        }
+        for (var key in data) {
+            localStorageData[key] = data[key];
+        }
+
+        // sets current state to localstorage and calls update with server
+        localStorage.setItem('mxp_elearning_slide', Ext.encode(localStorageData));
 
         this.updateServerStore();
     },
@@ -1477,7 +1583,13 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     },
 
     onTreeViewDragDrop: function(treeviewdragdrop) {
-        this.saveState();
+        var me = this,
+            refs = me.getReferences();
+
+
+        me.saveState();
+        refs.treeSlides.setSelection(me.getCurrentSlide());
+
     },
 
     onTreeSlidesSelect: function(rowmodel, record, index, eOpts) {
@@ -1567,7 +1679,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     },
 
     onTreeSlidesDeselect: function(rowmodel, record, index, eOpts) {
-        //this.saveSlideState(record);
+
     },
 
     onEditSlidesBoxReady: function(component, width, height, eOpts) {

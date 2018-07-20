@@ -25,7 +25,9 @@ Ext.application({
         'Option',
         'Lookup',
         'Program',
-        'Question'
+        'Question',
+        'PersonAnswers',
+        'PersonPrograms'
     ],
     views: [
         'MainView',

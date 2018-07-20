@@ -68,6 +68,38 @@ Ext.define('eLearning.view.EditSlidesViewModel', {
                     rootProperty: 'data'
                 }
             }
+        },
+        PersonAnswers: {
+            model: 'eLearning.model.PersonAnswers',
+            proxy: {
+                type: 'ajax',
+                api: {
+                    create: '/Pub/PersonAnswers',
+                    read: '/Pub/PersonAnswers',
+                    update: '/POST/Pub/PersonAnswers',
+                    destroy: '/Pub/PersonAnswers'
+                },
+                reader: {
+                    type: 'json',
+                    rootProperty: 'data'
+                }
+            }
+        },
+        PersonPrograms: {
+            model: 'eLearning.model.PersonPrograms',
+            proxy: {
+                type: 'ajax',
+                api: {
+                    create: '/Pub/PersonPrograms',
+                    read: '/Pub/PersonPrograms',
+                    update: '/POST/Pub/PersonPrograms',
+                    destroy: '/Pub/PersonPrograms'
+                },
+                reader: {
+                    type: 'json',
+                    rootProperty: 'data'
+                }
+            }
         }
     }
 

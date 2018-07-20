@@ -1587,4 +1587,404 @@ object Pub: TPub
     Left = 216
     Top = 104
   end
+  object PersonAnswers: TADOQueryMX
+    Connection = ADOConnection1
+    Parameters = <
+      item
+        Name = 'questionGuid'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 38
+        Value = Null
+      end>
+    SQL.Strings = (
+      'DECLARE @questionGuid NVARCHAR(38) = :questionGuid '
+      'DECLARE @questionId INT = NULL -- gets set later'
+      ''
+      
+        'SET @questionId = (SELECT TRAINING_PROGRAM_QUESTION_ID FROM Trai' +
+        'ning_Program_Questions WHERE GUID = @questionGuid) -- get actual' +
+        'l id of page this question belongs to'
+      ''
+      'SELECT'
+      #9'  PERSON_TRAINING_PROGRAM_ANSWER_ID AS '#39'id'#39
+      #9', PERSON_TRAINING_PROGRAM_ID AS '#39'programId'#39
+      #9', TRAINING_PROGRAM_QUESTION_ID AS '#39'questionId'#39
+      #9', TRAINING_PROGRAM_ANSWER AS '#39'answer'#39
+      #9', TRAINING_PROGRAM_ANSWER_SCORE AS '#39'score'#39
+      #9', CREATED_AT_ID AS '#39'createdAtId'#39
+      #9', CREATED_BY_ID AS '#39'createdById'#39
+      #9', CREATED AS '#39'created'#39
+      #9', LAST_CHANGED AS '#39'lastChanged'#39
+      #9', CHANGED AS '#39'changed'#39
+      #9', LAST_CHANGE_LOG_ID AS '#39'changeLogId'#39
+      ''
+      'FROM Person_Training_Program_Answers AS answers'
+      'WHERE answers.TRAINING_PROGRAM_QUESTION_ID = @questionId')
+    InsertQuery.Connection = ADOConnection1
+    InsertQuery.Parameters = <
+      item
+        Name = 'answerGuid'
+        DataType = ftGuid
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'programId'
+        DataType = ftGuid
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'questionId'
+        DataType = ftGuid
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'answers'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 500
+        Value = Null
+      end
+      item
+        Name = 'score'
+        DataType = ftFloat
+        NumericScale = 18
+        Precision = 2
+        Size = -1
+        Value = Null
+      end>
+    InsertQuery.SQL.Strings = (
+      
+        'DECLARE @answerGuid UNIQUEIDENTIFIER = :answerGuid -- this is an' +
+        'swer id'
+      'DECLARE @answerId INT = NULL -- gets set later'
+      'DECLARE @programGuid NVARCHAR(38) = :programId'
+      'DECLARE @programId INT = NULL -- gets set later'
+      'DECLARE @questionGuid NVARCHAR(38) = :questionId'
+      'DECLARE @questionId INT = NULL -- gets set later'
+      'DECLARE @answer NVARCHAR(500) = :answers'
+      'DECLARE @answerScore NUMERIC(18,2) = :score'
+      'DECLARE @createdAtId INT = NULL'
+      'DECLARE @createdById INT = NULL'
+      'DECLARE @created DATETIME = GETDATE()'
+      'DECLARE @lastChanged DATETIME = GETDATE()'
+      'DECLARE @changed CHAR(1) = 0'
+      'DECLARE @changeLogId BIGINT = 1'
+      ''
+      '-- get ids from guids'
+      
+        'SET @answerId = (SELECT PERSON_TRAINING_PROGRAM_ANSWER_ID FROM P' +
+        'erson_Training_Program_Answers WHERE GUID = @answerGuid)'
+      
+        'SET @programId = (SELECT TRAINING_PROGRAM_ID FROM Training_Progr' +
+        'ams WHERE GUID = @programGuid)'
+      
+        'SET @questionId = (SELECT TRAINING_PROGRAM_QUESTION_ID FROM Trai' +
+        'ning_Program_Questions WHERE GUID = @questionGuid)'
+      ''
+      'IF @answerId IS NULL'
+      'BEGIN'
+      #9'INSERT INTO Person_Training_Program_Answers('
+      #9#9'  GUID'
+      #9#9'  -- , PERSON_TRAINING_PROGRAM_ANSWER_ID'
+      #9#9'  , PERSON_TRAINING_PROGRAM_ID'
+      #9#9'  , TRAINING_PROGRAM_QUESTION_ID'
+      #9#9'  , TRAINING_PROGRAM_ANSWER'
+      #9#9'  , TRAINING_PROGRAM_ANSWER_SCORE'
+      #9#9'  , CREATED_AT_ID'
+      #9#9'  , CREATED_BY_ID'
+      #9#9'  , CREATED'
+      #9#9'  , LAST_CHANGED'
+      #9#9'  , CHANGED'
+      #9#9'  , LAST_CHANGE_LOG_ID'
+      #9#9')'
+      #9'VALUES ('
+      #9#9'@answerGuid '
+      #9#9'-- , @answerId'
+      #9#9', @programId'
+      #9#9', @questionId'
+      #9#9', @answer'
+      #9#9', @answerScore '
+      #9#9', @createdAtId '
+      #9#9', @createdById '
+      #9#9', @created'
+      #9#9', @lastChanged'
+      #9#9', @changed'
+      #9#9', @changeLogId'
+      #9#9')'
+      ''
+      
+        #9'SET @answerId = (SELECT PERSON_TRAINING_PROGRAM_ANSWER_ID FROM ' +
+        'Person_Training_Program_Answers WHERE ROW_COUNTER = SCOPE_IDENTI' +
+        'TY())'
+      'END'
+      'ELSE'
+      'BEGIN'
+      #9'SET @changed = 1'
+      #9'SET @lastChanged = GETDATE()'
+      ''
+      ''
+      #9'UPDATE Person_Training_Program_Answers SET'
+      
+        #9#9#9'-- PERSON_TRAINING_PROGRAM_ANSWER_ID = ISNULL(@answerId, PERS' +
+        'ON_TRAINING_PROGRAM_ANSWER_ID)'
+      
+        #9#9'    PERSON_TRAINING_PROGRAM_ID = ISNULL(@programId, PERSON_TRA' +
+        'INING_PROGRAM_ID)'
+      
+        #9#9'  , TRAINING_PROGRAM_QUESTION_ID = ISNULL(@questionId, TRAININ' +
+        'G_PROGRAM_QUESTION_ID)'
+      
+        #9#9'  , TRAINING_PROGRAM_ANSWER = ISNULL(@answer, TRAINING_PROGRAM' +
+        '_ANSWER)'
+      
+        #9#9'  , TRAINING_PROGRAM_ANSWER_SCORE = ISNULL(@answerScore, TRAIN' +
+        'ING_PROGRAM_ANSWER_SCORE)'
+      #9#9'  , CREATED_AT_ID = ISNULL(@createdAtId, CREATED_AT_ID)'
+      #9#9'  , CREATED_BY_ID = ISNULL(@createdById, CREATED_BY_ID)'
+      #9#9'  , CREATED = ISNULL(@created, CREATED)'
+      #9#9'  , LAST_CHANGED = ISNULL(@lastChanged, LAST_CHANGED)'
+      #9#9'  , CHANGED = ISNULL(@changed, CHANGED)'
+      
+        #9#9'  , LAST_CHANGE_LOG_ID = ISNULL(@changeLogId, LAST_CHANGE_LOG_' +
+        'ID)'
+      #9'WHERE PERSON_TRAINING_PROGRAM_ANSWER_ID = @answerId'
+      'END'
+      ''
+      'SELECT'
+      #9'  PERSON_TRAINING_PROGRAM_ANSWER_ID AS '#39'id'#39
+      #9', PERSON_TRAINING_PROGRAM_ID AS '#39'programId'#39
+      #9', TRAINING_PROGRAM_QUESTION_ID AS '#39'questionId'#39
+      #9', TRAINING_PROGRAM_ANSWER AS '#39'answer'#39
+      #9', TRAINING_PROGRAM_ANSWER_SCORE AS '#39'score'#39
+      #9', CREATED_AT_ID AS '#39'createdAtId'#39
+      #9', CREATED_BY_ID AS '#39'createdById'#39
+      #9', CREATED AS '#39'created'#39
+      #9', LAST_CHANGED AS '#39'lastChanged'#39
+      #9', CHANGED AS '#39'changed'#39
+      #9', LAST_CHANGE_LOG_ID AS '#39'changeLogId'#39
+      ''
+      'FROM Person_Training_Program_Answers AS answers'
+      'WHERE answers.PERSON_TRAINING_PROGRAM_ANSWER_ID = @answerId')
+    DeleteQuery.Connection = ADOConnection1
+    DeleteQuery.Parameters = <>
+    UpdateQuery.Connection = ADOConnection1
+    UpdateQuery.Parameters = <>
+    Left = 216
+    Top = 152
+  end
+  object PersonPrograms: TADOQueryMX
+    Connection = ADOConnection1
+    Parameters = <
+      item
+        Name = 'personTrainingProgramGuid'
+        DataType = ftGuid
+        Size = -1
+        Value = Null
+      end>
+    SQL.Strings = (
+      ''
+      ''
+      
+        'DECLARE @personTrainingProgramGuid NVARCHAR(38) = :personTrainin' +
+        'gProgramGuid'
+      'DECLARE @personTrainingProgramId INT = NULL -- gets set later'
+      
+        'SET @personTrainingProgramId = (SELECT PERSON_TRAINING_PROGRAM_I' +
+        'D FROM Person_Training_Programs WHERE GUID = @personTrainingProg' +
+        'ramGuid)'
+      ''
+      'SELECT'
+      #9'PERSON_TRAINING_PROGRAM_ID AS '#39'personTrainingProgramId'#39
+      #9', PERSON_APPLICANT_ID AS '#39'applicantId'#39
+      #9', PERSON_ID AS '#39'personId'#39
+      #9', TRAINING_PROGRAM_ID AS '#39'programId'#39
+      #9', PERSON_TRAINING_PROGRAM_STARTED AS '#39'programStarted'#39
+      #9', PERSON_TRAINING_PROGRAM_COMPLETED AS '#39'programCompleted'#39
+      #9', COMMENT_EMPLOYEE AS '#39'commentEmployee'#39
+      #9', COMMENT_INTERNAL AS '#39'commentInternal'#39
+      #9', PERSON_TRAINING_PROGRAM_STATUS_ID AS '#39'programStatusId'#39
+      #9', ATTEMPT_COUNTER AS '#39'attempt'#39
+      #9', CREATED_AT_ID AS '#39'createdAtId'#39
+      #9', CREATED_BY_ID AS '#39'createdById'#39
+      #9', CREATED AS '#39'created'#39
+      #9', LAST_CHANGED AS '#39'lastChanged'#39
+      #9', CHANGED AS '#39'changed'#39
+      #9', LAST_CHANGE_LOG_ID AS '#39'changeLogId'#39
+      ''
+      'FROM Person_Training_Programs AS personPrograms'
+      
+        'WHERE personPrograms.PERSON_TRAINING_PROGRAM_ID = @personTrainin' +
+        'gProgramId'
+      '')
+    InsertQuery.Connection = ADOConnection1
+    InsertQuery.Parameters = <
+      item
+        Name = 'answerGuid'
+        DataType = ftGuid
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'personId'
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'programId'
+        DataType = ftGuid
+        Size = -1
+        Value = Null
+      end>
+    InsertQuery.SQL.Strings = (
+      
+        'DECLARE @personTrainingProgramGuid UNIQUEIDENTIFIER = :answerGui' +
+        'd -- this is answer id'
+      'DECLARE @personTrainingProgramId INT = NULL -- gets set later'
+      'DECLARE @applicantId INT = NULL'
+      'DECLARE @personId INT = :personId'
+      'DECLARE @programId INT = :programId'
+      'DECLARE @programStarted DATETIME = NULL'
+      'DECLARE @programCompleted DATETIME = NULL'
+      'DECLARE @commentEmployee NVARCHAR(2000) = NULL'
+      'DECLARE @commentInternal NVARCHAR(2000) = NULL'
+      'DECLARE @programStatusId INT = NULL'
+      'DECLARE @attempt INT = NULL'
+      'DECLARE @createdAtId INT = NULL'
+      'DECLARE @createdById INT = NULL'
+      'DECLARE @created DATETIME = GETDATE()'
+      'DECLARE @lastChanged DATETIME = GETDATE()'
+      'DECLARE @changed CHAR(1) = 0'
+      'DECLARE @changeLogId BIGINT = 1'
+      ''
+      
+        'SET @personTrainingProgramId = (SELECT PERSON_TRAINING_PROGRAM_I' +
+        'D FROM Person_Training_Programs WHERE GUID = @personTrainingProg' +
+        'ramGuid)'
+      ''
+      'IF @personTrainingProgramId IS NULL'
+      'BEGIN'
+      #9'INSERT INTO Person_Training_Programs('
+      #9#9'  GUID'
+      #9#9'  -- , PERSON_TRAINING_PROGRAM_ID'
+      #9#9'  , PERSON_APPLICANT_ID'
+      #9#9'  , PERSON_ID'
+      #9#9'  , TRAINING_PROGRAM_ID'
+      #9#9'  , PERSON_TRAINING_PROGRAM_STARTED'
+      #9#9'  , PERSON_TRAINING_PROGRAM_COMPLETED'
+      #9#9'  , COMMENT_EMPLOYEE'
+      #9#9'  , COMMENT_INTERNAL'
+      #9#9'  , PERSON_TRAINING_PROGRAM_STATUS_ID'
+      #9#9'  , ATTEMPT_COUNTER'
+      #9#9'  , CREATED_BY_ID'
+      #9#9'  , CREATED_AT_ID'
+      #9#9'  , CREATED'
+      #9#9'  , LAST_CHANGED'
+      #9#9'  , CHANGED'
+      #9#9'  , LAST_CHANGE_LOG_ID'
+      #9#9'  '
+      #9#9')'
+      #9'VALUES ('
+      #9#9'@personTrainingProgramGuid '
+      #9#9'-- , @personTrainingProgramId'
+      #9#9', @applicantId'
+      #9#9', @personId'
+      #9#9', @programId'
+      #9#9', @programStarted'
+      #9#9', @programCompleted'
+      #9#9', @commentEmployee'
+      #9#9', @commentInternal'
+      #9#9', @programStatusId'
+      #9#9', @attempt '
+      #9#9', @createdAtId '
+      #9#9', @createdById '
+      #9#9', @created'
+      #9#9', @lastChanged'
+      #9#9', @changed'
+      #9#9', @changeLogId'
+      #9#9')'
+      ''
+      
+        #9'SET @personTrainingProgramId = (SELECT PERSON_TRAINING_PROGRAM_' +
+        'ID FROM Person_Training_Programs WHERE ROW_COUNTER = SCOPE_IDENT' +
+        'ITY())'
+      'END'
+      'ELSE'
+      'BEGIN'
+      #9'SET @changed = 1'
+      #9'SET @lastChanged = GETDATE()'
+      ''
+      #9'UPDATE Person_Training_Programs SET'
+      
+        #9#9'    -- PERSON_TRAINING_PROGRAM_ID = ISNULL(@personTrainingProg' +
+        'ramId, PERSON_TRAINING_PROGRAM_ID)'
+      
+        #9#9'    PERSON_APPLICANT_ID = ISNULL(@applicantId, PERSON_APPLICAN' +
+        'T_ID)'
+      #9#9'  , PERSON_ID = ISNULL(@personId, PERSON_ID)'
+      
+        #9#9'  , TRAINING_PROGRAM_ID = ISNULL(@programId, TRAINING_PROGRAM_' +
+        'ID)'
+      
+        #9#9'  , PERSON_TRAINING_PROGRAM_STARTED = ISNULL(@programStarted, ' +
+        'PERSON_TRAINING_PROGRAM_STARTED)'
+      
+        #9#9'  , PERSON_TRAINING_PROGRAM_COMPLETED = ISNULL(@programComplet' +
+        'ed, PERSON_TRAINING_PROGRAM_COMPLETED)'
+      
+        #9#9'  , COMMENT_EMPLOYEE = ISNULL(@commentEmployee, COMMENT_EMPLOY' +
+        'EE)'
+      
+        #9#9'  , COMMENT_INTERNAL = ISNULL(@commentInternal, COMMENT_INTERN' +
+        'AL)'
+      
+        #9#9'  , PERSON_TRAINING_PROGRAM_STATUS_ID = ISNULL(@programStatusI' +
+        'd, PERSON_TRAINING_PROGRAM_STATUS_ID)'
+      #9#9'  , ATTEMPT_COUNTER = ISNULL(@attempt, ATTEMPT_COUNTER)'
+      #9#9'  , CREATED_BY_ID = ISNULL(@createdAtId, CREATED_BY_ID)'
+      #9#9'  , CREATED_AT_ID = ISNULL(@createdById, CREATED_AT_ID)'
+      #9#9'  , CREATED = ISNULL(@created, CREATED)'
+      #9#9'  , LAST_CHANGED = ISNULL(@lastChanged, LAST_CHANGED)'
+      #9#9'  , CHANGED = ISNULL(@changed, CHANGED)'
+      
+        #9#9'  , LAST_CHANGE_LOG_ID = ISNULL(@changeLogId, LAST_CHANGE_LOG_' +
+        'ID)'
+      ''
+      #9'WHERE PERSON_TRAINING_PROGRAM_ID = @personTrainingProgramId'
+      'END'
+      ''
+      'SELECT'
+      #9'PERSON_TRAINING_PROGRAM_ID AS '#39'personTrainingProgramId'#39
+      #9', PERSON_APPLICANT_ID AS '#39'applicantId'#39
+      #9', PERSON_ID AS '#39'personId'#39
+      #9', TRAINING_PROGRAM_ID AS '#39'programId'#39
+      #9', PERSON_TRAINING_PROGRAM_STARTED AS '#39'programStarted'#39
+      #9', PERSON_TRAINING_PROGRAM_COMPLETED AS '#39'programCompleted'#39
+      #9', COMMENT_EMPLOYEE AS '#39'commentEmployee'#39
+      #9', COMMENT_INTERNAL AS '#39'commentInternal'#39
+      #9', PERSON_TRAINING_PROGRAM_STATUS_ID AS '#39'programStatusId'#39
+      #9', ATTEMPT_COUNTER AS '#39'attempt'#39
+      #9', CREATED_AT_ID AS '#39'createdAtId'#39
+      #9', CREATED_BY_ID AS '#39'createdById'#39
+      #9', CREATED AS '#39'created'#39
+      #9', LAST_CHANGED AS '#39'lastChanged'#39
+      #9', CHANGED AS '#39'changed'#39
+      #9', LAST_CHANGE_LOG_ID AS '#39'changeLogId'#39
+      ''
+      'FROM Person_Training_Programs AS personPrograms'
+      
+        'WHERE personPrograms.PERSON_TRAINING_PROGRAM_ID = @personTrainin' +
+        'gProgramId')
+    DeleteQuery.Connection = ADOConnection1
+    DeleteQuery.Parameters = <>
+    UpdateQuery.Connection = ADOConnection1
+    UpdateQuery.Parameters = <>
+    Left = 216
+    Top = 200
+  end
 end

@@ -19,13 +19,11 @@ Ext.define('eLearning.view.HomePage', {
 
     requires: [
         'eLearning.view.HomePageViewModel',
-        'eLearning.view.HomePageViewController',
         'Ext.button.Button',
         'Ext.container.Container',
         'Ext.form.Label'
     ],
 
-    controller: 'homepage',
     viewModel: {
         type: 'homepage'
     },

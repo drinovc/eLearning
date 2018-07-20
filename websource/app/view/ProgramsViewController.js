@@ -48,12 +48,19 @@ Ext.define('eLearning.view.ProgramsViewController', {
         }
     },
 
-    saveState: function() {
+    saveState: function(specificData) {
         var me = this,
             refs = me.getReferences(),
-            data = me.getCurrentState();
+            data = specificData || me.getCurrentState();
 
-        localStorage.setItem('mxp_elearning_programs', Ext.encode(data));
+        // ovewrite only pageSetup and slides data from localstorage, other data can remain the same
+        var storeData = localStorage.getItem('mxp_elearning_programs');
+        storeData = Ext.decode(storeData);
+        storeData.pageSetup = data.pageSetup;
+        storeData.slides = data.slides;
+
+
+        localStorage.setItem('mxp_elearning_programs', Ext.encode(storeData));
     },
 
     onRowEditingCanceledit: function(editor, context, eOpts) {

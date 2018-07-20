@@ -168,6 +168,128 @@
                     ]
                 }
             ]
+        },
+        {
+            "type": "jsonstore",
+            "reference": {
+                "name": "stores",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "model": "PersonAnswers",
+                "name": "PersonAnswers"
+            },
+            "configAlternates": {
+                "model": "model",
+                "name": "string"
+            },
+            "name": "MyJsonStore2",
+            "designerId": "9a7b5c28-069c-4ba9-8869-d36701e76585",
+            "cn": [
+                {
+                    "type": "Ext.data.proxy.Ajax",
+                    "reference": {
+                        "name": "proxy",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "api": [
+                            "{",
+                            "    create: '/Pub/PersonAnswers',",
+                            "    read: '/Pub/PersonAnswers',",
+                            "    update: '/POST/Pub/PersonAnswers',",
+                            "    destroy: '/Pub/PersonAnswers'",
+                            "}"
+                        ]
+                    },
+                    "configAlternates": {
+                        "api": "object"
+                    },
+                    "name": "MyAjaxProxy",
+                    "designerId": "00c97668-a177-4678-b1e5-d824d10dceec",
+                    "cn": [
+                        {
+                            "type": "Ext.data.reader.Json",
+                            "reference": {
+                                "name": "reader",
+                                "type": "object"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "rootProperty": "data"
+                            },
+                            "configAlternates": {
+                                "rootProperty": "string"
+                            },
+                            "name": "MyJsonReader2",
+                            "designerId": "622a9b98-ef80-414e-9954-bc0a503f07e3"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "jsonstore",
+            "reference": {
+                "name": "stores",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "model": "PersonPrograms",
+                "name": "PersonPrograms"
+            },
+            "configAlternates": {
+                "model": "model",
+                "name": "string"
+            },
+            "name": "MyJsonStore3",
+            "designerId": "95c70e20-7db1-44e3-b06a-b28ccb53e222",
+            "cn": [
+                {
+                    "type": "Ext.data.proxy.Ajax",
+                    "reference": {
+                        "name": "proxy",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "api": [
+                            "{",
+                            "    create: '/Pub/PersonPrograms',",
+                            "    read: '/Pub/PersonPrograms',",
+                            "    update: '/POST/Pub/PersonPrograms',",
+                            "    destroy: '/Pub/PersonPrograms'",
+                            "}"
+                        ]
+                    },
+                    "configAlternates": {
+                        "api": "object"
+                    },
+                    "name": "MyAjaxProxy",
+                    "designerId": "2d1f4ca7-9719-46e4-a111-88c967d76f9e",
+                    "cn": [
+                        {
+                            "type": "Ext.data.reader.Json",
+                            "reference": {
+                                "name": "reader",
+                                "type": "object"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "rootProperty": "data"
+                            },
+                            "configAlternates": {
+                                "rootProperty": "string"
+                            },
+                            "name": "MyJsonReader2",
+                            "designerId": "b7185457-d692-4cff-aa14-5f041a2cca64"
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }

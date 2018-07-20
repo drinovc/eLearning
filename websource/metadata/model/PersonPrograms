@@ -1,0 +1,16 @@
+{
+    "type": "Ext.data.Model",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userClassName": "PersonPrograms"
+    },
+    "configAlternates": {
+        "designer|userClassName": "string"
+    },
+    "name": "PersonAnswers1",
+    "designerId": "1b5baa9c-90d6-48c3-8535-dcab2c1987d6"
+}

@@ -14,7 +14,9 @@
             "Option",
             "Lookup",
             "Program",
-            "Question"
+            "Question",
+            "PersonAnswers",
+            "PersonPrograms"
         ],
         "name": "eLearning",
         "views": [

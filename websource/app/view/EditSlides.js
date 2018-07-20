@@ -393,6 +393,7 @@ Ext.define('eLearning.view.EditSlides', {
                         {
                             xtype: 'tbtext',
                             id: 'timerCountdown',
+                            minWidth: 100,
                             bind: {
                                 html: '10:00'
                             }

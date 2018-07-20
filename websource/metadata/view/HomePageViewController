@@ -13,27 +13,5 @@
         "designer|userAlias": "string",
         "designer|userClassName": "string"
     },
-    "designerId": "fab9b3e0-2e83-416b-805f-a20803425381",
-    "cn": [
-        {
-            "type": "basicfunction",
-            "reference": {
-                "name": "items",
-                "type": "array"
-            },
-            "codeClass": null,
-            "userConfig": {
-                "fn": "test",
-                "implHandler": [
-                    "console.log('test');"
-                ]
-            },
-            "configAlternates": {
-                "fn": "string",
-                "implHandler": "code"
-            },
-            "name": "test",
-            "designerId": "d5709794-41e0-4350-804d-24bfab3e851b"
-        }
-    ]
+    "designerId": "fab9b3e0-2e83-416b-805f-a20803425381"
 }
