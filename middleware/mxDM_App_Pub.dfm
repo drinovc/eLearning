@@ -1311,12 +1311,23 @@ object Pub: TPub
     Parameters = <
       item
         Name = 'pageId'
-        DataType = ftGuid
-        Size = -1
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 38
+        Value = Null
+      end
+      item
+        Name = 'questionGuid'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 38
         Value = Null
       end>
     SQL.Strings = (
       'DECLARE @pageIdGuid NVARCHAR(38) = :pageId'
+      'DECLARE @questionGuid NVARCHAR(38) = :questionGuid '
       'DECLARE @pageId INT = NULL -- gets set later'
       ''
       
@@ -1346,11 +1357,12 @@ object Pub: TPub
       ''
       'FROM Training_Program_Questions AS questions'
       'WHERE questions.REC_DELETED = 0'
-      'AND TRAINING_PROGRAM_PAGE_ID = @pageId')
+      'AND (@pageId IS NULL OR (TRAINING_PROGRAM_PAGE_ID = @pageId))'
+      'AND (@questionGuid IS NULL OR (GUID = @questionGuid))')
     InsertQuery.Connection = ADOConnection1
     InsertQuery.Parameters = <
       item
-        Name = 'idGuid'
+        Name = 'questionGuid'
         DataType = ftGuid
         Size = -1
         Value = Null
@@ -1396,7 +1408,9 @@ object Pub: TPub
         Value = Null
       end>
     InsertQuery.SQL.Strings = (
-      'DECLARE @id UNIQUEIDENTIFIER = :idGuid -- this is question id'
+      
+        'DECLARE @id UNIQUEIDENTIFIER = :questionGuid -- this is question' +
+        ' id'
       'DECLARE @questionId INT = NULL -- gets set later'
       'DECLARE @pageIdGuid NVARCHAR(38) = :pageId'
       'DECLARE @pageId INT = NULL -- gets set later'

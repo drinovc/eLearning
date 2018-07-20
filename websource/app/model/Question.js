@@ -24,7 +24,7 @@ Ext.define('eLearning.model.Question', {
     fields: [
         {
             type: 'string',
-            name: 'idGuid'
+            name: 'questionGuid'
         },
         {
             type: 'string',

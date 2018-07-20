@@ -125,9 +125,16 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
     getCurrentSlide: function() {
         var me = this,
-            refs = me.getReferences();
+            refs = me.getReferences(),
+            store = me.getStore('TreeStoreSlides');
 
-        return refs.treeSlides.getSelection()[0];
+        var currentSlideIdx = store.indexOf(me.currentSlide);
+
+
+        me.currentSlide = refs.treeSlides.getSelection()[0] || store.getAt(currentSlideIdx);
+
+
+        return me.currentSlide;
     },
 
     nextSlide: function() {
@@ -145,6 +152,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             slide = me.getCurrentSlide(),
             nextSlideIdx = store.indexOf(slide) + 1,
             nextSlide = store.getAt(nextSlideIdx);
+
         if(nextSlide) {
 
             refs.treeSlides.setSelection(nextSlide);
@@ -250,8 +258,9 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 
         // retarget this slide - this redraws current slide without dragger and sizer
+        var currentSlide = me.getCurrentSlide();
         refs.treeSlides.setSelection(null);
-        refs.treeSlides.setSelection(me.getCurrentSlide());
+        refs.treeSlides.setSelection(currentSlide);
 
 
         if(preview) {
@@ -264,15 +273,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             }
         }else{
             // we / timer toggled preview off - validate forms and submit
-
-
             me.evaluate();
-
-
         }
-
-
-
 
 
 
@@ -329,7 +331,15 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     getCurrentState: function() {
         var me = this,
             refs = me.getReferences(),
-            slides = Ext.clone(Ext.pluck(refs.treeSlides.store.getRange(), 'data')).map(function(node) { return cleanTreeNodeData(node); });
+            slides = Ext.clone(Ext.pluck(refs.treeSlides.store.getRange(), 'data')).map(function(node) {
+
+
+                console.log("printing current state node", node);
+
+                return cleanTreeNodeData(node);
+
+
+            });
         data = {
                 slides: slides,
                 pageSetup: me._pageSetup
@@ -350,7 +360,31 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         if(slide) {
 
             Ext.each(me.getSlideComponents(), function(component) {
-                content.components.push(component._opts);
+                if(component._opts.type == me.cmpTypes.SELECTION){
+
+
+                    // if its question, append only guid of this question to content components
+                    var _opts = Ext.clone(component._opts);
+
+                    var _optsNew = {"type": _opts.type, "questionGuid": _opts.questionGuid };
+                    console.log("printing opts", _opts);
+                    console.log("printing new opts", _optsNew);
+
+                    content.components.push(_optsNew);
+
+
+
+
+                    // uncomment line below to append whole question content to slide instead of only id
+                    //content.components.push(component._opts); // TODO TEMP
+
+
+                }else{
+                     content.components.push(component._opts);
+                }
+                console.log("saveSlideState  printing content.componentss.push(comonent._opts)",content.components );
+
+
             });
 
             slide.set('content', Ext.encode(content));
@@ -369,6 +403,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         me.clearSlidePanel();
 
         if(slide) {
+
+            console.log("loadSlideState - printing slide", slide);
             var content = Ext.decode(slide.get('content') || '{}');
 
             Ext.each(content.components, function(component) {
@@ -451,7 +487,13 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     default:
                         console.error("Caller - addComponentListeners", "Unsupported component type" ,type);
                     }
-                    me.saveState();
+                    //me.saveState();
+
+
+                    console.log("Todo - get question id here and call post request to store on table TrainingProgramsAnswers");
+                    console.log("printing question id", item._opts.questionGuid);
+
+
                 }
 
 
@@ -508,6 +550,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     },
 
     insertComponent: function(opts) {
+        console.log("called insert component with opts", opts);
+
         opts = Ext.applyIf(opts || {}, {
             type: null,
             height: null,
@@ -578,41 +622,163 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         var content = document.createElement('div');
         var html = opts.html;
 
-        content.classList.add('html-content');
-        Ext.each(opts.cls, function (cls) {
-            content.classList.add(cls);
-        });
 
         if (opts.type == me.cmpTypes.SELECTION && opts.options) {
 
-            html = '<div clas="text">' + html + '</div>';
+            opts.cls = [me.cmpTypes.SELECTION];
+            cmp.height = 100; // TODO temp component height because we cannot store height in database
+            cmp.style.height = cmp.height + 'px';// TODO - in future we might need to assign height dynamically from reading html + css height - maybe use "offsetHeight"
 
-            Ext.each(opts.options, function (option, index, allItems) {
-                var cls = ['option', (opts.multi ? 'check' : 'radio')];
 
-                if (option.correct) {
-                    cls.push('correct');
+
+            console.log("printing opts in insert component", opts);
+            if(!opts.questionGuid){
+                console.log("no question guid yet.. return -- maybe insert new component here");
+                /*console.log("inserting new selection component here - this below is org code");
+                console.log("printing opts at SELECTION insertComponent", opts);
+
+                html = '<div clas="text">' + html + '</div>';
+
+                Ext.each(opts.options, function (option, index, allItems) {
+                    var cls = ['option', (opts.multi ? 'check' : 'radio')];
+
+                    if (option.correct) {
+                        cls.push('correct');
+                    }
+                    if (option.answer) {
+                        cls.push('selected');
+                    } else {
+                        // add answer parameter that is getting set when checking and unchecking answer
+                        option.answer = false;
+                    }
+                    // added two custom attributes idx which is index of element (starting with 0) and type which can contain chech or radio
+                    html += '<div class="' + cls.join(' ') + '" idx=' + index + ' type=' + (opts.multi ? 'check' : 'radio') + '>' + option.text + '</div>';
+                });
+                console.log("printing html atm", html, opts);
+
+
+
+                // TODO - this is after end
+                content.innerHTML = html;
+                content = cmp.appendChild(content);
+
+                cmp = parentEl.dom.appendChild(cmp);
+
+                cmp._opts = opts;
+                cmp.type = opts.type;
+
+                extCmp = Ext.get(cmp);
+                extCmp._opts = opts;
+                extCmp.type = opts.type;
+
+
+
+
+                me.addComponentListeners(cmp);
+
+                return extCmp;*/
+            }
+
+
+
+            // insert selection has been called with specific id, so we must retrieve it from database end spawn it here
+            var store = me.getStore('QuestionsStoreSlides');
+
+            console.log("todo -add id which question should we request from server which is in opts somewhere", opts );
+            console.log("getting this question", opts.questionGuid);
+            store.load({
+                params:{questionGuid: opts.questionGuid},// maybe this way param??????
+
+
+                callback: function(records, operation,success) {
+
+                    console.log("callback recieved on getBack question" ,records);
+
+                    // getting info for question from database
+                    var record = records[0].data;
+                    opts.type = record.fieldType;
+                    opts.options = Ext.decode(record.lookups);
+                    html = record.question;
+
+                    opts.multi = true; // todo we dont store in database if question is multi answer or not
+                    opts.html = html;
+                    opts.cls = [me.cmpTypes.SELECTION];
+                    opts.id = opts.questionGuid;
+
+
+
+                    // same as below - TODO
+                    html = '<div clas="text">' + html + '</div>';
+
+                    Ext.each(opts.options, function (option, index, allItems) {
+                        // console.log("printing each option", option);
+                        var cls = ['option', (opts.multi ? 'check' : 'radio')];
+
+                        if (option.correct) {
+                            cls.push('correct');
+                        }
+                        if (option.answer) {
+                            cls.push('selected');
+                        } else {
+                            // add answer parameter that is getting set when checking and unchecking answer
+                            option.answer = false;
+                        }
+                        // added two custom attributes idx which is index of element (starting with 0) and type which can contain chech or radio
+                        html += '<div class="' + cls.join(' ') + '" idx=' + index + ' type=' + (opts.multi ? 'check' : 'radio') + '>' + option.text + '</div>';
+                    });
+
+
+
+                    // console.log("printing html atm", html, opts);
+
+
+                    // TODO - this is after end
+                    content.innerHTML = html;
+                    content = cmp.appendChild(content);
+
+                    cmp = parentEl.dom.appendChild(cmp);
+
+                    cmp._opts = opts;
+                    cmp.type = opts.type;
+
+                    extCmp = Ext.get(cmp);
+                    extCmp._opts = opts;
+                    extCmp.type = opts.type;
+
+
+
+
+                    me.addComponentListeners(cmp);
+
+                    return extCmp;
+
+
                 }
-                if (option.answer) {
-                    cls.push('selected');
-                } else {
-                    // add answer parameter that is getting set when checking and unchecking answer
-                    option.answer = false;
-                }
-                // added two custom attributes idx which is index of element (starting with 0) and type which can contain chech or radio
-                html += '<div class="' + cls.join(' ') + '" idx=' + index + ' type=' + (opts.multi ? 'check' : 'radio') + '>' + option.text + '</div>';
             });
+
+
         }
 
         if (opts.type == me.cmpTypes.IMAGE && opts.src) {
             if(navigator.onLine){
-                  content.style.backgroundImage = 'url(' + opts.src + ')';
+                content.style.backgroundImage = 'url(' + opts.src + ')';
             }else{
                 content.style.backgroundColor = 'powderblue';
                 html = 'Image cannot be loaded - go online to view photo';
             }
 
         }
+
+
+        // adding classes to surrounding div element of component
+        content.classList.add('html-content');
+        Ext.each(opts.cls, function (cls) {
+            content.classList.add(cls);
+        });
+
+
+
+
         content.innerHTML = html;
         content = cmp.appendChild(content);
 
@@ -733,9 +899,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
         var cmp = this.insertComponent(opts);
 
-        console.log("Caller - duplicateComponent", "printing opts", opts, "printing new insertec comp", cmp);
-
-
         cmp.fireEvent('click');
     },
 
@@ -797,6 +960,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     },
 
     editSelection: function(component, opts) {
+        console.log("printing selection in editSelection at begining", this.getCurrentSlide());
+
         opts = Ext.applyIf(opts || {}, {
             multi: false
         });
@@ -823,46 +988,17 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     return 'Only one correct answer is allowed for single selection';
                 }
 
+                /*console.log("printing selection in editSelection at callback",  selection);*/
 
-                if(component) {
-                    var state = component._opts;
-
-                    me.deleteComponent(component);
-                    state.html = text;
-                    state.options = answers;
-
-                    component = me.insertComponent(state);
-
-                    console.log("condition went into if");
-
-                }
-                else {
-                    component = me.insertComponent({
-                        type: me.cmpTypes.SELECTION,
-                        cls: 'selection',
-                        html: text,
-                        options: answers,
-                        multi: multi,
-                        height: 100
-                    });
-                    console.log("condition went into else");
-
-                }
+                /*if(!me.getCurrentSlide()){
+                     console.log("setting new current selection");
+                     me.getReferences().treeSlides.setSelection(selection);
+                 }*/
 
 
 
 
-                console.log("printing returned answers", answers);
-
-
-
-
-
-
-
-
-
-                     // Testing selection insert Jernej Habjan 2018-07-16
+                // Testing selection insert Jernej Habjan 2018-07-16
 
                 var store = me.getStore('QuestionsStoreSlides');
 
@@ -877,78 +1013,77 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     }
                 }
 
-
-
-                console.log("printing question info", text, answers);
-
                 // getting page id
-
                 var refs = this.getReferences(),
                     selection = refs.treeSlides.getSelection()[0];
 
 
-                var pageGuid = selection.data.id; // todo use this pageGuid instead of fixed bottom one
+                var pageGuid = selection.data.id;
+                var componentGuid = createGUID();
 
-                console.log("printing slelection of tree slides in editSelection", "TODO - pageId is changing to 1 when addint to record",pageGuid);
 
                 var record = {
-                    idGuid : createGUID(),
+                    questionGuid : componentGuid,
                     pageId: pageGuid,
                     question: text,
                     answers:Ext.encode(answers),
                     correctValue: Ext.encode(correctAnswersIds),
-                    fieldType: component._opts.type
+                    fieldType: me.cmpTypes.SELECTION
 
-        		};
-
-
-
-        		var rec = store.add(record)[0];
-                console.log("printing added record pageId", rec.data.pageId);
-                store.sync();
+                };
+                console.log("adding new record to store:", record);
 
 
-                store.load(function() {
+                store.add(record);
+                record.phantom = true; // todo - this may be unnecessarry
+
+                // after adding to database add component to view
+
+                store.sync({
+                    callback: function(){
 
 
+                        if(component) {
+                            var state = component._opts;
 
-                    // getting info for question from database
-                    store.each(function(record){
+                            me.deleteComponent(component);
+                            state.html = text;
+                            state.options = answers;
+                            state.questionGuid =  componentGuid;
+                            component = me.insertComponent(state);
 
-                        var height = 100;
-                        var multi = true; // todo we dont store in database if question is multi answer or not
-                        var options = record.data.lookups;
-                        var html = record.data.question;
-                        var type = record.data.fieldType;
+                            console.log("condition went into if");
 
+                        }
+                        else {
 
+                            console.log("triggered inserting component selection");
 
-
-
-                        console.log("printing whole record on store load", record);
-                        //console.log("printing record id", record.get('id'));
-
-                        console.log("printing record decoded options", options, Ext.decode(options), JSON.parse(options));
-
-                        component = me.insertComponent({
+                            console.log("printing current selection", me.getCurrentSlide());
+                            component = me.insertComponent({
                                 type: me.cmpTypes.SELECTION,
                                 cls: 'selection',
                                 html: text,
-                                options: JSON.parse(options),
+                                options: answers,
                                 multi: multi,
-                                height: height
+                                questionGuid: componentGuid
                             });
+                            console.log("condition went into else");
 
-                    });
+                        }
+                        //console.log("printing new component", component._opts);
+                        me.saveSlideState();
+
+
+
+                    }
                 });
 
-                console.log("printing new component", component._opts);
-                me.saveSlideState();
+
 
             },
             scope: me
         });
-        me.saveSlideState();
 
     },
 
@@ -1006,24 +1141,19 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         treeStoreSlides.load({
 
             callback: function(records, operation, success){
-                console.log("printing localstorage data", localStorageData);
+                //console.log("printing localstorage data", localStorageData);
 
 
-
+                console.log("printing tree store slides data", treeStoreSlides.data);
                 if(treeStoreSlides.data.length === 0){
                     // no return data, check if there are any locally saved slides
-                    console.log("returned no slides from server", localStorageData.slides);
-                    if(localStorageData.slides){
-
-                        // remove duplicates - this may be redundant?
-                        localStorageData.slides = Array.from(new Set(localStorageData.slides));
-
-
-
+                    console.log("returned no slides from server");
+                    if((localStorageData !== null) && localStorageData.slides){
                         console.log("we have locally saved slides, syncing with server");
                         me.updateServerStore();
                     }
-
+                    // set initial data
+                    me.setInitialSlide();
 
                     return;
                 }
@@ -1031,6 +1161,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 
                 // here we have valid return data from server, so we can update localstorage and sync localstorage back with server
+
 
                 treeStoreSlides.data.items.forEach((o, i, a) => {
                     if (!a[i].data.children){
@@ -1046,6 +1177,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                         localStorageData.slides.push(entry.data);
                     });
                     localStorage.setItem('mxp_elearning_slide', Ext.encode(localStorageData));
+                    // set initial data
+                    me.setInitialSlide();
                     return;
                 }
 
@@ -1054,6 +1187,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     // localstorage slides are empty - set recieved data from server to localstorage - even if it is empty
                     localStorageData.slides = Ext.encode(treeStoreSlides.data);
                     localStorage.setItem('mxp_elearning_slide', Ext.encode(localStorageData));
+                    // set initial data
+                    me.setInitialSlide();
                     return;
                 }
 
@@ -1072,23 +1207,27 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 // Updating localstorage:
                 for (var i =0; i < treeStoreSlides.data.items.length; i++){
                     var slide = treeStoreSlides.data.items[i];
-                    console.log("printing each slide data",slide.data);
+                    //console.log("printing each slide data",slide.data);
                     // check if item is not yet in localstorage
-                    console.log("printing item id", localStorageData.slides, slide);
+                    //console.log("printing item id", localStorageData.slides, slide);
                     if(localStorageData.slides.some(item => item.id === slide.data.id)){
 
                     }else{
-                        console.log("adding new slide to localstorage");
+                        //console.log("adding new slide to localstorage");
                         localStorageData.slides.push(slide.data);
                     }
                 }
                 // setting modified data back to localstorage
                 localStorage.mxp_elearning_slide = Ext.encode(localStorageData);
 
-
-
                 // Updating server store:
                 me.updateServerStore();
+
+
+                // set initial data
+                me.setInitialSlide();
+
+
 
             }
         });
@@ -1274,11 +1413,14 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     },
 
     saveState: function() {
-        // sets current state to localstorage and calls sync with server
+        // sets current state to localstorage and calls update with server
 
         localStorage.setItem('mxp_elearning_slide', Ext.encode(this.getCurrentState()));
-        this.syncState();
+        // TODO - this may remain as comment as if syncing state,
+        // we are retrieving data from server for no reason and possibly overwriting current state
+        //this.syncState();
 
+        this.updateServerStore();
     },
 
     updateServerStore: function() {
@@ -1288,15 +1430,46 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             treeStoreSlides = me.getStore('TreeStoreSlides');
 
         // Updating server store:
+        // make slides unique
+        localStorageData.slides = Array.from(new Set(localStorageData.slides));
         // setting data from localstorage to store
-        treeStoreSlides.setData(localStorageData.slides);
+
+        // clear store so we might add all synced data from localstorage to sync with server (append child)
+        treeStoreSlides.getRootNode().removeAll();
+
+        // IMPORTANT! Use .appendChild when adding data to treestore for sync to work
+        treeStoreSlides.getRootNode().appendChild(localStorageData.slides);
         // setting all records' phantom state to true
         for (var i = 0; i < treeStoreSlides.data.items.length; i++){
             var rec = treeStoreSlides.data.items[i];
+            // IMPORTANT! rec.phantom must be set to true, othewise sync wont work, as "data isn't changed"
             rec.phantom = true;
         }
         // sync data back to server
         treeStoreSlides.sync();
+    },
+
+    setInitialSlide: function() {
+        // this function is used to set slide after syncing with server or initially recieving data (from localstorage or server)
+        var me = this,
+            refs = me.getReferences();
+
+        var currentSlide = me.getCurrentSlide();
+        if(currentSlide){
+            refs.treeSlides.setSelection(currentSlide);
+            return;
+        }
+        // this part of code gets executed when there is no current selection yet
+
+
+        // switch to first slide
+        Ext.defer(function() {
+            me.nextSlide();
+        }, 100);
+
+        me.setBackground(me._pageSetup.background);
+        refs.panelContent.setWidth(me._pageSetup.width);
+        refs.panelContent.setHeight(me._pageSetup.height);
     },
 
     close: function(owner, tool, event) {
@@ -1310,8 +1483,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     onTreeSlidesSelect: function(rowmodel, record, index, eOpts) {
         // loading slide state for both sections and slides, because creating title every time caused sync with database
         this.loadSlideState(record);
-
-
 
         // if(record.isLeaf()) {
         //     this.loadSlideState(record);
@@ -1337,7 +1508,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         console.log("ext get", Ext.get(refs.treeSlides));
 
         // todo - check if there are any children - possible crash here
-        console.log("printign children",refs.treeSlides.el.dom.children[0].children[1].children[0].children[1].children);
+        console.log("printing children",refs.treeSlides.el.dom.children[0].children[1].children[0].children[1].children);
 
 
         // get all currently shown nodes in tree view - only parent of collapsed nodes is visible
@@ -1433,11 +1604,10 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 
 
-
-
-
         if (navigator.onLine){
             me.syncState();
+            // set initial data
+            me.setInitialSlide();
         }
         else{
             // set localstorage data to tree store
@@ -1445,16 +1615,14 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 localStorageData = Ext.decode(localStorage.getItem('mxp_elearning_slide')),
                 treeStoreSlides = me.getStore('TreeStoreSlides');
             treeStoreSlides.setData(localStorageData.slides);
+
+
+            // set initial data
+            me.setInitialSlide();
+
+
         }
 
-        // switch to first slide
-        Ext.defer(function() {
-            me.nextSlide();
-        }, 100);
-
-        me.setBackground(me._pageSetup.background);
-        refs.panelContent.setWidth(me._pageSetup.width);
-        refs.panelContent.setHeight(me._pageSetup.height);
 
 
         component.el.on('click', function(e, t) {
@@ -1478,8 +1646,11 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         function connectionChange() {
             if (navigator.onLine){
                 me.syncState();
+
+
+                var currentSlide = me.getCurrentSlide();
                 me.getReferences().treeSlides.setSelection(null);
-                me.getReferences().treeSlides.setSelection(me.getCurrentSlide()); // retrigger current slide to update
+                me.getReferences().treeSlides.setSelection(currentSlide); // retrigger current slide to update
                 Ext.toast('Welcome back online! Content saved on server.');
 
             }else{
