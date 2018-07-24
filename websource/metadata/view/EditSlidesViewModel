@@ -105,6 +105,76 @@
                             "designerId": "d5f0f00a-a1a0-4099-9e72-fc1759ea3199"
                         }
                     ]
+                },
+                {
+                    "type": "basicfunction",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "designer|params": [
+                            "silent"
+                        ],
+                        "fn": "removeAll",
+                        "implHandler": [
+                            "",
+                            "var root = this.getRootNode();",
+                            "if (root) {",
+                            "    root.destroy(true);",
+                            "}",
+                            "",
+                            "if(silent !== true){",
+                            "    this.fireEvent('clear', this);",
+                            "}",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "/*",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "console.log(\"called my remove all function in treestoreslides\");",
+                            "",
+                            "var me = this,",
+                            "    root = me.getRootNode();",
+                            "",
+                            "if(silent !== true){",
+                            "    if (root) {",
+                            "        // will fire the 'destroy' operation for every child of the root",
+                            "        root.destroy(true);",
+                            "    }",
+                            "    //fire the clear even only if not silent",
+                            "    this.fireEvent('clear', me);",
+                            "}else{",
+                            "    if (root) {",
+                            "        // temporarily remove the onNodeRemove event listener so that when removeAll is called,",
+                            "        // the removed nodes do not get added to the removed array",
+                            "        //me.tree.on('remove', me.onNodeRemove, me); - todo this was before i added below line",
+                            "        me.on('remove', me.onNodeRemove, me);",
+                            "",
+                            "        //root.removeAll(false); // silent remove all children",
+                            "        //root.destroy(false); // destroy just the root",
+                            "",
+                            "        // reattach the onNodeRemove listener",
+                            "        //me.tree.on('remove', me.onNodeRemove, me); - todo this was before i added below line",
+                            "        me.on('remove', me.onNodeRemove, me);",
+                            "    }",
+                            "}*/"
+                        ]
+                    },
+                    "configAlternates": {
+                        "designer|params": "typedarray",
+                        "fn": "string",
+                        "implHandler": "code"
+                    },
+                    "name": "removeAll",
+                    "designerId": "820b403a-24c0-4e24-bfce-8d80f57cdf0a"
                 }
             ]
         },

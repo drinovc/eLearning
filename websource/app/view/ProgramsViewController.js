@@ -18,11 +18,16 @@ Ext.define('eLearning.view.ProgramsViewController', {
     alias: 'controller.programs',
 
     load: function() {
+
         var me = this,
             store = me.getStore('StorePrograms');
 
         me.getStore('StoreProgramCategories').setData(App.lookups.ProgramCategories);
-        store.load();
+        store.load({
+            callback:function(){
+                me.saveState(); // save everything to localstorage
+            }
+        });
 
         //me.loadState();
     },
@@ -33,34 +38,67 @@ Ext.define('eLearning.view.ProgramsViewController', {
             store = me.getStore('StorePrograms'),
             data = Ext.clone(Ext.pluck(store.getRange(), 'data'));
 
-        return data;
+        var programs = {};
+        for (var i = 0; i < data.length; i++){
+            var entry = data[i];
+            console.log("printing data entry in programs get current state", entry);
+
+            programs[entry.id] = {programInfo: entry};
+        }
+
+
+        //return data;
+        return programs;
     },
 
     loadState: function() {
         var me = this,
             refs = me.getReferences(),
             store = me.getStore('StorePrograms'),
-            data = localStorage.getItem('mxp_elearning_programs');
+            data = localStorage.getItem('mxp_elearning');
 
         if(data) {
             data = Ext.decode(data);
+            delete data.slides;
+            delete data.questions;
+            delete data.answers;
             store.setData(data);
         }
     },
 
-    saveState: function(specificData) {
+    saveState: function() {
         var me = this,
+            data = me.getCurrentState();
+
+        var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
+        console.log("printing localstorage", localStorageData);
+
+
+        if(!localStorageData){
+            localStorageData = {};
+        }
+        for (var key in data) {
+            if(!localStorageData[key]){
+                localStorageData[key]={};
+            }
+
+            localStorageData[key].programInfo = data[key].programInfo;
+            console.log("printing loalstorage",localStorageData);
+        }
+
+        // sets current state to localstorage and calls update with server
+        localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+
+        console.log("printing localstorage", localStorageData);
+
+
+        //below is old code that overwrittes completely whole xmp_elearning store
+
+        /*var me = this,
             refs = me.getReferences(),
-            data = specificData || me.getCurrentState();
+            data = me.getCurrentState();
 
-        // ovewrite only pageSetup and slides data from localstorage, other data can remain the same
-        var storeData = localStorage.getItem('mxp_elearning_programs');
-        storeData = Ext.decode(storeData);
-        storeData.pageSetup = data.pageSetup;
-        storeData.slides = data.slides;
-
-
-        localStorage.setItem('mxp_elearning_programs', Ext.encode(storeData));
+        localStorage.setItem('mxp_elearning', Ext.encode(data));*/
     },
 
     onRowEditingCanceledit: function(editor, context, eOpts) {
@@ -72,6 +110,10 @@ Ext.define('eLearning.view.ProgramsViewController', {
         if (context.record.phantom) {
             store.remove(context.record);
         }
+    },
+
+    onRowEditingEdit: function(editor, context, eOpts) {
+        this.saveState();
     },
 
     add: function(button, e) {
@@ -99,7 +141,7 @@ Ext.define('eLearning.view.ProgramsViewController', {
         //store.sync();
         editor.startEdit(rec);
 
-        //me.saveState();
+        // me.saveState();
     },
 
     remove: function(button, e) {
@@ -118,15 +160,27 @@ Ext.define('eLearning.view.ProgramsViewController', {
     },
 
     editSlides: function(button, e) {
+
         var me = this,
             view = me.getView(),
             selection = view.getSelection()[0],
             mainView = view.up('#mainView');
 
-        me.saveState();
+        if(!selection){
+            console.warn("NO SELECTION CHOSEN - fix so item is always selected");
+            return;
+        }
 
-        mainView.setActiveItem('editSlides');
-        mainView.getController().load({ program: selection });
+
+        me.saveState();
+        //mainView.setActiveItem('editSlides');
+        //mainView.getController().load({ program: selection });
+
+
+        // new code Jernej Habjan 2018-07-23 - calling load on editSlides:
+        var newActiveItem = mainView.setActiveItem('editSlides');
+        console.log("clicked edit slides",newActiveItem, selection);
+        newActiveItem.getController().load({ program: selection });
     },
 
     close: function(owner, tool, event) {

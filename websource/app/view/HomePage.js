@@ -74,7 +74,28 @@ Ext.define('eLearning.view.HomePage', {
                 {
                     xtype: 'button',
                     handler: function(button, e) {
-                        this.up('#mainView').setActiveItem('editSlides');
+                        var TEMP_ID = "{01A26F88-5649-4693-9227-28E8E2F7A963}";
+
+                        var mainView = this.up('#mainView');
+                        var newActiveItem = mainView.setActiveItem('editSlides');
+
+                        var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
+                        console.log("printing localstorage", localStorageData);
+
+                        if(!localStorageData){
+                            localStorageData = {};
+                        }
+                        if(!localStorageData[TEMP_ID]){
+                            localStorageData[TEMP_ID] = {};
+                        }
+                        for (var key in localStorageData[TEMP_ID]) {
+                            if(!localStorageData[TEMP_ID][key]){
+                                localStorageData[TEMP_ID][key]={};
+                            }
+                        }
+                        localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+
+                        newActiveItem.getController().load({ program :{id :TEMP_ID} }); // with programId
                     },
                     text: 'Edit Slides'
                 },

@@ -165,7 +165,8 @@ Ext.define('eLearning.view.Programs', {
             ptype: 'rowediting',
             pluginId: 'rowEditing',
             listeners: {
-                canceledit: 'onRowEditingCanceledit'
+                canceledit: 'onRowEditingCanceledit',
+                edit: 'onRowEditingEdit'
             }
         }
     ],

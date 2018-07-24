@@ -489,6 +489,30 @@
                     },
                     "name": "onRowEditingCanceledit",
                     "designerId": "35b6805c-1c02-43c2-b178-86a9890ab433"
+                },
+                {
+                    "type": "viewcontrollereventbinding",
+                    "reference": {
+                        "name": "listeners",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "fn": "onRowEditingEdit",
+                        "implHandler": [
+                            "this.saveState();"
+                        ],
+                        "name": "edit",
+                        "scope": "me"
+                    },
+                    "configAlternates": {
+                        "fn": "string",
+                        "implHandler": "code",
+                        "name": "string",
+                        "scope": "string"
+                    },
+                    "name": "onRowEditingEdit",
+                    "designerId": "44d71bb7-d223-4209-9601-dfc9ec8b74e2"
                 }
             ]
         },
@@ -565,7 +589,7 @@
                                     "//store.sync();",
                                     "editor.startEdit(rec);",
                                     "",
-                                    "//me.saveState();"
+                                    "// me.saveState();"
                                 ]
                             },
                             "configAlternates": {
@@ -772,15 +796,27 @@
                                 "designer|viewControllerFn": "editSlides",
                                 "fn": "handler",
                                 "implHandler": [
+                                    "",
                                     "var me = this,",
                                     "    view = me.getView(),",
                                     "    selection = view.getSelection()[0],",
                                     "    mainView = view.up('#mainView');",
                                     "",
-                                    "me.saveState();",
+                                    "if(!selection){",
+                                    "    console.warn(\"NO SELECTION CHOSEN - fix so item is always selected\");",
+                                    "    return;",
+                                    "}",
                                     "",
-                                    "mainView.setActiveItem('editSlides');",
-                                    "mainView.getController().load({ program: selection });"
+                                    "",
+                                    "me.saveState();",
+                                    "//mainView.setActiveItem('editSlides');",
+                                    "//mainView.getController().load({ program: selection });",
+                                    "",
+                                    "",
+                                    "// new code Jernej Habjan 2018-07-23 - calling load on editSlides:",
+                                    "var newActiveItem = mainView.setActiveItem('editSlides');",
+                                    "console.log(\"clicked edit slides\",newActiveItem, selection);",
+                                    "newActiveItem.getController().load({ program: selection });"
                                 ]
                             },
                             "configAlternates": {
