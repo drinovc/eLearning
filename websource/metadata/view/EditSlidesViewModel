@@ -272,10 +272,12 @@
                             "    update: '/POST/Pub/PersonAnswers',",
                             "    destroy: '/Pub/PersonAnswers'",
                             "}"
-                        ]
+                        ],
+                        "batchActions": false
                     },
                     "configAlternates": {
-                        "api": "object"
+                        "api": "object",
+                        "batchActions": "boolean"
                     },
                     "name": "MyAjaxProxy",
                     "designerId": "00c97668-a177-4678-b1e5-d824d10dceec",
@@ -333,10 +335,12 @@
                             "    update: '/POST/Pub/PersonPrograms',",
                             "    destroy: '/Pub/PersonPrograms'",
                             "}"
-                        ]
+                        ],
+                        "batchActions": false
                     },
                     "configAlternates": {
-                        "api": "object"
+                        "api": "object",
+                        "batchActions": "boolean"
                     },
                     "name": "MyAjaxProxy",
                     "designerId": "2d1f4ca7-9719-46e4-a111-88c967d76f9e",

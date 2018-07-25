@@ -75,7 +75,7 @@ Ext.define('eLearning.view.EditSlides', {
                         {
                             xtype: 'button',
                             itemId: 'btnNewSlide',
-                            text: 'New slide',
+                            text: 'New page',
                             menu: {
                                 xtype: 'menu',
                                 items: [
@@ -95,7 +95,7 @@ Ext.define('eLearning.view.EditSlides', {
                                             me.insertTitle();
                                             me.insertText();
                                         },
-                                        text: 'New slide from template'
+                                        text: 'New page from template'
                                     }
                                 ]
                             }
@@ -106,7 +106,7 @@ Ext.define('eLearning.view.EditSlides', {
                                 this.up('#editSlides').getController().deleteSlide();
                             },
                             itemId: 'btnDeleteSlide',
-                            text: 'Delete slide'
+                            text: 'Delete Page'
                         },
                         {
                             xtype: 'button',
@@ -375,7 +375,7 @@ Ext.define('eLearning.view.EditSlides', {
                             },
                             itemId: 'btnPrevSlide',
                             minWidth: 120,
-                            text: 'Previous slide'
+                            text: 'Previous Page'
                         },
                         {
                             xtype: 'button',
@@ -384,7 +384,7 @@ Ext.define('eLearning.view.EditSlides', {
                             },
                             itemId: 'btnNextSlide',
                             minWidth: 120,
-                            text: 'Next slide'
+                            text: 'Next Page'
                         },
                         {
                             xtype: 'tbspacer',
@@ -434,7 +434,7 @@ Ext.define('eLearning.view.EditSlides', {
                     itemId: 'treeSlides',
                     padding: 10,
                     title: '',
-                    emptyText: 'No slides to show.<br>Create new with button <i>New slide</i>.<br><br>Double click on slide name to rename it.',
+                    emptyText: 'No pages to show.<br>Create new with button <i>New page</i>.<br><br>Double click on page name to rename it.',
                     hideHeaders: true,
                     rootVisible: false,
                     useArrows: true,

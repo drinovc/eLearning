@@ -75,11 +75,47 @@ function cleanTreeNodeData(data) {
       delete data.root;
       delete data.text;
       delete data.visible;
+            
     }
     catch (e) {} 
     
+    
+    
+    
+    // delete content for selection components
+    try {
+        var content = Ext.decode(data.content);
+
+
+        for(var i = 0; i < content.components.length; i++){
+            var el = content.components[i];
+            if(el.type == "Single selection" || el.type == "Multi selection" ||el.type == "selection"){
+                delete el.options;
+                delete el.html;
+                delete el.id;
+                delete el.cls;
+                delete el.style;
+                delete el.multi;
+                console.log("called delete for this ele");
+
+            }
+        }
+        data.content = Ext.encode(content);
+    }
+    catch (e) {} 
+
+    console.log("printing filtered data", data);
+    
     return data;
 }
+
+
+
+
+
+
+
+
 function sumDict(obj) {
   var sum = 0;
   for( var el in obj ) {

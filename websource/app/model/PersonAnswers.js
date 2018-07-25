@@ -14,5 +14,18 @@
  */
 
 Ext.define('eLearning.model.PersonAnswers', {
-    extend: 'Ext.data.Model'
+    extend: 'Ext.data.Model',
+
+    requires: [
+        'Ext.data.field.String'
+    ],
+
+    idProperty: 'answerGuid',
+
+    fields: [
+        {
+            type: 'string',
+            name: 'answerGuid'
+        }
+    ]
 });

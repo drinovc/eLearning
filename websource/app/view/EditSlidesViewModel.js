@@ -122,6 +122,7 @@ Ext.define('eLearning.view.EditSlidesViewModel', {
             model: 'eLearning.model.PersonAnswers',
             proxy: {
                 type: 'ajax',
+                batchActions: false,
                 api: {
                     create: '/Pub/PersonAnswers',
                     read: '/Pub/PersonAnswers',
@@ -138,6 +139,7 @@ Ext.define('eLearning.view.EditSlidesViewModel', {
             model: 'eLearning.model.PersonPrograms',
             proxy: {
                 type: 'ajax',
+                batchActions: false,
                 api: {
                     create: '/Pub/PersonPrograms',
                     read: '/Pub/PersonPrograms',

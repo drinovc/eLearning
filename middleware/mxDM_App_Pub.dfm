@@ -1,6 +1,6 @@
 object Pub: TPub
   OldCreateOrder = False
-  Height = 339
+  Height = 342
   Width = 638
   object ADOConnection1: TADOConnection
     ConnectionString = 
@@ -1707,20 +1707,26 @@ object Pub: TPub
     InsertQuery.Parameters = <
       item
         Name = 'answerGuid'
-        DataType = ftGuid
-        Size = -1
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 38
         Value = Null
       end
       item
-        Name = 'programId'
-        DataType = ftGuid
-        Size = -1
+        Name = 'personProgramId'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 38
         Value = Null
       end
       item
         Name = 'questionId'
-        DataType = ftGuid
-        Size = -1
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 38
         Value = Null
       end
       item
@@ -1741,11 +1747,11 @@ object Pub: TPub
       end>
     InsertQuery.SQL.Strings = (
       
-        'DECLARE @answerGuid UNIQUEIDENTIFIER = :answerGuid -- this is an' +
-        'swer id'
+        'DECLARE @answerGuid NVARCHAR(38) = :answerGuid -- this is answer' +
+        ' id'
       'DECLARE @answerId INT = NULL -- gets set later'
-      'DECLARE @programGuid NVARCHAR(38) = :programId'
-      'DECLARE @programId INT = NULL -- gets set later'
+      'DECLARE @personProgramGuid NVARCHAR(38) = :personProgramId'
+      'DECLARE @personProgramid INT = NULL -- gets set later'
       'DECLARE @questionGuid NVARCHAR(38) = :questionId'
       'DECLARE @questionId INT = NULL -- gets set later'
       'DECLARE @answer NVARCHAR(500) = :answers'
@@ -1762,8 +1768,8 @@ object Pub: TPub
         'SET @answerId = (SELECT PERSON_TRAINING_PROGRAM_ANSWER_ID FROM P' +
         'erson_Training_Program_Answers WHERE GUID = @answerGuid)'
       
-        'SET @programId = (SELECT TRAINING_PROGRAM_ID FROM Training_Progr' +
-        'ams WHERE GUID = @programGuid)'
+        'SET @personProgramid = (SELECT PERSON_TRAINING_PROGRAM_ID FROM P' +
+        'erson_Training_Programs WHERE GUID = @personProgramGuid)'
       
         'SET @questionId = (SELECT TRAINING_PROGRAM_QUESTION_ID FROM Trai' +
         'ning_Program_Questions WHERE GUID = @questionGuid)'
@@ -1787,7 +1793,7 @@ object Pub: TPub
       #9'VALUES ('
       #9#9'@answerGuid '
       #9#9'-- , @answerId'
-      #9#9', @programId'
+      #9#9', @personProgramid'
       #9#9', @questionId'
       #9#9', @answer'
       #9#9', @answerScore '
@@ -1811,12 +1817,13 @@ object Pub: TPub
       ''
       ''
       #9'UPDATE Person_Training_Program_Answers SET'
+      #9#9#9'GUID = ISNULL(@answerGuid, GUID)'
       
         #9#9#9'-- PERSON_TRAINING_PROGRAM_ANSWER_ID = ISNULL(@answerId, PERS' +
         'ON_TRAINING_PROGRAM_ANSWER_ID)'
       
-        #9#9'    PERSON_TRAINING_PROGRAM_ID = ISNULL(@programId, PERSON_TRA' +
-        'INING_PROGRAM_ID)'
+        #9#9'  ,  PERSON_TRAINING_PROGRAM_ID = ISNULL(@programId, PERSON_TR' +
+        'AINING_PROGRAM_ID)'
       
         #9#9'  , TRAINING_PROGRAM_QUESTION_ID = ISNULL(@questionId, TRAININ' +
         'G_PROGRAM_QUESTION_ID)'
@@ -1863,25 +1870,43 @@ object Pub: TPub
     Connection = ADOConnection1
     Parameters = <
       item
+        Name = 'personId'
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'programId'
+        Size = -1
+        Value = Null
+      end
+      item
         Name = 'personTrainingProgramGuid'
         DataType = ftGuid
         Size = -1
         Value = Null
       end>
     SQL.Strings = (
-      ''
+      '-- select by person id and programGuid or by its own guid'
+      'DECLARE @personId INT = :personId'
+      'DECLARE @programGuid NVARCHAR(38) = :programId'
+      'DECLARE @programId INT = NULL -- gets set later'
       ''
       
         'DECLARE @personTrainingProgramGuid NVARCHAR(38) = :personTrainin' +
         'gProgramGuid'
       'DECLARE @personTrainingProgramId INT = NULL -- gets set later'
+      ''
       
         'SET @personTrainingProgramId = (SELECT PERSON_TRAINING_PROGRAM_I' +
         'D FROM Person_Training_Programs WHERE GUID = @personTrainingProg' +
         'ramGuid)'
+      
+        'SET @programId = (SELECT TRAINING_PROGRAM_ID FROM Training_Progr' +
+        'ams WHERE GUID = @programGuid)'
       ''
       'SELECT'
-      #9'PERSON_TRAINING_PROGRAM_ID AS '#39'personTrainingProgramId'#39
+      #9'--PERSON_TRAINING_PROGRAM_ID AS '#39'personTrainingProgramId'#39
+      #9'GUID AS '#39'personTrainingProgramId'#39' -- todo returning guid'
       #9', PERSON_APPLICANT_ID AS '#39'applicantId'#39
       #9', PERSON_ID AS '#39'personId'#39
       #9', TRAINING_PROGRAM_ID AS '#39'programId'#39
@@ -1900,45 +1925,78 @@ object Pub: TPub
       ''
       'FROM Person_Training_Programs AS personPrograms'
       
-        'WHERE personPrograms.PERSON_TRAINING_PROGRAM_ID = @personTrainin' +
-        'gProgramId'
-      '')
+        'WHERE (@personTrainingProgramId IS NULL OR (personPrograms.PERSO' +
+        'N_TRAINING_PROGRAM_ID = @personTrainingProgramId))'
+      
+        'AND (@personId IS NULL OR  @programId IS NULL OR (personPrograms' +
+        '.TRAINING_PROGRAM_ID = @programId AND personPrograms.PERSON_ID =' +
+        ' @personId))')
     InsertQuery.Connection = ADOConnection1
     InsertQuery.Parameters = <
       item
-        Name = 'answerGuid'
-        DataType = ftGuid
-        Size = -1
+        Name = 'personProgramGuid'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 38
         Value = Null
       end
       item
         Name = 'personId'
+        DataType = ftInteger
         Size = -1
         Value = Null
       end
       item
         Name = 'programId'
-        DataType = ftGuid
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 38
+        Value = Null
+      end
+      item
+        Name = 'programStatusId'
+        DataType = ftInteger
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'attempt'
+        DataType = ftInteger
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'createdById'
+        DataType = ftInteger
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'created'
+        DataType = ftDateTime
         Size = -1
         Value = Null
       end>
     InsertQuery.SQL.Strings = (
       
-        'DECLARE @personTrainingProgramGuid UNIQUEIDENTIFIER = :answerGui' +
-        'd -- this is answer id'
+        'DECLARE @personTrainingProgramGuid NVARCHAR(38) = :personProgram' +
+        'Guid'
       'DECLARE @personTrainingProgramId INT = NULL -- gets set later'
       'DECLARE @applicantId INT = NULL'
       'DECLARE @personId INT = :personId'
-      'DECLARE @programId INT = :programId'
+      'DECLARE @programGuid NVARCHAR(38) = :programId'
+      'DECLARE @programId INT = NULL -- gets set later'
       'DECLARE @programStarted DATETIME = NULL'
       'DECLARE @programCompleted DATETIME = NULL'
       'DECLARE @commentEmployee NVARCHAR(2000) = NULL'
       'DECLARE @commentInternal NVARCHAR(2000) = NULL'
-      'DECLARE @programStatusId INT = NULL'
-      'DECLARE @attempt INT = NULL'
+      'DECLARE @programStatusId INT = :programStatusId'
+      'DECLARE @attempt INT = :attempt'
       'DECLARE @createdAtId INT = NULL'
-      'DECLARE @createdById INT = NULL'
-      'DECLARE @created DATETIME = GETDATE()'
+      'DECLARE @createdById INT = :createdById'
+      'DECLARE @created DATETIME = :created'
       'DECLARE @lastChanged DATETIME = GETDATE()'
       'DECLARE @changed CHAR(1) = 0'
       'DECLARE @changeLogId BIGINT = 1'
@@ -1947,6 +2005,9 @@ object Pub: TPub
         'SET @personTrainingProgramId = (SELECT PERSON_TRAINING_PROGRAM_I' +
         'D FROM Person_Training_Programs WHERE GUID = @personTrainingProg' +
         'ramGuid)'
+      
+        'SET @programId = (SELECT TRAINING_PROGRAM_ID FROM Training_Progr' +
+        'ams WHERE GUID = @programGuid)'
       ''
       'IF @personTrainingProgramId IS NULL'
       'BEGIN'
@@ -2040,7 +2101,8 @@ object Pub: TPub
       'END'
       ''
       'SELECT'
-      #9'PERSON_TRAINING_PROGRAM_ID AS '#39'personTrainingProgramId'#39
+      #9'-- PERSON_TRAINING_PROGRAM_ID AS '#39'personTrainingProgramId'#39
+      #9'GUID AS '#39'personTrainingProgramId'#39' -- todo returning guid'
       #9', PERSON_APPLICANT_ID AS '#39'applicantId'#39
       #9', PERSON_ID AS '#39'personId'#39
       #9', TRAINING_PROGRAM_ID AS '#39'programId'#39

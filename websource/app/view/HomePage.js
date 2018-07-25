@@ -95,9 +95,32 @@ Ext.define('eLearning.view.HomePage', {
                         }
                         localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
 
-                        newActiveItem.getController().load({ program :{id :TEMP_ID} }); // with programId
+                        newActiveItem.getController().load({ program :{
+                            data:{
+                                "active":true,
+                                "categoryId":30231143,
+                                "certificateFileName":"",
+                                "changed":"Y",
+                                "completionTime":60,
+                                "created":"2018-07-23T12:04:00",
+                                "createdAtId":5,
+                                "createdById":0,
+                                "description":"New Training Program Description",
+                                "id":"{01A26F88-5649-4693-9227-28E8E2F7A963}",
+                                "lastChangeLogId":191175066,
+                                "lastChanges":"2018-07-23T12:04:00",
+                                "maxAttemptsScoreMode":1000,
+                                "maxAttemptsTrainingMode":1000,
+                                "name":"First program",
+                                "passScore":2,
+                                "programId":50000026,
+                                "validFrom":"2018-07-23T00:00:00",
+                                "validTo":"2019-07-23T00:00:00"
+                            },
+                            id :TEMP_ID
+                        } }); // with programId
                     },
-                    text: 'Edit Slides'
+                    text: 'Edit Pages'
                 },
                 {
                     xtype: 'button',

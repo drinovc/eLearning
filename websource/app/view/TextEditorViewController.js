@@ -32,6 +32,25 @@ Ext.define('eLearning.view.TextEditorViewController', {
 
         view.refs.htmlEditor.setValue(opts.value);
         view.show();
+    },
+
+    btnSaveHandler: function(button, e) {
+        var me = this,
+            refs = me.getReferences(),
+            opts = me._opts;
+
+        if(opts.callback.call(opts.scope, refs.htmlEditor.getValue())) {
+            console.log('Blocking closing');
+        }
+        else {
+            me.getView().close();
+        }
+    },
+
+    btnCancelHandler: function(button, e) {
+        var me = this;
+
+        me.getView().close();
     }
 
 });

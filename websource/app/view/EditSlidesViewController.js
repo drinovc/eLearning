@@ -18,17 +18,20 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     alias: 'controller.editslides',
 
     load: function(opts) {
-
-        console.log("printing load edit slides with opts",opts, opts.program, opts.program.id);
-        opts = Ext.applyIf(opts || {}, {
-            program: null
-        });
-
         var me = this,
             refs = me.getReferences();
 
 
-        me.programId = opts.program.id;
+
+        opts = Ext.applyIf(opts || {}, {
+            program: null
+        });
+
+
+        console.log("printing load edit slides with opts",opts, opts.program, opts.program.id);
+        console.log("printing load edit slide", Ext.encode(opts.program));
+        me.programData = opts.program.data; // create variable of this program that can be accessed from anywhere in this controller
+        me.programId = opts.program.id; //
 
 
         if(opts.program.get){
@@ -40,11 +43,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         }
         // clear old panel if there is no slides on this program yet, so content from previous program doesn't remain on this one
         this.clearSlidePanel();
-
-
-
-
-
 
 
          // call sync state here and not save state, as we dont have anything to save yet
@@ -135,7 +133,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 id: createGUID(),
                 programId: me.programId,
                 sequence: me.getNumSlides() + 1, // todo - this sequence might not be correct to write in database
-                title: 'New Slide ' + me.getNumSlides(),
+                title: 'New Page ' + me.getNumSlides(),
                 content: null,
                 expanded: true,
                 leaf: true,
@@ -310,27 +308,109 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     },
 
     togglePreview: function(preview) {
+        var TEST_PERSON_ID = 10000112;
+
+
         var me = this,
-            refs = me.getReferences();
+            refs = me.getReferences(),
+            personProgramsStore = me.getStore('PersonPrograms'),
+            personAnswersStore = me.getStore('PersonAnswers');
 
         me.previewing = preview; // setting current previewing state
 
-        //refs.panelMenu.setVisible(!preview); // commented so navigation tree is visible even when solving quiz
-        refs.toolbarEdit.setVisible(!preview);
-        refs.toolbarPreview.setVisible(!!preview);
-        refs.panelContent[preview ? 'removeCls' : 'addCls']('edit');
-        refs.panelContent[preview ? 'addCls' : 'removeCls']('preview');
-
-        refs.panelSlide.setMargin(preview ? '10' : '10 10 10 0');
-
-
-        // retarget this slide - this redraws current slide without dragger and sizer
-        var currentSlide = me.getCurrentSlide();
-        refs.treeSlides.setSelection(null);
-        refs.treeSlides.setSelection(currentSlide);
-
-
         if(preview) {
+            if(me.programData.validTo < new Date().toISOString()){
+                console.log("Program is not valid anymore... returning");
+                return;
+            }
+
+
+            // Create PersonProgram or update it here
+
+
+            personProgramsStore.load({
+                params:{
+                    personId: TEST_PERSON_ID,
+                    programId: me.programId
+                },
+                callback:function(record){
+                    console.log("recieved personProgramStore load callback", record);
+                    if(!record || record.length === 0){
+                        console.log("recieved no record back - maybe here we know that this persons program doesnt exist yet so add it");
+
+                        me.currentPersonProgram = { // store whole record
+                            personProgramGuid: createGUID(),
+                            personId: TEST_PERSON_ID,
+                            programId: me.programId,
+                            programStatusId: App.ProgramStatuses["In Progress"],
+                            createdById: TEST_PERSON_ID, // TODO - same person is also creating this program? can this be different?
+                            created: new Date().toISOString(),
+                            programStarted: new Date().toISOString(),
+                        };
+
+
+
+
+                        var rec = personProgramsStore.add(me.currentPersonProgram)[0];
+
+                        console.log("setting rec phantom to true", rec);
+
+                        rec.phantom = true;
+
+                        personProgramsStore.sync({
+                            callback:function(addedRecord){
+                                console.log("recieved personPrograsStore sync after adding record", addedRecord);
+
+                            }
+                        });
+
+                    }
+
+
+                    else{
+                        console.log("recieved record");
+                        me.currentPersonProgram = record[0].data;
+                        if(me.currentPersonProgram.attempt >= me.programData.maxAttemptsTrainingMode + me.programData.maxAttemptsScoreMode){
+                            console.log("Cannot attempt any more tries... returning");
+                            return;
+                        }
+
+
+                        // here we can read the records id to use in posting answers
+
+                        console.log("printing person training programid",me.currentPersonProgram.personTrainingProgramId);
+
+
+                        var rec = personProgramsStore.add({
+                            personProgramGuid: me.currentPersonProgram.personTrainingProgramId,
+                            attempt: me.currentPersonProgram.attempt +1, // increase attempt counter
+                            lastChanged: new Date().toISOString(),
+                            changed : true,
+                            programStatusId: App.ProgramStatuses.Repeat, // TODO - does status repeat mean "in progress && tried non -first time"
+                            programStarted: new Date().toISOString(),
+                        })[0];
+                        rec.phantom = true;
+
+                        personProgramsStore.sync({
+                            callback:function(addedRecord){
+                                console.log("recieved personPrograsStore sync after updating record", addedRecord);
+
+                            }
+
+                        });
+                    }
+
+
+
+                }
+
+            });
+
+
+
+
+            // show slide state
+
             me.saveSlideState(me.getCurrentSlide());
             var firstSlide = refs.treeSlides.store.getAt(0);
             refs.treeSlides.setSelection(firstSlide);
@@ -338,22 +418,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             if (firstSlide.data.leaf === false){
                 me.nextSlide();
             }
-
-
-
-
-
-
-
-            // Create PersonProgram or update it here
-
-            var PersonProgramsStore = me.getStore('PersonPrograms');
-
-
-
-
-
-
 
 
         }else{
@@ -367,27 +431,81 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             var totalProgramScore = programScore.totalProgramScore;
 
 
-            // get stores
-            var PersonProgramsStore = me.getStore('PersonPrograms');
-            var personAnswersStore = me.getStore('PersonAnswers');
-
-
-
-            // iterate through questions and submit them to server
+            // iterate through answers and submit them to server
             var data = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
 
-            if(data.questions) {
-                for (var key in data.questions){
-                    console.log("printing question",key);
-                    console.log("todo - post answer here for specific used on program");
-                }
-            }else{
-                console.error("no questions yet exist in localstorage");
+            for (var questionId in data.answers){
+                personAnswersStore.add({
+                    answerGuid: createGUID(), // create new guid here for this answer
+                    personProgramId: me.currentPersonProgram.personTrainingProgramId,
+                    questionId: questionId,
+                    answers: Ext.encode(data.answers[questionId]),
+                    score: questionsScores[questionId]
+                });
+            }
+
+            // GOOD TO KNOW - batchActions is disabled on store, so every request is handled on its own ->batchActions: false,
+            personAnswersStore.sync();
+
+
+            //personProgramsStore.updateTodo(set try counter ++)
+            //personProgramsStore.sync(); // push to server
+
+            if(!me.currentPersonProgram){
+                console.warn("for some reason current person program id is not set - it should be created new if person doesnt have any records yet or it should be recieved from store.");
+                return;
             }
 
 
+            // get score results:
+            var scoreResults;
+
+
+            if(me.currentPersonProgram.attempt < me.programData.maxAttemptsTrainingMode + me.programData.maxAttemptsScoreMode){
+                if(totalProgramScore >= me.programData.passScore){
+                    // we passed
+                    scoreResults = App.ProgramStatuses.Passed;
+                }else{
+                    // we tried non -last time and we failed - status is chagned to discontinued
+                    scoreResults = App.ProgramStatuses.Discontinued;
+                }
+            }else{
+                if(totalProgramScore < me.programData.passScore){
+                    // if we tried last time and we didn't get enough we failed
+                    scoreResults = App.ProgramStatuses.Failed;
+                }else{
+                    // we tried last time and we passed
+                    scoreResults = App.ProgramStatuses.Passed;
+                }
+            }
+
+            var rec = personProgramsStore.add({ // TODO - this is add function but old record is still in there
+                personProgramGuid: me.currentPersonProgram.personTrainingProgramId,
+                lastChanged: new Date().toISOString(),
+                programCompleted: new Date().toISOString(),
+                programStatusId: scoreResults,
+            })[0];
+
+            // setting phantom to true in order to update
+            rec.phantom = true;
+            personProgramsStore.sync({
+                callback:function(addedRecord){
+                    console.log("recieved personPrograsStore sync after updating record", addedRecord);
+                }
+
+            });
+
 
         }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -417,6 +535,42 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             Ext.TaskManager.stop(taskPoll);
 
         }
+
+
+
+
+
+
+
+
+
+
+
+        // Display content
+
+        //refs.panelMenu.setVisible(!preview); // commented so navigation tree is visible even when solving quiz
+        refs.toolbarEdit.setVisible(!preview);
+        refs.toolbarPreview.setVisible(!!preview);
+        refs.panelContent[preview ? 'removeCls' : 'addCls']('edit');
+        refs.panelContent[preview ? 'addCls' : 'removeCls']('preview');
+
+        refs.panelSlide.setMargin(preview ? '10' : '10 10 10 0');
+
+
+        // retarget this slide - this redraws current slide without dragger and sizer
+        var currentSlide = me.getCurrentSlide();
+        refs.treeSlides.setSelection(null);
+        refs.treeSlides.setSelection(currentSlide);
+
+
+
+
+
+
+
+
+
+
     },
 
     getFreePosition: function() {
@@ -447,11 +601,10 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             slides = Ext.clone(Ext.pluck(refs.treeSlides.store.getRange(), 'data')).map(function(node) {
 
 
-                //console.log("printing current state node", node);
 
+
+                console.log("printing current state node", node);
                 return cleanTreeNodeData(node);
-
-
             });
         data = {
                 slides: slides,
@@ -588,6 +741,16 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                             answers_js[SELECTED_VALUE].answer = true;
                             break;
                         case 'check':
+                            // initialize all values to its previous value or "false" if it hasn't been checked yet
+                            for (var i = 0, len = answers_js.length; i < len; i++) {
+
+                                answers_js[i].answer = answers_js[i].answer || false;
+                            }
+
+                            console.log("printing initialized check answers" , answers_js);
+
+                            // toggle the selected value
+
                             answers[SELECTED_VALUE].classList.toggle("selected");
                             answers_js[SELECTED_VALUE].answer = !answers_js[SELECTED_VALUE].answer;
 
@@ -615,9 +778,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     console.log("adding new record of answers to localstorage", recordAnswers);
                     var storageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
 
-                    if(!storageData.answers){
-                        storageData.answers = {};
-                    }
                     storageData.answers[item._opts.questionGuid] = recordAnswers;
                     me.saveState(storageData);
 
@@ -654,6 +814,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             if(!me.previewing){
                 me.deleteComponent(item);
                 me.hideComponentTools(item);
+
             }
         });
 
@@ -769,9 +930,11 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 storageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId],
                 questions = storageData.questions,
                 question = questions[opts.questionGuid];
-
+            if(!question){
+                console.log("No questions exist for this program. Returning...");
+                return;
+            }
             console.log("printing record in insert component", question);
-
 
             var record = question;
             opts.type = record.fieldType;
@@ -974,9 +1137,13 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         component = component || me._selectedComponent;
 
         if(component) {
+
+            console.log("printing delete component", component,me._selectedComponent);
+            console.log("todo - get component id and remove it from localstorage and call questionsStore.delete(id)");
+
             me._selectedComponent.destroy();
             me._selectedComponent = null;
-            me.saveSlideState();
+            me.saveState();
         }
     },
 
@@ -1114,7 +1281,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
                 console.log("adding new record to store:", record);
                 store.add(record);
-                record.phantom = true; // todo - this may be unnecessarry
 
                 // after adding to database add component to view
                 store.sync({
@@ -1440,16 +1606,24 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     },
 
     getScore: function(question, answer, usingNegativeScore) {
+        if(!answer){
+            console.log("user didnt check any options on this question - return");
+            return 0;
+        }
+
+
 
         var answerScore = 0;
         var correctAnswer;
         var usersAnswer = answer;
 
         console.log("printing user answer", usersAnswer);
-        var _question = Ext.decode(question.options || question.lookups); // in datase options are stored in lookups table so we return lookups
+
+        // TODO - why does question have multiple attributes that represent same thing - store them under same name!!
+        var _question = Ext.decode(question.options || question.lookups ||question.answers); // in datase options are stored in lookups table so we return lookups
         var questionNumAnswers = _question.length;
 
-        if (question.multi) {
+        if (question.multi || question.fieldType == "Multi selection") { // Todo - decide which attribute to use!!
             // make a pre-pass counting num_correct_answers
             var numCorrectAnswers = 0;
             _question.forEach(function (option) {
@@ -1460,9 +1634,9 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             });
             // go through all questions in this form
 
-            _question.forEach(function (option) {
-                //usersAnswer = option.answer;
-                correctAnswer = option.correct;
+            for(var i = 0; i < _question.length; i++){
+                usersAnswer = answer[i];
+                correctAnswer = _question[i].correct;
                 if (usersAnswer == correctAnswer) {
                     if (correctAnswer === true) {
                         // if we checked correct answer - add percent of all correct answers to his score
@@ -1482,7 +1656,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                         answerScore -= (1/ questionNumAnswers);
                     }
                 }
-            });
+            }
 
             // append score of this questionary to totalScore
             console.log("user score appended with", answerScore);
@@ -1493,12 +1667,13 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
         } else {
             // evaluate
-            _question.forEach(function (option) {
+            for(var i = 0; i < _question.length; i++){
+                usersAnswer = answer[i];
+                correctAnswer = _question[i].correct;
 
-                //usersAnswer = option.answer;
-                correctAnswer = option.correct;
 
                 if ((correctAnswer === true) && (usersAnswer == correctAnswer)) {
+                    console.log("setting answer score to 1");
                     answerScore = 1;
                 }
                 else {
@@ -1512,7 +1687,9 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                         // else return 0
                     }
                 }
-            });
+
+            }
+
         }
 
         return answerScore;

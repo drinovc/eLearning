@@ -167,7 +167,7 @@
                             "userConfig": {
                                 "itemId": "btnNewSlide",
                                 "layout|flex": null,
-                                "text": "New slide"
+                                "text": "New page"
                             },
                             "configAlternates": {
                                 "layout|flex": "number",
@@ -238,7 +238,7 @@
                                             },
                                             "codeClass": null,
                                             "userConfig": {
-                                                "text": "New slide from template"
+                                                "text": "New page from template"
                                             },
                                             "configAlternates": {
                                                 "text": "string"
@@ -291,7 +291,7 @@
                             "userConfig": {
                                 "itemId": "btnDeleteSlide",
                                 "layout|flex": null,
-                                "text": "Delete slide"
+                                "text": "Delete Page"
                             },
                             "configAlternates": {
                                 "itemId": "string",
@@ -1431,7 +1431,7 @@
                                 "itemId": "btnPrevSlide",
                                 "layout|flex": null,
                                 "minWidth": 120,
-                                "text": "Previous slide"
+                                "text": "Previous Page"
                             },
                             "configAlternates": {
                                 "itemId": "string",
@@ -1480,7 +1480,7 @@
                                 "itemId": "btnNextSlide",
                                 "layout|flex": null,
                                 "minWidth": 120,
-                                "text": "Next slide"
+                                "text": "Next Page"
                             },
                             "configAlternates": {
                                 "itemId": "string",
@@ -1659,7 +1659,7 @@
                     },
                     "codeClass": null,
                     "userConfig": {
-                        "emptyText": "No slides to show.<br>Create new with button <i>New slide</i>.<br><br>Double click on slide name to rename it.",
+                        "emptyText": "No pages to show.<br>Create new with button <i>New page</i>.<br><br>Double click on page name to rename it.",
                         "flex": 1,
                         "hideHeaders": true,
                         "itemId": "treeSlides",
