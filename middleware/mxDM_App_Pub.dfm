@@ -1405,8 +1405,8 @@ object Pub: TPub
         'SET @programId = (SELECT TRAINING_PROGRAM_ID FROM Training_Progr' +
         'ams WHERE GUID = @programGuid) '
       'SELECT'
-      #9'questions.GUID AS '#39'id'#39' -- todo returning guid'
-      #9', questions.TRAINING_PROGRAM_PAGE_ID AS '#39'pageId'#39
+      #9'questions.GUID AS '#39'questionGuid'#39' -- todo returning guid'
+      #9', pages.GUID AS '#39'pageId'#39
       #9', questions.TRAINING_PROGRAM_QUESTION_SEQUENCE AS '#39'sequence'#39
       #9', questions.TRAINING_PROGRAM_QUESTION AS '#39'question'#39
       #9', questions.TRAINING_PROGRAM_QUESTION_FIELD_TYPE AS '#39'fieldType'#39
@@ -1445,8 +1445,10 @@ object Pub: TPub
     InsertQuery.Parameters = <
       item
         Name = 'questionGuid'
-        DataType = ftGuid
-        Size = -1
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 38
         Value = Null
       end
       item
@@ -1491,8 +1493,8 @@ object Pub: TPub
       end>
     InsertQuery.SQL.Strings = (
       
-        'DECLARE @id UNIQUEIDENTIFIER = :questionGuid -- this is question' +
-        ' id'
+        'DECLARE @id NVARCHAR(38) = :questionGuid -- this is question gui' +
+        'd'
       'DECLARE @questionId INT = NULL -- gets set later'
       'DECLARE @pageIdGuid NVARCHAR(38) = :pageId'
       'DECLARE @pageId INT = NULL -- gets set later'
@@ -1520,13 +1522,10 @@ object Pub: TPub
       
         'SET @questionId = (SELECT TRAINING_PROGRAM_QUESTION_ID FROM Trai' +
         'ning_Program_Questions WHERE GUID = @id)'
-      ''
-      
-        '--SET @pageIdGuid = CONCAT('#39'{'#39', CAST(@pageIdGuid AS CHAR(36))'#9', ' +
-        #39'}'#39')'
       
         'SET @pageId = (SELECT TRAINING_PROGRAM_PAGE_ID FROM Training_Pro' +
         'gram_Pages WHERE GUID = @pageIdGuid) '
+      ''
       ''
       'IF @questionId IS NULL'
       'BEGIN'
@@ -1627,8 +1626,8 @@ object Pub: TPub
       'END'
       ''
       'SELECT'
-      #9'GUID AS '#39'id'#39' -- todo returning guid'
-      #9', TRAINING_PROGRAM_PAGE_ID AS '#39'pageId'#39
+      #9'GUID AS '#39'questionGuid'#39' -- todo returning guid'
+      #9', @pageIdGuid AS '#39'pageId'#39' -- todo returning page id guid'
       #9', TRAINING_PROGRAM_QUESTION_SEQUENCE AS '#39'sequence'#39
       #9', TRAINING_PROGRAM_QUESTION AS '#39'question'#39
       #9', TRAINING_PROGRAM_QUESTION_FIELD_TYPE AS '#39'fieldType'#39
@@ -1652,7 +1651,7 @@ object Pub: TPub
     DeleteQuery.Connection = ADOConnection1
     DeleteQuery.Parameters = <
       item
-        Name = 'id'
+        Name = 'questionGuid'
         DataType = ftGuid
         NumericScale = 255
         Precision = 255
@@ -1662,7 +1661,7 @@ object Pub: TPub
     DeleteQuery.SQL.Strings = (
       'UPDATE Training_Program_Questions'
       'SET REC_DELETED = 1'
-      'WHERE GUID = :id')
+      'WHERE GUID = :questionGuid')
     UpdateQuery.Connection = ADOConnection1
     UpdateQuery.Parameters = <>
     Left = 216

@@ -96,7 +96,7 @@ function cleanTreeNodeData(data) {
                 delete el.cls;
                 delete el.style;
                 delete el.multi;
-                console.log("called delete for this ele");
+  
 
             }
         }

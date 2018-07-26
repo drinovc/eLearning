@@ -84,7 +84,7 @@ Ext.define('eLearning.view.EditSlides', {
                                         handler: function(item, e) {
                                             this.up('#editSlides').getController().newSlide();
                                         },
-                                        text: 'New blank slide'
+                                        text: 'New blank page'
                                     },
                                     {
                                         xtype: 'menuitem',

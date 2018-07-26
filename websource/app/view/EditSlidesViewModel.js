@@ -106,6 +106,7 @@ Ext.define('eLearning.view.EditSlidesViewModel', {
             model: 'eLearning.model.Question',
             proxy: {
                 type: 'ajax',
+                batchActions: false,
                 api: {
                     create: '/Pub/Questions',
                     read: '/Pub/Questions',

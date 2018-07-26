@@ -195,7 +195,7 @@
                                             },
                                             "codeClass": null,
                                             "userConfig": {
-                                                "text": "New blank slide"
+                                                "text": "New blank page"
                                             },
                                             "configAlternates": {
                                                 "text": "string"
@@ -1732,7 +1732,13 @@
                                                     "var me = this,",
                                                     "    refs = me.getReferences();",
                                                     "",
+                                                    "var treeStoreSlides = me.getStore('TreeStoreSlides');",
                                                     "",
+                                                    "// we need to mark every slide as dirty, as we cannot know how the selection was changed ",
+                                                    "for (var i = 0; i < treeStoreSlides.data.items.length; i++){",
+                                                    "    var rec = treeStoreSlides.data.items[i];",
+                                                    "    rec.dirty = true;",
+                                                    "}",
                                                     "me.saveState();",
                                                     "refs.treeSlides.setSelection(me.getCurrentSlide());",
                                                     ""
