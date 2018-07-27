@@ -1375,7 +1375,7 @@ object Pub: TPub
         Value = Null
       end
       item
-        Name = 'questionGuid'
+        Name = 'id'
         DataType = ftString
         NumericScale = 255
         Precision = 255
@@ -1392,7 +1392,7 @@ object Pub: TPub
       end>
     SQL.Strings = (
       'DECLARE @pageIdGuid NVARCHAR(38) = :pageId'
-      'DECLARE @questionGuid NVARCHAR(38) = :questionGuid '
+      'DECLARE @questionGuid NVARCHAR(38) = :id'
       'DECLARE @pageId INT = NULL -- gets set later'
       'DECLARE @programGuid NVARCHAR(38) = :programId'
       'DECLARE @programId INT = NULL -- gets set later'
@@ -1405,7 +1405,7 @@ object Pub: TPub
         'SET @programId = (SELECT TRAINING_PROGRAM_ID FROM Training_Progr' +
         'ams WHERE GUID = @programGuid) '
       'SELECT'
-      #9'questions.GUID AS '#39'questionGuid'#39' -- todo returning guid'
+      #9'questions.GUID AS '#39'id'#39' -- todo returning guid'
       #9', pages.GUID AS '#39'pageId'#39
       #9', questions.TRAINING_PROGRAM_QUESTION_SEQUENCE AS '#39'sequence'#39
       #9', questions.TRAINING_PROGRAM_QUESTION AS '#39'question'#39
@@ -1440,11 +1440,12 @@ object Pub: TPub
       'AND (@questionGuid IS NULL OR (questions.GUID = @questionGuid))'
       
         'AND (@programId IS NULL OR (pages.TRAINING_PROGRAM_ID = @program' +
-        'Id))')
+        'Id))'
+      '')
     InsertQuery.Connection = ADOConnection1
     InsertQuery.Parameters = <
       item
-        Name = 'questionGuid'
+        Name = 'id'
         DataType = ftString
         NumericScale = 255
         Precision = 255
@@ -1492,9 +1493,7 @@ object Pub: TPub
         Value = Null
       end>
     InsertQuery.SQL.Strings = (
-      
-        'DECLARE @id NVARCHAR(38) = :questionGuid -- this is question gui' +
-        'd'
+      'DECLARE @id NVARCHAR(38) = :id -- this is question guid'
       'DECLARE @questionId INT = NULL -- gets set later'
       'DECLARE @pageIdGuid NVARCHAR(38) = :pageId'
       'DECLARE @pageId INT = NULL -- gets set later'
@@ -1626,7 +1625,7 @@ object Pub: TPub
       'END'
       ''
       'SELECT'
-      #9'GUID AS '#39'questionGuid'#39' -- todo returning guid'
+      #9'GUID AS '#39'id'#39' -- todo returning guid'
       #9', @pageIdGuid AS '#39'pageId'#39' -- todo returning page id guid'
       #9', TRAINING_PROGRAM_QUESTION_SEQUENCE AS '#39'sequence'#39
       #9', TRAINING_PROGRAM_QUESTION AS '#39'question'#39
@@ -1651,17 +1650,17 @@ object Pub: TPub
     DeleteQuery.Connection = ADOConnection1
     DeleteQuery.Parameters = <
       item
-        Name = 'questionGuid'
-        DataType = ftGuid
+        Name = 'id'
+        DataType = ftString
         NumericScale = 255
         Precision = 255
-        Size = 16
+        Size = 38
         Value = Null
       end>
     DeleteQuery.SQL.Strings = (
       'UPDATE Training_Program_Questions'
       'SET REC_DELETED = 1'
-      'WHERE GUID = :questionGuid')
+      'WHERE GUID = :id')
     UpdateQuery.Connection = ADOConnection1
     UpdateQuery.Parameters = <>
     Left = 216
@@ -1671,6 +1670,14 @@ object Pub: TPub
     Connection = ADOConnection1
     Parameters = <
       item
+        Name = 'programId'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 38
+        Value = Null
+      end
+      item
         Name = 'questionGuid'
         DataType = ftString
         NumericScale = 255
@@ -1679,14 +1686,72 @@ object Pub: TPub
         Value = Null
       end>
     SQL.Strings = (
-      'DECLARE @questionGuid NVARCHAR(38) = :questionGuid '
-      'DECLARE @questionId INT = NULL -- gets set later'
-      ''
       
-        'SET @questionId = (SELECT TRAINING_PROGRAM_QUESTION_ID FROM Trai' +
-        'ning_Program_Questions WHERE GUID = @questionGuid) -- get actual' +
-        'l id of page this question belongs to'
+        '-- this query is retrieving latest answers for this program if p' +
+        'rogramId is recieved,'
+      
+        '-- othewrise it is retrieving all answers for this question if q' +
+        'uestionGuid is set'
       ''
+      'DECLARE @programGuid NVARCHAR(38) = :programId'
+      'DECLARE @programId INT = NULL -- gets set later '
+      'DECLARE @questionGuid NVARCHAR(38) = :questionGuid'
+      'DECLARE @questionId INT = NULL -- gets set later '
+      
+        'SET @questionId = (SELECT training_program_question_id FROM trai' +
+        'ning_program_questions WHERE  GUID = @questionGuid) '
+      
+        'SET @programId = (SELECT training_program_id FROM training_progr' +
+        'ams WHERE GUID = @programGuid) '
+      ''
+      'IF @questionId IS NULL'
+      'BEGIN'
+      'SELECT'
+      #9'answers.GUID '#39'questionGuid'#39' -- todo returning guid'
+      #9', answers.PERSON_TRAINING_PROGRAM_ID AS '#39'programId'#39
+      #9', answers.TRAINING_PROGRAM_QUESTION_ID AS '#39'questionId'#39
+      #9', answers.TRAINING_PROGRAM_ANSWER AS '#39'answer'#39
+      #9', answers.TRAINING_PROGRAM_ANSWER_SCORE AS '#39'score'#39
+      #9', answers.CREATED_AT_ID AS '#39'createdAtId'#39
+      #9', answers.CREATED_BY_ID AS '#39'createdById'#39
+      #9', answers.CREATED AS '#39'created'#39
+      #9', answers.LAST_CHANGED AS '#39'lastChanged'#39
+      #9', answers.CHANGED AS '#39'changed'#39
+      #9', answers.LAST_CHANGE_LOG_ID AS '#39'changeLogId'#39
+      ''
+      'FROM   person_training_program_answers AS answers '
+      '       JOIN person_training_programs AS personPrograms '
+      
+        '         ON( personPrograms.person_training_program_id = answers' +
+        '.person_training_program_id ) '
+      '       JOIN (SELECT Max(answers.last_changed) AS '#39'lastChanged'#39' '
+      #9#9#9#9', answers.TRAINING_PROGRAM_QUESTION_ID AS '#39'questionId'#39
+      '             FROM   person_training_program_answers AS answers '
+      
+        '                    JOIN person_training_programs AS personProgr' +
+        'ams '
+      
+        '                      ON( personPrograms.person_training_program' +
+        '_id = answers.person_training_program_id ) '
+      
+        '             WHERE  ( @questionId IS NULL  OR ( answers.training' +
+        '_program_question_id = @questionId )  )  -- get answer for speci' +
+        'fic question '
+      
+        '                    AND ( @programId IS NULL  OR ( personProgram' +
+        's.training_program_id = @programId ) )   -- get all answers for ' +
+        'personProgram '
+      '             GROUP  BY answers.person_training_program_id, '
+      
+        '                       answers.training_program_question_id) AS ' +
+        '"LatestAnswers" '
+      
+        '         ON( "LatestAnswers".questionId = answers.training_progr' +
+        'am_question_id ) '
+      'WHERE  "LatestAnswers".lastchanged = "answers".last_changed '
+      'END'
+      'ELSE'
+      'BEGIN'
       'SELECT'
       #9'  PERSON_TRAINING_PROGRAM_ANSWER_ID AS '#39'id'#39
       #9', PERSON_TRAINING_PROGRAM_ID AS '#39'programId'#39
@@ -1701,7 +1766,10 @@ object Pub: TPub
       #9', LAST_CHANGE_LOG_ID AS '#39'changeLogId'#39
       ''
       'FROM Person_Training_Program_Answers AS answers'
-      'WHERE answers.TRAINING_PROGRAM_QUESTION_ID = @questionId')
+      'WHERE answers.TRAINING_PROGRAM_QUESTION_ID = @questionId'
+      ''
+      'END'
+      '')
     InsertQuery.Connection = ADOConnection1
     InsertQuery.Parameters = <
       item
@@ -1821,8 +1889,8 @@ object Pub: TPub
         #9#9#9'-- PERSON_TRAINING_PROGRAM_ANSWER_ID = ISNULL(@answerId, PERS' +
         'ON_TRAINING_PROGRAM_ANSWER_ID)'
       
-        #9#9'  ,  PERSON_TRAINING_PROGRAM_ID = ISNULL(@programId, PERSON_TR' +
-        'AINING_PROGRAM_ID)'
+        #9#9'  ,  PERSON_TRAINING_PROGRAM_ID = ISNULL(@personProgramid, PER' +
+        'SON_TRAINING_PROGRAM_ID)'
       
         #9#9'  , TRAINING_PROGRAM_QUESTION_ID = ISNULL(@questionId, TRAININ' +
         'G_PROGRAM_QUESTION_ID)'

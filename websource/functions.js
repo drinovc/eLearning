@@ -86,9 +86,8 @@ function cleanTreeNodeData(data) {
     try {
         var content = Ext.decode(data.content);
 
-
-        for(var i = 0; i < content.components.length; i++){
-            var el = content.components[i];
+        for (var key in content.components){
+            var el = content.components[key];
             if(el.type == "Single selection" || el.type == "Multi selection" ||el.type == "selection"){
                 delete el.options;
                 delete el.html;
@@ -125,3 +124,6 @@ function sumDict(obj) {
   }
   return sum;
 }
+
+// making shortcut for console.log()
+var print = console.log.bind(console);

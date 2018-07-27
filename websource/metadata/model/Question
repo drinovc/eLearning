@@ -22,7 +22,7 @@
             },
             "codeClass": null,
             "userConfig": {
-                "name": "questionGuid"
+                "name": "id"
             },
             "configAlternates": {
                 "name": "string"

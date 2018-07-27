@@ -18,6 +18,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     alias: 'controller.editslides',
 
     load: function(opts) {
+
         var me = this,
             refs = me.getReferences();
 
@@ -49,7 +50,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         var me = this,
             localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId],
             treeStoreSlides = me.getStore('TreeStoreSlides'),
-            questionsStoreSlides = me.getStore('QuestionsStoreSlides');
+            questionsStoreSlides = me.getStore('QuestionsStoreSlides'),
+            personAnswersStore = me.getStore('PersonAnswers');
 
         // init subfolders it they are not yet
         if(!localStorageData.slides){localStorageData.slides = {};}
@@ -57,31 +59,34 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         if(!localStorageData.answers){localStorageData.answers = {};}
         me.saveState(localStorageData);
 
-
-
         if (navigator.onLine){
-            var syncQuestionsCallback = function(){
-                // after loading questions, display slides and set initial slide
-
+            var syncAnswersCallback = function(){
                 // set initial data
-                console.log("setting initial slide");
+                console.log("setting initial slide - draw content");
                 me.setInitialSlide();
+            };
 
+
+            var syncQuestionsCallback = function(){
+                var params = {programId: me.programId};
+                me.initialDataSync('QuestionsStoreSlides', 'questions', params, syncAnswersCallback, 'id');
             };
             var syncStateCallback = function(){
-                // after loading slides, load questions
+                // Updating server store:
+                me.updateServerStore();
 
-                me.initialQuestionsSync(syncQuestionsCallback);
+                // after loading slides, load questions
+                var params = {programId: me.programId};
+                me.initialDataSync('PersonAnswers', 'answers', params, syncQuestionsCallback, 'id');
+
             };
             // number 1
 
             if(localStorageData.pageSetup){ // TODO retrieve it later from database
                 me._pageSetup = localStorageData.pageSetup;
             }
-
-            me.syncState(syncStateCallback);
-
-
+            var params = {programId: me.programId};
+            me.initialDataSync('TreeStoreSlides', 'slides', params, syncStateCallback, 'id');
         }
 
         else{
@@ -92,7 +97,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
             treeStoreSlides.setData(localStorageData.slides);
             questionsStoreSlides.setData(localStorageData.questions);
-
+            personAnswersStore.setData(localStorageData.answers);
             if(localStorageData.pageSetup){
                  me._pageSetup = localStorageData.pageSetup;
             }
@@ -175,10 +180,13 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
             var nextSlideIdx = store.indexOf(slide) - 1,
                 nextSlide = store.getAt(nextSlideIdx >= 0 ? nextSlideIdx : 1),
-                components = (Ext.decode(slide.get('content') || '{}').components);
+                components = (Ext.decode(slide.get('content') || '{}').components),
+                childNodes = slide.childNodes;
 
-            if(components && components.length > 0) {
-                Ext.Msg.confirm('Delete slide', 'Are you sure?', function(btn) {
+            if((components && components.length > 0) || (childNodes && childNodes.length > 0)) {
+                Ext.Msg.confirm( 'Delete slide', 'Are you sure?' +
+                                ((childNodes && childNodes.length > 0)?
+                                 " You will delete whole subtree!": ""), function(btn) {
                     if(btn == 'yes') {
 
                         slide.parentNode.removeChild(slide);
@@ -441,8 +449,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         }else{
             // we / timer toggled preview off - validate forms and submit
 
-
-
             // get scores for each question and total
             var programScore = me.evaluate();
             var questionsScores = programScore.questions;
@@ -453,16 +459,20 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             var data = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
 
             for (var questionId in data.answers){
-                personAnswersStore.add({
+                var rec = personAnswersStore.add({
                     answerGuid: createGUID(), // create new guid here for this answer
                     personProgramId: me.currentPersonProgram.personTrainingProgramId,
                     questionId: questionId,
                     answers: Ext.encode(data.answers[questionId]),
                     score: questionsScores[questionId]
-                });
+                })[0];
+                rec.phantom = true;
             }
 
             // GOOD TO KNOW - batchActions is disabled on store, so every request is handled on its own ->batchActions: false,
+
+
+
             personAnswersStore.sync();
 
 
@@ -638,7 +648,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
             var questionsDict = {};
             for (var i = 0; i < questions.length; i++){
-                questionsDict[questions[i].questionGuid] = questions[i];
+                questionsDict[questions[i].id] = questions[i];
 
             }
 
@@ -655,7 +665,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         var me = this,
             refs = me.getReferences(),
             content = {
-                components: []
+                components: {}
             };
 
         slide = slide || me.getCurrentSlide();
@@ -669,16 +679,16 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     // if its question, append only guid of this question to content components
                     var _opts = Ext.clone(component._opts);
 
-                    var _optsNew = {"type": _opts.type, "questionGuid": _opts.questionGuid };
+                    var _optsNew = {"type": _opts.type, "id": _opts.id };
                     //console.log("printing opts", _opts);
                     //console.log("printing new opts", _optsNew);
 
-                    content.components.push(_optsNew);
+                    content.components[_opts.id]=_optsNew;
 
                     // uncomment line below to append whole question content to slide instead of only id
                     //content.components.push(component._opts); // TODO TEMP
                 }else{
-                     content.components.push(component._opts);
+                     content.components[component._opts.id] = component._opts;
                 }
                 //console.log("saveSlideState  printing content.componentss.push(comonent._opts)",content.components );
 
@@ -686,6 +696,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             });
 
             slide.set('content', Ext.encode(content));
+            //slide.set('content', content);
             me.saveState();
         }
     },
@@ -701,12 +712,15 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
             console.log("loadSlideState - printing slide", slide);
             var content = Ext.decode(slide.get('content') || '{}');
-
-            Ext.each(content.components, function(component) {
+            for (var key in content.components){
+                var component = content.components[key];
                 this.insertComponent(component);
-            }, this);
-
-            me._selectedComponent = null;
+            //    console.log("printing key", key);
+            }
+            //Ext.each(content.components, function(component, index) {
+            //    this.insertComponent(component, index);
+            //}, this);
+            //me._selectedComponent = null;
         }
     },
 
@@ -804,18 +818,17 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
                     console.log("Todo - get question id here and call post request to store on table TrainingProgramsAnswers");
 
-                     var recordAnswers = {};
+                     var recordAnswers = {answer:{}};
                     // create record
                     for (var i = 0, len = answers_js.length; i < len; i++) {
-                        recordAnswers[i] = answers_js[i].answer;
+                        recordAnswers.answer[i] = answers_js[i].answer;
                     }
-
-                    console.log("printing record in add component listeners", recordAnswers);
+                    recordAnswers.answer = Ext.encode(recordAnswers.answer);
 
                     console.log("adding new record of answers to localstorage", recordAnswers);
                     var storageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
 
-                    storageData.answers[item._opts.questionGuid] = recordAnswers;
+                    storageData.answers[item._opts.id] = recordAnswers;
                     me.saveState(storageData);
 
 
@@ -893,6 +906,10 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             style: null
         });
 
+
+
+
+
         if (!opts.type) {
             Ext.Msg.alert('Error', 'No component type');
         }
@@ -906,11 +923,37 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             pos = me.getFreePosition(),
             snap = me._pageSetup.snap,
             parentEl = refs.panelContent.el.down('#html-slide'),
-            cmp = document.createElement('div');
+            cmp = document.createElement('div'),
+            currentSlide = me.getCurrentSlide();
 
-        if (!me.getCurrentSlide()) {
+        if (!currentSlide) {
             me.newSlide();
         }
+
+
+        // setting size from slide content
+        /*if(index > -1){
+            var _localStorageSlide = Ext.decode(localStorage.mxp_elearning)[me.programId].slides[currentSlide.id];
+
+            var slideComponent = Ext.decode(_localStorageSlide.content).components[index];
+
+            opts.height = slideComponent.height;
+            opts.width = slideComponent.width;
+            opts.x = slideComponent.x;
+            opts.y = slideComponent.y;
+
+            pos = {
+                height: opts.height,
+                width: opts.width ,
+                x: opts.x,
+                y: opts.y
+            };
+
+        }*/
+
+
+
+
 
         // set size
         // if(opts.type == 'image' && opts.src) {
@@ -953,19 +996,40 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         if ((opts.type == me.cmpTypes.SELECTION && opts.options) || opts.type == 'Single selection' ||opts.type == "Multi selection") {
 
             opts.cls = [me.cmpTypes.SELECTION];
-            cmp.height = 100; // TODO temp component height because we cannot store height in database
-            cmp.style.height = cmp.height + 'px';// TODO - in future we might need to assign height dynamically from reading html + css height - maybe use "offsetHeight"
+            //cmp.height = 100; // TODO temp component height because we cannot store height in database
 
 
 
+            /*
 
+            console.log("width, printing slide", currentSlide);
+            // iterate through this slides components and search for this one, then read bounding box data from it
+            var slideComponents = Ext.decode(currentSlide.data.content).components;
+            for (var i = 0; i < slideComponents.length; i++){
+                var slideComponent = slideComponents[i];
+                if(slideComponent.id == opts.id){
+                    cmp.height = opts.height = slideComponent.height;
+                    cmp.width = opts.width = slideComponent.width;
+                    cmp.x = opts.x = slideComponent.x;
+                    cmp.y = opts.y = slideComponent.y;
+                    break;
+                }
+            }
+
+
+            cmp.style.height = cmp.height + 'px';
+            cmp.style.width = cmp.width + 'px';
+            cmp.style.left = cmp.x + 'px';
+            cmp.style.top = cmp.y + 'px';
+
+        */
 
 
 
             // insert selection has been called with specific id, so we must retrieve it from database end spawn it here
             var storageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId],
                 questions = storageData.questions,
-                question = questions[opts.questionGuid];
+                question = questions[opts.id];
             if(!question){
                 console.log("No questions exist for this program. Returning...");
                 return;
@@ -974,13 +1038,14 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
             var record = question;
             opts.type = record.fieldType;
-            opts.options = Ext.decode(record.lookups) || Ext.decode(record.answers);
+            // TODO - FIx this line below because its inefficient -
+            opts.options = Ext.decode(record.lookups) || Ext.decode(record.answers.answer) || Ext.decode(record.answers);
             html = record.question;
             // todo we dont store in database if question is multi answer or not so in editSelection this text is rendered
             opts.multi = opts.type == "Multi selection"; // checks against string if its multi selection
             opts.html = html;
             opts.cls = [me.cmpTypes.SELECTION];
-            opts.id = opts.questionGuid;
+            opts.id = opts.id;
 
 
 
@@ -1003,9 +1068,10 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
                 // new setting answer selected from localstorage
 
-                if(storageData && storageData.answers && storageData.answers[opts.questionGuid] !== undefined){
+                if(storageData && storageData.answers && storageData.answers[opts.id] !== undefined){
+                    var answers = Ext.decode(storageData.answers[opts.id].answer);
                     console.log("answers for this question are stored in localstorage");
-                    if(storageData.answers[opts.questionGuid][index] === true){
+                    if(answers[index] === true){
                         cls.push('selected');
                     }
 
@@ -1083,24 +1149,55 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 
                         console.warn("changing attribute of component and saving it to server - TODO");
-                        var questionGuid = component.config.element._opts.questionGuid;
+                        var id = component.config.element._opts.id;
                         var currentSlide = me.getCurrentSlide();
+
+
+
+
+
+                        // THIS FUNCTION NOW WORKS FOR ALL - IMAGES, AUDIO, SELECTIONS, BECAUSE EVERYONE HAS ITS OWN ID
+
+
+
+
+                        // set new info to this new altered component
                         var alteredContent = Ext.decode(currentSlide.data.content);
-                        for(var i = 0; i < alteredContent.components.length; i++){
-                            if(alteredContent.components[i].questionGuid == questionGuid){
-                                alteredContent.components[i].width = 100;
+                        for (var key in alteredContent.components){
+                            if(alteredContent.components[key].id == id){
+                                alteredContent.components[key].width = 100;
                             }
                         }
 
+
+                        // change localstore
                         var slides = Ext.decode(localStorage.mxp_elearning)[me.programId].slides;
                         slides[currentSlide.id].content = Ext.encode(alteredContent);
-                        // var localStorageData = Ext.decode(localStorage.mxp_elearning)['{01A26F88-5649-4693-9227-28E8E2F7A963}'];
-                        // for (var key in slides) {
-                        //     localStorageData[me.programId][key] = slides[key];
-                        // }
-                        // localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
 
                         me.saveState({slides:slides});
+
+
+
+
+                        // change store and sync
+                        var storeItems = me.getStore('TreeStoreSlides').data.items;
+                        for(var i = 0; i < storeItems.length; i++){
+                            if(storeItems[i].id == currentSlide.id){
+                                print("setting new content");
+                                storeItems[i].data.content = Ext.encode(alteredContent);
+                                storeItems[i].phantom = true;
+                                break;
+                            }
+                        }
+                        me.getStore('TreeStoreSlides').sync();
+
+
+                        //me.getStore('TreeStoreSlides').data.items[0] // temp fix to change content in store
+
+
+                        // me.updateServerStore(); // this doesnt yet work to retrieve data from localstorage back to store
+
+
 
 
 
@@ -1194,6 +1291,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         delete opts.x;
         delete opts.y;
 
+        // rename its id
+        opts.id = createGUID();
         var cmp = this.insertComponent(opts);
 
         cmp.fireEvent('click');
@@ -1214,15 +1313,15 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
             if(sync){ // we might not always want to sync, but only delete this component in order to redraw it
                 console.log("printing question store", questionStore);
-                var rec = questionStore.findRecord('questionGuid', component.el._opts.questionGuid);
+                var rec = questionStore.findRecord('id', component.el._opts.id);
                 console.log("printing record", rec);
                 questionStore.remove(rec);
                 questionStore.sync();
 
 
                 // deleting by find
-                console.log("finding in store", questionStore.find('questionGuid',  component.el._opts.questionGuid));
-                questionStore.removeAt(questionStore.find('questionGuid',  component.el._opts.questionGuid));
+                console.log("finding in store", questionStore.find('id',  component.el._opts.id));
+                questionStore.removeAt(questionStore.find('id',  component.el._opts.id));
                 questionStore.sync();
 
 
@@ -1239,7 +1338,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                     rec.phantom = false;
 
 
-                    if(rec.questionGuid == component.el._opts.questionGuid){
+                    if(rec.id == component.el._opts.id){
                         rec.phantom = true;
                     }
 
@@ -1264,10 +1363,13 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     insertTitle: function(value) {
         var me = this,
             cmp = me.insertComponent({
+
+                id: createGUID(),
                 type: me.cmpTypes.TITLE,
                 cls: 'title',
                 html: value || 'Title',
                 height: 50
+
             });
          me.saveSlideState();
 
@@ -1277,10 +1379,12 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     insertText: function(value) {
         var me = this,
             cmp = me.insertComponent({
+                id: createGUID(),
                 type: me.cmpTypes.TEXT,
                 cls: 'text',
                 html: value || 'Text',
                 height: 425
+
             });
          me.saveSlideState();
 
@@ -1290,6 +1394,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     insertImage: function() {
         var me = this,
             cmp = me.insertComponent({
+                id: createGUID(),
                 type: me.cmpTypes.IMAGE,
                 cls: 'image',
                 html: '',
@@ -1373,7 +1478,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 
                 var record = {
-                    questionGuid : componentGuid,
+                    id : componentGuid,
                     pageId: pageGuid,
                     question: text,
                     answers:Ext.encode(answers),
@@ -1395,7 +1500,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 
                 console.log("adding new record to store:", record);
-                questionsStore.add(record);
+                var rec = questionsStore.add(record)[0];
+                rec.phantom = true; // phantom has to be set to true because main property in Question model is id!!!
 
                 // after adding to database add component to view
                 questionsStore.sync({
@@ -1408,7 +1514,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                             me.deleteComponent(component, false);
                             state.html = text;
                             state.options = answers;
-                            state.questionGuid =  componentGuid;
+                            state.id =  componentGuid;
                             component = me.insertComponent(state);
 
                             console.log("condition went into if");
@@ -1419,13 +1525,15 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                             console.log("triggered inserting component selection");
 
                             console.log("printing current selection", me.getCurrentSlide());
+
+
                             component = me.insertComponent({
                                 type: me.cmpTypes.SELECTION,
-                                cls: 'selection',
-                                html: text,
-                                options: answers,
-                                multi: multi,
-                                questionGuid: componentGuid
+                                    cls: 'selection',
+                                    html: text,
+                                    options: answers,
+                                    multi: multi,
+                                    id: componentGuid
                             });
                             console.log("condition went into else");
 
@@ -1457,189 +1565,11 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         return Math.ceil(value / snap) * snap;
     },
 
-    syncState: function(callback) {
-        // this function is used to sync localstorage and database storage.
-        // All data remains in localstorage at all times, but if user is online, content is synced with database
-
-
-        // save current state to localstorage
-
-        // if online
-        // get all data from server and add it to store
-        // get all data from localstorage and add it to store
-        // sync store
-        // set all this data to localstorage
-
-        // if offline
-        // current state is saved to localstorage, so do nothing
-
-
-
-        // save state to offline storage - switch to indexdb at some point?
-
-
-
-
-
-        if (!navigator.onLine){
-            console.log("You are offline - cannot sync with server");
-            if(callback){
-                callback();
-            }
-            return;
-
-        }
-
-        var me = this,
-            localStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),
-
-            treeStoreSlides = me.getStore('TreeStoreSlides');
-
-        console.log("called syncState - printing program id for these slides", me.programId);
-        treeStoreSlides.load({
-            params: {programId: me.programId},
-            callback: function(records, operation, success){
-
-                console.log("printing tree store slides data", treeStoreSlides.data);
-                if(treeStoreSlides.data.length === 0){
-                    // no return data, check if there are any locally saved slides
-                    console.log("returned no slides from server");
-
-
-                    if(localStorageData && localStorageData[me.programId] && localStorageData[me.programId].slides){
-                        console.log("we have locally saved slides, syncing with server");
-                        me.updateServerStore();
-                    }
-                    if(callback){
-                        callback();
-                    }
-                    return;
-                }
-
-
-
-                // here we have valid return data from server, so we can update localstorage and sync localstorage back with server
-
-
-                treeStoreSlides.data.items.forEach((o, i, a) => {
-                    if (!a[i].data.children){
-                        a[i].data.children = [];
-                    }
-                });
-
-
-                if(!localStorageData || !localStorageData[me.programId]){
-                    console.log("no data yet in localstorage", treeStoreSlides.data, treeStoreSlides);
-                    localStorageData = me.getCurrentState();
-                    treeStoreSlides.data.items.forEach(function(entry){
-                        localStorageData.slides.push(entry.data);
-                    });
-                    me.saveState(localStorageData);
-                    if(callback){
-                        callback();
-                    }
-                    return;
-                }
-
-                // data for this programId exists - reassign it
-                localStorageData = localStorageData[me.programId];
-
-
-                if(!localStorageData.slides){
-                    console.log("no slides yet in localstorage");
-                    // localstorage slides are empty - set recieved data from server to localstorage - even if it is empty
-
-
-
-                    //localStorageData.slides = Ext.encode(treeStoreSlides.data);
-
-                    var slidesFromStore = {};
-                    for (var i = 0; i < treeStoreSlides.data.length; i++){
-                        var entry = treeStoreSlides.data.items[i].data;
-                        slidesFromStore[entry.id] = entry;
-                        console.log(entry);
-                    }
-
-                    // add slides from store to localstorage[programId] under slides key
-                    localStorageData.slides = slidesFromStore;
-
-
-                    me.saveState(localStorageData);
-                    if(callback){
-                        callback();
-                    }
-                    return;
-                }
-
-                // here we have valid localstorage and may need syncing
-                //localStorageData.slides = Array.from(new Set(localStorageData.slides));
-
-
-                var localStorageDataValues = new Array(); // creating extra array to use functions like .some on it
-                for (var key in localStorageData.slides){
-
-
-                    if (!localStorageData.slides[key].children){
-                        localStorageData.slides[key].children = [];
-                    }
-                    localStorageDataValues.push(localStorageData.slides[key]);
-                }
-
-
-
-
-                // Updating localstorage:
-                for (var i =0; i < treeStoreSlides.data.items.length; i++){
-                    var slide = treeStoreSlides.data.items[i];
-                    console.log("printing each slide data",slide.data);
-                    // check if item is not yet in localstorage
-                    //console.log("printing item id", localStorageData.slides, slide);
-                    if(localStorageDataValues.some(item => item.id === slide.data.id)){
-
-                    }else{
-                        console.log("adding new slide to localstorage");
-                        localStorageData.slides[slide.data.id] = slide.data;
-                        localStorageDataValues.push(slide.data);
-                    }
-                }
-                // setting modified data back to localstorage
-                me.saveState(localStorageData);
-
-                // Updating server store:
-                me.updateServerStore();
-
-
-                if(callback){
-                    callback();
-                }
-
-
-            }
-        });
-
-
-
-
-        return;
-
-        // Todo - Custom indexedDb database
-        var proxy = Ext.create('Lib.data.proxy.IndexedDB',{
-            model: 'Program',
-            reader: 'json'
-        });
-        //proxy.setModel(component.getStore().getModel());
-        component.getStore().setProxy(proxy);
-        component.getStore().load();
-
-
-
-
-    },
-
     insertAudio: function() {
 
         var me = this,
             cmp = me.insertComponent({
+                id: createGUID(),
                 type: me.cmpTypes.AUDIO,
                 cls: 'audio',
                 html: '<audio controls>  <source src="resources/audio/horse.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio>',
@@ -1654,6 +1584,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
     insertVideo: function() {
         var me = this,
             cmp = me.insertComponent({
+                id: createGUID(),
                 type: me.cmpTypes.VIDEO,
                 cls: 'video',
                 html: '<video width="320" height="240" controls>  <source src="resources/videos/mov.mp4" type="video/mp4"> Your browser does not support the video tag.</video>',
@@ -1706,7 +1637,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         for (var key in data.questions){
             var question = data.questions[key];
             var answer = data.answers[question.id];
-            programScore.questions[question.questionGuid] = me.getScore(question, answer, usingNegativeScore);
+            programScore.questions[question.id] = me.getScore(question, answer, usingNegativeScore);
             console.log("printing new user score", programScore);
         }
 
@@ -1726,7 +1657,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
             return 0;
         }
 
-
+        answer = Ext.decode(answer.answer);
 
         var answerScore = 0;
         var correctAnswer;
@@ -1999,10 +1930,9 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         refs.panelContent.setHeight(me._pageSetup.height);
     },
 
-    initialQuestionsSync: function(callback) {
+    initialDataSync: function(storeName, localStorageAttribute, LoadParams, callback, dataId) {
 
-
-        console.log("called initial questions sync");
+        console.log("called initial " + localStorageAttribute + " sync");
         if (!navigator.onLine){
             console.log("You are offline - cannot sync with server");
             if(callback){
@@ -2014,21 +1944,22 @@ Ext.define('eLearning.view.EditSlidesViewController', {
         var me = this,
             localStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),
 
-            questionsStoreSlides = me.getStore('QuestionsStoreSlides');
+            initialDataStore = me.getStore(storeName);
 
-        console.log("called syncState - printing program id for these questions", me.programId);
-        questionsStoreSlides.load({
-            params: {programId: me.programId},
+        console.log("called syncState - printing program id for these localStorageAttribute", me.programId);
+        initialDataStore.load({
+            params: LoadParams,
+
             callback: function(records, operation, success){
 
-                console.log("printing tree store questions data", questionsStoreSlides.data);
-                if(questionsStoreSlides.data.length === 0){
-                    // no return data, check if there are any locally saved questions
-                    console.log("returned no questions from server");
+                console.log("printing tree store entries data", initialDataStore.data);
+                if(initialDataStore.data.length === 0){
+                    // no return data, check if there are any locally saved localStorageAttribute
+                    console.log("returned no entries from server");
 
 
-                    if(localStorageData && localStorageData[me.programId] && localStorageData[me.programId].questions){
-                        console.log("we have locally saved questions, syncing with server");
+                    if(localStorageData && localStorageData[me.programId] && localStorageData[me.programId][localStorageAttribute]){
+                        console.log("we have locally saved localStorageAttribute, syncing with server");
                         me.updateServerStore();
                     }
 
@@ -2047,10 +1978,10 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 
                 if(!localStorageData || !localStorageData[me.programId]){
-                    console.log("no data yet in localstorage", questionsStoreSlides.data, questionsStoreSlides);
+                    console.log("no data yet in localstorage", initialDataStore.data, initialDataStore);
                     localStorageData = me.getCurrentState();
-                    questionsStoreSlides.data.items.forEach(function(entry){
-                        localStorageData.questions.push(entry.data);
+                    initialDataStore.data.items.forEach(function(entry){
+                        localStorageData[localStorageAttribute].push(entry.data);
                     });
                     me.saveState(localStorageData);
                     if(callback){
@@ -2063,19 +1994,19 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 localStorageData = localStorageData[me.programId];
 
 
-                if(!localStorageData.questions){
-                    console.log("no questions yet in localstorage");
+                if(!localStorageData[localStorageAttribute]){
+                    console.log("no entries yet in localstorage");
                     // localstorage slides are empty - set recieved data from server to localstorage - even if it is empty
 
-                    var questionsFromStore = {};
-                    for (var i = 0; i < questionsStoreSlides.data.length; i++){
-                        var entry = questionsStoreSlides.data.items[i].data;
-                        questionsFromStore[entry.questionGuid] = entry;
+                    var entriessFromStore = {};
+                    for (var i = 0; i < initialDataStore.data.length; i++){
+                        var entry = initialDataStore.data.items[i].data;
+                        entriessFromStore[entry[dataId]] = entry;
                         console.log(entry);
                     }
 
-                    // add questions from store to localstorage[programId] under questions key
-                    localStorageData.questions = questionsFromStore;
+                    // add localStorageAttribute from store to localstorage[programId] under localStorageAttribute key
+                    localStorageData[localStorageAttribute] = entriessFromStore;
 
 
                     me.saveState(localStorageData);
@@ -2086,54 +2017,34 @@ Ext.define('eLearning.view.EditSlidesViewController', {
                 }
 
                 // here we have valid localstorage and may need syncing
-                //localStorageData.questions = Array.from(new Set(localStorageData.questions));
+                //localStorageData[localStorageAttribute] = Array.from(new Set(localStorageData[localStorageAttribute]));
 
 
-                var localStorageDataValues = new Array(); // creating extra array to use functions like .some on it
-                for (var key in localStorageData.questions){
-                    localStorageDataValues.push(localStorageData.questions[key]);
+                var localStorageDataValues = []; // creating extra array to use functions like .some on it
+                for (var key in localStorageData[localStorageAttribute]){
+                    localStorageDataValues.push(localStorageData[localStorageAttribute][key]);
                 }
 
 
 
 
                 // Updating localstorage:
-                for (var i =0; i < questionsStoreSlides.data.items.length; i++){
-                    var question = questionsStoreSlides.data.items[i];
-                    console.log("printing each question data",question.data);
+                for (var i =0; i < initialDataStore.data.items.length; i++){
+                    var entry = initialDataStore.data.items[i];
+                    console.log("printing each entry data",entry.data);
                     // check if item is not yet in localstorage
-                    //console.log("printing item id", localStorageData.questions, question);
-                    if(localStorageDataValues.some(item => item.questionGuid === question.data.questionGuid)){
+                    //console.log("printing item id", localStorageData[localStorageAttribute], entry);
+                    if(localStorageDataValues.some(item => item[dataId] === entry.data[dataId])){
 
                     }else{
-                        console.log("adding new question to localstorage");
-                        localStorageData.questions[question.data.questionGuid] = question.data;
-                        localStorageDataValues.push(question.data);
+                        console.log("adding new entry to localstorage");
+                        localStorageData[localStorageAttribute][entry.data[dataId]] = entry.data;
+                        localStorageDataValues.push(entry.data);
                     }
                 }
                 // setting modified data back to localstorage
 
                 me.saveState(localStorageData);
-
-                // Updating server store:
-                //me.updateServerStore();
-
-
-                // set initial data
-                //me.setInitialSlide();
-
-
-                var rec = questionsStoreSlides.add(localStorageDataValues)[0];
-                console.log("printing initial question rec", rec);
-                console.log("printing store", questionsStoreSlides);
-                //rec.phantom = true;
-                //questionsStoreSlides.sync();
-
-
-
-
-
-
 
                 if(callback){
                     callback();

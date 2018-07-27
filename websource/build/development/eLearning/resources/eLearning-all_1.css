@@ -3650,6 +3650,12 @@ body > .x-mask {
     border: 0 solid #5fa2dd;
     pointer-events: none;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-progress-bar-default:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/ProgressBar.scss:285 */
 .x-progressbar-default-cell > .x-grid-cell-inner,
 .x-progress-default-cell > .x-grid-cell-inner,
@@ -3767,6 +3773,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-btn-default-small-mc {
     padding: 7px 7px 7px 7px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-default-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:1px 1px 1px 1px, corners:url(images/btn/btn-default-small-corners.gif), sides:url(images/btn/btn-default-small-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/button/Button.scss:2463 */
 .x-btn-default-small {
@@ -4212,6 +4224,42 @@ body > .x-mask {
     border-width: 1px;
     border-color: #ced8e1;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-default-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-small-focus-corners.gif), sides:url(images/btn/btn-default-small-focus-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-over.x-btn-default-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-small-over-corners.gif), sides:url(images/btn/btn-default-small-over-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-over.x-btn-default-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-small-focus-over-corners.gif), sides:url(images/btn/btn-default-small-focus-over-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-pressed.x-btn-default-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-small-pressed-corners.gif), sides:url(images/btn/btn-default-small-pressed-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-pressed.x-btn-default-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-small-focus-pressed-corners.gif), sides:url(images/btn/btn-default-small-focus-pressed-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-disabled.x-btn-default-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-small-disabled-corners.gif), sides:url(images/btn/btn-default-small-disabled-sides.gif)" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/button/Button.scss:3294 */
 .x-button-default-small-cell > .x-grid-cell-inner {
     padding-top: 0px;
@@ -4325,6 +4373,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-btn-default-medium-mc {
     padding: 8px 8px 8px 8px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-default-medium:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:1px 1px 1px 1px, corners:url(images/btn/btn-default-medium-corners.gif), sides:url(images/btn/btn-default-medium-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/button/Button.scss:2463 */
 .x-btn-default-medium {
@@ -4770,6 +4824,42 @@ body > .x-mask {
     border-width: 1px;
     border-color: #ced8e1;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-default-medium:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-medium-focus-corners.gif), sides:url(images/btn/btn-default-medium-focus-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-over.x-btn-default-medium:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-medium-over-corners.gif), sides:url(images/btn/btn-default-medium-over-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-over.x-btn-default-medium:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-medium-focus-over-corners.gif), sides:url(images/btn/btn-default-medium-focus-over-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-pressed.x-btn-default-medium:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-medium-pressed-corners.gif), sides:url(images/btn/btn-default-medium-pressed-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-pressed.x-btn-default-medium:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-medium-focus-pressed-corners.gif), sides:url(images/btn/btn-default-medium-focus-pressed-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-disabled.x-btn-default-medium:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-medium-disabled-corners.gif), sides:url(images/btn/btn-default-medium-disabled-sides.gif)" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/button/Button.scss:3294 */
 .x-button-default-medium-cell > .x-grid-cell-inner {
     padding-top: 0;
@@ -4883,6 +4973,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-btn-default-large-mc {
     padding: 9px 9px 9px 9px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-default-large:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:1px 1px 1px 1px, corners:url(images/btn/btn-default-large-corners.gif), sides:url(images/btn/btn-default-large-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/button/Button.scss:2463 */
 .x-btn-default-large {
@@ -5328,6 +5424,42 @@ body > .x-mask {
     border-width: 1px;
     border-color: #ced8e1;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-default-large:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-large-focus-corners.gif), sides:url(images/btn/btn-default-large-focus-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-over.x-btn-default-large:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-large-over-corners.gif), sides:url(images/btn/btn-default-large-over-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-over.x-btn-default-large:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-large-focus-over-corners.gif), sides:url(images/btn/btn-default-large-focus-over-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-pressed.x-btn-default-large:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-large-pressed-corners.gif), sides:url(images/btn/btn-default-large-pressed-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-pressed.x-btn-default-large:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-large-focus-pressed-corners.gif), sides:url(images/btn/btn-default-large-focus-pressed-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-disabled.x-btn-default-large:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-large-disabled-corners.gif), sides:url(images/btn/btn-default-large-disabled-sides.gif)" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/button/Button.scss:3294 */
 .x-button-default-large-cell > .x-grid-cell-inner {
     padding-top: 0;
@@ -5441,6 +5573,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-btn-default-toolbar-small-mc {
     padding: 7px 7px 7px 7px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-default-toolbar-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:1px 1px 1px 1px, corners:url(images/btn/btn-default-toolbar-small-corners.gif), sides:url(images/btn/btn-default-toolbar-small-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/button/Button.scss:2463 */
 .x-btn-default-toolbar-small {
@@ -5886,6 +6024,42 @@ body > .x-mask {
     border-width: 1px;
     border-color: #5fa2dd;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-default-toolbar-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-small-focus-corners.gif), sides:url(images/btn/btn-default-toolbar-small-focus-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-over.x-btn-default-toolbar-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-small-over-corners.gif), sides:url(images/btn/btn-default-toolbar-small-over-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-over.x-btn-default-toolbar-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-small-focus-over-corners.gif), sides:url(images/btn/btn-default-toolbar-small-focus-over-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-pressed.x-btn-default-toolbar-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-small-pressed-corners.gif), sides:url(images/btn/btn-default-toolbar-small-pressed-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-pressed.x-btn-default-toolbar-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-small-focus-pressed-corners.gif), sides:url(images/btn/btn-default-toolbar-small-focus-pressed-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-disabled.x-btn-default-toolbar-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-small-disabled-corners.gif), sides:url(images/btn/btn-default-toolbar-small-disabled-sides.gif)" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/button/Button.scss:3294 */
 .x-button-default-toolbar-small-cell > .x-grid-cell-inner {
     padding-top: 0px;
@@ -5999,6 +6173,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-btn-default-toolbar-medium-mc {
     padding: 8px 8px 8px 8px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-default-toolbar-medium:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:1px 1px 1px 1px, corners:url(images/btn/btn-default-toolbar-medium-corners.gif), sides:url(images/btn/btn-default-toolbar-medium-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/button/Button.scss:2463 */
 .x-btn-default-toolbar-medium {
@@ -6444,6 +6624,42 @@ body > .x-mask {
     border-width: 1px;
     border-color: #5fa2dd;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-default-toolbar-medium:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-medium-focus-corners.gif), sides:url(images/btn/btn-default-toolbar-medium-focus-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-over.x-btn-default-toolbar-medium:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-medium-over-corners.gif), sides:url(images/btn/btn-default-toolbar-medium-over-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-over.x-btn-default-toolbar-medium:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-medium-focus-over-corners.gif), sides:url(images/btn/btn-default-toolbar-medium-focus-over-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-pressed.x-btn-default-toolbar-medium:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-medium-pressed-corners.gif), sides:url(images/btn/btn-default-toolbar-medium-pressed-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-pressed.x-btn-default-toolbar-medium:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-medium-focus-pressed-corners.gif), sides:url(images/btn/btn-default-toolbar-medium-focus-pressed-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-disabled.x-btn-default-toolbar-medium:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-medium-disabled-corners.gif), sides:url(images/btn/btn-default-toolbar-medium-disabled-sides.gif)" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/button/Button.scss:3294 */
 .x-button-default-toolbar-medium-cell > .x-grid-cell-inner {
     padding-top: 0;
@@ -6557,6 +6773,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-btn-default-toolbar-large-mc {
     padding: 9px 9px 9px 9px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-default-toolbar-large:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:1px 1px 1px 1px, corners:url(images/btn/btn-default-toolbar-large-corners.gif), sides:url(images/btn/btn-default-toolbar-large-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/button/Button.scss:2463 */
 .x-btn-default-toolbar-large {
@@ -7001,6 +7223,42 @@ body > .x-mask {
 .x-keyboard-mode .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-default-toolbar-large:after {
     border-width: 1px;
     border-color: #5fa2dd;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-default-toolbar-large:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-large-focus-corners.gif), sides:url(images/btn/btn-default-toolbar-large-focus-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-over.x-btn-default-toolbar-large:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-large-over-corners.gif), sides:url(images/btn/btn-default-toolbar-large-over-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-over.x-btn-default-toolbar-large:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-large-focus-over-corners.gif), sides:url(images/btn/btn-default-toolbar-large-focus-over-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-pressed.x-btn-default-toolbar-large:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-large-pressed-corners.gif), sides:url(images/btn/btn-default-toolbar-large-pressed-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-pressed.x-btn-default-toolbar-large:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-large-focus-pressed-corners.gif), sides:url(images/btn/btn-default-toolbar-large-focus-pressed-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-disabled.x-btn-default-toolbar-large:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:2px 2px 2px 2px, corners:url(images/btn/btn-default-toolbar-large-disabled-corners.gif), sides:url(images/btn/btn-default-toolbar-large-disabled-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/button/Button.scss:3294 */
 .x-button-default-toolbar-large-cell > .x-grid-cell-inner {
@@ -7765,6 +8023,12 @@ body > .x-mask {
 .x-toolbar-more-icon:before {
     content: "\f0c9";
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-toolbar-default:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/toolbar/Toolbar.scss:598 */
 .x-toolbar-footer {
     padding: 6px 0 6px 6px;
@@ -7920,6 +8184,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:132 */
 .x-toolbar-more-icon:before {
     content: "\f0c9";
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-toolbar-footer:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/dd/StatusProxy.scss:1 */
 .x-dd-drag-proxy {
@@ -8171,6 +8441,30 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/panel/Panel.scss:1300 */
 .x-panel .x-panel-header-default-collapsed-border-left {
     border-right-width: 1px !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-panel-header-default-top:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-panel-header-default-bottom:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:top" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-panel-header-default-left:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:right" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-panel-header-default-right:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:left" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/panel/Panel.scss:1336 */
 .x-panel-header-default-horizontal .x-tool-after-title {
@@ -8618,6 +8912,12 @@ body > .x-mask {
 .x-panel-default-framed-mc {
     padding: 0px 0px 0px 0px;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-panel-default-framed:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/panel/panel-default-framed-corners.gif), sides:url(images/panel/panel-default-framed-sides.gif)" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-panel-header-default-framed-top {
     -moz-border-radius-topleft: 0;
@@ -8729,6 +9029,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-panel-header-default-framed-top-mc {
     padding: 10px 14px 10px 14px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-panel-header-default-framed-top:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 0 2px, corners:url(images/panel-header/panel-header-default-framed-top-corners.gif), sides:url(images/panel-header/panel-header-default-framed-top-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-panel-header-default-framed-right {
@@ -8856,6 +9162,12 @@ body > .x-mask {
 .x-panel-header-default-framed-right-mc {
     padding: 14px 10px 14px 10px;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-panel-header-default-framed-right:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 0, corners:url(images/panel-header/panel-header-default-framed-right-corners.gif), corners-rtl:url(images/panel-header/panel-header-default-framed-right-corners-rtl.gif), sides:url(images/panel-header/panel-header-default-framed-right-sides.gif)" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-panel-header-default-framed-bottom {
     -moz-border-radius-topleft: 0;
@@ -8967,6 +9279,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-panel-header-default-framed-bottom-mc {
     padding: 10px 14px 10px 14px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-panel-header-default-framed-bottom:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:0 2px 2px 2px, corners:url(images/panel-header/panel-header-default-framed-bottom-corners.gif), sides:url(images/panel-header/panel-header-default-framed-bottom-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-panel-header-default-framed-left {
@@ -9094,6 +9412,12 @@ body > .x-mask {
 .x-panel-header-default-framed-left-mc {
     padding: 14px 10px 14px 10px;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-panel-header-default-framed-left:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 0 2px 2px, corners:url(images/panel-header/panel-header-default-framed-left-corners.gif), corners-rtl:url(images/panel-header/panel-header-default-framed-left-corners-rtl.gif), sides:url(images/panel-header/panel-header-default-framed-left-sides.gif)" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-panel-header-default-framed-collapsed-top {
     -moz-border-radius-topleft: 0;
@@ -9205,6 +9529,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-panel-header-default-framed-collapsed-top-mc {
     padding: 10px 14px 10px 14px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-panel-header-default-framed-collapsed-top:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/panel-header/panel-header-default-framed-collapsed-top-corners.gif), sides:url(images/panel-header/panel-header-default-framed-collapsed-top-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-panel-header-default-framed-collapsed-right {
@@ -9332,6 +9662,12 @@ body > .x-mask {
 .x-panel-header-default-framed-collapsed-right-mc {
     padding: 14px 10px 14px 10px;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-panel-header-default-framed-collapsed-right:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/panel-header/panel-header-default-framed-collapsed-right-corners.gif), corners-rtl:url(images/panel-header/panel-header-default-framed-collapsed-right-corners-rtl.gif), sides:url(images/panel-header/panel-header-default-framed-collapsed-right-sides.gif)" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-panel-header-default-framed-collapsed-bottom {
     -moz-border-radius-topleft: 0;
@@ -9443,6 +9779,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-panel-header-default-framed-collapsed-bottom-mc {
     padding: 10px 14px 10px 14px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-panel-header-default-framed-collapsed-bottom:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/panel-header/panel-header-default-framed-collapsed-bottom-corners.gif), sides:url(images/panel-header/panel-header-default-framed-collapsed-bottom-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-panel-header-default-framed-collapsed-left {
@@ -9569,6 +9911,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-panel-header-default-framed-collapsed-left-mc {
     padding: 14px 10px 14px 10px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-panel-header-default-framed-collapsed-left:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/panel-header/panel-header-default-framed-collapsed-left-corners.gif), corners-rtl:url(images/panel-header/panel-header-default-framed-collapsed-left-corners-rtl.gif), sides:url(images/panel-header/panel-header-default-framed-collapsed-left-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/panel/Panel.scss:1188 */
 .x-panel .x-panel-header-default-framed-top {
@@ -9917,6 +10265,12 @@ body > .x-mask {
 .x-btn-group-default-framed-mc {
     padding: 0px 0px 0px 0px;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-group-default-framed:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/btn-group/btn-group-default-framed-corners.gif), sides:url(images/btn-group/btn-group-default-framed-sides.gif)" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-btn-group-default-framed-notitle {
     -webkit-border-radius: 2px;
@@ -10021,6 +10375,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-btn-group-default-framed-notitle-mc {
     padding: 0px 0px 0px 0px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-group-default-framed-notitle:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/btn-group/btn-group-default-framed-notitle-corners.gif), sides:url(images/btn-group/btn-group-default-framed-notitle-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/container/ButtonGroup.scss:243 */
 .x-btn-group-default-framed {
@@ -10214,6 +10574,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-window-default-mc {
     padding: 0px 0px 0px 0px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-window-default:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/window/window-default-corners.gif), sides:url(images/window/window-default-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/window/Window.scss:567 */
 .x-window-body-default {
@@ -10418,6 +10784,12 @@ body > .x-mask {
 .x-window-header-default-top-mc {
     padding: 10px 14px 10px 14px;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-window-header-default-top:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/window-header/window-header-default-top-corners.gif), sides:url(images/window-header/window-header-default-top-sides.gif)" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-window-header-default-right {
     -moz-border-radius-topleft: 0;
@@ -10539,6 +10911,12 @@ body > .x-mask {
 .x-window-header-default-right-mc {
     padding: 14px 10px 14px 10px;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-window-header-default-right:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/window-header/window-header-default-right-corners.gif), corners-rtl:url(images/window-header/window-header-default-right-corners-rtl.gif), sides:url(images/window-header/window-header-default-right-sides.gif)" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-window-header-default-bottom {
     -moz-border-radius-topleft: 0;
@@ -10650,6 +11028,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-window-header-default-bottom-mc {
     padding: 10px 14px 10px 14px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-window-header-default-bottom:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/window-header/window-header-default-bottom-corners.gif), sides:url(images/window-header/window-header-default-bottom-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-window-header-default-left {
@@ -10772,6 +11156,12 @@ body > .x-mask {
 .x-window-header-default-left-mc {
     padding: 14px 10px 14px 10px;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-window-header-default-left:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/window-header/window-header-default-left-corners.gif), corners-rtl:url(images/window-header/window-header-default-left-corners-rtl.gif), sides:url(images/window-header/window-header-default-left-sides.gif)" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-window-header-default-collapsed-top {
     -moz-border-radius-topleft: 0;
@@ -10883,6 +11273,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-window-header-default-collapsed-top-mc {
     padding: 10px 14px 10px 14px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-window-header-default-collapsed-top:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/window-header/window-header-default-collapsed-top-corners.gif), sides:url(images/window-header/window-header-default-collapsed-top-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-window-header-default-collapsed-right {
@@ -11005,6 +11401,12 @@ body > .x-mask {
 .x-window-header-default-collapsed-right-mc {
     padding: 14px 10px 14px 10px;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-window-header-default-collapsed-right:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/window-header/window-header-default-collapsed-right-corners.gif), corners-rtl:url(images/window-header/window-header-default-collapsed-right-corners-rtl.gif), sides:url(images/window-header/window-header-default-collapsed-right-sides.gif)" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-window-header-default-collapsed-bottom {
     -moz-border-radius-topleft: 0;
@@ -11116,6 +11518,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-window-header-default-collapsed-bottom-mc {
     padding: 10px 14px 10px 14px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-window-header-default-collapsed-bottom:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/window-header/window-header-default-collapsed-bottom-corners.gif), sides:url(images/window-header/window-header-default-collapsed-bottom-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-window-header-default-collapsed-left {
@@ -11237,6 +11645,12 @@ body > .x-mask {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-window-header-default-collapsed-left-mc {
     padding: 14px 10px 14px 10px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-window-header-default-collapsed-left:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/window-header/window-header-default-collapsed-left-corners.gif), corners-rtl:url(images/window-header/window-header-default-collapsed-left-corners-rtl.gif), sides:url(images/window-header/window-header-default-collapsed-left-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/window/Window.scss:857 */
 .x-window-header-default .x-window-header-icon {
@@ -12340,6 +12754,18 @@ a.x-monthpicker-yearnav-button:hover {
 .x-monthpicker-small .x-monthpicker-yearnav-button {
     margin-top: 12px;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-datepicker-header:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-datepicker-footer:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/form/field/Date.scss:2 */
 .x-form-field-date .x-form-date-trigger {
     font-size: 16px;
@@ -12488,6 +12914,12 @@ a.x-monthpicker-yearnav-button:hover {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-tip-default-mc {
     padding: 0px 0px 0px 0px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-tip-default:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/tip/tip-default-corners.gif), sides:url(images/tip/tip-default-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/tip/Tip.scss:318 */
 .x-tip-default {
@@ -12670,6 +13102,12 @@ a.x-monthpicker-yearnav-button:hover {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-tip-form-invalid-mc {
     padding: 0px 0px 0px 0px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-tip-form-invalid:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:2px 2px 2px 2px, corners:url(images/tip/tip-form-invalid-corners.gif), sides:url(images/tip/tip-form-invalid-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/tip/Tip.scss:318 */
 .x-tip-form-invalid {
@@ -13462,6 +13900,18 @@ a.x-color-picker-item:hover {
 .x-no-header-borders .x-column-header .x-column-header-inner {
     padding-top: 7px;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-column-header:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-column-header-over:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/grid/column/Action.scss:1 */
 .x-grid-cell-inner-action-col {
     padding: 7px 4px 7px 4px;
@@ -13635,6 +14085,12 @@ a.x-color-picker-item:hover {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-btn-grid-cell-small-mc {
     padding: 7px 7px 7px 7px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-grid-cell-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:1px 1px 1px 1px, corners:url(images/btn/btn-grid-cell-small-corners.gif), sides:url(images/btn/btn-grid-cell-small-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/button/Button.scss:2463 */
 .x-btn-grid-cell-small {
@@ -14043,6 +14499,42 @@ a.x-color-picker-item:hover {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/button/Button.scss:3225 */
 .x-nbr .x-segmented-button-item-vertical.x-btn-grid-cell-small.x-segmented-button-last:after {
     bottom: 1px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-grid-cell-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:1px 1px 1px 1px, corners:url(images/btn/btn-grid-cell-small-focus-corners.gif), sides:url(images/btn/btn-grid-cell-small-focus-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-over.x-btn-grid-cell-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:1px 1px 1px 1px, corners:url(images/btn/btn-grid-cell-small-over-corners.gif), sides:url(images/btn/btn-grid-cell-small-over-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-over.x-btn-grid-cell-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:1px 1px 1px 1px, corners:url(images/btn/btn-grid-cell-small-focus-over-corners.gif), sides:url(images/btn/btn-grid-cell-small-focus-over-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-pressed.x-btn-grid-cell-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:1px 1px 1px 1px, corners:url(images/btn/btn-grid-cell-small-pressed-corners.gif), sides:url(images/btn/btn-grid-cell-small-pressed-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-focus.x-btn-pressed.x-btn-grid-cell-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:1px 1px 1px 1px, corners:url(images/btn/btn-grid-cell-small-focus-pressed-corners.gif), sides:url(images/btn/btn-grid-cell-small-focus-pressed-sides.gif)" !important;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-btn-disabled.x-btn-grid-cell-small:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, stretch:bottom, frame:1px 1px 1px 1px, corners:url(images/btn/btn-grid-cell-small-disabled-corners.gif), sides:url(images/btn/btn-grid-cell-small-disabled-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/var/button/Button.scss:3294 */
 .x-button-grid-cell-small-cell > .x-grid-cell-inner {
@@ -15171,6 +15663,12 @@ a.x-color-picker-item:hover {
 .x-grid-row-editor-buttons-default-bottom-mc {
     padding: 5px 1px 1px 1px;
 }
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-grid-row-editor-buttons-default-bottom:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:0 5px 5px 5px, corners:url(images/grid-row-editor-buttons/grid-row-editor-buttons-default-bottom-corners.gif), sides:url(images/grid-row-editor-buttons/grid-row-editor-buttons-default-bottom-sides.gif)" !important;
+}
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
 .x-grid-row-editor-buttons-default-top {
     -moz-border-radius-topleft: 5px;
@@ -15282,6 +15780,12 @@ a.x-color-picker-item:hover {
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-grid-row-editor-buttons-default-top-mc {
     padding: 1px 1px 5px 1px;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-grid-row-editor-buttons-default-top:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:5px 5px 0 5px, corners:url(images/grid-row-editor-buttons/grid-row-editor-buttons-default-top-corners.gif), sides:url(images/grid-row-editor-buttons/grid-row-editor-buttons-default-top-sides.gif)" !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/grid/plugin/RowEditing.scss:108 */
 .x-grid-row-editor-buttons {
@@ -15680,359 +16184,4 @@ div.x-border-layout-ct {
 .x-resizable-pinned > .x-resizable-handle-east:before,
 .x-resizable-pinned > .x-resizable-handle-west:before {
     content: "\f142";
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/resizer/Resizer.scss:198 */
-.x-resizable-handle-south-over,
-.x-resizable-handle-north-over,
-.x-resizable-pinned > .x-resizable-handle-south,
-.x-resizable-pinned > .x-resizable-handle-north {
-    font: 16px/10px FontAwesome;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:132 */
-.x-resizable-handle-south-over:before,
-.x-resizable-handle-north-over:before,
-.x-resizable-pinned > .x-resizable-handle-south:before,
-.x-resizable-pinned > .x-resizable-handle-north:before {
-    content: "\f141";
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/resizer/Resizer.scss:210 */
-.x-resizable-handle-southeast-over,
-.x-resizable-pinned > .x-resizable-handle-southeast {
-    font: 16px/1 ExtJS;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:132 */
-.x-resizable-handle-southeast-over:before,
-.x-resizable-pinned > .x-resizable-handle-southeast:before {
-    content: "\e60c";
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/resizer/Resizer.scss:220 */
-.x-resizable-handle-northwest-over,
-.x-resizable-pinned > .x-resizable-handle-northwest {
-    font: 16px/1 ExtJS;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:132 */
-.x-resizable-handle-northwest-over:before,
-.x-resizable-pinned > .x-resizable-handle-northwest:before {
-    content: "\e609";
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/resizer/Resizer.scss:230 */
-.x-resizable-handle-northeast-over,
-.x-resizable-pinned > .x-resizable-handle-northeast {
-    font: 16px/1 ExtJS;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:132 */
-.x-resizable-handle-northeast-over:before,
-.x-resizable-pinned > .x-resizable-handle-northeast:before {
-    content: "\e60a";
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/resizer/Resizer.scss:240 */
-.x-resizable-handle-southwest-over,
-.x-resizable-pinned > .x-resizable-handle-southwest {
-    font: 16px/1 ExtJS;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:132 */
-.x-resizable-handle-southwest-over:before,
-.x-resizable-pinned > .x-resizable-handle-southwest:before {
-    content: "\e60b";
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:2 */
-.x-slider:before {
-    border: 1px solid #d0d0d0;
-    content: '';
-    position: absolute;
-    border-radius: 2px;
-    background-color: #eee;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:20 */
-.x-slider-thumb {
-    background-color: #f6f6f6;
-    border: 1px solid #d0d0d0;
-    border-radius: 2px;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:28 */
-.x-slider-thumb:before {
-    color: #d0d0d0;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:33 */
-.x-slider-thumb-over {
-    background-color: #fcfcfc;
-    border-color: #c8cdd2;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:36 */
-.x-slider-thumb-over:before {
-    color: #d0d0d0;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:42 */
-.x-keyboard-mode .x-slider-focus .x-slider-thumb {
-    background-color: #f6f6f6;
-    border-color: #5fa2dd;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:45 */
-.x-keyboard-mode .x-slider-focus .x-slider-thumb:before {
-    color: #a6c7e5;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:52 */
-.x-keyboard-mode .x-slider-focus .x-slider-thumb-over {
-    background-color: #fcfcfc;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:57 */
-.x-slider-thumb-drag {
-    background-color: #f1f1f1;
-    border-color: #c0c8cf;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:60 */
-.x-slider-thumb-drag:before {
-    color: #d0d0d0;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:66 */
-.x-keyboard-mode .x-slider-focus .x-slider-thumb-drag {
-    background-color: #f1f1f1;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:79 */
-.x-slider-horz {
-    padding-left: 10px;
-    background: no-repeat 0 -20px;
-    margin: 6px 0 6px;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:86 */
-.x-slider-horz .x-slider-end {
-    padding-right: 10px;
-    background: no-repeat right -40px;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:91 */
-.x-slider-horz .x-slider-inner {
-    height: 20px;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:96 */
-.x-slider-horz:before {
-    height: 10px;
-    width: 100%;
-    top: 50%;
-    left: 0;
-    margin-top: -5px;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:106 */
-.x-slider-horz .x-slider-thumb {
-    width: 20px;
-    height: 20px;
-    margin-left: -10px;
-    font: 12px/1 ExtJS;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:132 */
-.x-slider-horz .x-slider-thumb:before {
-    content: "\e612";
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:148 */
-.x-rtl.x-slider-horz {
-    padding-left: 0;
-    padding-right: 10px;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:155 */
-.x-rtl.x-slider-horz .x-slider-end {
-    padding-right: 0;
-    padding-left: 10px;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:163 */
-.x-rtl.x-slider-horz .x-slider-thumb {
-    margin-right: -10px;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:170 */
-.x-slider-ct-vert {
-    /* Vertical styles */
-    height: 100%;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:174 */
-.x-slider-vert {
-    padding-top: 10px;
-    height: 100%;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:181 */
-.x-slider-vert > .x-slider-end {
-    height: 100%;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:183 */
-.x-slider-vert > .x-slider-end > .x-slider-inner {
-    height: 100%;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:189 */
-.x-slider-vert:before {
-    width: 10px;
-    height: 100%;
-    left: 10px;
-    top: 0;
-    margin-left: -5px;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:199 */
-.x-slider-vert .x-slider-end {
-    padding-bottom: 10px;
-    background: no-repeat -20px bottom;
-    width: 20px;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:205 */
-.x-slider-vert .x-slider-inner {
-    width: 20px;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:209 */
-.x-slider-vert .x-slider-thumb {
-    width: 20px;
-    height: 20px;
-    margin-bottom: -10px;
-    font: 12px/1 ExtJS;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:132 */
-.x-slider-vert .x-slider-thumb:before {
-    content: "\e605";
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-neutral/sass/src/slider/Multi.scss:262 */
-.x-slider-default-cell > .x-grid-cell-inner,
-.x-sliderwidget-default-cell > .x-grid-cell-inner {
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
-.x-tab-default-top {
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    -ms-border-radius: 0;
-    -o-border-radius: 0;
-    border-radius: 0;
-    padding: 8px 10px 8px 10px;
-    border-width: 0;
-    border-style: solid;
-    background-color: transparent;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
-.x-tab-default-top-mc {
-    background-color: transparent;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
-.x-nbr .x-tab-default-top {
-    padding: 0 !important;
-    border-width: 0 !important;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    -ms-border-radius: 0px;
-    -o-border-radius: 0px;
-    border-radius: 0px;
-    background-color: transparent !important;
-    box-shadow: none !important;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:281 */
-.x-tab-default-top-frameInfo {
-    font-family: th-0-0-0-0-0-0-0-0-8-10-8-10;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:347 */
-.x-tab-default-top-tl {
-    background-position: 0 0;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:351 */
-.x-tab-default-top-tr {
-    background-position: right 0;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:355 */
-.x-tab-default-top-bl {
-    background-position: 0 0;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:359 */
-.x-tab-default-top-br {
-    background-position: right 0;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:363 */
-.x-tab-default-top-ml {
-    background-position: 0 top;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:371 */
-.x-tab-default-top-mr {
-    background-position: right top;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:379 */
-.x-tab-default-top-tc {
-    background-position: 0 0;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:383 */
-.x-tab-default-top-bc {
-    background-position: 0 0;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:388 */
-.x-tab-default-top-tr,
-.x-tab-default-top-br,
-.x-tab-default-top-mr {
-    padding-right: 0;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:394 */
-.x-tab-default-top-tl,
-.x-tab-default-top-bl,
-.x-tab-default-top-ml {
-    padding-left: 0;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:400 */
-.x-tab-default-top-tc {
-    height: 0;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:403 */
-.x-tab-default-top-bc {
-    height: 0;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
-.x-tab-default-top-mc {
-    padding: 8px 10px 8px 10px;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:187 */
-.x-tab-default-bottom {
-    -moz-border-radius-topleft: 0;
-    -webkit-border-top-left-radius: 0;
-    border-top-left-radius: 0;
-    -moz-border-radius-topright: 0;
-    -webkit-border-top-right-radius: 0;
-    border-top-right-radius: 0;
-    -moz-border-radius-bottomright: 0;
-    -webkit-border-bottom-right-radius: 0;
-    border-bottom-right-radius: 0;
-    -moz-border-radius-bottomleft: 0;
-    -webkit-border-bottom-left-radius: 0;
-    border-bottom-left-radius: 0;
-    padding: 8px 10px 8px 10px;
-    border-width: 0 0 0 0;
-    border-style: solid;
-    background-color: transparent;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
-.x-tab-default-bottom-mc {
-    background-color: transparent;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
-.x-nbr .x-tab-default-bottom {
-    padding: 0 !important;
-    border-width: 0 !important;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    -ms-border-radius: 0px;
-    -o-border-radius: 0px;
-    border-radius: 0px;
-    background-color: transparent !important;
-    box-shadow: none !important;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:281 */
-.x-tab-default-bottom-frameInfo {
-    font-family: th-0-0-0-0-0-0-0-0-8-10-8-10;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:347 */
-.x-tab-default-bottom-tl {
-    background-position: 0 0;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:351 */
-.x-tab-default-bottom-tr {
-    background-position: right 0;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:355 */
-.x-tab-default-bottom-bl {
-    background-position: 0 0;
-}
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/ext/classic/theme-base/sass/etc/mixins/frame.scss:359 */
-.x-tab-default-bottom-br {
-    background-position: right 0;
 }
