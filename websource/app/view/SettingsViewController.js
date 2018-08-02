@@ -14,24 +14,28 @@
  */
 
 Ext.define('eLearning.view.SettingsViewController', {
-    extend: 'Ext.app.ViewController',
-    alias: 'controller.settings',
+	extend: 'Ext.app.ViewController',
+	alias: 'controller.settings',
 
-    show: function(opts) {
-        opts = Ext.applyIf(opts, {
-            data: {},
-            callback: function(value) { console.log('Please specify callback!', value); },
-            scope: this
-        });
+	show: function(opts) {
+		opts = Ext.applyIf(opts, {
+		    data: {},
+		    callback: function(value) { console.warn('Please specify callback!', value); },
+		    scope: this
+		});
 
-        var me = this,
-            refs = me.getReferences(),
-            view = me.getView();
+		var me = this,
+		    refs = me.getReferences(),
+		    view = me.getView();
 
-        me._opts = opts;
+		me._opts = opts;
 
-        view.refs.pageSetup.setSource(opts.data.pageSetup);
-        view.show();
-    }
+		view.refs.pageSetup.setSource(opts.data.pageSetup);
+		view.show();
+	},
+
+	onPropertygridPropertyChange: function(source, recordId, value, oldValue, eOpts) {
+		this._opts.scope.getController().saveState();
+	}
 
 });

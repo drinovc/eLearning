@@ -30,7 +30,7 @@
                 "implHandler": [
                     "opts = Ext.applyIf(opts, {",
                     "    data: {},",
-                    "    callback: function(value) { console.log('Please specify callback!', value); },",
+                    "    callback: function(value) { console.warn('Please specify callback!', value); },",
                     "    scope: this",
                     "});",
                     "",

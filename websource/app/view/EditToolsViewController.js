@@ -14,43 +14,71 @@
  */
 
 Ext.define('eLearning.view.EditToolsViewController', {
-    extend: 'Ext.app.ViewController',
-    alias: 'controller.edittools',
+	extend: 'Ext.app.ViewController',
+	alias: 'controller.edittools',
 
-    show: function(opts) {
-        opts = Ext.applyIf(opts || {}, {
-            component: null
-        });
+	show: function(opts) {
+		opts = Ext.applyIf(opts || {}, {
+		    components: []
+		});
 
-        var me = this,
-            view = me.getView();
+		var me = this,
+		    view = me.getView();
 
-        me._opts = opts;
+		me._opts = opts;
 
-        view.down('#nfScore').setValue(opts.component._opts.score || 0);
-        view.down('#chRequired').setValue(opts.component._opts.required || false);
+		if(opts.components.length > 1){
+		    Ext.getCmp('btn_Edit').disable();
+		    Ext.getCmp('nfScore').disable();
+		    Ext.getCmp('chRequired').disable();
 
-        view.showBy(opts.component, 'tl-tr?');
-    },
+		    view.down('#nfScore').setValue(0);
+		    view.down('#chRequired').setValue(false);
 
-    edit: function(button, e) {
-        this._opts.component.fireEvent('_edit');
-    },
+		    view.showBy(opts.components[0], 'tl-tr?'); // TODO temp - later find middle of all components
+		}else{
+		    Ext.getCmp('btn_Edit').enable();
+		    Ext.getCmp('nfScore').enable();
+		    Ext.getCmp('chRequired').enable();
 
-    duplicate: function(button, e) {
-        this._opts.component.fireEvent('_duplicate');
-    },
+		    view.down('#nfScore').setValue(opts.components[0]._opts.score || 0);
+		    view.down('#chRequired').setValue(opts.components[0]._opts.required || false);
 
-    delete: function(button, e) {
-        this._opts.component.fireEvent('_delete');
-    },
 
-    onNfScoreChange: function(field, newValue, oldValue, eOpts) {
-        this._opts.component._opts.score = newValue;
-    },
+		    view.showBy(opts.components[0], 'tl-tr?');
+		}
 
-    onChRequiredChange: function(field, newValue, oldValue, eOpts) {
-        this._opts.component._opts.required = newValue;
-    }
+		//view.showBy(opts.component, 'tl-tr?');
+
+	},
+
+	edit: function(button, e) {
+		//this._opts.component.fireEvent('_edit');
+		this._opts.components[0].fireEvent('_edit');
+	},
+
+	duplicate: function(button, e) {
+		//this._opts.component.fireEvent('_duplicate');
+		for(var i = 0; i < this._opts.components.length; i++){
+			this._opts.components[i].fireEvent('_duplicate');
+		}
+	},
+
+	delete: function(button, e) {
+		//this._opts.component.fireEvent('_delete');
+		for(var i = 0; i < this._opts.components.length; i++){
+			this._opts.components[i].fireEvent('_delete');
+		}
+	},
+
+	onNfScoreChange: function(field, newValue, oldValue, eOpts) {
+		//this._opts.component._opts.score = newValue;
+		this._opts.components[0]._opts.score = newValue;
+	},
+
+	onChRequiredChange: function(field, newValue, oldValue, eOpts) {
+		//this._opts.component._opts.required = newValue;
+		this._opts.components[0]._opts.required = newValue;
+	}
 
 });

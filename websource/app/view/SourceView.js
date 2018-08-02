@@ -14,32 +14,32 @@
  */
 
 Ext.define('eLearning.view.SourceView', {
-    extend: 'Ext.window.Window',
-    alias: 'widget.sourceview',
+	extend: 'Ext.window.Window',
+	alias: 'widget.sourceview',
 
-    requires: [
-        'eLearning.view.SourceViewViewModel',
-        'eLearning.view.SourceViewViewController',
-        'Ext.container.Container'
-    ],
+	requires: [
+		'eLearning.view.SourceViewViewModel',
+		'eLearning.view.SourceViewViewController',
+		'Ext.container.Container'
+	],
 
-    controller: 'sourceview',
-    viewModel: {
-        type: 'sourceview'
-    },
-    modal: true,
-    height: 600,
-    width: 1000,
-    layout: 'fit',
-    title: 'Source',
-    maximizable: true,
+	controller: 'sourceview',
+	viewModel: {
+		type: 'sourceview'
+	},
+	modal: true,
+	height: 600,
+	width: 1000,
+	layout: 'fit',
+	title: 'Source',
+	maximizable: true,
 
-    items: [
-        {
-            xtype: 'container',
-            reference: 'source',
-            scrollable: 'both'
-        }
-    ]
+	items: [
+		{
+			xtype: 'container',
+			reference: 'source',
+			scrollable: 'both'
+		}
+	]
 
 });

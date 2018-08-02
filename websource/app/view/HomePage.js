@@ -14,123 +14,122 @@
  */
 
 Ext.define('eLearning.view.HomePage', {
-    extend: 'Ext.container.Container',
-    alias: 'widget.homepage',
+	extend: 'Ext.container.Container',
+	alias: 'widget.homepage',
 
-    requires: [
-        'eLearning.view.HomePageViewModel',
-        'Ext.button.Button',
-        'Ext.container.Container',
-        'Ext.form.Label'
-    ],
+	requires: [
+		'eLearning.view.HomePageViewModel',
+		'Ext.button.Button',
+		'Ext.container.Container',
+		'Ext.form.Label'
+	],
 
-    viewModel: {
-        type: 'homepage'
-    },
-    itemId: 'homePage',
-    defaults: {
-        width: 200,
-        height: 50,
-        margin: 5
-    },
+	viewModel: {
+		type: 'homepage'
+	},
+	itemId: 'homePage',
+	defaults: {
+		width: 200,
+		height: 50,
+		margin: 5
+	},
 
-    layout: {
-        type: 'vbox',
-        align: 'center',
-        pack: 'center'
-    },
-    items: [
-        {
-            xtype: 'button',
-            handler: function(button, e) {
-                this.up('#mainView').setActiveItem('gridPrograms');
-            },
-            text: 'Training Programs'
-        },
-        {
-            xtype: 'button',
-            handler: function(button, e) {
+	layout: {
+		type: 'vbox',
+		align: 'center',
+		pack: 'center'
+	},
+	items: [
+		{
+			xtype: 'button',
+			handler: function(button, e) {
+				this.up('#mainView').setActiveItem('gridPrograms');
+			},
+			text: 'Training Programs'
+		},
+		{
+			xtype: 'button',
+			handler: function(button, e) {
 
-            },
-            text: 'Help'
-        },
-        {
-            xtype: 'container',
-            height: 200,
-            defaults: {
-                flex: 1
-            },
-            layout: {
-                type: 'vbox',
-                align: 'stretch'
-            },
-            items: [
-                {
-                    xtype: 'label',
-                    flex: 0,
-                    height: 20,
-                    text: 'DEV / DEBUG / TEST'
-                },
-                {
-                    xtype: 'button',
-                    handler: function(button, e) {
-                        var TEMP_ID = "{01A26F88-5649-4693-9227-28E8E2F7A963}";
+			},
+			text: 'Help'
+		},
+		{
+			xtype: 'container',
+			height: 200,
+			defaults: {
+				flex: 1
+			},
+			layout: {
+				type: 'vbox',
+				align: 'stretch'
+			},
+			items: [
+				{
+					xtype: 'label',
+					flex: 0,
+					height: 20,
+					text: 'DEV / DEBUG / TEST'
+				},
+				{
+					xtype: 'button',
+					handler: function(button, e) {
+						var TEMP_ID = "{01A26F88-5649-4693-9227-28E8E2F7A963}";
 
-                        var mainView = this.up('#mainView');
-                        var newActiveItem = mainView.setActiveItem('editSlides');
+						var mainView = this.up('#mainView');
+						var newActiveItem = mainView.setActiveItem('editSlides');
 
-                        var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
-                        console.log("printing localstorage", localStorageData);
+						var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
 
-                        if(!localStorageData){
-                            localStorageData = {};
-                        }
-                        if(!localStorageData[TEMP_ID]){
-                            localStorageData[TEMP_ID] = {};
-                        }
-                        for (var key in localStorageData[TEMP_ID]) {
-                            if(!localStorageData[TEMP_ID][key]){
-                                localStorageData[TEMP_ID][key]={};
-                            }
-                        }
-                        localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+						if(!localStorageData){
+							localStorageData = {};
+						}
+						if(!localStorageData[TEMP_ID]){
+							localStorageData[TEMP_ID] = {};
+						}
+						for (var key in localStorageData[TEMP_ID]) {
+							if(!localStorageData[TEMP_ID][key]){
+								localStorageData[TEMP_ID][key]={};
+							}
+						}
+						localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
 
-                        newActiveItem.getController().load({ program :{
-                            data:{
-                                "active":true,
-                                "categoryId":30231143,
-                                "certificateFileName":"",
-                                "changed":"Y",
-                                "completionTime":60,
-                                "created":"2018-07-23T12:04:00",
-                                "createdAtId":5,
-                                "createdById":0,
-                                "description":"New Training Program Description",
-                                "id":"{01A26F88-5649-4693-9227-28E8E2F7A963}",
-                                "lastChangeLogId":191175066,
-                                "lastChanges":"2018-07-23T12:04:00",
-                                "maxAttemptsScoreMode":1000,
-                                "maxAttemptsTrainingMode":1000,
-                                "name":"First program",
-                                "passScore":2,
-                                "programId":50000026,
-                                "validFrom":"2018-07-23T00:00:00",
-                                "validTo":"2019-07-23T00:00:00"
-                            },
-                            id :TEMP_ID
-                        } }); // with programId
-                    },
-                    text: 'Edit Pages'
-                },
-                {
-                    xtype: 'button',
-                    handler: function(button, e) {
-                        Ext.toast('This is a toast message');
-                    },
-                    text: 'Test'
-                }
-            ]
-        }
-    ]
+						newActiveItem.getController().load({ program :{
+							data:{
+								"active":true,
+								"categoryId":30231143,
+								"certificateFileName":"",
+								"changed":"Y",
+								"completionTime":60,
+								"created":"2018-07-23T12:04:00",
+								"createdAtId":5,
+								"createdById":0,
+								"description":"New Training Program Description",
+								"id":"{01A26F88-5649-4693-9227-28E8E2F7A963}",
+								"lastChangeLogId":191175066,
+								"lastChanges":"2018-07-23T12:04:00",
+								"maxAttemptsScoreMode":1000,
+								"maxAttemptsTrainingMode":1000,
+								"name":"First program",
+								"passScore":2,
+								"programId":50000026,
+								"validFrom":"2018-07-23T00:00:00",
+								"validTo":"2019-07-23T00:00:00"
+							},
+							id :TEMP_ID
+						} }); // with programId
+					},
+					text: 'Edit Pages'
+				},
+				{
+					xtype: 'button',
+					handler: function(button, e) {
+						Ext.toast('This is a toast message');
+					},
+					text: 'Test'
+				}
+			]
+		}
+	]
 
 });

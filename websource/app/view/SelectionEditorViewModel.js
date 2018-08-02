@@ -14,17 +14,17 @@
  */
 
 Ext.define('eLearning.view.SelectionEditorViewModel', {
-    extend: 'Ext.app.ViewModel',
-    alias: 'viewmodel.selectioneditor',
+	extend: 'Ext.app.ViewModel',
+	alias: 'viewmodel.selectioneditor',
 
-    requires: [
-        'Ext.data.Store'
-    ],
+	requires: [
+		'Ext.data.Store'
+	],
 
-    stores: {
-        StoreOptions: {
-            model: 'eLearning.model.Option'
-        }
-    }
+	stores: {
+		StoreOptions: {
+			model: 'eLearning.model.Option'
+		}
+	}
 
 });

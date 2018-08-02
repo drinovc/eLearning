@@ -14,37 +14,37 @@
  */
 
 Ext.define('eLearning.view.ProgramsViewModel', {
-    extend: 'Ext.app.ViewModel',
-    alias: 'viewmodel.programs',
+	extend: 'Ext.app.ViewModel',
+	alias: 'viewmodel.programs',
 
-    requires: [
-        'Ext.data.Store',
-        'Ext.data.proxy.Rest',
-        'Ext.data.reader.Json'
-    ],
+	requires: [
+		'Ext.data.Store',
+		'Ext.data.proxy.Rest',
+		'Ext.data.reader.Json'
+	],
 
-    stores: {
-        StorePrograms: {
-            autoLoad: false,
-            autoSync: true,
-            model: 'eLearning.model.Program',
-            proxy: {
-                type: 'rest',
-                api: {
-                    create: '/Pub/Programs',
-                    read: '/Pub/Programs',
-                    update: '/POST/Pub/Programs',
-                    destroy: '/Pub/Programs'
-                },
-                reader: {
-                    type: 'json',
-                    rootProperty: 'data'
-                }
-            }
-        },
-        StoreProgramCategories: {
-            model: 'eLearning.model.Lookup'
-        }
-    }
+	stores: {
+		StorePrograms: {
+			autoLoad: false,
+			autoSync: true,
+			model: 'eLearning.model.Program',
+			proxy: {
+				type: 'rest',
+				api: {
+					create: '/Pub/Programs',
+					read: '/Pub/Programs',
+					update: '/POST/Pub/Programs',
+					destroy: '/Pub/Programs'
+				},
+				reader: {
+					type: 'json',
+					rootProperty: 'data'
+				}
+			}
+		},
+		StoreProgramCategories: {
+			model: 'eLearning.model.Lookup'
+		}
+	}
 
 });

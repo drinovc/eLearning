@@ -375,17 +375,15 @@
                                         "fn": "handler",
                                         "implHandler": [
                                             "var me = this,",
-                                            "    refs = me.getReferences(),",
-                                            "    sequence = Ext.Array.max(Ext.pluck2(refs.grid.store.data.items, 'data.sequence')) || 0;",
+                                            "\trefs = me.getReferences(),",
+                                            "\tsequence = Ext.Array.max(Ext.pluck2(refs.grid.store.data.items, 'data.sequence')) || 0;",
                                             "",
                                             "sequence++;",
                                             "",
-                                            "console.log(\"selectionEditor - button add handler printing sequence\", sequence);",
-                                            "",
                                             "refs.grid.store.add({",
-                                            "    id: sequence, // id of this answer is its sequence number",
-                                            "    sequence: sequence,",
-                                            "    text: 'New Answer ' + sequence",
+                                            "\tid: sequence, // id of this answer is its sequence number",
+                                            "\tsequence: sequence,",
+                                            "\ttext: 'New Answer ' + sequence",
                                             "});"
                                         ]
                                     },

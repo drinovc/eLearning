@@ -14,182 +14,176 @@
  */
 
 Ext.define('eLearning.view.ProgramsViewController', {
-    extend: 'Ext.app.ViewController',
-    alias: 'controller.programs',
+	extend: 'Ext.app.ViewController',
+	alias: 'controller.programs',
 
-    load: function() {
+	load: function() {
 
-        var me = this,
-            store = me.getStore('StorePrograms');
+		var me = this,
+		    store = me.getStore('StorePrograms');
 
-        me.getStore('StoreProgramCategories').setData(App.lookups.ProgramCategories);
-        store.load({
-            callback:function(){
-                me.saveState(); // save everything to localstorage
-            }
-        });
+		me.getStore('StoreProgramCategories').setData(App.lookups.ProgramCategories);
+		store.load({
+		    callback:function(){
+		        me.saveState(); // save everything to localstorage
+		    }
+		});
 
-        //me.loadState();
-    },
+		//me.loadState();
+	},
 
-    getCurrentState: function() {
-        var me = this,
-            refs = me.getReferences(),
-            store = me.getStore('StorePrograms'),
-            data = Ext.clone(Ext.pluck(store.getRange(), 'data'));
+	getCurrentState: function() {
+		var me = this,
+		    refs = me.getReferences(),
+		    store = me.getStore('StorePrograms'),
+		    data = Ext.clone(Ext.pluck(store.getRange(), 'data'));
 
-        var programs = {};
-        for (var i = 0; i < data.length; i++){
-            var entry = data[i];
-            console.log("printing data entry in programs get current state", entry);
+		var programs = {};
+		for (var i = 0; i < data.length; i++){
+		    var entry = data[i];
 
-            programs[entry.id] = {programInfo: entry};
-        }
-
-
-        //return data;
-        return programs;
-    },
-
-    loadState: function() {
-        var me = this,
-            refs = me.getReferences(),
-            store = me.getStore('StorePrograms'),
-            data = localStorage.getItem('mxp_elearning');
-
-        if(data) {
-            data = Ext.decode(data);
-            delete data.slides;
-            delete data.questions;
-            delete data.answers;
-            store.setData(data);
-        }
-    },
-
-    saveState: function() {
-        var me = this,
-            data = me.getCurrentState();
-
-        var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
-        console.log("printing localstorage", localStorageData);
+		    programs[entry.id] = {programInfo: entry};
+		}
 
 
-        if(!localStorageData){
-            localStorageData = {};
-        }
-        for (var key in data) {
-            if(!localStorageData[key]){
-                localStorageData[key]={};
-            }
+		//return data;
+		return programs;
+	},
 
-            localStorageData[key].programInfo = data[key].programInfo;
-            console.log("printing loalstorage",localStorageData);
-        }
+	loadState: function() {
+		var me = this,
+		    refs = me.getReferences(),
+		    store = me.getStore('StorePrograms'),
+		    data = localStorage.getItem('mxp_elearning');
 
-        // sets current state to localstorage and calls update with server
-        localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+		if(data) {
+		    data = Ext.decode(data);
+		    delete data.slides;
+		    delete data.questions;
+		    delete data.answers;
+		    store.setData(data);
+		}
+	},
 
-        console.log("printing localstorage", localStorageData);
+	saveState: function() {
+		var me = this,
+		    data = me.getCurrentState();
 
+		var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
 
-        //below is old code that overwrittes completely whole xmp_elearning store
+		if(!localStorageData){
+		    localStorageData = {};
+		}
+		for (var key in data) {
+		    if(!localStorageData[key]){
+		        localStorageData[key]={};
+		    }
 
-        /*var me = this,
-            refs = me.getReferences(),
-            data = me.getCurrentState();
+		    localStorageData[key].programInfo = data[key].programInfo;
+		}
 
-        localStorage.setItem('mxp_elearning', Ext.encode(data));*/
-    },
-
-    onRowEditingCanceledit: function(editor, context, eOpts) {
-        var me = this,
-            refs = me.getReferences(),
-            store = me.getStore('StorePrograms');
-
-        // Canceling editing of a locally added, unsaved record: remove it
-        if (context.record.phantom) {
-            store.remove(context.record);
-        }
-    },
-
-    onRowEditingEdit: function(editor, context, eOpts) {
-        this.saveState();
-    },
-
-    add: function(button, e) {
-        var me = this,
-            refs = me.getReferences(),
-            store = me.getStore('StorePrograms'),
-            editor = me.getView().getPlugin('rowEditing'),
-            data = {
-                id: createGUID(),
-                name: 'New Training Program',
-                categoryId: null,
-                description: 'New Training Program Description',
-                validFrom: new Date(),
-                validTo: Ext.Date.add(new Date(), Ext.Date.YEAR, 1),
-                completionTime: 60,
-                maxAttemptsTrainingMode: 1,
-                maxAttemptsScoreMode: 1,
-                passScore: 75,
-                active: true
-            };
-
-        var rec = store.add(data)[0];
-
-        rec.phantom = true;
-        //store.sync();
-        editor.startEdit(rec);
-
-        // me.saveState();
-    },
-
-    remove: function(button, e) {
-        var me = this;
-
-        me.getStore('StorePrograms').remove(me.getView().getSelection()[0]);
-        me.saveState();
-    },
-
-    duplicate: function(button, e) {
-        console.log("Duplicate unsupported");
-    },
-
-    bookmark: function(button, e) {
-        console.log("Bookmark unsupported");
-    },
-
-    editSlides: function(button, e) {
-
-        var me = this,
-            view = me.getView(),
-            selection = view.getSelection()[0],
-            mainView = view.up('#mainView');
-
-        if(!selection){
-            console.warn("NO SELECTION CHOSEN - fix so item is always selected");
-            return;
-        }
+		// sets current state to localstorage and calls update with server
+		localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
 
 
-        me.saveState();
-        //mainView.setActiveItem('editSlides');
-        //mainView.getController().load({ program: selection });
+		//below is old code that overwrittes completely whole xmp_elearning store
+
+		/*var me = this,
+		    refs = me.getReferences(),
+		    data = me.getCurrentState();
+
+		localStorage.setItem('mxp_elearning', Ext.encode(data));*/
+	},
+
+	onRowEditingCanceledit: function(editor, context, eOpts) {
+		var me = this,
+			refs = me.getReferences(),
+			store = me.getStore('StorePrograms');
+
+		// Canceling editing of a locally added, unsaved record: remove it
+		if (context.record.phantom) {
+			store.remove(context.record);
+		}
+	},
+
+	onRowEditingEdit: function(editor, context, eOpts) {
+		this.saveState();
+	},
+
+	add: function(button, e) {
+		var me = this,
+			refs = me.getReferences(),
+			store = me.getStore('StorePrograms'),
+			editor = me.getView().getPlugin('rowEditing'),
+			data = {
+				id: createGUID(),
+				name: 'New Training Program',
+				categoryId: null,
+				description: 'New Training Program Description',
+				validFrom: new Date(),
+				validTo: Ext.Date.add(new Date(), Ext.Date.YEAR, 1),
+				completionTime: 60,
+				maxAttemptsTrainingMode: 1,
+				maxAttemptsScoreMode: 1,
+				passScore: 75,
+				active: true
+			};
+
+		var rec = store.add(data)[0];
+
+		rec.phantom = true;
+		//store.sync();
+		editor.startEdit(rec);
+
+		// me.saveState();
+	},
+
+	remove: function(button, e) {
+		var me = this;
+
+		me.getStore('StorePrograms').remove(me.getView().getSelection()[0]);
+		me.saveState();
+	},
+
+	duplicate: function(button, e) {
+		console.warn("Duplicate unsupported");
+	},
+
+	bookmark: function(button, e) {
+		console.warn("Bookmark unsupported");
+	},
+
+	editSlides: function(button, e) {
+
+		var me = this,
+			view = me.getView(),
+			selection = view.getSelection()[0],
+			mainView = view.up('#mainView');
+
+		if(!selection){
+			console.warn("NO SELECTION CHOSEN - fix so item is always selected");
+			return;
+		}
 
 
-        // new code Jernej Habjan 2018-07-23 - calling load on editSlides:
-        var newActiveItem = mainView.setActiveItem('editSlides');
-        console.log("clicked edit slides",newActiveItem, selection);
-        newActiveItem.getController().load({ program: selection });
-    },
+		me.saveState();
+		//mainView.setActiveItem('editSlides');
+		//mainView.getController().load({ program: selection });
 
-    close: function(owner, tool, event) {
-        this.getView().up('#mainView').setActiveItem('homePage');
-    },
 
-    onGridProgramsActivate: function(component, eOpts) {
-        this.load();
+		// new code Jernej Habjan 2018-07-23 - calling load on editSlides:
+		var newActiveItem = mainView.setActiveItem('editSlides');
+		console.log("clicked edit slides",newActiveItem, selection);
+		newActiveItem.getController().load({ program: selection });
+	},
 
-    }
+	close: function(owner, tool, event) {
+		this.getView().up('#mainView').setActiveItem('homePage');
+	},
+
+	onGridProgramsActivate: function(component, eOpts) {
+		this.load();
+
+	}
 
 });

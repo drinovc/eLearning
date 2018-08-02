@@ -48,7 +48,33 @@
                 "reference": "string"
             },
             "name": "MyPropertyGrid",
-            "designerId": "51e28c7f-2745-4e12-a173-b027b3a4da9b"
+            "designerId": "51e28c7f-2745-4e12-a173-b027b3a4da9b",
+            "cn": [
+                {
+                    "type": "viewcontrollereventbinding",
+                    "reference": {
+                        "name": "listeners",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "fn": "onPropertygridPropertyChange",
+                        "implHandler": [
+                            "this._opts.scope.getController().saveState();"
+                        ],
+                        "name": "propertychange",
+                        "scope": "me"
+                    },
+                    "configAlternates": {
+                        "fn": "string",
+                        "name": "string",
+                        "scope": "string",
+                        "implHandler": "code"
+                    },
+                    "name": "onPropertygridPropertyChange",
+                    "designerId": "4af30fae-92a8-474b-996a-b3a7fc31e665"
+                }
+            ]
         }
     ]
 }

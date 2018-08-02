@@ -14,89 +14,89 @@
  */
 
 Ext.define('eLearning.model.Program', {
-    extend: 'Ext.data.Model',
+	extend: 'Ext.data.Model',
 
-    requires: [
-        'Ext.data.field.String',
-        'Ext.data.field.Date',
-        'Ext.data.field.Number',
-        'Ext.data.field.Boolean'
-    ],
+	requires: [
+		'Ext.data.field.String',
+		'Ext.data.field.Date',
+		'Ext.data.field.Number',
+		'Ext.data.field.Boolean'
+	],
 
-    fields: [
-        {
-            type: 'string',
-            name: 'id',
-            unique: true
-        },
-        {
-            type: 'int',
-            name: 'programId'
-        },
-        {
-            name: 'name'
-        },
-        {
-            type: 'int',
-            name: 'categoryId'
-        },
-        {
-            name: 'description'
-        },
-        {
-            type: 'date',
-            name: 'validFrom',
-            dateWriteFormat: 'c'
-        },
-        {
-            type: 'date',
-            name: 'validTo',
-            dateWriteFormat: 'c'
-        },
-        {
-            type: 'float',
-            name: 'completionTime'
-        },
-        {
-            type: 'int',
-            name: 'maxAttemptsTrainingMode'
-        },
-        {
-            type: 'int',
-            name: 'maxAttemptsScoreMode'
-        },
-        {
-            name: 'passScore'
-        },
-        {
-            name: 'certificateFileName'
-        },
-        {
-            type: 'boolean',
-            name: 'active'
-        },
-        {
-            type: 'int',
-            name: 'createdById'
-        },
-        {
-            type: 'int',
-            name: 'createdAtId'
-        },
-        {
-            type: 'date',
-            name: 'created'
-        },
-        {
-            type: 'date',
-            name: 'lastChanges'
-        },
-        {
-            name: 'changed'
-        },
-        {
-            type: 'int',
-            name: 'lastChangeLogId'
-        }
-    ]
+	fields: [
+		{
+			type: 'string',
+			name: 'id',
+			unique: true
+		},
+		{
+			type: 'int',
+			name: 'programId'
+		},
+		{
+			name: 'name'
+		},
+		{
+			type: 'int',
+			name: 'categoryId'
+		},
+		{
+			name: 'description'
+		},
+		{
+			type: 'date',
+			name: 'validFrom',
+			dateWriteFormat: 'c'
+		},
+		{
+			type: 'date',
+			name: 'validTo',
+			dateWriteFormat: 'c'
+		},
+		{
+			type: 'float',
+			name: 'completionTime'
+		},
+		{
+			type: 'int',
+			name: 'maxAttemptsTrainingMode'
+		},
+		{
+			type: 'int',
+			name: 'maxAttemptsScoreMode'
+		},
+		{
+			name: 'passScore'
+		},
+		{
+			name: 'certificateFileName'
+		},
+		{
+			type: 'boolean',
+			name: 'active'
+		},
+		{
+			type: 'int',
+			name: 'createdById'
+		},
+		{
+			type: 'int',
+			name: 'createdAtId'
+		},
+		{
+			type: 'date',
+			name: 'created'
+		},
+		{
+			type: 'date',
+			name: 'lastChanges'
+		},
+		{
+			name: 'changed'
+		},
+		{
+			type: 'int',
+			name: 'lastChangeLogId'
+		}
+	]
 });

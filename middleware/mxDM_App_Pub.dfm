@@ -2023,6 +2023,18 @@ object Pub: TPub
         Value = Null
       end
       item
+        Name = 'programStarted'
+        DataType = ftDateTime
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'programCompleted'
+        DataType = ftDateTime
+        Size = -1
+        Value = Null
+      end
+      item
         Name = 'programStatusId'
         DataType = ftInteger
         Size = -1
@@ -2045,6 +2057,20 @@ object Pub: TPub
         DataType = ftDateTime
         Size = -1
         Value = Null
+      end
+      item
+        Name = 'lastChanged'
+        DataType = ftDateTime
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'changed'
+        DataType = ftString
+        NumericScale = 255
+        Precision = 255
+        Size = 1
+        Value = Null
       end>
     InsertQuery.SQL.Strings = (
       
@@ -2055,8 +2081,8 @@ object Pub: TPub
       'DECLARE @personId INT = :personId'
       'DECLARE @programGuid NVARCHAR(38) = :programId'
       'DECLARE @programId INT = NULL -- gets set later'
-      'DECLARE @programStarted DATETIME = NULL'
-      'DECLARE @programCompleted DATETIME = NULL'
+      'DECLARE @programStarted DATETIME = :programStarted'
+      'DECLARE @programCompleted DATETIME = :programCompleted'
       'DECLARE @commentEmployee NVARCHAR(2000) = NULL'
       'DECLARE @commentInternal NVARCHAR(2000) = NULL'
       'DECLARE @programStatusId INT = :programStatusId'
@@ -2064,8 +2090,8 @@ object Pub: TPub
       'DECLARE @createdAtId INT = NULL'
       'DECLARE @createdById INT = :createdById'
       'DECLARE @created DATETIME = :created'
-      'DECLARE @lastChanged DATETIME = GETDATE()'
-      'DECLARE @changed CHAR(1) = 0'
+      'DECLARE @lastChanged DATETIME = :lastChanged'
+      'DECLARE @changed CHAR(1) = :changed'
       'DECLARE @changeLogId BIGINT = 1'
       ''
       

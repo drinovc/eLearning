@@ -19,7 +19,7 @@
         "lockUrlPrefix": true,
         "buildShouldOverwriteIndex": true,
         "generateArchitectVersion": true,
-        "spacesToIndent": 4,
+        "spacesToIndent": "tab",
         "lineEnding": "LF",
         "genTimestamps": false,
         "cacheBust": false,
@@ -71,7 +71,10 @@
             "093741d7-7ba2-4cf4-a2a4-dccbbf4730ac",
             "ca8be6c6-947e-43ac-b6ff-a38941f862d4",
             "e003305b-d8cd-4ae1-9a89-33526cc237da",
-            "2b4061c2-eb58-419f-b864-9ad1d450e59a"
+            "2b4061c2-eb58-419f-b864-9ad1d450e59a",
+            "48883c8b-3c2f-439e-90d2-0693fc851240",
+            "044546b6-6efd-4833-aa8c-92732a71f4bf",
+            "3f863b0a-37de-4019-bb25-f7446a511217"
         ],
         "store": [],
         "controller": [
@@ -87,7 +90,7 @@
             "1b5baa9c-90d6-48c3-8535-dcab2c1987d6"
         ],
         "resource": [
-            "8c9bc0e4-95e9-4084-a2ed-73480c6221f6",
+            "520054af-78a8-425b-945c-e1d6b13925e6",
             "ed1b2218-96e3-4f67-afee-45be463f92e9",
             "b879178c-fc84-4884-b934-bcb78d02c77d",
             "98fb3144-3565-436a-8267-a80378797a66",

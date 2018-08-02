@@ -14,74 +14,72 @@
  */
 
 Ext.define('eLearning.view.SelectionEditorViewController', {
-    extend: 'Ext.app.ViewController',
-    alias: 'controller.selectioneditor',
+	extend: 'Ext.app.ViewController',
+	alias: 'controller.selectioneditor',
 
-    show: function(opts) {
-        opts = Ext.applyIf(opts, {
-            text: '',
-            options: [],
-            callback: function(value) { console.log('Please specify a callback!', value); },
-            scope: this
-        });
+	show: function(opts) {
+		opts = Ext.applyIf(opts, {
+		    text: '',
+		    options: [],
+		    callback: function(value) { console.log('Please specify a callback!', value); },
+		    scope: this
+		});
 
-        var me = this,
-            refs = me.getReferences(),
-            view = me.getView();
+		var me = this,
+		    refs = me.getReferences(),
+		    view = me.getView();
 
-        me._opts = opts;
+		me._opts = opts;
 
-        if(opts.options) {
-            me.getStore('StoreOptions').setData(Ext.clone(opts.options));
-        }
-        refs.text.setValue(opts.text);
+		if(opts.options) {
+		    me.getStore('StoreOptions').setData(Ext.clone(opts.options));
+		}
+		refs.text.setValue(opts.text);
 
-        view.show();
-    },
+		view.show();
+	},
 
-    btnSaveHandler: function(button, e) {
-        var me = this,
-            refs = me.getReferences(),
-            opts = me._opts,
-            options = refs.grid.store.data.items,
-            text = refs.text.getValue(),
-            reason = opts.callback.call(opts.scope, text, Ext.clone(Ext.pluck(options, 'data')));
-        if(reason) {
-            Ext.Msg.alert('Note', reason);
-        }
-        else {
-            me.getView().close();
-        }
-    },
+	btnSaveHandler: function(button, e) {
+		var me = this,
+			refs = me.getReferences(),
+			opts = me._opts,
+			options = refs.grid.store.data.items,
+			text = refs.text.getValue(),
+			reason = opts.callback.call(opts.scope, text, Ext.clone(Ext.pluck(options, 'data')));
+		if(reason) {
+			Ext.Msg.alert('Note', reason);
+		}
+		else {
+			me.getView().close();
+		}
+	},
 
-    btnCancelHandler: function(button, e) {
-        var me = this;
+	btnCancelHandler: function(button, e) {
+		var me = this;
 
-        me.getView().close();
-    },
+		me.getView().close();
+	},
 
-    btnAddHandler: function(button, e) {
-        var me = this,
-            refs = me.getReferences(),
-            sequence = Ext.Array.max(Ext.pluck2(refs.grid.store.data.items, 'data.sequence')) || 0;
+	btnAddHandler: function(button, e) {
+		var me = this,
+			refs = me.getReferences(),
+			sequence = Ext.Array.max(Ext.pluck2(refs.grid.store.data.items, 'data.sequence')) || 0;
 
-        sequence++;
+		sequence++;
 
-        console.log("selectionEditor - button add handler printing sequence", sequence);
+		refs.grid.store.add({
+			id: sequence, // id of this answer is its sequence number
+			sequence: sequence,
+			text: 'New Answer ' + sequence
+		});
+	},
 
-        refs.grid.store.add({
-            id: sequence, // id of this answer is its sequence number
-            sequence: sequence,
-            text: 'New Answer ' + sequence
-        });
-    },
+	btnRemoveHandler: function(button, e) {
+		var me = this,
+			refs = me.getReferences(),
+			rec = refs.grid.getSelection()[0];
 
-    btnRemoveHandler: function(button, e) {
-        var me = this,
-            refs = me.getReferences(),
-            rec = refs.grid.getSelection()[0];
-
-        refs.grid.store.remove(rec);
-    }
+		refs.grid.store.remove(rec);
+	}
 
 });

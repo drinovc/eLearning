@@ -14,145 +14,144 @@
  */
 
 Ext.define('eLearning.view.EditSlidesViewModel', {
-    extend: 'Ext.app.ViewModel',
-    alias: 'viewmodel.editslides',
+	extend: 'Ext.app.ViewModel',
+	alias: 'viewmodel.editslides',
 
-    requires: [
-        'Ext.data.TreeStore',
-        'Ext.data.proxy.Rest',
-        'Ext.data.reader.Json',
-        'Ext.data.writer.Json'
-    ],
+	requires: [
+		'Ext.data.TreeStore',
+		'Ext.data.proxy.Rest',
+		'Ext.data.reader.Json',
+		'Ext.data.writer.Json'
+	],
 
-    stores: {
-        TreeStoreSlides: {
-            type: 'tree',
-            removeAll: function(silent) {
+	stores: {
+		TreeStoreSlides: {
+			type: 'tree',
+			removeAll: function(silent) {
 
-                var root = this.getRootNode();
-                if (root) {
-                    root.destroy(true);
-                }
+				var root = this.getRootNode();
+				if (root) {
+					root.destroy(true);
+				}
 
-                if(silent !== true){
-                    this.fireEvent('clear', this);
-                }
-
-
+				if(silent !== true){
+					this.fireEvent('clear', this);
+				}
 
 
 
 
-                /*
+
+
+				/*
 
 
 
+				//called my remove all function in treestoreslides
 
-                console.log("called my remove all function in treestoreslides");
+				var me = this,
+					root = me.getRootNode();
 
-                var me = this,
-                root = me.getRootNode();
+				if(silent !== true){
+					if (root) {
+						// will fire the 'destroy' operation for every child of the root
+						root.destroy(true);
+					}
+					//fire the clear even only if not silent
+					this.fireEvent('clear', me);
+				}else{
+					if (root) {
+						// temporarily remove the onNodeRemove event listener so that when removeAll is called,
+						// the removed nodes do not get added to the removed array
+						//me.tree.on('remove', me.onNodeRemove, me); - todo this was before i added below line
+						me.on('remove', me.onNodeRemove, me);
 
-                if(silent !== true){
-                if (root) {
-                // will fire the 'destroy' operation for every child of the root
-                root.destroy(true);
-            }
-            //fire the clear even only if not silent
-            this.fireEvent('clear', me);
-        }else{
-            if (root) {
-                // temporarily remove the onNodeRemove event listener so that when removeAll is called,
-                // the removed nodes do not get added to the removed array
-                //me.tree.on('remove', me.onNodeRemove, me); - todo this was before i added below line
-                me.on('remove', me.onNodeRemove, me);
+						//root.removeAll(false); // silent remove all children
+						//root.destroy(false); // destroy just the root
 
-                //root.removeAll(false); // silent remove all children
-                //root.destroy(false); // destroy just the root
-
-                // reattach the onNodeRemove listener
-                //me.tree.on('remove', me.onNodeRemove, me); - todo this was before i added below line
-                me.on('remove', me.onNodeRemove, me);
-            }
-        }*/
-            },
-            model: 'eLearning.model.Slide',
-            defaultRootText: 'Slides',
-            parentIdProperty: 'parentId',
-            root: {
-                expanded: true,
-                loaded: true
-            },
-            proxy: {
-                type: 'rest',
-                api: {
-                    create: '/Pub/Pages',
-                    read: '/Pub/Pages',
-                    update: '/POST/Pub/Pages',
-                    destroy: '/Pub/Pages'
-                },
-                reader: {
-                    type: 'json',
-                    rootProperty: 'data'
-                },
-                writer: {
-                    type: 'json',
-                    writeAllFields: true,
-                    rootProperty: 'data'
-                }
-            }
-        },
-        QuestionsStoreSlides: {
-            model: 'eLearning.model.Question',
-            proxy: {
-                type: 'ajax',
-                batchActions: false,
-                api: {
-                    create: '/Pub/Questions',
-                    read: '/Pub/Questions',
-                    update: '/POST/Pub/Questions',
-                    destroy: '/Pub/Questions'
-                },
-                reader: {
-                    type: 'json',
-                    rootProperty: 'data'
-                }
-            }
-        },
-        PersonAnswers: {
-            model: 'eLearning.model.PersonAnswers',
-            proxy: {
-                type: 'ajax',
-                batchActions: false,
-                api: {
-                    create: '/Pub/PersonAnswers',
-                    read: '/Pub/PersonAnswers',
-                    update: '/POST/Pub/PersonAnswers',
-                    destroy: '/Pub/PersonAnswers'
-                },
-                reader: {
-                    type: 'json',
-                    rootProperty: 'data'
-                }
-            }
-        },
-        PersonPrograms: {
-            model: 'eLearning.model.PersonPrograms',
-            proxy: {
-                type: 'ajax',
-                batchActions: false,
-                api: {
-                    create: '/Pub/PersonPrograms',
-                    read: '/Pub/PersonPrograms',
-                    update: '/POST/Pub/PersonPrograms',
-                    destroy: '/Pub/PersonPrograms'
-                },
-                reader: {
-                    type: 'json',
-                    rootProperty: 'data'
-                }
-            }
-        }
-    }
+						// reattach the onNodeRemove listener
+						//me.tree.on('remove', me.onNodeRemove, me); - todo this was before i added below line
+						me.on('remove', me.onNodeRemove, me);
+					}
+				}*/
+			},
+			model: 'eLearning.model.Slide',
+			defaultRootText: 'Slides',
+			parentIdProperty: 'parentId',
+			root: {
+				expanded: true,
+				loaded: true
+			},
+			proxy: {
+				type: 'rest',
+				api: {
+					create: '/Pub/Pages',
+					read: '/Pub/Pages',
+					update: '/POST/Pub/Pages',
+					destroy: '/Pub/Pages'
+				},
+				reader: {
+					type: 'json',
+					rootProperty: 'data'
+				},
+				writer: {
+					type: 'json',
+					writeAllFields: true,
+					rootProperty: 'data'
+				}
+			}
+		},
+		QuestionsStoreSlides: {
+			model: 'eLearning.model.Question',
+			proxy: {
+				type: 'ajax',
+				batchActions: false,
+				api: {
+					create: '/Pub/Questions',
+					read: '/Pub/Questions',
+					update: '/POST/Pub/Questions',
+					destroy: '/Pub/Questions'
+				},
+				reader: {
+					type: 'json',
+					rootProperty: 'data'
+				}
+			}
+		},
+		PersonAnswers: {
+			model: 'eLearning.model.PersonAnswers',
+			proxy: {
+				type: 'ajax',
+				batchActions: false,
+				api: {
+					create: '/Pub/PersonAnswers',
+					read: '/Pub/PersonAnswers',
+					update: '/POST/Pub/PersonAnswers',
+					destroy: '/Pub/PersonAnswers'
+				},
+				reader: {
+					type: 'json',
+					rootProperty: 'data'
+				}
+			}
+		},
+		PersonPrograms: {
+			model: 'eLearning.model.PersonPrograms',
+			proxy: {
+				type: 'ajax',
+				batchActions: false,
+				api: {
+					create: '/Pub/PersonPrograms',
+					read: '/Pub/PersonPrograms',
+					update: '/POST/Pub/PersonPrograms',
+					destroy: '/Pub/PersonPrograms'
+				},
+				reader: {
+					type: 'json',
+					rootProperty: 'data'
+				}
+			}
+		}
+	}
 
 });

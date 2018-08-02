@@ -102,9 +102,6 @@ function cleanTreeNodeData(data) {
         data.content = Ext.encode(content);
     }
     catch (e) {} 
-
-    console.log("printing filtered data", data);
-    
     return data;
 }
 
@@ -127,3 +124,20 @@ function sumDict(obj) {
 
 // making shortcut for console.log()
 var print = console.log.bind(console);
+
+
+
+
+/* Close fullscreen */
+function closeFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.mozCancelFullScreen) { /* Firefox */
+    document.mozCancelFullScreen();
+  } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) { /* IE/Edge */
+    document.msExitFullscreen();
+  }
+}
+

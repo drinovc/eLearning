@@ -14,2211 +14,2614 @@
  */
 
 Ext.define('eLearning.view.EditSlidesViewController', {
-    extend: 'Ext.app.ViewController',
-    alias: 'controller.editslides',
+	extend: 'Ext.app.ViewController',
+	alias: 'controller.editslides',
+
+	load: function(opts) {
+
+		var me = this,
+		    refs = me.getReferences();
+
+
+
+		opts = Ext.applyIf(opts || {}, {
+		    program: null
+		});
+
+
+		me.programData = opts.program.data; // create variable of this program that can be accessed from anywhere in this controller
+		me.programId = opts.program.id; //
+
+
+		if(opts.program.get){
+		    refs.panelHeader.setTitle(opts.program.get('name'));
+		}
+		else{
+		    // this gets called if we clicked editSlides button in main view
+		    refs.panelHeader.setTitle('Test title in debug mode');
+		}
+		// clear old panel if there is no slides on this program yet, so content from previous program doesn't remain on this one
+		this.clearSlidePanel();
+		me.allComponents = []; // clear old components - this array is used to store all ext components of this slide
+		me._selectedComponents = [];
+
+		 // call sync state here and not save state, as we dont have anything to save yet
+		var me = this,
+		    localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId],
+		    treeStoreSlides = me.getStore('TreeStoreSlides'),
+		    questionsStoreSlides = me.getStore('QuestionsStoreSlides'),
+		    personAnswersStore = me.getStore('PersonAnswers');
+
+		// init subfolders it they are not yet
+		if(!localStorageData.slides){localStorageData.slides = {};}
+		if(!localStorageData.questions){localStorageData.questions = {};}
+		if(!localStorageData.answers){localStorageData.answers = {};}
+		me.saveState(localStorageData);
+
+		if (navigator.onLine){
+		    var syncAnswersCallback = function(){
+		        // set initial data
+
+		        me.setInitialSlide();
+		    };
+
+		    me.serverSync(syncAnswersCallback);
+		}
+
+		else{
+		    // set localstorage data to tree store
+
+		    treeStoreSlides.setData(localStorageData.slides);
+		    questionsStoreSlides.setData(localStorageData.questions);
+		    personAnswersStore.setData(localStorageData.answers);
+		    if(localStorageData.pageSetup){
+		         me._pageSetup = localStorageData.pageSetup;
+		    }
+
+
+		    // set initial data
+		    me.setInitialSlide();
+		}
+
+
+
+		// loaded latest person program so we can see if we can resume current program - color button to indicate that personProgram is still active
+
+		var me = this,
+		    refs = me.getReferences(),
+		    personProgramsStore = me.getStore('PersonPrograms'),
+		    personAnswersStore = me.getStore('PersonAnswers');
+		var TEST_PERSON_ID = 10000112;
+
+		// reset button to default
+		var previewButton = Ext.getCmp('btnPreview');
+		previewButton.removeCls('active-program');
+		previewButton.setText('Preview');
+
+		if(me.programData.validTo < new Date()){
+		    Ext.toast("Program is not valid anymore!");
+		    Ext.get('btnPreview').disable();
+		    return;
+		}
+
+		personProgramsStore.load({
+		    params:{
+		        personId: TEST_PERSON_ID,
+		        programId: me.programId
+		    },
+		    callback:function(record){
+		        if(record && record.length > 0){
+		            me.currentPersonProgram = record[0].data;
+		            if(me.currentPersonProgram.attempt >= me.programData.maxAttemptsTrainingMode + me.programData.maxAttemptsScoreMode){
+		                // Cannot attempt any more tries... returning
+		                return;
+		            }
+		            // here we can read the records id to use in posting answers
+		            // add completion time minutes to initial programStarted time
+		            var endTime = new Date(new Date(me.currentPersonProgram.programStarted).getTime() +
+		                                   me.programData.completionTime * 60000); // completion time in database is in minutes
+		            var remainingMS = endTime.getTime() - new Date().getTime();
+		            if(remainingMS > 0 && (me.currentPersonProgram.programStatusId == App.ProgramStatuses["In Progress"] ||
+		                                   me.currentPersonProgram.programStatusId == App.ProgramStatuses.Repeat)){
+		                previewButton.addCls('active-program');
+		                previewButton.setText('Resume preview');
+		            }
+		        }
+		    }
+		});
+	},
+
+	newSection: function() {
+		//creating new section" ,"TODO -leaf is here set to true, but it should be pulled from database if this section has any children
+		var me = this,
+		    refs = me.getReferences(),
+		    store = me.getStore('TreeStoreSlides');
+
+		var data = {
+		    id: createGUID(),
+		    programId: me.programId,
+		    title: 'New Section',
+		    content: null,
+		    expanded: false,
+		    children: [],
+		    categoryId : App.ProgramPageCategoriesEnum.Chapter,
+		    scoreMethod: 'A',
+		    sequence: 1234
+
+		};
+
+		var parentNode = /*refs.treeSlides.getSelection()[0] ||*/ store.getRoot();
+		slide = parentNode.appendChild(data);
+		refs.treeSlides.setSelection(slide);
+		me.saveSlideState(slide);
+	},
+
+	newSlide: function() {
+		var me = this,
+		    refs = me.getReferences(),
+		    store = me.getStore('TreeStoreSlides'),
+		    parentNode = refs.treeSlides.getSelection()[0] || store.getRoot(),
+		    slide,
+		    data = {
+		        id: createGUID(),
+		        programId: me.programId,
+		        sequence: me.getNumSlides(), // todo - this sequence might not be correct to write in database
+		        title: 'New Page ' + me.getNumSlides() + 1,
+		        content: null,
+		        expanded: true,
+		        leaf: true,
+		        isSlide : true,
+		        categoryId : App.ProgramPageCategoriesEnum.Page,
+		        scoreMethod: 'A'
+
+		    };
+
+		if(parentNode.isLeaf()) {
+		    parentNode = parentNode.parentNode;
+		}
+
+		slide = parentNode.appendChild(data);
+		refs.treeSlides.setSelection(slide);
+		me.saveSlideState(slide);
+	},
+
+	deleteSlide: function(slide) {
+		var me = this,
+		    refs = me.getReferences(),
+		    store = me.getStore('TreeStoreSlides');
+
+		slide = slide || me.getCurrentSlide();
+
+		if(slide) {
+		    var nextSlideIdx = store.indexOf(slide) - 1,
+		        nextSlide = store.getAt(nextSlideIdx >= 0 ? nextSlideIdx : 1),
+		        components = (Ext.decode(slide.get('content') || '{}').components),
+		        childNodes = slide.childNodes;
+
+		    if((components && components.length > 0) || (childNodes && childNodes.length > 0)) {
+		        Ext.Msg.confirm( 'Delete slide', 'Are you sure?' +
+		                        ((childNodes && childNodes.length > 0)?
+		                         " You will delete whole subtree!": ""), function(btn) {
+		            if(btn == 'yes') {
+
+		                slide.parentNode.removeChild(slide);
+		                me.saveState();
+		                me.clearSlidePanel();
+		                me.nextSlide();
+
+		            }
+		        });
+		    }
+		    else {
+		        slide.parentNode.removeChild(slide);
+		        me.saveState();
+		        me.clearSlidePanel();
+		        me.nextSlide();
+
+		    }
+		}
+	},
+
+	getCurrentSlide: function() {
+		var me = this,
+		    refs = me.getReferences(),
+		    store = me.getStore('TreeStoreSlides');
+
+		var currentSlideIdx = store.indexOf(me.currentSlide);
+
+
+		me.currentSlide = refs.treeSlides.getSelection()[0] || store.getAt(currentSlideIdx);
+
+
+		return me.currentSlide;
+	},
+
+	nextSlide: function() {
+		// variable to recursively descend to first slide - if its set to false, we also visit sections
+		var REC_TO_SLIDE = true;
+
+		// if (REC_TO_SLIDE &&  this.getNumSlides() < 2){
+		//     // there is 1 or 0 slides and recursion is set to true - which means we cannot visit sections so return
+		//     return;
+		// }
+
+		var me = this,
+		    refs = me.getReferences(),
+		    store = me.getStore('TreeStoreSlides'),
+		    slide = me.getCurrentSlide(),
+		    nextSlideIdx = store.indexOf(slide) + 1,
+		    nextSlide = store.getAt(nextSlideIdx);
 
-    load: function(opts) {
+		if(nextSlide) {
 
-        var me = this,
-            refs = me.getReferences();
+		    refs.treeSlides.setSelection(nextSlide);
+		    if (nextSlide.data.leaf === false){
 
 
 
-        opts = Ext.applyIf(opts || {}, {
-            program: null
-        });
+		        me.nextSlide();
+
+		        if(REC_TO_SLIDE){
+		            // recursively iterate to leaf slide through section
+		            if (this.getNumSlides() === 0){
+		                //cannot switch recursively to next slide", "no slides exist
+		                return;
+		            }
+		            if (me.getCurrentSlide().data.leaf === false){
+		                me.prevSlide();
+		            }
+		        }
+
+
+
+		    }
+		}
+
+
+	},
+
+	prevSlide: function() {
+
+
+		// variable to recursively ascend to first remaining slide - if its set to false, we also visit sections
+		var REC_TO_SLIDE = true;
+
+		// if (REC_TO_SLIDE &&  this.getNumSlides() < 2){
+		//     // there is 1 or 0 slides and recursion is set to true - which means we cannot visit sections so return
+		//     return;
+		// }
+
+		var me = this,
+		    refs = me.getReferences(),
+		    store = me.getStore('TreeStoreSlides'),
+		    slide = me.getCurrentSlide(),
+		    prevSlideIdx = store.indexOf(slide) - 1,
+		    prevSlide = store.getAt(prevSlideIdx);
+
+
+		if(prevSlide) {
+		    refs.treeSlides.setSelection(prevSlide);
+		    if (prevSlide.data.leaf === false){
+
+		        me.prevSlide();
+
+		        if(REC_TO_SLIDE){
+		            // recursively iterate to leaf slide through section
+		            if (this.getNumSlides() === 0){
+		                //cannot switch recursively to prev slide", "no slides exist
+		                return;
+		            }
+
+
+		            if (me.getCurrentSlide().data.leaf === false){
+		                me.nextSlide();
+		            }
+
+		        }
+
+
+		    }
+
+
+
+		}
+	},
+
+	setBackground: function(src) {
+		var me = this,
+		    refs = me.getReferences();
+
+		me._pageSetup.background = src;
+
+		if(src) {
+		    Ext.getCmp('panelContent').setStyle('background', 'url(' + src + ')');
+		}
+		else {
+		    Ext.getCmp('panelContent').setStyle('background', null);
+		}
+
+		me.saveState();
+	},
+
+	togglePreview: function(preview, forceClose) {
+
+		var me = this,
+		    refs = me.getReferences();
+
+
+		me.previewing = preview; // setting current previewing state
+
+		if(preview){
+		    me.showPreview();
+		}else{
+		    Ext.Msg.confirm( 'Close preview', 'Are you sure?' , function(btn) { // show confirm dialog
+		        if(btn == 'yes') {
+		            me.closePreview(false);
+		        } // else do nothing
+		    });
+		}
+	},
+
+	getFreePosition: function() {
+		var me = this,
+		    refs = me.getReferences(),
+		    snap = me._pageSetup.snap,
+		    pos = {
+		        x: snap*2,
+		        y: snap*2,
+		        width: me.round(refs.panelContent.el.getWidth() - 2*snap*2),
+		        height: snap*2
+		    };
+
+		Ext.each(refs.panelContent.el.query('.html-component'), function(component) {
+		    pos.y = me.round(Math.max(pos.y, component.y + component.height + snap));
+		});
+
+		return pos;
+	},
+
+	getSlideComponents: function() {
+		return this.getReferences().panelContent.el.query('.html-component');
+	},
+
+	getCurrentState: function() {
+		var me = this,
+		    refs = me.getReferences(),
+		    slides = Ext.clone(Ext.pluck(refs.treeSlides.store.getRange(), 'data')).map(function(node) {
+		        return cleanTreeNodeData(node);
+		    });
+		     // make dict where key is its id
+
+		    var slidesDict = {};
+		    for (var i = 0; i < slides.length; i++){
+		        slidesDict[slides[i].id] = slides[i];
+
+		    }
+
+		    questions = Ext.clone(Ext.pluck(me.getStore('QuestionsStoreSlides').getRange(), 'data')).map(function(node) {
+		        //return cleanTreeNodeData(node);
+		        return node;
+		    });
+
+		    // make dict where key is its id
+
+		    var questionsDict = {};
+		    for (var i = 0; i < questions.length; i++){
+		        questionsDict[questions[i].id] = questions[i];
+
+		    }
+
+		data = {
+		        slides: slidesDict,
+		        pageSetup: me._pageSetup,
+		        questions: questionsDict
+		    };
+
+		return data;
+	},
+
+	saveSlideState: function(slide) {
+		var me = this,
+		    refs = me.getReferences(),
+		    content = {
+		        components: {}
+		    };
+
+		slide = slide || me.getCurrentSlide();
+
+		if(slide) {
+
+		    Ext.each(me.getSlideComponents(), function(component) {
+		        if(component._opts.type == me.cmpTypes.SELECTION){
+		            // if its question, append only guid of this question to content components
+		            var _opts = Ext.clone(component._opts);
+
+		            var _optsNew = {"type": _opts.type, "id": _opts.id };
+		            content.components[_opts.id]=_optsNew;
+		        }else{
+		            // append whole content
+		             content.components[component._opts.id] = component._opts;
+		        }
+
+
+		    });
+		    slide.set('lastChanged', new Date()); // set last changed for this slide here
+		    slide.set('content', Ext.encode(content));
+		    //slide.set('content', content);
+		    me.saveState();
+		}
+	},
+
+	loadSlideState: function(slide) {
+
+		var me = this,
+		    refs = me.getReferences(),
+		    parentEl = refs.panelContent.el.down('#html-slide');
+
+		me.clearSlidePanel();
+
+		if(slide) {
+		    var content = Ext.decode(slide.get('content') || '{}');
+		    for (var key in content.components){
+		        var component = content.components[key];
+		        this.insertComponent(component);
+		    }
+		}
+	},
+
+	clearSlidePanel: function() {
+		var me = this,
+		    refs = me.getReferences(),
+		    parentEl = refs.panelContent.el.down('#html-slide');
+
+		me.hideComponentTools();
+
+		Ext.each(parentEl.query('.html-component'), function(component) {
+		    parentEl.removeChild(component);
+		}, this);
+	},
+
+	addComponentListeners: function(item) {
+		var me = this,
+		    item = Ext.get(item);
+
+		item.on('deselect', function(e,t){
+
+		    item.removeCls('selected');
+		    /*if(item._resizer){
+		              item._resizer.destroy();
+		        item._resizer = null;
+
+		        print("deleted resizer");
+		    }*/
+		});
+		item.on('select', function(e,t){
+		    me._selectedComponents.push(item);
+		    item.addCls('selected');
+
+		    /*if(!item._resizer){
+		        me.createResizer(item);
+
+		    }*/
+		});
+		item.on('click', function(e, t) {
+		    if(e.stopPropagation){
+		        e.stopPropagation();
+		    }
+
+
+
+
+		    if(me.previewing || (!e.ctrlKey && !e.shiftKey )){ // if we are previewing or we didnt hold multiselect buttons
+		        for(var i = 0; i < me._selectedComponents.length; i++){
+		            var cmp = me._selectedComponents[i];
+		            cmp.fireEvent('deselect');
+		        }
+		        me._selectedComponents = []; // clear array
+		        me.hideComponentTools();
+
+
+		    }
+		    else{
+		        if (e.ctrlKey || e.shiftKey) {
+		            // check if this component is already in array of selected components - in this case - remove it
+		            var index = me._selectedComponents.indexOf(item);
+		            if (index > -1) {
+		                var removedItem = me._selectedComponents.splice(index, 1)[0];
+		                item.fireEvent('deselect');
+		                if(!me._selectedComponents.length){// disable tools if there are no more components selected
+
+		                    me.hideComponentTools();
+		                }
+		                // no items selected anymore - return
+		                return;
+
+		            }
+		        }
+
+		    }
+		    if(!me.previewing){
+		        item.fireEvent('select');
+		        me.showComponentTools(item);
+
+
+
+		    }
+		    if(me.previewing){
+		        // previewing
+
+		        // Handle checkboxes and radio buttons
+		        var SELECTED_VALUE = t.getAttribute('idx'); // idx have checboxes and radio buttons
+		        if (SELECTED_VALUE){
+		            // getting array from html collection
+		            var answers = Array.from(item.dom.children[0].children); // to change dom style
+		            var answers_js =  item.el._opts.options; // to update javascript object and set answer to true/false
+
+
+		            answers.shift(); // remove first text item (text) - all other are radio / check buttons
+
+
+
+
+		            var type = answers[0].getAttribute('type');
+		            switch(type) {
+		                case 'radio':
+		                    for (var i = 0, len = answers.length; i < len; i++) {
+		                        answers[i].classList.remove('selected');
+		                        answers_js[i].answer = false;
+		                    }
+		                    answers[SELECTED_VALUE].classList.add('selected');
+		                    answers_js[SELECTED_VALUE].answer = true;
+		                    break;
+		                case 'check':
+		                    // initialize all values to its previous value or "false" if it hasn't been checked yet
+		                    for (var i = 0, len = answers_js.length; i < len; i++) {
+		                        answers_js[i].answer = answers_js[i].answer || false;
+		                    }
+		                    // toggle the selected value
+		                    answers[SELECTED_VALUE].classList.toggle("selected");
+		                    answers_js[SELECTED_VALUE].answer = !answers_js[SELECTED_VALUE].answer;
+		                    break;
+		                default:
+		                    console.warn("Caller - addComponentListeners", "Unsupported component type" ,type);
+		            }
+		            var recordAnswers = {answer:{}};
+		            // create record
+		            for (var i = 0, len = answers_js.length; i < len; i++) {
+		                recordAnswers.answer[i] = answers_js[i].answer;
+		            }
+		            recordAnswers.answer = Ext.encode(recordAnswers.answer);
+		            var storageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
+		            storageData.answers[item._opts.id] = recordAnswers;
+		            me.saveState(storageData);
+		        }
+		    }
+		});
+		item.on('dblclick', function(e, t) {
+		    if(!me.previewing){
+		        me.editComponent(item);
+		    }
+		});
+
+		item.on('_edit', function(e, t) {
+		    if(!me.previewing){
+		        me.editComponent(item);
+		    }
+		});
+
+		item.on('_duplicate', function(e, t) {
+		    if(!me.previewing){
+		        me.duplicateComponent(item);
+		    }
+		});
+
+		item.on('_delete', function(e, t) {
+		    if(!me.previewing){
+		        me.deleteComponent(item, true); // sync is true
+		        me.hideComponentTools(item);
+
+		    }
+		});
+
+	},
+
+	showComponentTools: function(component) {
+		var me = this;
+
+		if(!me._componentTools) {
+		    me._componentTools = me.getView().add({ xtype: 'edittools' });
+		}
+		me._componentTools.getController().show({ components: me._selectedComponents });
+	},
+
+	hideComponentTools: function(component) {
+		var me = this;
+
+		if(!me._componentTools) {
+		    me._componentTools = me.getView().add({ xtype: 'edittools' });
+		}
+		me._componentTools.close();
+
+	},
+
+	insertComponent: function(opts) {
+		opts = Ext.applyIf(opts || {}, {
+		    type: null,
+		    height: null,
+		    width: null,
+		    x: null,
+		    y: null,
+		    html: '',
+		    options: [],
+		    multi: false,
+		    src: '',
+		    cls: null,
+		    style: null
+		});
+
+		if (!opts.type) {
+		    Ext.Msg.alert('Error', 'No component type');
+		    return;
+		}
+
+		if (opts.cls && typeof opts.cls == "string") {
+		    opts.cls = [opts.cls];
+		}
+
+		var me = this,
+		    refs = me.getReferences(),
+		    pos = me.getFreePosition(),
+		    snap = me._pageSetup.snap,
+		    parentEl = refs.panelContent.el.down('#html-slide'),
+		    cmp = document.createElement('div'),
+		    currentSlide = me.getCurrentSlide();
+
+
+		if (!currentSlide) {
+		    me.newSlide();
+		}
+		// set size
+		// if(opts.type == 'image' && opts.src) {
+		//     // determine image size
+		//     var img = new Image();
+
+		//     img.onload = function() {
+		//         cmp.width = me.round(isNull(opts.width, img.width));
+		//         cmp.height = me.round(isNull(opts.height, img.height));
+		//         cmp.style.width = cmp.width + 'px';
+		//         cmp.style.height = cmp.height + 'px';
+		//     };
+		//     img.src = opts.src;
+
+		//     // show image as background
+		//      cmp.style.backgroundImage = 'url(' + opts.src + ')';
+		// }
+		// else {
+
+		opts.x = cmp.x = pos.x = me.round(opts.x || pos.x);
+		opts.y = cmp.y = pos.y = me.round(opts.y || pos.y);
+		opts.width = cmp.width = pos.width = me.round(opts.width || pos.width);
+		opts.height = cmp.height = pos.height = me.round(opts.height || pos.height);
+
+		cmp.style.width = cmp.width + 'px';
+		cmp.style.height = cmp.height + 'px';
+		// }
+
+		// set classes
+		cmp.classList.add('html-component');
+
+		// set position
+		cmp.x = opts.x = isNull(opts.x, pos.x);
+		cmp.y = opts.y = isNull(opts.y, pos.y);
+		cmp.style.left = cmp.x + 'px';
+		cmp.style.top = cmp.y + 'px';
+
+		// set content
+		var content = document.createElement('div');
+		var html = opts.html;
+
+		// todo - simplify this if - but from server opts.type is returned as Single or Multi selection because it doesnt have special attribute
+		if ((opts.type == me.cmpTypes.SELECTION && opts.options) || opts.type == 'Single selection' ||opts.type == "Multi selection") {
+		    cmp.style.height = ''; // remove height property from component so it will default to 100%
+		    opts.cls = [me.cmpTypes.SELECTION];
+
+
+		    // insert selection has been called with specific id, so we must retrieve it from database end spawn it here
+		    var storageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId],
+		        questions = storageData.questions,
+		        question = questions[opts.id];
+		    if(!question){
+		        console.warn("No questions exist for this program. Returning...");
+		        return;
+		    }
+
+		    var record = question;
+		    opts.type = record.fieldType;
+		    // TODO - FIx this line below because its inefficient -
+		    opts.options = Ext.decode(record.lookups) || Ext.decode(record.answers.answer) || Ext.decode(record.answers);
+		    html = record.question;
+		    // todo we dont store in database if question is multi answer or not so in editSelection this text is rendered
+		    opts.multi = opts.type == "Multi selection"; // checks against string if its multi selection
+		    opts.html = html;
+		    opts.cls = [me.cmpTypes.SELECTION];
+		    opts.id = opts.id;
+
+
+		    html = '<div clas="text">' + html + '</div>';
+
+
+
+
+		    Ext.each(opts.options, function (option, index, allItems) {
+		        var cls = ['option', (opts.multi ? 'check' : 'radio')];
+
+		        if (option.correct) {
+		            cls.push('correct');
+		        }
+
+		        // new setting answer selected from localstorage
+
+		        if(storageData && storageData.answers && storageData.answers[opts.id] !== undefined){
+		            var answers = Ext.decode(storageData.answers[opts.id].answer);
+		            //answers for this question are stored in localstorage
+		            if(answers[index] === true){
+		                cls.push('selected');
+		            }
+
+		        }
+
+
+		        // added two custom attributes idx which is index of element (starting with 0) and type which can contain chech or radio
+		        html += '<div class="' + cls.join(' ') + '" idx=' + index + ' type=' + (opts.multi ? 'check' : 'radio') + '>' + option.text + '</div>';
+		    });
+
+
+		}
+
+		if (opts.type == me.cmpTypes.IMAGE && opts.src) {
+		    if(navigator.onLine){
+		        content.style.backgroundImage = 'url(' + opts.src + ')';
+		    }else{
+		        content.style.backgroundColor = 'powderblue';
+		        html = 'Image cannot be loaded - go online to view photo';
+		    }
+
+		}
+
+
+
+		// adding classes to surrounding div element of component
+		content.classList.add('html-content');
+		Ext.each(opts.cls, function (cls) {
+		    content.classList.add(cls);
+		});
+
+
+
+
+		content.innerHTML = html;
+		content = cmp.appendChild(content);
+		cmp = parentEl.dom.appendChild(cmp);
+
+
+		cmp.style.height = me.round(cmp.clientHeight)+'px'; // again make sure that components are snapping to corrent grid
+
+		// check if content is overflowing the panel - reset it back to bottom of panel
+		if(pos.y +  me.round(cmp.clientHeight) > refs.panelContent.el.getHeight()){
+		    opts.y = cmp.y = pos.y =  me.round(refs.panelContent.el.getHeight() -  cmp.clientHeight);
+		    cmp.style.top = opts.y+'px';
+		}
+
+
+		cmp._opts = opts;
+		cmp.type = opts.type;
+
+		extCmp = Ext.get(cmp);
+		extCmp._opts = opts;
+		extCmp.type = opts.type;
+
+
+		if (!me.previewing) {
+		    cmp._dragger = new Ext.drag.Source({
+		        element: extCmp,
+		        constrain: {
+		            element: parentEl,
+		            snap: {
+		                x: snap,
+		                y: snap
+		            }
+		        },
+		        listeners: {
+		            beforedragstart: function (component, info, event, eOpts) {
+		                component.config.element.fireEvent('click');
+		                if (info.eventTarget.classList.contains('x-resizable-handle')) {
+		                    return false;
+		                }
+
+		            },
+		            dragcancel: function (component, info, event, eOpts) {
+		                var prevWrapper = document.getElementById("lineWrapper");
+		                if(prevWrapper){
+		                    prevWrapper.outerHTML = ""; // remove old wrapper
+
+		                }
+
+		            },
+		            dragend: function (component, info, event, eOpts) {
+		                var prevWrapper = document.getElementById("lineWrapper");
+		                if(prevWrapper){
+		                    prevWrapper.outerHTML = ""; // remove old wrapper
+
+		                }
+
+		                var id = component.config.element._opts.id;
+		                var currentSlide = me.getCurrentSlide();
+
+		                // THIS FUNCTION NOW WORKS FOR ALL - IMAGES, AUDIO, SELECTIONS, BECAUSE EVERYONE HAS ITS OWN ID
+
+		                // set new info to this new altered component
+		                var alteredContent = Ext.decode(currentSlide.data.content);
+		                for (var key in alteredContent.components){
+		                    if(alteredContent.components[key].id == id){
+		                        alteredContent.components[key].x = component._element.dom.offsetLeft;
+		                        alteredContent.components[key].y = component._element.dom.offsetTop;
+
+		                    }
+		                }
+
+		                // change localstore
+		                var slides = Ext.decode(localStorage.mxp_elearning)[me.programId].slides;
+		                slides[currentSlide.id].content = Ext.encode(alteredContent);
+		                me.saveState({slides:slides});
+
+		                // change store and sync
+		                var storeItems = me.getStore('TreeStoreSlides').data.items;
+		                for(var i = 0; i < storeItems.length; i++){
+		                    if(storeItems[i].id == currentSlide.id){
+
+		                        storeItems[i].data.content = Ext.encode(alteredContent);
+		                        storeItems[i].data.lastChanged = new Date();
+		                        storeItems[i].phantom = true;
+		                        break;
+		                    }
+		                }
+		                me.getStore('TreeStoreSlides').sync();
+
+		                //me.getStore('TreeStoreSlides').data.items[0] // temp fix to change content in store
+		                // me.updateServerStore(); // this doesnt yet work to retrieve data from localstorage back to store
+		            },
+		            dragmove: function (component, info, event, eOpts) {
+		                // Todo - drag move multiple componets at once - when holding down to drag, only 1 component is selected
+		                for(var i = 0; i < me._selectedComponents.length; i++){
+		                    var selectedCmp = me._selectedComponents[i];
+		                    selectedCmp._opts.x = selectedCmp.dom.offsetLeft;
+		                    selectedCmp._opts.y = selectedCmp.dom.offsetTop;
+		                }
+		                me.drawHelperLines(component); // todo draw helper lines for whole bounding box of all selected components
+
+		                me.showComponentTools(component);
+		            },
+		            dragstart: function (component, info, event, eOpts) {
+
+		                component.config.element._opts.x = component._element.dom.offsetLeft;
+		                component.config.element._opts.y = component._element.dom.offsetTop;
+
+
+		                me.drawHelperLines(component);
+
+
+
+
+
+
+		            }
+		        }
+		    });
+
+		    me.createResizer(cmp);
+
+		}
+
+
+
+
+
+		me.addComponentListeners(cmp);
+
+
+		me.allComponents.push(extCmp); // append this newly created component to all components, so we can select it later
+
+		return extCmp;
+	},
+
+	editComponent: function(component) {
+		var me = this,
+		    refs = me.getReferences();
+
+		component = component || me._selectedComponent;
+		if (component) {
+		    if ((component.type == me.cmpTypes.IMAGE) || (component.type == me.cmpTypes.VIDEO) || (component.type == me.cmpTypes.AUDIO) ){
+		        console.warn("Cannot edit image, video or audio");
+		        return;
+		    }
+
+		    if (component.type == me.cmpTypes.SELECTION || component.type == "Single selection" || component.type == "Multi selection") {
+		        me.editSelection(component);
+		    }
+
+		    else {
+		        var wnd = me.getView().add({xtype: 'texteditor'});
+
+		        wnd.getController().show({
+		            value: component.el.down('.html-content').dom.innerHTML,
+		            callback: function (value) {
+		                component.el.down('.html-content').dom.innerHTML = value;
+		                component._opts.html = value;
+		                me.saveSlideState();
+		            },
+		            scope: me
+		        });
+		    }
+		}
+	},
+
+	duplicateComponent: function(component) {
+		var me = this,
+		    component = Ext.clone(component);
+		var opts = Ext.clone(component._opts);
+
+		delete opts.x;
+		delete opts.y;
+
+		var cmpType = component._opts.type;
+		if (cmpType == me.cmpTypes.SELECTION || cmpType == "Single selection" || cmpType == "Multi selection") {
+		    opts.text = component._opts.html;
+		    opts.answers = component._opts.options;
+		    me.createSelection(opts);
+		}
+
+		else{
+		    // for all other components - call ordinary insert component
+
+		    // rename its id
+		    opts.id = createGUID();
+		    var cmp = this.insertComponent(opts);
+
+		}
+		me.saveSlideState();
+
 
+		//cmp.fireEvent('click'); //@deprecated
+	},
+
+	deleteComponent: function(component, sync) {
+		var me = this,
+		    refs = this.getReferences(),
+		    questionStore = me.getStore('QuestionsStoreSlides'),
+		    treeStoreSlides = me.getStore('TreeStoreSlides');
+
+		if(component) {
+
+		    if(sync){ // we might not always want to sync, but only delete this component in order to redraw it
+		        var rec = questionStore.findRecord('id', component.el._opts.id);
+		        questionStore.remove(rec);
+		        questionStore.sync();
+
+		        // deleting by find
+		        questionStore.removeAt(questionStore.find('id',  component.el._opts.id));
+		        questionStore.sync();
+
+		        for (var i = 0; i < questionStore.data.items.length; i++){
+		            var rec = questionStore.data.items[i];
+		            rec.phantom = false;
+		            if(rec.id == component.el._opts.id){
+		                rec.data.lastChanged = new Date();
+		                rec.phantom = true;
+		            }
+		        }
+		        questionStore.sync();
+
+
+
+		        // remove component from slide content and set its record.phantom to true, for it to later update
+
+
+		        var id = component.el._opts.id;
+		        var currentSlide = me.getCurrentSlide();
+
+		        // set new info to this new altered component
+		        var removedComponentsArray = [];
+		        var slideContent = Ext.decode(currentSlide.data.content);
+		        for (var key in slideContent.components){
+		            if(slideContent.components[key].id == id){
+		            }else{
+		                removedComponentsArray.push(slideContent.components[key]);
+		            }
+		        }
+
+		        // change localstore
+		        var slides = Ext.decode(localStorage.mxp_elearning)[me.programId].slides;
+		        slides[currentSlide.id].content = Ext.encode(removedComponentsArray);
+		        me.saveState({slides:slides});
+
+		        // change store and sync
+		        var storeItems = me.getStore('TreeStoreSlides').data.items;
+		        for(var i = 0; i < storeItems.length; i++){
+		            if(storeItems[i].id == currentSlide.id){
+		                storeItems[i].data.content = Ext.encode(removedComponentsArray);
+		                storeItems[i].data.lastChanged = new Date();
+		                storeItems[i].phantom = true;
+		                break;
+		            }
+		        }
+		        me.getStore('TreeStoreSlides').sync();
+
+
+		        // save state
+		        me.saveState();
+
+
+		    }
+		    me.allComponents.remove(component);
+
+		    component.destroy();
+		    component = null;
+
+
+		}
+	},
+
+	insertTitle: function(value) {
+		var me = this,
+		    cmp = me.insertComponent({
+
+		        id: createGUID(),
+		        type: me.cmpTypes.TITLE,
+		        cls: 'title',
+		        html: value || 'Title',
+		        height: 50
+
+		    });
+
+
+
+		 me.saveSlideState();
+
+		// me.editComponent(cmp);
+	},
+
+	insertText: function(value) {
+		var me = this,
+		    cmp = me.insertComponent({
+		        id: createGUID(),
+		        type: me.cmpTypes.TEXT,
+		        cls: 'text',
+		        html: value || 'Text',
+		        height: 425
+
+		    });
+		 me.saveSlideState();
+
+		// me.editComponent(cmp);
+	},
+
+	insertImage: function() {
+		var me = this,
+		    cmp = me.insertComponent({
+		        id: createGUID(),
+		        type: me.cmpTypes.IMAGE,
+		        cls: 'image',
+		        html: '',
+		        src: 'resources/images/example.jpg',
+		        height: 275,
+		    });
+		 me.saveSlideState();
+	},
+
+	insertSelection: function(opts) {
+		this.editSelection(null, opts);
+
+	},
+
+	editSelection: function(component, opts) {
+		opts = Ext.applyIf(opts || {}, {
+		    multi: false
+		});
+
+		var me = this,
+		    refs = me.getReferences(),
+		    state = component && component._opts,
+		    multi = state && state.multi || opts.multi,
+		    wnd = me.getView().add({ xtype: 'selectioneditor' });
+
+		wnd.getController().show({
+		    text: state && state.html,
+		    options: state && state.options,
+		    multi: multi,
+		    callback: function(text, answers) {
+		        var opts = {
+		            text: text,
+		            answers: answers,
+		            multi:multi,
+		            component : component
+		        };
+
+		        me.createSelection(opts);
+		    },
+		    scope: me
+		});
+	},
+
+	round: function(value) {
+		var snap = this._pageSetup.snap;
+
+		return Math.round(value / snap) * snap;
+	},
+
+	ceil: function() {
+		var snap = this._pageSetup.snap;
+
+		return Math.ceil(value / snap) * snap;
+	},
+
+	insertAudio: function() {
+		var me = this,
+		    cmp = me.insertComponent({
+		        id: createGUID(),
+		        type: me.cmpTypes.AUDIO,
+		        cls: 'audio',
+		        html: '<audio controls>  <source src="resources/audio/horse.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio>',
+		        src: 'resources/audio/horse.mp3',
+		        height: 50,
+		    });
+		me.saveSlideState();
+	},
+
+	insertVideo: function() {
+		var me = this,
+		    cmp = me.insertComponent({
+		        id: createGUID(),
+		        type: me.cmpTypes.VIDEO,
+		        cls: 'video',
+		        html: '<video width="320" height="240" controls>  <source src="resources/videos/mov.mp4" type="video/mp4"> Your browser does not support the video tag.</video>',
+		        src: 'resources/videos/mov.mp4',
+		        height: 240,
+		    });
+		me.saveSlideState();
+	},
+
+	getNumSlides: function() {
+		// Retrieves count of slides (sections don't count)
+		var me = this,
+		    countSlides = 0,
+		    data = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
+		if(!data.slides || !Object.keys(data.slides).length){
+		    return 0;
+		}
+		for(var key in data.slides){
+		    if(data.slides[key].isSlide ||data.slides[key].categoryId == App.ProgramPageCategoriesEnum.Page){
+		        countSlides += 1;
+		    }
+		}
+		return countSlides;
+	},
+
+	evaluate: function() {
+		// returns [singleSelectionCorrect, singleSelectionQuestions, multipleSelectionScore, multipleSelectionScoreUsingNegative]
+		// multipleSelectionScore -> if answer_correct -> answer_score += 1/num_answers
+		//							 else: answer_score = (answer_score - 1/num_answers).clamp(0, num_answers)
+		//multipleSelectionScoreUsingNegative -> dont clamp incorrectly answered
+		Number.prototype.clamp = function (min, max) {
+		    return Math.min(Math.max(this, min), max);
+		};
+
+		// iterate through slides and questions and check score:
+		var me = this,
+		    usingNegativeScore = false, // config variable which determines if each answer can have negative return points
+		    programScore = {"questions":{}, "totalProgramScore": 0};
+
+		me.saveState(); // TODO - latest addition - is it necessary?
+
+		var data = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
+
+		for (var key in data.questions){
+		    var question = data.questions[key];
+		    var answer = data.answers[question.id];
+		    programScore.questions[question.id] = me.getScore(question, answer, usingNegativeScore);
+		}
+
+
+		// suming questions scores to total score
+		var totalProgramScore = sumDict(programScore.questions);
+		console.log("printing final user score:", totalProgramScore);
+		programScore.totalProgramScore = totalProgramScore;
+
+		return programScore;
+	},
+
+	getScore: function(question, answer, usingNegativeScore) {
+		if(!answer){
+		    // user didnt check any options on this question - return
+		    return 0;
+		}
+
+		answer = Ext.decode(answer.answer);
+
+		var answerScore = 0;
+		var correctAnswer;
+		var usersAnswer = answer;
+
+		// TODO - why does question have multiple attributes that represent same thing - store them under same name!!
+		var _question = Ext.decode(question.options || question.lookups ||question.answers); // in datase options are stored in lookups table so we return lookups
+		var questionNumAnswers = _question.length;
+
+		if (question.multi || question.fieldType == "Multi selection") { // Todo - decide which attribute to use!!
+		    // make a pre-pass counting num_correct_answers
+		    var numCorrectAnswers = 0;
+		    _question.forEach(function (option) {
+
+		        if (option.correct) {
+		            numCorrectAnswers += 1;
+		        }
+		    });
+		    // go through all questions in this form
+
+		    for(var i = 0; i < _question.length; i++){
+		        usersAnswer = answer[i];
+		        correctAnswer = _question[i].correct;
+		        if (usersAnswer == correctAnswer) {
+		            if (correctAnswer === true) {
+		                // if we checked correct answer - add percent of all correct answers to his score
+		                answerScore += (1 / numCorrectAnswers);
+		            }
+		            // no else - we are not rewarding for not checking not-correct answers
+		        }
+		        else{
+		            // we didnt click what is correct
+
+		            if (correctAnswer === true) {
+		                // if we clicked no but answer was yes, punish user by subtracting percent of all correct answers from his score
+		                answerScore -= (1 / numCorrectAnswers);
+		            }
+		            else{
+		                // if we clicked yes but answer was no, punish user by subtracting only percent of num answers
+		                answerScore -= (1/ questionNumAnswers);
+		            }
+		        }
+		    }
+
+		    // append score of this questionary to totalScore
+		    if(!usingNegativeScore){
+		        // clamp between 0 and max
+		        answerScore = (answerScore).clamp(0, questionNumAnswers);
+		    }
+
+		} else {
+		    // evaluate
+		    for(var i = 0; i < _question.length; i++){
+		        usersAnswer = answer[i];
+		        correctAnswer = _question[i].correct;
+
+
+		        if ((correctAnswer === true) && (usersAnswer == correctAnswer)) {
+		            answerScore = 1;
+		        }
+		        else {
+		            if(usersAnswer == correctAnswer){
+		                // this is not right answer but we checked right one
+
+		                if(usingNegativeScore){
+		                    // returns -1 - is this too much?
+		                    answerScore = -1;
+		                }
+		                // else return 0
+		            }
+		        }
+
+		    }
+
+		}
+
+		return answerScore;
+	},
+
+	saveState: function(specificData) {
+		var me = this,
+		    data = specificData || this.getCurrentState();
+
+		var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
+		// if(!localStorageData){
+		//     localStorageData = {};
+		//     localStorageData[me.programId] = {}; // adds also entry for this program id
+		// }
+		for (var key in data) {
+		    localStorageData[me.programId][key] = data[key];
+		}
 
-        console.log("printing load edit slides with opts",opts, opts.program, opts.program.id);
+		// sets current state to localstorage and calls update with server
+		localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+		if(navigator.onLine){
+		    this.updateServerStore();
+		}
 
-        me.programData = opts.program.data; // create variable of this program that can be accessed from anywhere in this controller
-        me.programId = opts.program.id; //
+	},
 
+	updateServerStore: function() {
+		// this function will be replaced with pushChanges or vice versa
 
-        if(opts.program.get){
-            refs.panelHeader.setTitle(opts.program.get('name'));
-        }
-        else{
-            // this gets called if we clicked editSlides button in main view
-            refs.panelHeader.setTitle('Test title in debug mode');
-        }
-        // clear old panel if there is no slides on this program yet, so content from previous program doesn't remain on this one
-        this.clearSlidePanel();
 
 
-         // call sync state here and not save state, as we dont have anything to save yet
-        var me = this,
-            localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId],
-            treeStoreSlides = me.getStore('TreeStoreSlides'),
-            questionsStoreSlides = me.getStore('QuestionsStoreSlides'),
-            personAnswersStore = me.getStore('PersonAnswers');
+		// TEST PUSH
+		//his.pushChanges('QuestionsStoreSlides', 'questions');
+		//this.pushChanges('QuestionsStoreSlides', 'questions');
 
-        // init subfolders it they are not yet
-        if(!localStorageData.slides){localStorageData.slides = {};}
-        if(!localStorageData.questions){localStorageData.questions = {};}
-        if(!localStorageData.answers){localStorageData.answers = {};}
-        me.saveState(localStorageData);
 
-        if (navigator.onLine){
-            var syncAnswersCallback = function(){
-                // set initial data
-                console.log("setting initial slide - draw content");
-                me.setInitialSlide();
-            };
 
 
-            var syncQuestionsCallback = function(){
-                var params = {programId: me.programId};
-                me.initialDataSync('QuestionsStoreSlides', 'questions', params, syncAnswersCallback, 'id');
-            };
-            var syncStateCallback = function(){
-                // Updating server store:
-                me.updateServerStore();
 
-                // after loading slides, load questions
-                var params = {programId: me.programId};
-                me.initialDataSync('PersonAnswers', 'answers', params, syncQuestionsCallback, 'id');
+		// updates treestore using localstorage and syncs with server
+		var me = this,
+		    localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId],
+		    treeStoreSlides = me.getStore('TreeStoreSlides');
 
-            };
-            // number 1
+		if(!localStorageData){
+		    //console.log("no localstorage data in updateServerStore - returning");
+		    return;
+		}
 
-            if(localStorageData.pageSetup){ // TODO retrieve it later from database
-                me._pageSetup = localStorageData.pageSetup;
-            }
-            var params = {programId: me.programId};
-            me.initialDataSync('TreeStoreSlides', 'slides', params, syncStateCallback, 'id');
-        }
 
-        else{
-            // TODO check this else condition for errors - possible errors with setting data
+		//treeStoreSlides.removeAll(true);
 
+		/*
+		for (var i = 0; i < treeStoreSlides.getRootNode().childNodes.length; i++){
+		    console.log("deleting root child");
+		    treeStoreSlides.getRootNode().removeChild(treeStoreSlides.getRootNode().childNodes[i]);
 
-            // set localstorage data to tree store
 
-            treeStoreSlides.setData(localStorageData.slides);
-            questionsStoreSlides.setData(localStorageData.questions);
-            personAnswersStore.setData(localStorageData.answers);
-            if(localStorageData.pageSetup){
-                 me._pageSetup = localStorageData.pageSetup;
-            }
-
-
-            // set initial data
-            me.setInitialSlide();
-        }
-
-
-
-
-
-
-    },
-
-    newSection: function() {
-        console.log("creating new section" ,"TODO -leaf is here set to true, but it should be pulled from database if this section has any children");
-        var me = this,
-            refs = me.getReferences(),
-            store = me.getStore('TreeStoreSlides');
-
-        var data = {
-            id: createGUID(),
-            programId: me.programId,
-            title: 'New Section',
-            content: null,
-            expanded: false,
-            children: [],
-            categoryId : App.ProgramPageCategoriesEnum.Chapter,
-            scoreMethod: 'A',
-            sequence: 1234
-
-        };
-
-        var parentNode = /*refs.treeSlides.getSelection()[0] ||*/ store.getRoot();
-        slide = parentNode.appendChild(data);
-        refs.treeSlides.setSelection(slide);
-        me.saveSlideState(slide);
-    },
-
-    newSlide: function() {
-        var me = this,
-            refs = me.getReferences(),
-            store = me.getStore('TreeStoreSlides'),
-            parentNode = refs.treeSlides.getSelection()[0] || store.getRoot(),
-            slide,
-            data = {
-                id: createGUID(),
-                programId: me.programId,
-                sequence: me.getNumSlides(), // todo - this sequence might not be correct to write in database
-                title: 'New Page ' + me.getNumSlides() + 1,
-                content: null,
-                expanded: true,
-                leaf: true,
-                isSlide : true,
-                categoryId : App.ProgramPageCategoriesEnum.Page,
-                scoreMethod: 'A'
-
-            };
-
-        if(parentNode.isLeaf()) {
-            parentNode = parentNode.parentNode;
-        }
-
-        slide = parentNode.appendChild(data);
-        refs.treeSlides.setSelection(slide);
-        me.saveSlideState(slide);
-    },
-
-    deleteSlide: function(slide) {
-        var me = this,
-            refs = me.getReferences(),
-            store = me.getStore('TreeStoreSlides');
-
-        slide = slide || me.getCurrentSlide();
-
-        if(slide) {
-            console.log("printing current slide", slide);
-
-            var nextSlideIdx = store.indexOf(slide) - 1,
-                nextSlide = store.getAt(nextSlideIdx >= 0 ? nextSlideIdx : 1),
-                components = (Ext.decode(slide.get('content') || '{}').components),
-                childNodes = slide.childNodes;
-
-            if((components && components.length > 0) || (childNodes && childNodes.length > 0)) {
-                Ext.Msg.confirm( 'Delete slide', 'Are you sure?' +
-                                ((childNodes && childNodes.length > 0)?
-                                 " You will delete whole subtree!": ""), function(btn) {
-                    if(btn == 'yes') {
-
-                        slide.parentNode.removeChild(slide);
-                        me.saveState();
-                        me.clearSlidePanel();
-                        me.nextSlide();
-
-                    }
-                });
-            }
-            else {
-                slide.parentNode.removeChild(slide);
-                me.saveState();
-                me.clearSlidePanel();
-                me.nextSlide();
+		}*/
 
-            }
-        }
-    },
 
-    getCurrentSlide: function() {
-        var me = this,
-            refs = me.getReferences(),
-            store = me.getStore('TreeStoreSlides');
 
-        var currentSlideIdx = store.indexOf(me.currentSlide);
+		// Updating server store:
 
+		// setting data from localstorage to store
 
-        me.currentSlide = refs.treeSlides.getSelection()[0] || store.getAt(currentSlideIdx);
+		// clear store so we might add all synced data from localstorage to sync with server (append child)
+		//treeStoreSlides.getRootNode().removeAll();
 
+		// TODO - new code - Jernej Habjan 2018-07-24 Fixed deleting root node which deletes all children - new function in treeStoreSlides
+		//treeStoreSlides.removeAll();
 
-        return me.currentSlide;
-    },
 
-    nextSlide: function() {
-        // variable to recursively descend to first slide - if its set to false, we also visit sections
-        var REC_TO_SLIDE = true;
 
-        // if (REC_TO_SLIDE &&  this.getNumSlides() < 2){
-        //     // there is 1 or 0 slides and recursion is set to true - which means we cannot visit sections so return
-        //     return;
-        // }
+		/*
 
-        var me = this,
-            refs = me.getReferences(),
-            store = me.getStore('TreeStoreSlides'),
-            slide = me.getCurrentSlide(),
-            nextSlideIdx = store.indexOf(slide) + 1,
-            nextSlide = store.getAt(nextSlideIdx);
 
-        if(nextSlide) {
 
-            refs.treeSlides.setSelection(nextSlide);
-            if (nextSlide.data.leaf === false){
+		var silent = true;
 
 
 
-                me.nextSlide();
+		var root = treeStoreSlides.getRootNode();
 
-                if(REC_TO_SLIDE){
-                    // recursively iterate to leaf slide through section
-                    if (this.getNumSlides() === 0){
-                        console.log("cannot switch recursively to next slide", "no slides exist");
-                        return;
-                    }
-                    if (me.getCurrentSlide().data.leaf === false){
-                        me.prevSlide();
-                    }
-                }
+		if(silent !== true){
+		    if (root) {
+		        // will fire the 'destroy' operation for every child of the root
+		        root.destroy(true);
+		    }
+		    //fire the clear even only if not silent
+		    this.fireEvent('clear', me);
+		}else{
+		    if (root) {
+		        // temporarily remove the onNodeRemove event listener so that when removeAll is called,
+		        // the removed nodes do not get added to the removed array
+		        treeStoreSlides.un('remove', treeStoreSlides.onNodeRemove, treeStoreSlides);
 
+		        root.removeAll(false); // silent remove all children
+		        //root.destroy(false); // destroy just the root
 
+		        // reattach the onNodeRemove listener
+		        treeStoreSlides.on('remove', treeStoreSlides.onNodeRemove, treeStoreSlides);
+		    }
+		}
 
-            }
-        }
 
 
-    },
+		*/
 
-    prevSlide: function() {
 
 
-        // variable to recursively ascend to first remaining slide - if its set to false, we also visit sections
-        var REC_TO_SLIDE = true;
 
-        // if (REC_TO_SLIDE &&  this.getNumSlides() < 2){
-        //     // there is 1 or 0 slides and recursion is set to true - which means we cannot visit sections so return
-        //     return;
-        // }
 
-        var me = this,
-            refs = me.getReferences(),
-            store = me.getStore('TreeStoreSlides'),
-            slide = me.getCurrentSlide(),
-            prevSlideIdx = store.indexOf(slide) - 1,
-            prevSlide = store.getAt(prevSlideIdx);
 
 
-        if(prevSlide) {
-            refs.treeSlides.setSelection(prevSlide);
-            if (prevSlide.data.leaf === false){
 
-                me.prevSlide();
 
-                if(REC_TO_SLIDE){
-                    // recursively iterate to leaf slide through section
-                    if (this.getNumSlides() === 0){
-                        console.log("cannot switch recursively to prev slide", "no slides exist");
-                        return;
-                    }
 
 
-                    if (me.getCurrentSlide().data.leaf === false){
-                        me.nextSlide();
-                    }
 
-                }
 
 
-            }
 
 
 
-        }
-    },
 
-    setBackground: function(src) {
-        var me = this,
-            refs = me.getReferences();
 
-        me._pageSetup.background = src;
 
-        if(src) {
-            Ext.getCmp('panelContent').setStyle('background', 'url(' + src + ')');
-        }
-        else {
-            Ext.getCmp('panelContent').setStyle('background', null);
-        }
 
-        me.saveState();
-    },
 
-    togglePreview: function(preview) {
-        if(this.getNumSlides() === 0){
-            Ext.toast("Unable to preview program with no pages.");
-            return;
-        }
 
-        var TEST_PERSON_ID = 10000112;
 
 
-        var me = this,
-            refs = me.getReferences(),
-            personProgramsStore = me.getStore('PersonPrograms'),
-            personAnswersStore = me.getStore('PersonAnswers');
+		// IMPORTANT! Use .appendChild when adding data to treestore for sync to work
 
-        me.previewing = preview; // setting current previewing state
+		//appending slides
+		/*
+		for (var i = 0; i < localStorageData.slides.length; i++){
+		    treeStoreSlides.getRootNode().appendChild(localStorageData.slides[i]);
+		    console.log("appended child");
+		}*/
 
-        if(preview) {
-            if(me.programData.validTo < new Date().toISOString()){
-                console.log("Program is not valid anymore... returning");
-                return;
-            }
 
+		//treeStoreSlides.getRootNode().appendChild(localStorageData.slides); // -add all from localstorage
+		// setting all records' phantom state to true
+		/*for (var i = 0; i < treeStoreSlides.data.items.length; i++){
+		    var rec = treeStoreSlides.data.items[i];
+		    // IMPORTANT! rec.phantom must be set to true, othewise sync wont work, as "data isn't changed"
+		    rec.phantom = true;
+		    console.log("printing record in updateServer store", rec);
+		}*/
+		// sync data back to server
+		treeStoreSlides.sync(
 
-            // Create PersonProgram or update it here
+		    /*{
 
+		    params:{ programId: me.programId },
+		    success: function(batch) {
+		        console.log('update server store sync success', batch);
+		        // treeStoreSlides.load();
+		    }
 
-            personProgramsStore.load({
-                params:{
-                    personId: TEST_PERSON_ID,
-                    programId: me.programId
-                },
-                callback:function(record){
-                    console.log("recieved personProgramStore load callback", record);
-                    if(!record || record.length === 0){
-                        console.log("recieved no record back - maybe here we know that this persons program doesnt exist yet so add it");
+		}*/
 
-                        me.currentPersonProgram = { // store whole record
-                            personProgramGuid: createGUID(),
-                            personId: TEST_PERSON_ID,
-                            programId: me.programId,
-                            programStatusId: App.ProgramStatuses["In Progress"],
-                            createdById: TEST_PERSON_ID, // TODO - same person is also creating this program? can this be different?
-                            created: new Date().toISOString(),
-                            programStarted: new Date().toISOString(),
-                        };
+		);
 
 
 
 
-                        var rec = personProgramsStore.add(me.currentPersonProgram)[0];
 
-                        console.log("setting rec phantom to true", rec);
 
-                        rec.phantom = true;
 
-                        personProgramsStore.sync({
-                            callback:function(addedRecord){
-                                console.log("recieved personPrograsStore sync after adding record", addedRecord);
 
-                            }
-                        });
 
-                    }
 
 
-                    else{
-                        console.log("recieved record");
-                        me.currentPersonProgram = record[0].data;
-                        if(me.currentPersonProgram.attempt >= me.programData.maxAttemptsTrainingMode + me.programData.maxAttemptsScoreMode){
-                            console.log("Cannot attempt any more tries... returning");
-                            return;
-                        }
 
 
-                        // here we can read the records id to use in posting answers
 
-                        console.log("printing person training programid",me.currentPersonProgram.personTrainingProgramId);
 
+	},
 
-                        var rec = personProgramsStore.add({
-                            personProgramGuid: me.currentPersonProgram.personTrainingProgramId,
-                            attempt: me.currentPersonProgram.attempt +1, // increase attempt counter
-                            lastChanged: new Date().toISOString(),
-                            changed : true,
-                            programStatusId: App.ProgramStatuses.Repeat, // TODO - does status repeat mean "in progress && tried non -first time"
-                            programStarted: new Date().toISOString(),
-                        })[0];
-                        rec.phantom = true;
+	setInitialSlide: function() {
+		// this function is used to set slide after syncing with server or initially recieving data (from localstorage or server)
+		var me = this,
+		    refs = me.getReferences();
 
-                        personProgramsStore.sync({
-                            callback:function(addedRecord){
-                                console.log("recieved personPrograsStore sync after updating record", addedRecord);
+		var currentSlide = me.getCurrentSlide();
+		if(currentSlide){
+		    refs.treeSlides.setSelection(currentSlide);
+		    return;
+		}
+		// this part of code gets executed when there is no current selection yet
 
-                            }
 
-                        });
-                    }
+		// switch to first slide
+		Ext.defer(function() {
+		    me.nextSlide();
+		}, 100);
 
+		me.setBackground(me._pageSetup.background);
+		refs.panelContent.setWidth(me._pageSetup.width);
+		refs.panelContent.setHeight(me._pageSetup.height);
+	},
 
+	initialDataSync: function(storeName, localStorageAttribute, LoadParams, callback, dataId) {
+		if (!navigator.onLine){
+		    //You are offline - cannot sync with server
+		    if(callback){
+		        callback();
+		    }
+		    return;
+		}
 
-                }
+		var me = this,
+		    localStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),
 
-            });
+		    initialDataStore = me.getStore(storeName);
 
+		initialDataStore.load({
+		    params: LoadParams,
 
+		    callback: function(records, operation, success){
+		        if(localStorageAttribute == 'questions'){
+		            print("bfdgfdsgfs");
 
+		        }
 
-            // show slide state
 
-            me.saveSlideState(me.getCurrentSlide());
-            var firstSlide = refs.treeSlides.store.getAt(0);
-            refs.treeSlides.setSelection(firstSlide);
-            // on panel toggle - drop down the sections to first actual slide
-            if (firstSlide.data.leaf === false){
-                me.nextSlide();
-            }
 
+		        if(initialDataStore.data.length === 0){
+		            // no return data, check if there are any locally saved localStorageAttribute
 
-        }else{
-            // we / timer toggled preview off - validate forms and submit
+		            if(localStorageData && localStorageData[me.programId] && localStorageData[me.programId][localStorageAttribute]){
+		                //we have locally saved localStorageAttribute, syncing with server
+		                // data for this programId exists - reassign it
+		                localStorageData = localStorageData[me.programId];
+		                print("no records recieved but we have saved content");
+		                for (var key in localStorageData[localStorageAttribute]){
+		                    var localStorageEntry = localStorageData[localStorageAttribute][key];
+		                    var rec = initialDataStore.add(localStorageEntry)[0];
+		                    rec.phantom = true;
 
-            // get scores for each question and total
-            var programScore = me.evaluate();
-            var questionsScores = programScore.questions;
-            var totalProgramScore = programScore.totalProgramScore;
 
+		                }
+		                initialDataStore.sync();
+		                me.saveState(); // empty params because we would like to retrieve data from getCurrentState and save it to localstorage
+		            }
+		            if(callback){ callback();}
+		            return;
+		        }
 
-            // iterate through answers and submit them to server
-            var data = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
 
-            for (var questionId in data.answers){
-                var rec = personAnswersStore.add({
-                    answerGuid: createGUID(), // create new guid here for this answer
-                    personProgramId: me.currentPersonProgram.personTrainingProgramId,
-                    questionId: questionId,
-                    answers: Ext.encode(data.answers[questionId]),
-                    score: questionsScores[questionId]
-                })[0];
-                rec.phantom = true;
-            }
 
-            // GOOD TO KNOW - batchActions is disabled on store, so every request is handled on its own ->batchActions: false,
+		        // here we have valid return data from server, so we can update localstorage and sync localstorage back with server
 
 
+		        if(!localStorageData || !localStorageData[me.programId]){
+		            // no data yet in localstorage
+		            localStorageData = me.getCurrentState();
+		            initialDataStore.data.items.forEach(function(entry){
+		                localStorageData[localStorageAttribute].push(entry.data);
+		            });
+		            me.saveState(localStorageData);
+		            if(callback){ callback(); }
+		            return;
+		        }
 
-            personAnswersStore.sync();
+		        // data for this programId exists - reassign it
+		        localStorageData = localStorageData[me.programId];
 
 
-            //personProgramsStore.updateTodo(set try counter ++)
-            //personProgramsStore.sync(); // push to server
+		        if(!localStorageData[localStorageAttribute]){
+		            //no entries yet in localstorage
+		            // localstorage slides are empty - set recieved data from server to localstorage - even if it is empty
 
-            if(!me.currentPersonProgram){
-                console.warn("for some reason current person program id is not set - it should be created new if person doesnt have any records yet or it should be recieved from store.");
-                return;
-            }
+		            var entriessFromStore = {};
+		            for (var i = 0; i < initialDataStore.data.length; i++){
+		                var entry = initialDataStore.data.items[i].data;
+		                entriessFromStore[entry[dataId]] = entry;
+		            }
 
+		            // add localStorageAttribute from store to localstorage[programId] under localStorageAttribute key
+		            localStorageData[localStorageAttribute] = entriessFromStore;
 
-            // get score results:
-            var scoreResults;
 
+		            me.saveState(localStorageData);
+		            if(callback){ callback(); }
+		            return;
+		        }
 
-            if(me.currentPersonProgram.attempt < me.programData.maxAttemptsTrainingMode + me.programData.maxAttemptsScoreMode){
-                if(totalProgramScore >= me.programData.passScore){
-                    // we passed
-                    scoreResults = App.ProgramStatuses.Passed;
-                }else{
-                    // we tried non -last time and we failed - status is chagned to discontinued
-                    scoreResults = App.ProgramStatuses.Discontinued;
-                }
-            }else{
-                if(totalProgramScore < me.programData.passScore){
-                    // if we tried last time and we didn't get enough we failed
-                    scoreResults = App.ProgramStatuses.Failed;
-                }else{
-                    // we tried last time and we passed
-                    scoreResults = App.ProgramStatuses.Passed;
-                }
-            }
+		        // here we have valid localstorage and may need syncing
+		        //localStorageData[localStorageAttribute] = Array.from(new Set(localStorageData[localStorageAttribute]));
 
-            var rec = personProgramsStore.add({ // TODO - this is add function but old record is still in there
-                personProgramGuid: me.currentPersonProgram.personTrainingProgramId,
-                lastChanged: new Date().toISOString(),
-                programCompleted: new Date().toISOString(),
-                programStatusId: scoreResults,
-            })[0];
 
-            // setting phantom to true in order to update
-            rec.phantom = true;
-            personProgramsStore.sync({
-                callback:function(addedRecord){
-                    console.log("recieved personPrograsStore sync after updating record", addedRecord);
-                }
 
-            });
 
+		        function containsObject(obj, list) {
+		            var i;
+		            for (i = 0; i < list.length; i++) {
+		                if (list[i].id == obj.id) {
+		                    return i;
+		                }
+		            }
 
-        }
+		            return -1;
+		        }
 
+		        if(localStorageAttribute == 'questions'){
+		            print("bfdgfdsgfs");
 
+		        }
 
 
+		        for (var key in localStorageData[localStorageAttribute]){
+		            var localStorageEntry = localStorageData[localStorageAttribute][key];
+		            print("printing localstorageData values", localStorageEntry);
+		            var objectIndex = containsObject(localStorageEntry, initialDataStore.data.items); // get index of this item
+		            if(objectIndex > -1) { // if returned index 0,1,2..
+		                print("data store contains localstorage item - TODO CHECK UPDATE TIME");
+		                if(localStorageAttribute == 'questions'){
+		                    print("bfdgfdsgfs");
 
+		                }
 
 
+		                if(localStorageEntry.lastChanged > initialDataStore.data.items[objectIndex].data.lastChanged){
 
+		                    print("Todo - find record in store by id and update it to localStorageEntry then set its phantom to true");
 
+		                    var rec = initialDataStore.findRecord('id', localStorageEntry.id);
+		                    rec.data = localStorageEntry;
 
+		                    rec.phantom = true;
+		                    print("printing returned record", rec, "printing localstorage entry", localStorageEntry);
+		                }
 
 
-        // Switching countdown timer when toggling preview - preview automatically closes when timer turns to 0
-        // TODO - is this secure - should't countdown occur on server side - is it?
-        var counter = 1000;
+		                // TODO - UPDATE SLIDE LAST CHANGED ATTRIBUTE WHEN UPDATING ITS CONTENT - DO SAME FOR QUESTION IF CHANGING ITS CONTENT
 
-        var taskPoll = {
-            run: function(){
-                counter -= 1;
-                if( counter < 1 ){
-                    Ext.TaskManager.stop(taskPoll);
 
-                    me.togglePreview();
-                } else {
-                    var timerCountdownText = refs.toolbarPreview.el.down('#timerCountdown');
-                    timerCountdownText.dom.innerHTML = "Remaining: " + counter.toString();
-                }
-            },
-            interval: 1000
-        };
 
-        if(preview) {
-            Ext.TaskManager.start(taskPoll);
 
-        }else{
-            Ext.TaskManager.stop(taskPoll);
+		            }else{
+		                if(localStorageAttribute == 'questions'){
+		                    print("bfdgfdsgfs");
 
-        }
+		                }
 
 
+		                print("rec not included in store yet");
+		                var rec = initialDataStore.add(localStorageEntry)[0];
+		                rec.phantom = true;
+		            }
+		        }
 
 
 
 
+		        /// TEMP FIX
+		        console.warn("TODO - temp syncing store to see if it works");
+		        initialDataStore.sync();
 
+		        me.saveState(); // empty param because we would like to save state from getCurrentState to localstorage and not from this incomplete data
 
+		        if(callback){ callback(); }
+		    }
+		});
 
 
+	},
 
-        // Display content
+	closePreview: function(force) {
+		var TEST_PERSON_ID = 10000112;
 
-        //refs.panelMenu.setVisible(!preview); // commented so navigation tree is visible even when solving quiz
-        refs.toolbarEdit.setVisible(!preview);
-        refs.toolbarPreview.setVisible(!!preview);
-        refs.panelContent[preview ? 'removeCls' : 'addCls']('edit');
-        refs.panelContent[preview ? 'addCls' : 'removeCls']('preview');
 
-        refs.panelSlide.setMargin(preview ? '10' : '10 10 10 0');
+		var me = this,
+		    refs = me.getReferences(),
+		    personProgramsStore = me.getStore('PersonPrograms'),
+		    personAnswersStore = me.getStore('PersonAnswers');
 
+		// we / timer toggled preview off - validate forms and submit
 
-        // retarget this slide - this redraws current slide without dragger and sizer
-        var currentSlide = me.getCurrentSlide();
-        refs.treeSlides.setSelection(null);
-        refs.treeSlides.setSelection(currentSlide);
+		// get scores for each question and total
+		var programScore = me.evaluate();
+		var questionsScores = programScore.questions;
+		var totalProgramScore = programScore.totalProgramScore;
 
 
+		// iterate through answers and submit them to server
+		var data = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
 
+		for (var questionId in data.answers){
+		    var rec = personAnswersStore.add({
+		        answerGuid: createGUID(), // create new guid here for this answer
+		        personProgramId: me.currentPersonProgram.personTrainingProgramId,
+		        questionId: questionId,
+		        answers: Ext.encode(data.answers[questionId]),
+		        score: questionsScores[questionId]
+		    })[0];
+		    rec.phantom = true;
+		}
 
+		// GOOD TO KNOW - batchActions is disabled on store, so every request is handled on its own ->batchActions: false,
 
 
 
+		personAnswersStore.sync();
 
 
+		//personProgramsStore.updateTodo(set try counter ++)
+		//personProgramsStore.sync(); // push to server
 
-    },
+		if(!me.currentPersonProgram){
+		    console.warn("for some reason current person program id is not set - it should be created new if person doesnt have any records yet or it should be recieved from store.");
+		    return;
+		}
 
-    getFreePosition: function() {
-        var me = this,
-            refs = me.getReferences(),
-            snap = me._pageSetup.snap,
-            pos = {
-                x: snap*2,
-                y: snap*2,
-                width: me.round(refs.panelContent.el.getWidth() - 2*snap*2),
-                height: snap*2
-            };
 
-        Ext.each(refs.panelContent.el.query('.html-component'), function(component) {
-            pos.y = me.round(Math.max(pos.y, component.y + component.height + snap));
-        });
+		// get score results:
+		var scoreResults;
 
-        return pos;
-    },
 
-    getSlideComponents: function() {
-        return this.getReferences().panelContent.el.query('.html-component');
-    },
+		if(me.currentPersonProgram.attempt < me.programData.maxAttemptsTrainingMode + me.programData.maxAttemptsScoreMode){
+		    if(totalProgramScore >= me.programData.passScore){
+		        // we passed
+		        scoreResults = App.ProgramStatuses.Passed;
+		    }else{
+		        // we tried non -last time and we failed - status is chagned to discontinued
+		        scoreResults = App.ProgramStatuses.Discontinued;
+		    }
+		}else{
+		    if(totalProgramScore < me.programData.passScore){
+		        // if we tried last time and we didn't get enough we failed
+		        scoreResults = App.ProgramStatuses.Failed;
+		    }else{
+		        // we tried last time and we passed
+		        scoreResults = App.ProgramStatuses.Passed;
+		    }
+		}
 
-    getCurrentState: function() {
-        var me = this,
-            refs = me.getReferences(),
-            slides = Ext.clone(Ext.pluck(refs.treeSlides.store.getRange(), 'data')).map(function(node) {
-                //console.log("printing current state node", node);
-                return cleanTreeNodeData(node);
-            });
-             // make dict where key is its id
+		var rec = personProgramsStore.add({ // TODO - this is add function but old record is still in there
+		    personProgramGuid: me.currentPersonProgram.personTrainingProgramId,
+		    lastChanged: new Date(),
+		    programCompleted: new Date(),
+		    programStatusId: scoreResults,
+		    changed: 'Y'
+		})[0];
 
-            var slidesDict = {};
-            for (var i = 0; i < slides.length; i++){
-                slidesDict[slides[i].id] = slides[i];
+		// setting phantom to true in order to update
+		rec.phantom = true;
+		personProgramsStore.sync();
 
-            }
 
-            questions = Ext.clone(Ext.pluck(me.getStore('QuestionsStoreSlides').getRange(), 'data')).map(function(node) {
-                console.log("printing current question in get current state", node);
-                //return cleanTreeNodeData(node);
-                return node;
-            });
+		clearInterval(me.previewTimer);
 
-            // make dict where key is its id
+		me.togglePreviewFrame(false);
+	},
 
-            var questionsDict = {};
-            for (var i = 0; i < questions.length; i++){
-                questionsDict[questions[i].id] = questions[i];
+	showPreview: function() {
+		var me = this,
+		    refs = me.getReferences(),
+		    personProgramsStore = me.getStore('PersonPrograms'),
+		    personAnswersStore = me.getStore('PersonAnswers');
 
-            }
 
-        data = {
-                slides: slidesDict,
-                pageSetup: me._pageSetup,
-                questions: questionsDict
-            };
 
-        return data;
-    },
 
-    saveSlideState: function(slide) {
-        var me = this,
-            refs = me.getReferences(),
-            content = {
-                components: {}
-            };
+		var numQuestions = Object.keys(Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId].questions).length;
 
-        slide = slide || me.getCurrentSlide();
+		if(this.getNumSlides() === 0){
+		    Ext.toast("Unable to preview program with no pages.");
+		    return;
+		}
+		if(numQuestions === 0){
+		    Ext.toast("Unable to start preview with no questions.");
+		    return;
+		}
 
-        if(slide) {
 
-            Ext.each(me.getSlideComponents(), function(component) {
-                if(component._opts.type == me.cmpTypes.SELECTION){
 
+		var TEST_PERSON_ID = 10000112;
 
-                    // if its question, append only guid of this question to content components
-                    var _opts = Ext.clone(component._opts);
 
-                    var _optsNew = {"type": _opts.type, "id": _opts.id };
-                    //console.log("printing opts", _opts);
-                    //console.log("printing new opts", _optsNew);
 
-                    content.components[_opts.id]=_optsNew;
 
-                    // uncomment line below to append whole question content to slide instead of only id
-                    //content.components.push(component._opts); // TODO TEMP
-                }else{
-                     content.components[component._opts.id] = component._opts;
-                }
-                //console.log("saveSlideState  printing content.componentss.push(comonent._opts)",content.components );
 
+		if(me.programData.validTo < new Date()){
+		    Ext.toast("Program is not valid anymore!");
+		    Ext.get('btnPreview').disable();
+		    return;
+		}
 
-            });
+		// Create PersonProgram or update it here
 
-            slide.set('content', Ext.encode(content));
-            //slide.set('content', content);
-            me.saveState();
-        }
-    },
 
-    loadSlideState: function(slide) {
-        var me = this,
-            refs = me.getReferences(),
-            parentEl = refs.panelContent.el.down('#html-slide');
+		personProgramsStore.load({
+		    params:{
+		        personId: TEST_PERSON_ID,
+		        programId: me.programId
+		    },
+		    callback:function(record){
+		        if(!record || record.length === 0){
+		            //recieved no record back - maybe here we know that this persons program doesnt exist yet so add it
+		            me.currentPersonProgram = { // store whole record
+		                personProgramGuid: createGUID(),
+		                personId: TEST_PERSON_ID,
+		                programId: me.programId,
+		                programStatusId: App.ProgramStatuses["In Progress"],
+		                createdById: TEST_PERSON_ID, // TODO - same person is also creating this program? can this be different?
+		                created: new Date(),
+		                programStarted: new Date(),
+		                lastChanged: new Date(),
+		                changed: 'N'
+		            };
+		            var rec = personProgramsStore.add(me.currentPersonProgram)[0];
+		            rec.phantom = true;
+		            personProgramsStore.sync();
+		            me.switchToPreviewing(); // display new quiz
+		        }
 
-        me.clearSlidePanel();
 
-        if(slide) {
+		        else{
+		            me.currentPersonProgram = record[0].data;
+		            if(me.currentPersonProgram.attempt >= me.programData.maxAttemptsTrainingMode + me.programData.maxAttemptsScoreMode){
+		                //Cannot attempt any more tries... returning
+		                return;
+		            }
 
-            console.log("loadSlideState - printing slide", slide);
-            var content = Ext.decode(slide.get('content') || '{}');
-            for (var key in content.components){
-                var component = content.components[key];
-                this.insertComponent(component);
-            //    console.log("printing key", key);
-            }
-            //Ext.each(content.components, function(component, index) {
-            //    this.insertComponent(component, index);
-            //}, this);
-            //me._selectedComponent = null;
-        }
-    },
 
-    clearSlidePanel: function() {
-        var me = this,
-            refs = me.getReferences(),
-            parentEl = refs.panelContent.el.down('#html-slide');
+		            // here we can read the records id to use in posting answers
+		            // add completion time minutes to initial programStarted time
+		            var endTime = new Date(new Date(me.currentPersonProgram.programStarted).getTime() +
+		                                   me.programData.completionTime * 60000); // completion time in database is in minutes
+		            var remainingMS = endTime.getTime() - new Date().getTime();
 
-        me.hideComponentTools();
+		            if(remainingMS > 0 && (me.currentPersonProgram.programStatusId == App.ProgramStatuses["In Progress"] ||
+		                                   me.currentPersonProgram.programStatusId == App.ProgramStatuses.Repeat)){
 
-        Ext.each(parentEl.query('.html-component'), function(component) {
-            parentEl.removeChild(component);
-        }, this);
-    },
+		                me.switchToPreviewing();  // display still active try of this quiz
+		            }else{
 
-    addComponentListeners: function(item) {
-        var me = this,
-            item = Ext.get(item);
+		                //we show dialog that by proceeding we will use another try
+		                Ext.Msg.confirm( 'Start preview', 'Start new program preview?' , function(btn) { // show confirm dialog
+		                    if(btn == 'yes') {
 
-        item.on('click', function(e, t) {
-            if(e.stopPropagation){
-                e.stopPropagation();
-            }
 
+		                        // create new current person program
+		                        me.currentPersonProgram = {
+		                            personProgramGuid: me.currentPersonProgram.personTrainingProgramId,
+		                            attempt: me.currentPersonProgram.attempt +1, // increase attempt counter
+		                            lastChanged: new Date(),
+		                            changed : 'Y',
+		                            programStatusId: App.ProgramStatuses.Repeat, // TODO - does status repeat mean "in progress && tried non -first time"
+		                            programStarted: new Date(),
 
-            var prevItem = me._selectedComponent;
+		                        };
 
-            if(prevItem) {
-                me._selectedComponent.removeCls('selected');
-                if(me._tools) {
-                    me._tools = null;
-                }
+		                        var rec = personProgramsStore.add(me.currentPersonProgram)[0];
+		                        rec.phantom = true;
+		                        personProgramsStore.sync();
+		                        me.switchToPreviewing(); // display new try of this quiz
+		                    }
+		                });
+		            }
 
-                // if(prevItem == item) {
-                //     me.hideComponentTools();
-                //     me._selectedComponent = null;
-                //     return;
-                // }
-            }
-            if(!me.previewing){
-                // not previewing - show edit tools
-                me._selectedComponent = item;
-                me._selectedComponent.addCls('selected');
-                me.showComponentTools(item);
-            }else{
-                // previewing
+		            // else - we have still time from previous quiz so continue with that one
+		            // POSSIBLE PROBLEM - if user wants to manually restart quiz - close one and start another - it will reopen old one
+		        }
+		    }
+		});
+	},
 
-                // Handle checkboxes and radio buttons
-                var SELECTED_VALUE = t.getAttribute('idx'); // idx have checboxes and radio buttons
-                if (SELECTED_VALUE){
-                    // getting array from html collection
-                    var answers = Array.from(item.dom.children[0].children); // to change dom style
-                    var answers_js =  item.el._opts.options; // to update javascript object and set answer to true/false
+	togglePreviewFrame: function(preview) {
+		// Display content
+		var me = this,
+		    refs = me.getReferences();
+		//refs.panelMenu.setVisible(!preview); // commented so navigation tree is visible even when solving quiz
+		refs.toolbarEdit.setVisible(!preview);
+		refs.toolbarPreview.setVisible(!!preview);
+		refs.panelContent[preview ? 'removeCls' : 'addCls']('edit');
+		refs.panelContent[preview ? 'addCls' : 'removeCls']('preview');
 
+		refs.panelSlide.setMargin(preview ? '10' : '10 10 10 0');
 
-                    answers.shift(); // remove first text item (text) - all other are radio / check buttons
+		// retarget this slide - this redraws current slide without dragger and sizer
+		var currentSlide = me.getCurrentSlide();
+		refs.treeSlides.setSelection(null);
+		refs.treeSlides.setSelection(currentSlide);
+	},
 
+	switchToPreviewing: function() {
+		var me = this,
+		    refs = me.getReferences();
 
+		// Update the count down every 1 second
+		me.previewTimer = setInterval(function() {
+		    // add completion time minutes to initial programStarted time
+		    var endTime = new Date(new Date(me.currentPersonProgram.programStarted).getTime() +
+		                           me.programData.completionTime * 60000); // completion time in database is in minutes
+		    var now = new Date();
 
 
-                    var type = answers[0].getAttribute('type');
-                    switch(type) {
-                        case 'radio':
-                            for (var i = 0, len = answers.length; i < len; i++) {
-                                answers[i].classList.remove('selected');
-                                answers_js[i].answer = false;
-                            }
-                            answers[SELECTED_VALUE].classList.add('selected');
-                            answers_js[SELECTED_VALUE].answer = true;
-                            break;
-                        case 'check':
-                            // initialize all values to its previous value or "false" if it hasn't been checked yet
-                            for (var i = 0, len = answers_js.length; i < len; i++) {
+		    // Find the distance between now an the count down date
+		    var distance = endTime.getTime() - now.getTime();
 
-                                answers_js[i].answer = answers_js[i].answer || false;
-                            }
+		    // Time calculations for days, hours, minutes and seconds
+		    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+		    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+		    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                            console.log("printing initialized check answers" , answers_js);
 
-                            // toggle the selected value
+		    var timerCountdownText = refs.toolbarPreview.el.down('#timerCountdown');
+		    timerCountdownText.dom.innerHTML = "Remaining: " + days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
 
-                            answers[SELECTED_VALUE].classList.toggle("selected");
-                            answers_js[SELECTED_VALUE].answer = !answers_js[SELECTED_VALUE].answer;
+		    // If the count down is finished, write some text
+		    if (distance < 0) {
+		        clearInterval(me.previewTimer);
 
+		        timerCountdownText.dom.innerHTML = "EXPIRED";
+		        Ext.toast("Time is up! We will evaluate your score.");
 
 
-                            break;
-                        default:
-                            console.error("Caller - addComponentListeners", "Unsupported component type" ,type);
-                    }
-                    //me.saveState();
+		        me.closePreview(true);
+		        // Ext.getCmp('btnPreview').disable(); // - todo maybe disable button after we finished all tries
 
+		    }
+		}, 1000);
 
 
 
-                    console.log("Todo - get question id here and call post request to store on table TrainingProgramsAnswers");
 
-                     var recordAnswers = {answer:{}};
-                    // create record
-                    for (var i = 0, len = answers_js.length; i < len; i++) {
-                        recordAnswers.answer[i] = answers_js[i].answer;
-                    }
-                    recordAnswers.answer = Ext.encode(recordAnswers.answer);
 
-                    console.log("adding new record of answers to localstorage", recordAnswers);
-                    var storageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
 
-                    storageData.answers[item._opts.id] = recordAnswers;
-                    me.saveState(storageData);
 
+		// show slide state
 
+		me.saveSlideState(me.getCurrentSlide());
+		var firstSlide = refs.treeSlides.store.getAt(0);
+		refs.treeSlides.setSelection(firstSlide);
+		// on panel toggle - drop down the sections to first actual slide
+		if (firstSlide.data.leaf === false){
+		    me.nextSlide();
+		}
 
-                }
+		me.togglePreviewFrame(true);
 
+	},
 
-            }
-        });
+	drawHelperLines: function(component) {
+		var me = this,
+		    _component = component.config.element? component.config.element: component.el,
+		    refs = me.getReferences(),
+		    panelWidth = refs.panelContent.el.getWidth(),
+		    panelHeight = refs.panelContent.el.getHeight(),
+		    componentWidth =_component._opts.width,
+		    componentMiddleWidth = componentWidth / 2,
+		    componentHeight =_component._opts.height,
+		    componentMiddleHeight = componentHeight / 2,
+		    x = _component._opts.x,
+		    y = _component._opts.y;
 
-        // if(!me.previewing){ - is in each of these 4 functions which checks for condition when event is fired - this is usefull
-        // when switching back and forth from preview and remaining on same slide
+		var svgContent = `<svg height="` + panelHeight+`" width="` + panelWidth + `">`;
+		// get all components and compare if some line is intersecting its bounding box or middle
+		var currentSlide = me.getCurrentSlide();
+		var slideComponents = Ext.decode(currentSlide.data.content);
+		for (var key in slideComponents.components){
+		    if(key != _component._opts.id){
 
-        item.on('dblclick', function(e, t) {
-            if(!me.previewing){
-                me.editComponent(item);
-            }
-        });
+		        var neighbourCmp = slideComponents.components[key];
 
-        item.on('_edit', function(e, t) {
-            if(!me.previewing){
-                me.editComponent(item);
-            }
-        });
+		        //Todo - multiple lines will draw over the same spot if multiple components have for example same x
+		        if(neighbourCmp.x == x){
+		            svgContent+= `<line x1=" ` +x +`" y1="0" x2="` +x +`" y2="`+panelHeight+`" style="stroke:black;stroke-width:1" stroke-dasharray="5 20"></line>`;
+		        }
+		        if(neighbourCmp.x + neighbourCmp.width /2 == x + componentMiddleWidth){
+		            svgContent+= `<line x1=" ` +(x + componentMiddleWidth) +`" y1="0" x2="` +(x + componentMiddleWidth) +`" y2="`+panelHeight+`" style="stroke:black;stroke-width:1" stroke-dasharray="5 20"></line>`;
 
-        item.on('_duplicate', function(e, t) {
-            if(!me.previewing){
-                me.duplicateComponent(item);
-            }
-        });
+		        }
+		        if(neighbourCmp.x + neighbourCmp.width == x + componentWidth){
+		            svgContent += `<line x1=" ` +(x + componentWidth) +`" y1="0" x2="` +(x + componentWidth) +`" y2="`+panelHeight+`" style="stroke:black;stroke-width:1" stroke-dasharray="5 20"></line>`;
+		        }
 
-        item.on('_delete', function(e, t) {
-            if(!me.previewing){
-                me.deleteComponent(item, true); // sync is true
-                me.hideComponentTools(item);
 
-            }
-        });
+		        if(neighbourCmp.y == y){
+		            svgContent += `<line y1=" ` +y +`" x1="0" y2="` +y +`" x2="`+panelWidth+`" style="stroke:black;stroke-width:1" stroke-dasharray="5 20"></line>                                  `;
+		        }
 
-    },
+		        if(neighbourCmp.y + neighbourCmp.height /2 == y + componentMiddleHeight){
+		            svgContent+= `<line y1=" ` +(y+componentMiddleHeight) +`" x1="0" y2="` +(y + componentMiddleHeight) +`" x2="`+panelWidth+`" style="stroke:black;stroke-width:1" stroke-dasharray="5 20"></line>`;
+		        }
+		        if(neighbourCmp.y + neighbourCmp.height == y + componentHeight){
+		            svgContent+= `<line y1=" ` +(y + componentHeight) +`" x1="0" y2="` +(y + componentHeight) +`" x2="`+panelWidth+`" style="stroke:black;stroke-width:1" stroke-dasharray="5 20"></line>`;
+		        }
+		    }
+		}
+		svgContent+=`</svg>`;
 
-    showComponentTools: function(component) {
-        var me = this;
+		// make wrapper that hosts this dom and add it to content
+		var wrapper;
+		var prevWrapper = document.getElementById("lineWrapper");
+		if(prevWrapper){
+		    // repurpose old wrapper to host new content
+		    wrapper = prevWrapper;
+		}
+		else{
+		    wrapper= document.createElement('div'); // create wrapping div
 
-        if(!me._componentTools) {
-            me._componentTools = me.getView().add({ xtype: 'edittools' });
-        }
-        me._componentTools.getController().show({ component: component });
-    },
+		}
+		wrapper.setAttribute("id", "lineWrapper"); // set its id
+		wrapper.innerHTML= svgContent; //insert string content
 
-    hideComponentTools: function(component) {
-        var me = this;
 
-        if(!me._componentTools) {
-            me._componentTools = me.getView().add({ xtype: 'edittools' });
-        }
-        me._componentTools.close();
 
-    },
 
-    insertComponent: function(opts) {
-        console.log("called insert component with opts", opts);
+		//refs.panelContent.el.dom.firstChild.firstChild.firstChild.appendChild(wrapper);
 
-        opts = Ext.applyIf(opts || {}, {
-            type: null,
-            height: null,
-            width: null,
-            x: null,
-            y: null,
-            html: '',
-            options: [],
-            multi: false,
-            src: '',
-            cls: null,
-            style: null
-        });
+		refs.panelContent.el.dom.firstChild.firstChild.firstChild.insertAdjacentElement('afterbegin', wrapper);
+	},
 
+	createSelection: function(opts) {
+		var text = opts.text,
+		    answers = opts.answers,
+		    multi = opts.multi,
+		    component = opts.component;
 
+		if(answers.length === 0) {
+		    return 'Please specify at least one answer';
+		}
+		if(answers.filter(function(item) { return item.correct; }).length === 0) {
+		    return 'Please mark at least one answer as correct';
+		}
+		if(!multi && answers.filter(function(item) { return item.correct; }).length > 1) {
+		    return 'Only one correct answer is allowed for single selection';
+		}
 
+		var me = this;
 
+		// Testing selection insert Jernej Habjan 2018-07-16
 
-        if (!opts.type) {
-            Ext.Msg.alert('Error', 'No component type');
-        }
+		var questionsStore = me.getStore('QuestionsStoreSlides');
 
-        if (opts.cls && typeof opts.cls == "string") {
-            opts.cls = [opts.cls];
-        }
+		// getting all correct answers
+		var correctAnswersIds = []; // this array stores ids of correct answers, where ids are generated as sequence numbers
 
-        var me = this,
-            refs = me.getReferences(),
-            pos = me.getFreePosition(),
-            snap = me._pageSetup.snap,
-            parentEl = refs.panelContent.el.down('#html-slide'),
-            cmp = document.createElement('div'),
-            currentSlide = me.getCurrentSlide();
+		for (var i = 0; i < answers.length; i++) {
+		    var element = answers[i];
+		    if (element.correct === true){
+		        correctAnswersIds.push(element.id); // adds sequence number of this question
+		    }
+		}
 
-        if (!currentSlide) {
-            me.newSlide();
-        }
+		// getting page id
+		var refs = this.getReferences(),
+		    selection = refs.treeSlides.getSelection()[0];
 
 
-        // setting size from slide content
-        /*if(index > -1){
-            var _localStorageSlide = Ext.decode(localStorage.mxp_elearning)[me.programId].slides[currentSlide.id];
+		if(!selection){
+		    console.warn("NO SELECTION - TODO - fix so one slide or section is always selected... returning");
+		    return;
+		}
+		var pageGuid = selection.data.id;
+		var componentGuid = createGUID();
 
-            var slideComponent = Ext.decode(_localStorageSlide.content).components[index];
 
-            opts.height = slideComponent.height;
-            opts.width = slideComponent.width;
-            opts.x = slideComponent.x;
-            opts.y = slideComponent.y;
+		var record = {
+		    id : componentGuid,
+		    pageId: pageGuid,
+		    question: text,
+		    answers:Ext.encode(answers),
+		    correctValue: Ext.encode(correctAnswersIds),
+		    fieldType:  (multi? "Multi" : "Single") + " " + me.cmpTypes.SELECTION
+		    // this renders to string "Multi selection" or "Single selection"
 
-            pos = {
-                height: opts.height,
-                width: opts.width ,
-                x: opts.x,
-                y: opts.y
-            };
+		};
+		//adding new record to localstorage
+		var storageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
 
-        }*/
+		if(!storageData.questions){
+		    storageData.questions = {};
+		}
+		storageData.questions[componentGuid] = record;
 
+		me.saveState(storageData);
 
+		//adding new record to store
+		var rec = questionsStore.add(record)[0];
+		rec.data.lastChanged = new Date();
+		rec.phantom = true; // phantom has to be set to true because main property in Question model is id!!!
 
+		// after adding to database add component to view
 
 
-        // set size
-        // if(opts.type == 'image' && opts.src) {
-        //     // determine image size
-        //     var img = new Image();
+		if(navigator.onLine){
+		    questionsStore.sync();
+		}
 
-        //     img.onload = function() {
-        //         cmp.width = me.round(isNull(opts.width, img.width));
-        //         cmp.height = me.round(isNull(opts.height, img.height));
-        //         cmp.style.width = cmp.width + 'px';
-        //         cmp.style.height = cmp.height + 'px';
-        //     };
-        //     img.src = opts.src;
+		if(component) {
+		    var state = component._opts;
+		    me.deleteComponent(component, false);
+		    state.html = text;
+		    state.options = answers;
+		    state.id =  componentGuid;
+		    component = me.insertComponent(state);
+		}
+		else {
+		    component = me.insertComponent({
+		        type: me.cmpTypes.SELECTION,
+		        cls: 'selection',
+		        html: text,
+		        options: answers,
+		        multi: multi,
+		        id: componentGuid,
+		        width: opts.width,
+		        height: opts.height
+		    });
+		}
 
-        //     // show image as background
-        //      cmp.style.backgroundImage = 'url(' + opts.src + ')';
-        // }
-        // else {
-        cmp.width = opts.width = me.round(isNull(opts.width, pos.width));
-        cmp.height = opts.height = me.round(isNull(opts.height, pos.height));
-        cmp.style.width = cmp.width + 'px';
-        cmp.style.height = cmp.height + 'px';
-        // }
+		me.saveSlideState();
 
-        // set classes
-        cmp.classList.add('html-component');
+		/*
 
-        // set position
-        cmp.x = opts.x = isNull(opts.x, pos.x);
-        cmp.y = opts.y = isNull(opts.y, pos.y);
+		    questionsStore.sync({
+		        callback: function(){
+		            if(component) {
+		                var state = component._opts;
+		                me.deleteComponent(component, false);
+		                state.html = text;
+		                state.options = answers;
+		                state.id =  componentGuid;
+		                component = me.insertComponent(state);
+		            }
+		            else {
+		                component = me.insertComponent({
+		                    type: me.cmpTypes.SELECTION,
+		                    cls: 'selection',
+		                    html: text,
+		                    options: answers,
+		                    multi: multi,
+		                    id: componentGuid,
+		                    width: opts.width,
+		                    height: opts.height
+		                });
+		            }
 
-        cmp.style.left = cmp.x + 'px';
-        cmp.style.top = cmp.y + 'px';
+		            me.saveSlideState();
+		            //me.loadSlideState(selection);
+		        }
+		    });
 
-        // set content
-        var content = document.createElement('div');
-        var html = opts.html;
 
-        // todo - simplify this if - but from server opts.type is returned as Single or Multi selection because it doesnt have special attribute
-        if ((opts.type == me.cmpTypes.SELECTION && opts.options) || opts.type == 'Single selection' ||opts.type == "Multi selection") {
+		*/
+	},
 
-            opts.cls = [me.cmpTypes.SELECTION];
-            //cmp.height = 100; // TODO temp component height because we cannot store height in database
+	createResizer: function(cmp) {
 
+		var me = this,
+		    snap = me._pageSetup.snap;
 
+		cmp._resizer = Ext.create('Ext.create', 'Ext.resizer.Resizer', {
+		    target: Ext.get(cmp),
+		    //pinned:true,
+		    minWidth: snap,
+		    minHeight: snap,
+		    heightIncrement: snap,
+		    widthIncrement: snap,
+		    preserveRatio: false,
+		    dynamic: true,
+		    transparent: false,
+		    handles: 'all', // shorthand for 'n s e w ne nw se sw'
+		    listeners: {
+		        beforeresize: function(component){
+		            component.el.fireEvent('click');
+		        },
 
-            /*
+		        resizedrag:function(component, width, height){
+		            component.el._opts.width = width;
+		            component.el._opts.height = height;
+		            component.el._opts.x = component.el.dom.offsetLeft;
+		            component.el._opts.y = component.el.dom.offsetTop;
+		            me.drawHelperLines(component);
 
-            console.log("width, printing slide", currentSlide);
-            // iterate through this slides components and search for this one, then read bounding box data from it
-            var slideComponents = Ext.decode(currentSlide.data.content).components;
-            for (var i = 0; i < slideComponents.length; i++){
-                var slideComponent = slideComponents[i];
-                if(slideComponent.id == opts.id){
-                    cmp.height = opts.height = slideComponent.height;
-                    cmp.width = opts.width = slideComponent.width;
-                    cmp.x = opts.x = slideComponent.x;
-                    cmp.y = opts.y = slideComponent.y;
-                    break;
-                }
-            }
+		            me.showComponentTools(component);
+		        },
 
 
-            cmp.style.height = cmp.height + 'px';
-            cmp.style.width = cmp.width + 'px';
-            cmp.style.left = cmp.x + 'px';
-            cmp.style.top = cmp.y + 'px';
+		        resize: function (component, width, height, e, eOpts) {
+		            var prevWrapper = document.getElementById("lineWrapper");
+		            if(prevWrapper){
+		                prevWrapper.outerHTML = ""; // remove old wrapper
+		            }
+		            cmp.width = width;
+		            cmp.height = height;
+		            cmp._opts.width = width;
+		            cmp._opts.height = height;
 
-        */
+		            // save slide state after resizing element
 
+		            var id = component.target._opts.id; // TODO - this line is changed as of in the dragmove function
+		            var currentSlide = me.getCurrentSlide();
 
+		            // THIS FUNCTION NOW WORKS FOR ALL - IMAGES, AUDIO, SELECTIONS, BECAUSE EVERYONE HAS ITS OWN ID
 
-            // insert selection has been called with specific id, so we must retrieve it from database end spawn it here
-            var storageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId],
-                questions = storageData.questions,
-                question = questions[opts.id];
-            if(!question){
-                console.log("No questions exist for this program. Returning...");
-                return;
-            }
-            console.log("printing record in insert component", question);
+		            // set new info to this new altered component
+		            var alteredContent = Ext.decode(currentSlide.data.content);
+		            for (var key in alteredContent.components){
+		                if(alteredContent.components[key].id == id){
 
-            var record = question;
-            opts.type = record.fieldType;
-            // TODO - FIx this line below because its inefficient -
-            opts.options = Ext.decode(record.lookups) || Ext.decode(record.answers.answer) || Ext.decode(record.answers);
-            html = record.question;
-            // todo we dont store in database if question is multi answer or not so in editSelection this text is rendered
-            opts.multi = opts.type == "Multi selection"; // checks against string if its multi selection
-            opts.html = html;
-            opts.cls = [me.cmpTypes.SELECTION];
-            opts.id = opts.id;
+		                    // resizer changes width, height and also x,y
+		                    alteredContent.components[key].width = me.round(width); // Todo these lines are changes ofc
+		                    alteredContent.components[key].height = me.round(height);
 
+		                    alteredContent.components[key].x = me.round(component.target.dom.offsetLeft);
+		                    alteredContent.components[key].y = me.round(component.target.dom.offsetTop);
+		                }
+		            }
 
+		            // change localstore
+		            var slides = Ext.decode(localStorage.mxp_elearning)[me.programId].slides;
+		            slides[currentSlide.id].content = Ext.encode(alteredContent);
+		            me.saveState({slides:slides});
 
+		            // change store and sync
+		            var storeItems = me.getStore('TreeStoreSlides').data.items;
+		            for(var i = 0; i < storeItems.length; i++){
+		                if(storeItems[i].id == currentSlide.id){
+		                    storeItems[i].data.content = Ext.encode(alteredContent);
+		                    storeItems[i].data.lastChanged = new Date();
+		                    storeItems[i].phantom = true;
+		                    break;
+		                }
+		            }
+		            me.getStore('TreeStoreSlides').sync();
+		        }
+		    }
+		});
 
-            console.log("printing record lookups", opts.options);
+	},
 
-            // same as below - TODO
-            html = '<div clas="text">' + html + '</div>';
+	pushChanges: function(store, dataAttribute) {
+		return;
 
+		if(dataAttribute == 'questions'){
+		    print("called push changes");
+		    // updates treestore using localstorage and syncs with server
+		    var me = this,
+		        localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId],
+		        store = me.getStore(store);
 
 
+		    print("printing some in push changes", "store", store.data.items, "localstorage", localStorageData[dataAttribute]);
 
-            Ext.each(opts.options, function (option, index, allItems) {
-                // console.log("printing each option", option);
-                var cls = ['option', (opts.multi ? 'check' : 'radio')];
 
-                if (option.correct) {
-                    cls.push('correct');
-                }
 
-                // new setting answer selected from localstorage
 
-                if(storageData && storageData.answers && storageData.answers[opts.id] !== undefined){
-                    var answers = Ext.decode(storageData.answers[opts.id].answer);
-                    console.log("answers for this question are stored in localstorage");
-                    if(answers[index] === true){
-                        cls.push('selected');
-                    }
 
-                }
+		    var d=[];
+		    for(var key in localStorageData[dataAttribute]){
+		        d.push(localStorageData[dataAttribute][key]);
+		    }
 
+		    store.loadRawData(d);
+		    for(var i = 0; i < store.data.items.length; i++){
+		        store.data.items[i].phantom = true;
+		    }
 
-                // added two custom attributes idx which is index of element (starting with 0) and type which can contain chech or radio
-                html += '<div class="' + cls.join(' ') + '" idx=' + index + ' type=' + (opts.multi ? 'check' : 'radio') + '>' + option.text + '</div>';
-            });
+		    store.sync();
 
+		}
 
-        }
 
-        if (opts.type == me.cmpTypes.IMAGE && opts.src) {
-            if(navigator.onLine){
-                content.style.backgroundImage = 'url(' + opts.src + ')';
-            }else{
-                content.style.backgroundColor = 'powderblue';
-                html = 'Image cannot be loaded - go online to view photo';
-            }
+		return;
 
-        }
 
 
-        // adding classes to surrounding div element of component
-        content.classList.add('html-content');
-        Ext.each(opts.cls, function (cls) {
-            content.classList.add(cls);
-        });
 
 
 
 
-        content.innerHTML = html;
-        content = cmp.appendChild(content);
 
-        cmp = parentEl.dom.appendChild(cmp);
 
-        cmp._opts = opts;
-        cmp.type = opts.type;
 
-        extCmp = Ext.get(cmp);
-        extCmp._opts = opts;
-        extCmp.type = opts.type;
 
 
-        if (!me.previewing) {
-            cmp._dragger = new Ext.drag.Source({
-                element: extCmp,
-                constrain: {
-                    element: parentEl,
-                    snap: {
-                        x: snap,
-                        y: snap
-                    }
-                },
-                listeners: {
-                    beforedragstart: function (component, info, event, eOpts) {
-                        if (info.eventTarget.classList.contains('x-resizable-handle')) {
-                            return false;
-                        }
-                    },
-                    dragcancel: function (component, info, event, eOpts) {
-                        console.log('dragcancel', arguments);
-                    },
-                    dragend: function (component, info, event, eOpts) {
+		//store.removeAll(true);
 
-                        console.log("dragend", component, info, event);
 
+		// setting data from localstorage to store
 
 
 
+		// IMPORTANT! Use .appendChild when adding data to treestore for sync to work
 
+		//appending slides
 
 
 
-                        console.warn("changing attribute of component and saving it to server - TODO");
-                        var id = component.config.element._opts.id;
-                        var currentSlide = me.getCurrentSlide();
+		/*
+		for (var i = 0; i < localStorageData.slides.length; i++){
+		    treeStoreSlides.getRootNode().appendChild(localStorageData.slides[i]);
+		    console.log("appended child");
+		}
+		*/
 
 
 
+		//treeStoreSlides.getRootNode().appendChild(localStorageData.slides); // -add all from localstorage
+		// setting all records' phantom state to true
+		for (var i = 0; i < store.data.items.length; i++){
+		    var rec = store.data.items[i];
+		    // IMPORTANT! rec.phantom must be set to true, othewise sync wont work, as "data isn't changed"
+		    rec.phantom = true;
+		    print("printing rec in push changed", rec);
+		}
+		// sync data back to server
+		store.sync();
 
 
-                        // THIS FUNCTION NOW WORKS FOR ALL - IMAGES, AUDIO, SELECTIONS, BECAUSE EVERYONE HAS ITS OWN ID
 
 
 
 
-                        // set new info to this new altered component
-                        var alteredContent = Ext.decode(currentSlide.data.content);
-                        for (var key in alteredContent.components){
-                            if(alteredContent.components[key].id == id){
-                                alteredContent.components[key].width = 100;
-                            }
-                        }
 
 
-                        // change localstore
-                        var slides = Ext.decode(localStorage.mxp_elearning)[me.programId].slides;
-                        slides[currentSlide.id].content = Ext.encode(alteredContent);
 
-                        me.saveState({slides:slides});
 
 
 
 
-                        // change store and sync
-                        var storeItems = me.getStore('TreeStoreSlides').data.items;
-                        for(var i = 0; i < storeItems.length; i++){
-                            if(storeItems[i].id == currentSlide.id){
-                                print("setting new content");
-                                storeItems[i].data.content = Ext.encode(alteredContent);
-                                storeItems[i].phantom = true;
-                                break;
-                            }
-                        }
-                        me.getStore('TreeStoreSlides').sync();
 
 
-                        //me.getStore('TreeStoreSlides').data.items[0] // temp fix to change content in store
+	},
 
+	serverSync: function(callback) {
+		// calls sync of everything (slides, questions, answers, pageConfig...) - it retrieves data and pushes latest data to server
 
-                        // me.updateServerStore(); // this doesnt yet work to retrieve data from localstorage back to store
+		// syncs all data with server - this is called on program load and on navigator onLine
 
 
 
+		var me = this,
+		    localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
 
 
 
-                    },
-                    dragmove: function (component, info, event, eOpts) {
-                        var pos = info.element.current,
-                            x = pos.x - parentEl.getX(),
-                            y = pos.y - parentEl.getY();
 
-                        cmp._opts.x = x;
-                        cmp._opts.y = y;
-                        //             console.log(Ext.String.format('dragmove X: {0}, Y: {1}', x, y));
-                    },
-                    dragstart: function (component, info, event, eOpts) {
-                        console.log('dragstart', arguments);
-                    }
-                }
-            });
+		var syncQuestionsCallback = function(){
+		    // after loading slides, load questions
+		    var params = {programId: me.programId};
+		    me.initialDataSync('PersonAnswers', 'answers', params, callback, 'id');
 
-            cmp._resizer = Ext.create('Ext.create', 'Ext.resizer.Resizer', {
-                target: extCmp,
-                //pinned:true,
-                minWidth: snap,
-                minHeight: snap,
-                heightIncrement: snap,
-                widthIncrement: snap,
-                preserveRatio: false,
-                dynamic: true,
-                transparent: false,
-                handles: 'all', // shorthand for 'n s e w ne nw se sw'
-                listeners: {
 
-                    resize: function (component, width, height, e, eOpts) {
-                        cmp.width = width;
-                        cmp.height = height;
-                        cmp._opts.width = width;
-                        cmp._opts.height = height;
-                        //console.log(Ext.String.format('W: {0}, H: {1}', width, height));
 
-                        // save slide state after resizing element
-                        var rec = me.getStore('TreeStoreSlides').findRecord('id', me.getCurrentSlide().id);
-                        rec.dirty = true;
-                        me.saveState();
+		};
+		var syncStateCallback = function(){
+		    // Updating server store:
+		    me.updateServerStore();
 
-                    }
-                }
-            });
-        }
 
+		    var params = {programId: me.programId};
+		    me.initialDataSync('QuestionsStoreSlides', 'questions', params, syncQuestionsCallback, 'id');
 
-        me.addComponentListeners(cmp);
+		};
+		// number 1
 
-        return extCmp;
-    },
+		if(localStorageData.pageSetup){ // TODO retrieve it later from database
+		    me._pageSetup = localStorageData.pageSetup;
+		}
+		var params = {programId: me.programId};
+		me.initialDataSync('TreeStoreSlides', 'slides', params, syncStateCallback, 'id');
+	},
 
-    editComponent: function(component) {
-        var me = this,
-            refs = me.getReferences();
+	close: function(owner, tool, event) {
+		this.getView().up('#mainView').setActiveItem('gridPrograms');
+	},
 
-        component = component || me._selectedComponent;
-        if (component) {
-            if ((component.type == me.cmpTypes.IMAGE) || (component.type == me.cmpTypes.VIDEO) || (component.type == me.cmpTypes.AUDIO) ){
-                console.log("Cannot edit image, video or audio");
-                return;
-            }
+	onTreeViewDragDrop: function(treeviewdragdrop) {
+		var me = this,
+			refs = me.getReferences();
 
-            if (component.type == me.cmpTypes.SELECTION || component.type == "Single selection" || component.type == "Multi selection") {
-                me.editSelection(component);
-            }
+		var treeStoreSlides = me.getStore('TreeStoreSlides');
 
-            else {
-                var wnd = me.getView().add({xtype: 'texteditor'});
+		// we need to mark every slide as dirty, as we cannot know how the selection was changed
+		for (var i = 0; i < treeStoreSlides.data.items.length; i++){
+			var rec = treeStoreSlides.data.items[i];
+			rec.dirty = true;
+		}
+		me.saveState();
+		refs.treeSlides.setSelection(me.getCurrentSlide());
 
-                wnd.getController().show({
-                    value: component.el.down('.html-content').dom.innerHTML,
-                    callback: function (value) {
-                        component.el.down('.html-content').dom.innerHTML = value;
-                        component._opts.html = value;
-                        me.saveSlideState();
-                    },
-                    scope: me
-                });
-            }
-        }
-    },
+	},
 
-    duplicateComponent: function(component) {
-        var opts = Ext.clone(component._opts);
+	onTreeSlidesSelect: function(rowmodel, record, index, eOpts) {
+		// loading slide state for both sections and slides, because creating title every time caused sync with database
 
-        delete opts.x;
-        delete opts.y;
+		var me = this,
+			refs = me.getReferences();
 
-        // rename its id
-        opts.id = createGUID();
-        var cmp = this.insertComponent(opts);
+		me.loadSlideState(record);
 
-        cmp.fireEvent('click');
-    },
+		// if(record.isLeaf()) {
+		//     this.loadSlideState(record);
+		// }
+		// else {
+		//     this.clearSlidePanel();
+		//
+		//     // Todo -insert title is causing another sync with database
+		//     this.insertTitle('Section ' + record.get('title'));
+		// }
 
-    deleteComponent: function(component, sync) {
-        var me = this,
-            refs = this.getReferences(),
-            questionStore = me.getStore('QuestionsStoreSlides');
 
-        component = component || me._selectedComponent;
 
-        if(component) {
+		return;
+		// TODO - Jernej Habjan 2018-07-12
+		// Trying to replace slide icon in treeview by rendered content
 
-            console.log("todo - get component id and remove it from localstorage and call questionsStore.delete(id)");
-            console.log("delete comp printing el.opts", component, component.el._opts);
 
+		// todo - check if there are any children - possible crash here
 
-            if(sync){ // we might not always want to sync, but only delete this component in order to redraw it
-                console.log("printing question store", questionStore);
-                var rec = questionStore.findRecord('id', component.el._opts.id);
-                console.log("printing record", rec);
-                questionStore.remove(rec);
-                questionStore.sync();
+		// get all currently shown nodes in tree view - only parent of collapsed nodes is visible
+		var treeView = refs.treeSlides.el.dom.children[0].children[1].children[0].children[1].children;
+		for (var i=0, n=treeView.length; i < n; i++){
 
+			var children = treeView[i].children[0].children[0].children[0].children[0].children;
 
-                // deleting by find
-                console.log("finding in store", questionStore.find('id',  component.el._opts.id));
-                questionStore.removeAt(questionStore.find('id',  component.el._opts.id));
-                questionStore.sync();
+			var slide = children[children.length - 2]; // slots before that occupy indents in tree view, slot after that is text
 
 
 
+			// uncomment this if to allow rendering on all tree nodes - and not only on slides
+			if(slide.classList.contains("x-tree-icon-leaf")){ // check if it is slide
+				slide.outerHTML = '<div role="presentation" class="  x-tree-icon"><img src="https://www.vaporfi.com.au/media/catalog/product/cache/34/thumbnail/600x600/9df78eab33525d08d6e5fb8d27136e95/v/z/vz_eliquid_juicy_red_apple.jpg" style="width:20px; height:20px;"></div>';
 
+				// Todo - replace apple photo with rendered slide with scale of 20, 20
 
-                console.log("printing question store", questionStore);
-                //questionStore.remove(component.el._opts);
 
+			}
 
-                for (var i = 0; i < questionStore.data.items.length; i++){
-                    var rec = questionStore.data.items[i];
+		}
 
-                    rec.phantom = false;
+		// Part 2 - rendering slides in appropriate slots:
 
 
-                    if(rec.id == component.el._opts.id){
-                        rec.phantom = true;
-                    }
+		// var data = localStorage.getItem('mxp_elearning')[me.slideId];
+		// if(data) {
+		//     data = Ext.decode(data);
+		//     if(data.slides) {
+		//         data.slides.forEach(function (value) {
+		//             if(value.isSlide){
+		//                 console.log("printing slide",value);
+		//             }
+		//         });
+		//     }
+		// }
 
-                    console.log("printing record in updateServer store", rec);
-                }
+		// Part 3 - slide html to canvas - http://html2canvas.hertzen.com/
 
-                questionStore.sync();
+		// document.body.innerHTML += '<div id="capture" style="padding: 10px; background: #f5da55">    <h4 style="color: #000; ">Hello world!</h4></div>';
+		//
+		//
+		// html2canvas(document.querySelector("#capture")).then(canvas => {
+		//     document.body.appendChild(canvas);
+		// });
 
-                me.saveState();
 
-            }
 
+	},
 
+	onTreeSlidesDeselect: function(rowmodel, record, index, eOpts) {
 
+		var me = this;
+		me.clearSlidePanel();
 
-            me._selectedComponent.destroy();
-            me._selectedComponent = null;
+		me.allComponents = []; // clear old components from prev slide
+		me._selectedComponents = [];
 
-        }
-    },
 
-    insertTitle: function(value) {
-        var me = this,
-            cmp = me.insertComponent({
+	},
 
-                id: createGUID(),
-                type: me.cmpTypes.TITLE,
-                cls: 'title',
-                html: value || 'Title',
-                height: 50
+	onEditSlidesBoxReady: function(component, width, height, eOpts) {
+		var me = this,
+			refs = me.getReferences();
 
-            });
-         me.saveSlideState();
+		me.previewing = false; // used for toggling event actions when previewing or not
 
-        // me.editComponent(cmp);
-    },
+		me._pageSetup = {
+			snap: 25,
+			width: 800,
+			height: 600,
+			headerHeight: 50,
+			footerHeight: 50,
+			padding: 50,
+			background: null
+		};
 
-    insertText: function(value) {
-        var me = this,
-            cmp = me.insertComponent({
-                id: createGUID(),
-                type: me.cmpTypes.TEXT,
-                cls: 'text',
-                html: value || 'Text',
-                height: 425
+		me.cmpTypes = {
+			HTML: 'html',
+			TITLE: 'title',
+			TEXT: 'text',
+			IMAGE: 'image',
+			AUDIO: 'audio',
+			VIDEO: 'video',
+			SELECTION: 'selection'
+		};
 
-            });
-         me.saveSlideState();
+		refs.panelContent.removeAll();
+		refs.toolbarPreview.hide();
 
-        // me.editComponent(cmp);
-    },
 
-    insertImage: function() {
-        var me = this,
-            cmp = me.insertComponent({
-                id: createGUID(),
-                type: me.cmpTypes.IMAGE,
-                cls: 'image',
-                html: '',
-                src: 'resources/images/example.jpg',
-                height: 275,
-            });
-         me.saveSlideState();
+		component.el.on('click', function(e, t) {
+			// hiding component tools if component itself (like bodyPanel, ImageComponent...) didn't stop click event to backpropagate
 
-    },
+			if(!e.ctrlKey && !e.shiftKey){
 
-    insertSelection: function(opts) {
-        this.editSelection(null, opts);
+				// if we clicked on background without holding shift or ctrl key - remove all selected components
+				// if we are holding shift or ctrl key, we are multiselecting and we might have clicked on background by accident
+				me.hideComponentTools();
 
-    },
+				for(var i = 0; i < me.allComponents.length; i++){
+					me.allComponents[i].fireEvent('deselect');
+				}
+				me._selectedComponents = [];
+			}
 
-    editSelection: function(component, opts) {
-        console.log("printing selection in editSelection at begining", this.getCurrentSlide());
 
-        opts = Ext.applyIf(opts || {}, {
-            multi: false
-        });
 
-        var me = this,
-            refs = me.getReferences(),
-            state = component && component._opts,
-            multi = state && state.multi || opts.multi,
-            wnd = me.getView().add({ xtype: 'selectioneditor' });
+		});
 
-        wnd.getController().show({
-            text: state && state.html,
-            options: state && state.options,
-            multi: multi,
-            callback: function(text, answers) {
+		document.addEventListener("keydown", function onPress(event) {
+			var KEY_DELETE = 46;
+			var KEY_A = 65;
+			if(me._selectedComponents.length){
+				if(event.keyCode === KEY_DELETE){
+					for(var i = 0; i < me._selectedComponents.length; i++){
+						var cmp = me._selectedComponents[i];
+						cmp.fireEvent('_delete');
+					}
+					me.hideComponentTools();
 
-                if(answers.length === 0) {
-                    return 'Please specify at least one answer';
-                }
-                if(answers.filter(function(item) { return item.correct; }).length === 0) {
-                    return 'Please mark at least one answer as correct';
-                }
-                if(!multi && answers.filter(function(item) { return item.correct; }).length > 1) {
-                    return 'Only one correct answer is allowed for single selection';
-                }
+				}
+			}
+			if(event.keyCode === KEY_A){
+				if (event.ctrlKey) {
+					// clear all selected components
+					me._selectedComponents = [];
+					if(!me.previewing && me.allComponents.length){
+						me._selectedComponents = me.allComponents; //select all components
+						// iterate through all components - they are getting reset on slide deselect and on editSlides load
+						for(var i = 0; i < me.allComponents.length; i++){
+							me.allComponents[i].addCls('selected');
+						}
+						me.showComponentTools( me.allComponents[ me.allComponents.length-1]);
+					}
+				}
+				event.preventDefault();
+			}
+		});
 
-                /*console.log("printing selection in editSelection at callback",  selection);*/
 
-                /*if(!me.getCurrentSlide()){
-                             console.log("setting new current selection");
-                             me.getReferences().treeSlides.setSelection(selection);
-                         }*/
 
+		// create online / offline event listenere - when coming back online, we want to sync localstorage with database
+		function connectionChange() {
+			if (navigator.onLine){
+				var callback = function(){
+					var currentSlide = me.getCurrentSlide();
+					me.getReferences().treeSlides.setSelection(null);
+					me.getReferences().treeSlides.setSelection(currentSlide); // retrigger current slide to update
+					Ext.toast('Welcome back online! Content saved on server.');
+				};
 
 
+				me.serverSync(callback); // calls sync of everything (slides, questions, answers, pageConfig...) - it retrieves data and pushes latest data to server
 
-                // Testing selection insert Jernej Habjan 2018-07-16
 
-                var questionsStore = me.getStore('QuestionsStoreSlides');
 
-                // getting all correct answers
-                var correctAnswersIds = []; // this array stores ids of correct answers, where ids are generated as sequence numbers
 
-                for (var i = 0; i < answers.length; i++) {
-                    var element = answers[i];
-                    //console.log("printing each element", element);
-                    if (element.correct === true){
-                        correctAnswersIds.push(element.id); // adds sequence number of this question
-                    }
-                }
+			}else{
+				Ext.toast('We went offline! Content is still saved locally. Reconnect to save content with server.');
+			}
+		}
+		// Update the online status icon based on connectivity
+		window.addEventListener('online',  connectionChange);
+		window.addEventListener('offline', connectionChange);
 
-                // getting page id
-                var refs = this.getReferences(),
-                    selection = refs.treeSlides.getSelection()[0];
+		// add eventlistenere on fullscreen change to remove this panel on fullscreen off
+		var me = this;
+		var screen_change_events = ["webkitfullscreenchange", "mozfullscreenchange", "fullscreenchange", "MSFullscreenChange"];
 
+		for (var i in screen_change_events){
+			document.addEventListener(screen_change_events[i], function( event ) {
+				// The event object doesn't carry information about the fullscreen state of the browser,
+				// but it is possible to retrieve it through the fullscreen
+				if (document.webkitFullscreenElement ||  document.fullscreenElement || document.mozFullscreenElement || document.msFullscreenElement ) {
+				}else{
+					// The target of the event is always the document,
+					// but it is possible to retrieve the fullscreen element through the API
+					refs.slideNavigation.getController().closeFullscreen();
+				}
+			});
+		}
 
-                if(!selection){
-                    console.warn("NO SELECTIOn - TODO - fix so one slide or section is always selected... returning");
-                    return;
-                }
-                var pageGuid = selection.data.id;
-                var componentGuid = createGUID();
-
-
-                var record = {
-                    id : componentGuid,
-                    pageId: pageGuid,
-                    question: text,
-                    answers:Ext.encode(answers),
-                    correctValue: Ext.encode(correctAnswersIds),
-                    fieldType:  (multi? "Multi" : "Single") + " " + me.cmpTypes.SELECTION
-                    // this renders to string "Multi selection" or "Single selection"
-
-                };
-
-                console.log("adding new record to localstorage", record);
-                var storageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
-
-                if(!storageData.questions){
-                    storageData.questions = {};
-                }
-                storageData.questions[componentGuid] = record;
-
-                me.saveState(storageData);
-
-
-                console.log("adding new record to store:", record);
-                var rec = questionsStore.add(record)[0];
-                rec.phantom = true; // phantom has to be set to true because main property in Question model is id!!!
-
-                // after adding to database add component to view
-                questionsStore.sync({
-                    callback: function(){
-
-
-                        if(component) {
-                            var state = component._opts;
-
-                            me.deleteComponent(component, false);
-                            state.html = text;
-                            state.options = answers;
-                            state.id =  componentGuid;
-                            component = me.insertComponent(state);
-
-                            console.log("condition went into if");
-
-                        }
-                        else {
-
-                            console.log("triggered inserting component selection");
-
-                            console.log("printing current selection", me.getCurrentSlide());
-
-
-                            component = me.insertComponent({
-                                type: me.cmpTypes.SELECTION,
-                                    cls: 'selection',
-                                    html: text,
-                                    options: answers,
-                                    multi: multi,
-                                    id: componentGuid
-                            });
-                            console.log("condition went into else");
-
-                        }
-
-                        me.saveSlideState();
-                        //me.loadSlideState(selection);
-
-
-                    }
-                });
-
-
-
-            },
-            scope: me
-        });
-    },
-
-    round: function(value) {
-        var snap = this._pageSetup.snap;
-
-        return Math.round(value / snap) * snap;
-    },
-
-    ceil: function() {
-        var snap = this._pageSetup.snap;
-
-        return Math.ceil(value / snap) * snap;
-    },
-
-    insertAudio: function() {
-
-        var me = this,
-            cmp = me.insertComponent({
-                id: createGUID(),
-                type: me.cmpTypes.AUDIO,
-                cls: 'audio',
-                html: '<audio controls>  <source src="resources/audio/horse.mp3" type="audio/mpeg">Your browser does not support the audio element.</audio>',
-                src: 'resources/audio/horse.mp3',
-                height: 50,
-            });
-        console.log("inserting audio unsupported");
-         me.saveSlideState();
-
-    },
-
-    insertVideo: function() {
-        var me = this,
-            cmp = me.insertComponent({
-                id: createGUID(),
-                type: me.cmpTypes.VIDEO,
-                cls: 'video',
-                html: '<video width="320" height="240" controls>  <source src="resources/videos/mov.mp4" type="video/mp4"> Your browser does not support the video tag.</video>',
-                src: 'resources/videos/mov.mp4',
-                height: 240,
-            });
-        console.log("inserting video unsupported");
-         me.saveSlideState();
-
-    },
-
-    getNumSlides: function() {
-        // Retrieves count of slides (sections don't count)
-
-        var me = this,
-            countSlides = 0,
-            data = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
-        console.log("printing slides", data.slides);
-        if(!data.slides || !Object.keys(data.slides).length){
-            return 0;
-        }
-        for(var key in data.slides){
-            if(data.slides[key].isSlide ||data.slides[key].categoryId == App.ProgramPageCategoriesEnum.Page){
-                countSlides += 1;
-            }
-        }
-
-
-        return countSlides;
-    },
-
-    evaluate: function() {
-        // returns [singleSelectionCorrect, singleSelectionQuestions, multipleSelectionScore, multipleSelectionScoreUsingNegative]
-        // multipleSelectionScore -> if answer_correct -> answer_score += 1/num_answers
-        //							 else: answer_score = (answer_score - 1/num_answers).clamp(0, num_answers)
-        //multipleSelectionScoreUsingNegative -> dont clamp incorrectly answered
-        Number.prototype.clamp = function (min, max) {
-            return Math.min(Math.max(this, min), max);
-        };
-
-        // iterate through slides and questions and check score:
-        var me = this,
-            usingNegativeScore = false, // config variable which determines if each answer can have negative return points
-            programScore = {"questions":{}, "totalProgramScore": 0};
-
-        me.saveState(); // TODO - latest addition - is it necessary?
-
-        var data = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
-
-        for (var key in data.questions){
-            var question = data.questions[key];
-            var answer = data.answers[question.id];
-            programScore.questions[question.id] = me.getScore(question, answer, usingNegativeScore);
-            console.log("printing new user score", programScore);
-        }
-
-
-        // suming questions scores to total score
-        var totalProgramScore = sumDict(programScore.questions);
-        console.log("printing final user score:", totalProgramScore);
-        programScore.totalProgramScore = totalProgramScore;
-
-
-        return programScore;
-    },
-
-    getScore: function(question, answer, usingNegativeScore) {
-        if(!answer){
-            console.log("user didnt check any options on this question - return");
-            return 0;
-        }
-
-        answer = Ext.decode(answer.answer);
-
-        var answerScore = 0;
-        var correctAnswer;
-        var usersAnswer = answer;
-
-        console.log("printing user answer", usersAnswer);
-
-        // TODO - why does question have multiple attributes that represent same thing - store them under same name!!
-        var _question = Ext.decode(question.options || question.lookups ||question.answers); // in datase options are stored in lookups table so we return lookups
-        var questionNumAnswers = _question.length;
-
-        if (question.multi || question.fieldType == "Multi selection") { // Todo - decide which attribute to use!!
-            // make a pre-pass counting num_correct_answers
-            var numCorrectAnswers = 0;
-            _question.forEach(function (option) {
-
-                if (option.correct) {
-                    numCorrectAnswers += 1;
-                }
-            });
-            // go through all questions in this form
-
-            for(var i = 0; i < _question.length; i++){
-                usersAnswer = answer[i];
-                correctAnswer = _question[i].correct;
-                if (usersAnswer == correctAnswer) {
-                    if (correctAnswer === true) {
-                        // if we checked correct answer - add percent of all correct answers to his score
-                        answerScore += (1 / numCorrectAnswers);
-                    }
-                    // no else - we are not rewarding for not checking not-correct answers
-                }
-                else{
-                    // we didnt click what is correct
-
-                    if (correctAnswer === true) {
-                        // if we clicked no but answer was yes, punish user by subtracting percent of all correct answers from his score
-                        answerScore -= (1 / numCorrectAnswers);
-                    }
-                    else{
-                        // if we clicked yes but answer was no, punish user by subtracting only percent of num answers
-                        answerScore -= (1/ questionNumAnswers);
-                    }
-                }
-            }
-
-            // append score of this questionary to totalScore
-            console.log("user score appended with", answerScore);
-            if(!usingNegativeScore){
-                // clamp between 0 and max
-                answerScore = (answerScore).clamp(0, questionNumAnswers);
-            }
-
-        } else {
-            // evaluate
-            for(var i = 0; i < _question.length; i++){
-                usersAnswer = answer[i];
-                correctAnswer = _question[i].correct;
-
-
-                if ((correctAnswer === true) && (usersAnswer == correctAnswer)) {
-                    console.log("setting answer score to 1");
-                    answerScore = 1;
-                }
-                else {
-                    if(usersAnswer == correctAnswer){
-                        // this is not right answer but we checked right one
-
-                        if(usingNegativeScore){
-                            // returns -1 - is this too much?
-                            answerScore = -1;
-                        }
-                        // else return 0
-                    }
-                }
-
-            }
-
-        }
-
-        return answerScore;
-    },
-
-    saveState: function(specificData) {
-        var me = this,
-            data = specificData || this.getCurrentState();
-
-        var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
-        // if(!localStorageData){
-        //     localStorageData = {};
-        //     localStorageData[me.programId] = {}; // adds also entry for this program id
-        // }
-        for (var key in data) {
-            localStorageData[me.programId][key] = data[key];
-        }
-
-        // sets current state to localstorage and calls update with server
-        localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
-
-        this.updateServerStore();
-    },
-
-    updateServerStore: function() {
-        // updates treestore using localstorage and syncs with server
-        var me = this,
-            localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId],
-            treeStoreSlides = me.getStore('TreeStoreSlides');
-
-        if(!localStorageData){
-            console.log("no localstorage data in updateServerStore - returning");
-            return;
-        }
-
-
-        console.log("printing treeStoreSlides root", treeStoreSlides.getRootNode());
-        console.log("deleting root children");
-        //treeStoreSlides.removeAll(true);
-
-        /*
-        for (var i = 0; i < treeStoreSlides.getRootNode().childNodes.length; i++){
-            console.log("deleting root child");
-            treeStoreSlides.getRootNode().removeChild(treeStoreSlides.getRootNode().childNodes[i]);
-
-
-        }*/
-
-
-
-        // Updating server store:
-
-        // setting data from localstorage to store
-
-        // clear store so we might add all synced data from localstorage to sync with server (append child)
-        //treeStoreSlides.getRootNode().removeAll();
-
-        // TODO - new code - Jernej Habjan 2018-07-24 Fixed deleting root node which deletes all children - new function in treeStoreSlides
-        //treeStoreSlides.removeAll();
-
-
-
-        /*
-
-
-
-        var silent = true;
-
-
-
-        var root = treeStoreSlides.getRootNode();
-
-        if(silent !== true){
-            if (root) {
-                // will fire the 'destroy' operation for every child of the root
-                root.destroy(true);
-            }
-            //fire the clear even only if not silent
-            this.fireEvent('clear', me);
-        }else{
-            if (root) {
-                // temporarily remove the onNodeRemove event listener so that when removeAll is called,
-                // the removed nodes do not get added to the removed array
-                treeStoreSlides.un('remove', treeStoreSlides.onNodeRemove, treeStoreSlides);
-
-                root.removeAll(false); // silent remove all children
-                //root.destroy(false); // destroy just the root
-
-                // reattach the onNodeRemove listener
-                treeStoreSlides.on('remove', treeStoreSlides.onNodeRemove, treeStoreSlides);
-            }
-        }
-
-
-
-        */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // IMPORTANT! Use .appendChild when adding data to treestore for sync to work
-
-
-        console.log("appending slides", localStorageData.slides);
-        /*
-        for (var i = 0; i < localStorageData.slides.length; i++){
-            treeStoreSlides.getRootNode().appendChild(localStorageData.slides[i]);
-            console.log("appended child");
-        }*/
-
-
-        //treeStoreSlides.getRootNode().appendChild(localStorageData.slides); // -add all from localstorage
-        // setting all records' phantom state to true
-        /*for (var i = 0; i < treeStoreSlides.data.items.length; i++){
-            var rec = treeStoreSlides.data.items[i];
-            // IMPORTANT! rec.phantom must be set to true, othewise sync wont work, as "data isn't changed"
-            rec.phantom = true;
-            console.log("printing record in updateServer store", rec);
-        }*/
-        // sync data back to server
-        treeStoreSlides.sync(
-
-            /*{
-
-            params:{ programId: me.programId },
-            success: function(batch) {
-                console.log('update server store sync success', batch);
-                // treeStoreSlides.load();
-            }
-
-        }*/
-
-        );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    },
-
-    setInitialSlide: function() {
-        // this function is used to set slide after syncing with server or initially recieving data (from localstorage or server)
-        var me = this,
-            refs = me.getReferences();
-
-        var currentSlide = me.getCurrentSlide();
-        if(currentSlide){
-            refs.treeSlides.setSelection(currentSlide);
-            return;
-        }
-        // this part of code gets executed when there is no current selection yet
-
-
-        // switch to first slide
-        Ext.defer(function() {
-            me.nextSlide();
-        }, 100);
-
-        me.setBackground(me._pageSetup.background);
-        refs.panelContent.setWidth(me._pageSetup.width);
-        refs.panelContent.setHeight(me._pageSetup.height);
-    },
-
-    initialDataSync: function(storeName, localStorageAttribute, LoadParams, callback, dataId) {
-
-        console.log("called initial " + localStorageAttribute + " sync");
-        if (!navigator.onLine){
-            console.log("You are offline - cannot sync with server");
-            if(callback){
-                callback();
-            }
-            return;
-        }
-
-        var me = this,
-            localStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),
-
-            initialDataStore = me.getStore(storeName);
-
-        console.log("called syncState - printing program id for these localStorageAttribute", me.programId);
-        initialDataStore.load({
-            params: LoadParams,
-
-            callback: function(records, operation, success){
-
-                console.log("printing tree store entries data", initialDataStore.data);
-                if(initialDataStore.data.length === 0){
-                    // no return data, check if there are any locally saved localStorageAttribute
-                    console.log("returned no entries from server");
-
-
-                    if(localStorageData && localStorageData[me.programId] && localStorageData[me.programId][localStorageAttribute]){
-                        console.log("we have locally saved localStorageAttribute, syncing with server");
-                        me.updateServerStore();
-                    }
-
-
-                    if(callback){
-                        callback();
-                    }
-                    return;
-                }
-
-
-
-                // here we have valid return data from server, so we can update localstorage and sync localstorage back with server
-
-
-
-
-                if(!localStorageData || !localStorageData[me.programId]){
-                    console.log("no data yet in localstorage", initialDataStore.data, initialDataStore);
-                    localStorageData = me.getCurrentState();
-                    initialDataStore.data.items.forEach(function(entry){
-                        localStorageData[localStorageAttribute].push(entry.data);
-                    });
-                    me.saveState(localStorageData);
-                    if(callback){
-                        callback();
-                    }
-                    return;
-                }
-
-                // data for this programId exists - reassign it
-                localStorageData = localStorageData[me.programId];
-
-
-                if(!localStorageData[localStorageAttribute]){
-                    console.log("no entries yet in localstorage");
-                    // localstorage slides are empty - set recieved data from server to localstorage - even if it is empty
-
-                    var entriessFromStore = {};
-                    for (var i = 0; i < initialDataStore.data.length; i++){
-                        var entry = initialDataStore.data.items[i].data;
-                        entriessFromStore[entry[dataId]] = entry;
-                        console.log(entry);
-                    }
-
-                    // add localStorageAttribute from store to localstorage[programId] under localStorageAttribute key
-                    localStorageData[localStorageAttribute] = entriessFromStore;
-
-
-                    me.saveState(localStorageData);
-                    if(callback){
-                        callback();
-                    }
-                    return;
-                }
-
-                // here we have valid localstorage and may need syncing
-                //localStorageData[localStorageAttribute] = Array.from(new Set(localStorageData[localStorageAttribute]));
-
-
-                var localStorageDataValues = []; // creating extra array to use functions like .some on it
-                for (var key in localStorageData[localStorageAttribute]){
-                    localStorageDataValues.push(localStorageData[localStorageAttribute][key]);
-                }
-
-
-
-
-                // Updating localstorage:
-                for (var i =0; i < initialDataStore.data.items.length; i++){
-                    var entry = initialDataStore.data.items[i];
-                    console.log("printing each entry data",entry.data);
-                    // check if item is not yet in localstorage
-                    //console.log("printing item id", localStorageData[localStorageAttribute], entry);
-                    if(localStorageDataValues.some(item => item[dataId] === entry.data[dataId])){
-
-                    }else{
-                        console.log("adding new entry to localstorage");
-                        localStorageData[localStorageAttribute][entry.data[dataId]] = entry.data;
-                        localStorageDataValues.push(entry.data);
-                    }
-                }
-                // setting modified data back to localstorage
-
-                me.saveState(localStorageData);
-
-                if(callback){
-                    callback();
-                }
-            }
-        });
-
-
-    },
-
-    close: function(owner, tool, event) {
-        this.getView().up('#mainView').setActiveItem('gridPrograms');
-    },
-
-    onTreeViewDragDrop: function(treeviewdragdrop) {
-        var me = this,
-            refs = me.getReferences();
-
-        var treeStoreSlides = me.getStore('TreeStoreSlides');
-
-        // we need to mark every slide as dirty, as we cannot know how the selection was changed
-        for (var i = 0; i < treeStoreSlides.data.items.length; i++){
-            var rec = treeStoreSlides.data.items[i];
-            rec.dirty = true;
-        }
-        me.saveState();
-        refs.treeSlides.setSelection(me.getCurrentSlide());
-
-    },
-
-    onTreeSlidesSelect: function(rowmodel, record, index, eOpts) {
-        // loading slide state for both sections and slides, because creating title every time caused sync with database
-        this.loadSlideState(record);
-
-        // if(record.isLeaf()) {
-        //     this.loadSlideState(record);
-        // }
-        // else {
-        //     this.clearSlidePanel();
-        //
-        //     // Todo -insert title is causing another sync with database
-        //     this.insertTitle('Section ' + record.get('title'));
-        // }
-
-
-
-        return;
-        // TODO - Jernej Habjan 2018-07-12
-        // Trying to replace slide icon in treeview by rendered content
-
-        var me = this,
-            refs = me.getReferences();
-
-        // todo - check if there are any children - possible crash here
-
-        // get all currently shown nodes in tree view - only parent of collapsed nodes is visible
-        var treeView = refs.treeSlides.el.dom.children[0].children[1].children[0].children[1].children;
-        for (var i=0, n=treeView.length; i < n; i++){
-
-            var children = treeView[i].children[0].children[0].children[0].children[0].children;
-
-            var slide = children[children.length - 2]; // slots before that occupy indents in tree view, slot after that is text
-
-
-
-            // uncomment this if to allow rendering on all tree nodes - and not only on slides
-            if(slide.classList.contains("x-tree-icon-leaf")){ // check if it is slide
-                slide.outerHTML = '<div role="presentation" class="  x-tree-icon"><img src="https://www.vaporfi.com.au/media/catalog/product/cache/34/thumbnail/600x600/9df78eab33525d08d6e5fb8d27136e95/v/z/vz_eliquid_juicy_red_apple.jpg" style="width:20px; height:20px;"></div>';
-
-                // Todo - replace apple photo with rendered slide with scale of 20, 20
-
-
-            }
-
-        }
-
-        // Part 2 - rendering slides in appropriate slots:
-
-
-        // var data = localStorage.getItem('mxp_elearning')[me.slideId];
-        // if(data) {
-        //     data = Ext.decode(data);
-        //     if(data.slides) {
-        //         data.slides.forEach(function (value) {
-        //             if(value.isSlide){
-        //                 console.log("printing slide",value);
-        //             }
-        //         });
-        //     }
-        // }
-
-        // Part 3 - slide html to canvas - http://html2canvas.hertzen.com/
-
-        // document.body.innerHTML += '<div id="capture" style="padding: 10px; background: #f5da55">    <h4 style="color: #000; ">Hello world!</h4></div>';
-        //
-        //
-        // html2canvas(document.querySelector("#capture")).then(canvas => {
-        //     document.body.appendChild(canvas);
-        // });
-
-
-
-    },
-
-    onTreeSlidesDeselect: function(rowmodel, record, index, eOpts) {
-        this.clearSlidePanel();
-    },
-
-    onEditSlidesBoxReady: function(component, width, height, eOpts) {
-        var me = this,
-            refs = me.getReferences();
-
-        me._selectedComponent = null;
-        me.previewing = false; // used for toggling event actions when previewing or not
-
-        me._pageSetup = {
-            snap: 25,
-            width: 800,
-            height: 600,
-            headerHeight: 50,
-            footerHeight: 50,
-            padding: 50,
-            background: null
-        };
-
-        me.cmpTypes = {
-            HTML: 'html',
-            TITLE: 'title',
-            TEXT: 'text',
-            IMAGE: 'image',
-            AUDIO: 'audio',
-            VIDEO: 'video',
-            SELECTION: 'selection'
-        };
-
-        refs.panelContent.removeAll();
-        refs.toolbarPreview.hide();
-
-
-        component.el.on('click', function(e, t) {
-            // hiding component tools if component itself (like bodyPanel, ImageComponent...) didn't stop click event to backpropagate
-            me.hideComponentTools();
-        });
-
-        document.addEventListener("keydown", function onPress(event) {
-            // console.log("Caller - onEditSlidesBoxReady", "body keydown", event.keyCode);
-            var KEY_DELETE = 46;
-            if(me._selectedComponent){
-                if(event.keyCode === KEY_DELETE){
-                    me._componentTools.getController().delete();
-                }
-            }
-        });
-
-
-
-        // create online / offline event listenere - when coming back online, we want to sync localstorage with database
-        function connectionChange() {
-            if (navigator.onLine){
-                me.syncState();
-
-
-                var currentSlide = me.getCurrentSlide();
-                me.getReferences().treeSlides.setSelection(null);
-                me.getReferences().treeSlides.setSelection(currentSlide); // retrigger current slide to update
-                Ext.toast('Welcome back online! Content saved on server.');
-
-            }else{
-                Ext.toast('We went offline! Content is still saved locally. Reconnect to save content with server.');
-            }
-        }
-        // Update the online status icon based on connectivity
-        window.addEventListener('online',  connectionChange);
-        window.addEventListener('offline', connectionChange);
-    }
+	}
 
 });

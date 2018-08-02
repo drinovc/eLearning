@@ -14,43 +14,43 @@
  */
 
 Ext.define('eLearning.view.TextEditorViewController', {
-    extend: 'Ext.app.ViewController',
-    alias: 'controller.texteditor',
+	extend: 'Ext.app.ViewController',
+	alias: 'controller.texteditor',
 
-    show: function(opts) {
-        opts = Ext.applyIf(opts, {
-            value: '',
-            callback: function(value) { console.log('Please specify callback!', value); },
-            scope: this
-        });
+	show: function(opts) {
+		opts = Ext.applyIf(opts, {
+		    value: '',
+		    callback: function(value) { console.warn('Please specify callback!', value); },
+		    scope: this
+		});
 
-        var me = this,
-            refs = me.getReferences(),
-            view = me.getView();
+		var me = this,
+		    refs = me.getReferences(),
+		    view = me.getView();
 
-        me._opts = opts;
+		me._opts = opts;
 
-        view.refs.htmlEditor.setValue(opts.value);
-        view.show();
-    },
+		view.refs.htmlEditor.setValue(opts.value);
+		view.show();
+	},
 
-    btnSaveHandler: function(button, e) {
-        var me = this,
-            refs = me.getReferences(),
-            opts = me._opts;
+	btnSaveHandler: function(button, e) {
+		var me = this,
+			refs = me.getReferences(),
+			opts = me._opts;
 
-        if(opts.callback.call(opts.scope, refs.htmlEditor.getValue())) {
-            console.log('Blocking closing');
-        }
-        else {
-            me.getView().close();
-        }
-    },
+		if(opts.callback.call(opts.scope, refs.htmlEditor.getValue())) {
+			console.log('Blocking closing');
+		}
+		else {
+			me.getView().close();
+		}
+	},
 
-    btnCancelHandler: function(button, e) {
-        var me = this;
+	btnCancelHandler: function(button, e) {
+		var me = this;
 
-        me.getView().close();
-    }
+		me.getView().close();
+	}
 
 });

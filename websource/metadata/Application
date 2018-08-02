@@ -30,7 +30,8 @@
             "Programs",
             "HomePage",
             "EditTools",
-            "EditSlides"
+            "EditSlides",
+            "SlideNavigation"
         ]
     },
     "configAlternates": {

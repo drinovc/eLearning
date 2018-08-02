@@ -14,7 +14,7 @@
  */
 
 Ext.define('eLearning.view.TextEditorViewModel', {
-    extend: 'Ext.app.ViewModel',
-    alias: 'viewmodel.texteditor'
+	extend: 'Ext.app.ViewModel',
+	alias: 'viewmodel.texteditor'
 
 });

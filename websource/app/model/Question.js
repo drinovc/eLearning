@@ -14,53 +14,53 @@
  */
 
 Ext.define('eLearning.model.Question', {
-    extend: 'Ext.data.Model',
+	extend: 'Ext.data.Model',
 
-    requires: [
-        'Ext.data.field.String',
-        'Ext.data.field.Integer'
-    ],
+	requires: [
+		'Ext.data.field.String',
+		'Ext.data.field.Integer'
+	],
 
-    fields: [
-        {
-            type: 'string',
-            name: 'id'
-        },
-        {
-            type: 'string',
-            name: 'pageId'
-        },
-        {
-            type: 'int',
-            name: 'sequence'
-        },
-        {
-            type: 'string',
-            name: 'text'
-        },
-        {
-            type: 'string',
-            name: 'type'
-        },
-        {
-            type: 'string',
-            name: 'options'
-        },
-        {
-            type: 'int',
-            name: 'height'
-        },
-        {
-            type: 'int',
-            name: 'width'
-        },
-        {
-            type: 'int',
-            name: 'x'
-        },
-        {
-            type: 'int',
-            name: 'y'
-        }
-    ]
+	fields: [
+		{
+			type: 'string',
+			name: 'id'
+		},
+		{
+			type: 'string',
+			name: 'pageId'
+		},
+		{
+			type: 'int',
+			name: 'sequence'
+		},
+		{
+			type: 'string',
+			name: 'text'
+		},
+		{
+			type: 'string',
+			name: 'type'
+		},
+		{
+			type: 'string',
+			name: 'options'
+		},
+		{
+			type: 'int',
+			name: 'height'
+		},
+		{
+			type: 'int',
+			name: 'width'
+		},
+		{
+			type: 'int',
+			name: 'x'
+		},
+		{
+			type: 'int',
+			name: 'y'
+		}
+	]
 });

@@ -48,11 +48,13 @@
             "codeClass": null,
             "userConfig": {
                 "iconCls": "x-fa fa-edit",
+                "id": "btn_Edit",
                 "text": "Edit"
             },
             "configAlternates": {
                 "iconCls": "string",
-                "text": "string"
+                "text": "string",
+                "id": "string"
             },
             "name": "MyButton27",
             "designerId": "c4b99f42-8ba6-49ed-9082-3a0fea832cd8",
@@ -72,7 +74,8 @@
                         "designer|viewControllerFn": "edit",
                         "fn": "handler",
                         "implHandler": [
-                            "this._opts.component.fireEvent('_edit');"
+                            "//this._opts.component.fireEvent('_edit');",
+                            "this._opts.components[0].fireEvent('_edit');"
                         ]
                     },
                     "configAlternates": {
@@ -119,7 +122,10 @@
                         "designer|viewControllerFn": "duplicate",
                         "fn": "handler",
                         "implHandler": [
-                            "this._opts.component.fireEvent('_duplicate');"
+                            "//this._opts.component.fireEvent('_duplicate');",
+                            "for(var i = 0; i < this._opts.components.length; i++){",
+                            "    this._opts.components[i].fireEvent('_duplicate');",
+                            "}"
                         ]
                     },
                     "configAlternates": {
@@ -166,7 +172,10 @@
                         "designer|viewControllerFn": "delete",
                         "fn": "handler",
                         "implHandler": [
-                            "this._opts.component.fireEvent('_delete');"
+                            "//this._opts.component.fireEvent('_delete');",
+                            "for(var i = 0; i < this._opts.components.length; i++){",
+                            "    this._opts.components[i].fireEvent('_delete');",
+                            "}"
                         ]
                     },
                     "configAlternates": {
@@ -189,6 +198,7 @@
             "codeClass": null,
             "userConfig": {
                 "fieldLabel": "Score",
+                "id": "nfScore",
                 "itemId": "nfScore",
                 "labelAlign": "top",
                 "labelWidth": 50,
@@ -199,7 +209,8 @@
                 "itemId": "string",
                 "labelAlign": "string",
                 "labelWidth": "number",
-                "layout|anchor": "string"
+                "layout|anchor": "string",
+                "id": "string"
             },
             "name": "MyNumberField3",
             "designerId": "0704fe94-85b5-4800-a610-8c8c57a65473",
@@ -214,7 +225,8 @@
                     "userConfig": {
                         "fn": "onNfScoreChange",
                         "implHandler": [
-                            "this._opts.component._opts.score = newValue;"
+                            "//this._opts.component._opts.score = newValue;",
+                            "this._opts.components[0]._opts.score = newValue;"
                         ],
                         "name": "change",
                         "scope": "me"
@@ -240,6 +252,7 @@
             "userConfig": {
                 "boxLabel": "Required",
                 "fieldLabel": "",
+                "id": "chRequired",
                 "itemId": "chRequired",
                 "layout|anchor": "100%"
             },
@@ -247,7 +260,8 @@
                 "boxLabel": "string",
                 "fieldLabel": "string",
                 "itemId": "string",
-                "layout|anchor": "string"
+                "layout|anchor": "string",
+                "id": "string"
             },
             "name": "MyCheckbox1",
             "designerId": "981d3089-78eb-4acf-a9a6-3e9b4843501a",
@@ -262,7 +276,8 @@
                     "userConfig": {
                         "fn": "onChRequiredChange",
                         "implHandler": [
-                            "this._opts.component._opts.required = newValue;"
+                            "//this._opts.component._opts.required = newValue;",
+                            "this._opts.components[0]._opts.required = newValue;"
                         ],
                         "name": "change",
                         "scope": "me"

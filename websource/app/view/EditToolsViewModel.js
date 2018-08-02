@@ -14,7 +14,7 @@
  */
 
 Ext.define('eLearning.view.EditToolsViewModel', {
-    extend: 'Ext.app.ViewModel',
-    alias: 'viewmodel.edittools'
+	extend: 'Ext.app.ViewModel',
+	alias: 'viewmodel.edittools'
 
 });

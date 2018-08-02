@@ -14,46 +14,46 @@
  */
 
 Ext.define('eLearning.model.Slide', {
-    extend: 'Ext.data.Model',
+	extend: 'Ext.data.Model',
 
-    requires: [
-        'Ext.data.field.String',
-        'Ext.data.field.Integer'
-    ],
+	requires: [
+		'Ext.data.field.String',
+		'Ext.data.field.Integer'
+	],
 
-    fields: [
-        {
-            type: 'string',
-            name: 'id',
-            unique: true
-        },
-        {
-            type: 'string',
-            name: 'parentId'
-        },
-        {
-            type: 'string',
-            name: 'title'
-        },
-        {
-            type: 'string',
-            name: 'content'
-        },
-        {
-            type: 'int',
-            name: 'sequence'
-        },
-        {
-            type: 'int',
-            name: 'categoryId'
-        },
-        {
-            type: 'string',
-            name: 'scoreMethod'
-        },
-        {
-            type: 'int',
-            name: 'multiSelect'
-        }
-    ]
+	fields: [
+		{
+			type: 'string',
+			name: 'id',
+			unique: true
+		},
+		{
+			type: 'string',
+			name: 'parentId'
+		},
+		{
+			type: 'string',
+			name: 'title'
+		},
+		{
+			type: 'string',
+			name: 'content'
+		},
+		{
+			type: 'int',
+			name: 'sequence'
+		},
+		{
+			type: 'int',
+			name: 'categoryId'
+		},
+		{
+			type: 'string',
+			name: 'scoreMethod'
+		},
+		{
+			type: 'int',
+			name: 'multiSelect'
+		}
+	]
 });

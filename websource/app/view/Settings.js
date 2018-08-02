@@ -14,37 +14,40 @@
  */
 
 Ext.define('eLearning.view.Settings', {
-    extend: 'Ext.window.Window',
-    alias: 'widget.settings',
+	extend: 'Ext.window.Window',
+	alias: 'widget.settings',
 
-    requires: [
-        'eLearning.view.SettingsViewModel',
-        'eLearning.view.SettingsViewController',
-        'Ext.grid.property.Grid'
-    ],
+	requires: [
+		'eLearning.view.SettingsViewModel',
+		'eLearning.view.SettingsViewController',
+		'Ext.grid.property.Grid'
+	],
 
-    controller: 'settings',
-    viewModel: {
-        type: 'settings'
-    },
-    modal: true,
-    width: 500,
-    layout: 'fit',
-    title: 'Settings',
+	controller: 'settings',
+	viewModel: {
+		type: 'settings'
+	},
+	modal: true,
+	width: 500,
+	layout: 'fit',
+	title: 'Settings',
 
-    items: [
-        {
-            xtype: 'propertygrid',
-            reference: 'pageSetup',
-            padding: 20,
-            title: 'Page Setup',
-            source: {
-                'Property 1': 'String',
-                'Property 2': true,
-                'Property 3': '2018-03-08T14:09:40',
-                'Property 4': 123
-            }
-        }
-    ]
+	items: [
+		{
+			xtype: 'propertygrid',
+			reference: 'pageSetup',
+			padding: 20,
+			title: 'Page Setup',
+			source: {
+				'Property 1': 'String',
+				'Property 2': true,
+				'Property 3': '2018-03-08T14:09:40',
+				'Property 4': 123
+			},
+			listeners: {
+				propertychange: 'onPropertygridPropertyChange'
+			}
+		}
+	]
 
 });

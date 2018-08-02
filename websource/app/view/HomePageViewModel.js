@@ -14,7 +14,7 @@
  */
 
 Ext.define('eLearning.view.HomePageViewModel', {
-    extend: 'Ext.app.ViewModel',
-    alias: 'viewmodel.homepage'
+	extend: 'Ext.app.ViewModel',
+	alias: 'viewmodel.homepage'
 
 });

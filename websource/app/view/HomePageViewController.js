@@ -14,6 +14,6 @@
  */
 
 Ext.define('eLearning.view.HomePageViewController', {
-    extend: 'Ext.app.ViewController',
-    alias: 'controller.homepage'
+	extend: 'Ext.app.ViewController',
+	alias: 'controller.homepage'
 });

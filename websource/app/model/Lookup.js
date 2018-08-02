@@ -14,30 +14,30 @@
  */
 
 Ext.define('eLearning.model.Lookup', {
-    extend: 'Ext.data.Model',
+	extend: 'Ext.data.Model',
 
-    requires: [
-        'Ext.data.field.Integer',
-        'Ext.data.field.Boolean'
-    ],
+	requires: [
+		'Ext.data.field.Integer',
+		'Ext.data.field.Boolean'
+	],
 
-    fields: [
-        {
-            type: 'int',
-            name: 'id'
-        },
-        {
-            name: 'text'
-        },
-        {
-            name: 'code'
-        },
-        {
-            name: 'category'
-        },
-        {
-            type: 'boolean',
-            name: 'active'
-        }
-    ]
+	fields: [
+		{
+			type: 'int',
+			name: 'id'
+		},
+		{
+			name: 'text'
+		},
+		{
+			name: 'code'
+		},
+		{
+			name: 'category'
+		},
+		{
+			type: 'boolean',
+			name: 'active'
+		}
+	]
 });

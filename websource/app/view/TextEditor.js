@@ -14,60 +14,60 @@
  */
 
 Ext.define('eLearning.view.TextEditor', {
-    extend: 'Ext.window.Window',
-    alias: 'widget.texteditor',
+	extend: 'Ext.window.Window',
+	alias: 'widget.texteditor',
 
-    requires: [
-        'eLearning.view.TextEditorViewModel',
-        'eLearning.view.TextEditorViewController',
-        'Ext.form.field.HtmlEditor',
-        'Ext.toolbar.Toolbar',
-        'Ext.button.Button'
-    ],
+	requires: [
+		'eLearning.view.TextEditorViewModel',
+		'eLearning.view.TextEditorViewController',
+		'Ext.form.field.HtmlEditor',
+		'Ext.toolbar.Toolbar',
+		'Ext.button.Button'
+	],
 
-    controller: 'texteditor',
-    viewModel: {
-        type: 'texteditor'
-    },
-    modal: true,
-    height: 600,
-    itemId: 'texteditor',
-    width: 1000,
-    layout: 'fit',
-    title: 'Text editor',
+	controller: 'texteditor',
+	viewModel: {
+		type: 'texteditor'
+	},
+	modal: true,
+	height: 600,
+	itemId: 'texteditor',
+	width: 1000,
+	layout: 'fit',
+	title: 'Text editor',
 
-    items: [
-        {
-            xtype: 'htmleditor',
-            reference: 'htmlEditor',
-            itemId: 'htmlEditor',
-            fieldLabel: ''
-        }
-    ],
-    dockedItems: [
-        {
-            xtype: 'toolbar',
-            dock: 'bottom',
-            ui: 'footer',
-            layout: {
-                type: 'hbox',
-                pack: 'center'
-            },
-            items: [
-                {
-                    xtype: 'button',
-                    handler: 'btnSaveHandler',
-                    itemId: 'btnSave',
-                    text: 'Save'
-                },
-                {
-                    xtype: 'button',
-                    handler: 'btnCancelHandler',
-                    itemId: 'btnCancel',
-                    text: 'Cancel'
-                }
-            ]
-        }
-    ]
+	items: [
+		{
+			xtype: 'htmleditor',
+			reference: 'htmlEditor',
+			itemId: 'htmlEditor',
+			fieldLabel: ''
+		}
+	],
+	dockedItems: [
+		{
+			xtype: 'toolbar',
+			dock: 'bottom',
+			ui: 'footer',
+			layout: {
+				type: 'hbox',
+				pack: 'center'
+			},
+			items: [
+				{
+					xtype: 'button',
+					handler: 'btnSaveHandler',
+					itemId: 'btnSave',
+					text: 'Save'
+				},
+				{
+					xtype: 'button',
+					handler: 'btnCancelHandler',
+					itemId: 'btnCancel',
+					text: 'Cancel'
+				}
+			]
+		}
+	]
 
 });

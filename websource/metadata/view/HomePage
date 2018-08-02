@@ -200,7 +200,6 @@
                                     "var newActiveItem = mainView.setActiveItem('editSlides');",
                                     "",
                                     "var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));",
-                                    "console.log(\"printing localstorage\", localStorageData);",
                                     "",
                                     "if(!localStorageData){",
                                     "    localStorageData = {};",

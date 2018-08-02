@@ -14,18 +14,18 @@
  */
 
 Ext.define('eLearning.model.PersonPrograms', {
-    extend: 'Ext.data.Model',
+	extend: 'Ext.data.Model',
 
-    requires: [
-        'Ext.data.field.String'
-    ],
+	requires: [
+		'Ext.data.field.String'
+	],
 
-    idProperty: 'personProgramGuid',
+	idProperty: 'personProgramGuid',
 
-    fields: [
-        {
-            type: 'string',
-            name: 'personProgramGuid'
-        }
-    ]
+	fields: [
+		{
+			type: 'string',
+			name: 'personProgramGuid'
+		}
+	]
 });

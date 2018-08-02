@@ -20,44 +20,45 @@ Ext.Loader.setConfig({
 
 
 Ext.application({
-    models: [
-        'Slide',
-        'Option',
-        'Lookup',
-        'Program',
-        'Question',
-        'PersonAnswers',
-        'PersonPrograms'
-    ],
-    views: [
-        'MainView',
-        'TextEditor',
-        'SelectionEditor',
-        'SourceView',
-        'Settings',
-        'Templates',
-        'FileUpload',
-        'Programs',
-        'HomePage',
-        'EditTools',
-        'EditSlides'
-    ],
-    controllers: [
-        'CApp'
-    ],
-    name: 'eLearning',
+	models: [
+		'Slide',
+		'Option',
+		'Lookup',
+		'Program',
+		'Question',
+		'PersonAnswers',
+		'PersonPrograms'
+	],
+	views: [
+		'MainView',
+		'TextEditor',
+		'SelectionEditor',
+		'SourceView',
+		'Settings',
+		'Templates',
+		'FileUpload',
+		'Programs',
+		'HomePage',
+		'EditTools',
+		'EditSlides',
+		'SlideNavigation'
+	],
+	controllers: [
+		'CApp'
+	],
+	name: 'eLearning',
 
-    requires: [
-        'Ext.Loader'
-    ],
+	requires: [
+		'Ext.Loader'
+	],
 
-    launch: function() {
-        // All functions from Application were moved to controller CApp but they can be called as they are directly on Application
-        // EXAMPLE: function App.CApp.mask() can be called App.mask()
+	launch: function() {
+		// All functions from Application were moved to controller CApp but they can be called as they are directly on Application
+		// EXAMPLE: function App.CApp.mask() can be called App.mask()
 
-        this.getController("CApp").appLaunch.call(this);
+		this.getController("CApp").appLaunch.call(this);
 
 
-    }
+	}
 
 });

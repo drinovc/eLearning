@@ -9368,38 +9368,44 @@
     border-color: transparent !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:53 */
+.active-program {
+    background-color: #f9cf00 !important;
+    background-image: none;
+    color: white;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:59 */
 pre {
     outline: 1px solid #ccc;
     padding: 5px;
     margin: 5px;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:58 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:64 */
 .string {
     color: green;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:61 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:67 */
 .number {
     color: darkorange;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:64 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:70 */
 .boolean {
     color: blue;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:67 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:73 */
 .null {
     color: magenta;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:70 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:76 */
 .key {
     color: black;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:73 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:79 */
 #html-slide {
     height: 100%;
     width: 100%;
     position: relative;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:79 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:85 */
 .html-component {
     /* all */
     /* all */
@@ -9409,55 +9415,55 @@ pre {
     border: dotted 1px silver;
     overflow: hidden;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:88 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:94 */
 .html-component.selected {
     border-color: orange;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:92 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:98 */
 .html-component .html-content {
     height: 100%;
     width: 100%;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:104 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:110 */
 .html-component .html-content.image {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:114 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:120 */
 .html-component .html-content.selection .option {
     padding: 0.5em 0.5em;
     margin-left: 1.5em;
     cursor: pointer;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:119 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:125 */
 .html-component .html-content.selection .option.correct {
     color: #1b7ed6;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:122 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:128 */
 .html-component .html-content.selection .option.check:before,
 .html-component .html-content.selection .option.radio:before {
     font-family: FontAwesome !important;
     position: absolute;
     left: 0.5em;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:127 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:133 */
 .html-component .html-content.selection .option.check:before {
     content: "\f096" !important;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:130 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:136 */
 .html-component .html-content.selection .option.check.selected:before {
     content: "\f046" !important;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:133 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:139 */
 .html-component .html-content.selection .option.radio:before {
     content: "\f10c" !important;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:136 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:142 */
 .html-component .html-content.selection .option.radio.selected:before {
     content: "\f192" !important;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:145 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/Component.scss:151 */
 .preview .html-component {
     border: none !important;
     background-color: none;
@@ -9512,38 +9518,44 @@ pre {
     border-color: transparent !important;
 }
 /* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:53 */
+.active-program {
+    background-color: #f9cf00 !important;
+    background-image: none;
+    color: white;
+}
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:59 */
 pre {
     outline: 1px solid #ccc;
     padding: 5px;
     margin: 5px;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:58 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:64 */
 .string {
     color: green;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:61 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:67 */
 .number {
     color: darkorange;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:64 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:70 */
 .boolean {
     color: blue;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:67 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:73 */
 .null {
     color: magenta;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:70 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:76 */
 .key {
     color: black;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:73 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:79 */
 #html-slide {
     height: 100%;
     width: 100%;
     position: relative;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:79 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:85 */
 .html-component {
     /* all */
     /* all */
@@ -9553,55 +9565,55 @@ pre {
     border: dotted 1px silver;
     overflow: hidden;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:88 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:94 */
 .html-component.selected {
     border-color: orange;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:92 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:98 */
 .html-component .html-content {
     height: 100%;
     width: 100%;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:104 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:110 */
 .html-component .html-content.image {
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:114 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:120 */
 .html-component .html-content.selection .option {
     padding: 0.5em 0.5em;
     margin-left: 1.5em;
     cursor: pointer;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:119 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:125 */
 .html-component .html-content.selection .option.correct {
     color: #1b7ed6;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:122 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:128 */
 .html-component .html-content.selection .option.check:before,
 .html-component .html-content.selection .option.radio:before {
     font-family: FontAwesome !important;
     position: absolute;
     left: 0.5em;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:127 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:133 */
 .html-component .html-content.selection .option.check:before {
     content: "\f096" !important;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:130 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:136 */
 .html-component .html-content.selection .option.check.selected:before {
     content: "\f046" !important;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:133 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:139 */
 .html-component .html-content.selection .option.radio:before {
     content: "\f10c" !important;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:136 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:142 */
 .html-component .html-content.selection .option.radio.selected:before {
     content: "\f192" !important;
 }
-/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:145 */
+/* C:/Users/jerne/Documents/GitHub/eLearning/websource/packages/local/theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d/sass/src/_architect_src.scss:151 */
 .preview .html-component {
     border: none !important;
     background-color: none;

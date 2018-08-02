@@ -14,73 +14,76 @@
  */
 
 Ext.define('eLearning.view.EditTools', {
-    extend: 'Ext.window.Window',
-    alias: 'widget.edittools',
+	extend: 'Ext.window.Window',
+	alias: 'widget.edittools',
 
-    requires: [
-        'eLearning.view.EditToolsViewModel',
-        'eLearning.view.EditToolsViewController',
-        'Ext.button.Button',
-        'Ext.form.field.Number',
-        'Ext.form.field.Checkbox'
-    ],
+	requires: [
+		'eLearning.view.EditToolsViewModel',
+		'eLearning.view.EditToolsViewController',
+		'Ext.button.Button',
+		'Ext.form.field.Number',
+		'Ext.form.field.Checkbox'
+	],
 
-    controller: 'edittools',
-    viewModel: {
-        type: 'edittools'
-    },
-    resizable: false,
-    width: 150,
-    defaults: {
-        anchor: '100%',
-        margin: 2
-    },
-    layout: 'anchor',
-    bodyPadding: 3,
-    closeAction: 'hide',
-    header: false,
-    title: 'Component',
+	controller: 'edittools',
+	viewModel: {
+		type: 'edittools'
+	},
+	resizable: false,
+	width: 150,
+	defaults: {
+		anchor: '100%',
+		margin: 2
+	},
+	layout: 'anchor',
+	bodyPadding: 3,
+	closeAction: 'hide',
+	header: false,
+	title: 'Component',
 
-    items: [
-        {
-            xtype: 'button',
-            handler: 'edit',
-            iconCls: 'x-fa fa-edit',
-            text: 'Edit'
-        },
-        {
-            xtype: 'button',
-            handler: 'duplicate',
-            iconCls: 'x-fa fa-clone',
-            text: 'Duplicate'
-        },
-        {
-            xtype: 'button',
-            handler: 'delete',
-            iconCls: 'x-fa fa-trash-o',
-            text: 'Delete'
-        },
-        {
-            xtype: 'numberfield',
-            anchor: '100%',
-            itemId: 'nfScore',
-            fieldLabel: 'Score',
-            labelAlign: 'top',
-            labelWidth: 50,
-            listeners: {
-                change: 'onNfScoreChange'
-            }
-        },
-        {
-            xtype: 'checkboxfield',
-            anchor: '100%',
-            itemId: 'chRequired',
-            fieldLabel: '',
-            boxLabel: 'Required',
-            listeners: {
-                change: 'onChRequiredChange'
-            }
-        }
-    ]
+	items: [
+		{
+			xtype: 'button',
+			handler: 'edit',
+			id: 'btn_Edit',
+			iconCls: 'x-fa fa-edit',
+			text: 'Edit'
+		},
+		{
+			xtype: 'button',
+			handler: 'duplicate',
+			iconCls: 'x-fa fa-clone',
+			text: 'Duplicate'
+		},
+		{
+			xtype: 'button',
+			handler: 'delete',
+			iconCls: 'x-fa fa-trash-o',
+			text: 'Delete'
+		},
+		{
+			xtype: 'numberfield',
+			anchor: '100%',
+			id: 'nfScore',
+			itemId: 'nfScore',
+			fieldLabel: 'Score',
+			labelAlign: 'top',
+			labelWidth: 50,
+			listeners: {
+				change: 'onNfScoreChange'
+			}
+		},
+		{
+			xtype: 'checkboxfield',
+			anchor: '100%',
+			id: 'chRequired',
+			itemId: 'chRequired',
+			fieldLabel: '',
+			boxLabel: 'Required',
+			listeners: {
+				change: 'onChRequiredChange'
+			}
+		}
+	]
 
 });

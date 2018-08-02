@@ -14,24 +14,24 @@
  */
 
 Ext.define('eLearning.view.SourceViewViewController', {
-    extend: 'Ext.app.ViewController',
-    alias: 'controller.sourceview',
+	extend: 'Ext.app.ViewController',
+	alias: 'controller.sourceview',
 
-    show: function(opts) {
-        opts = Ext.applyIf(opts, {
-            value: '',
-            callback: function(value) { console.log('Please specify callback!', value); },
-            scope: this
-        });
+	show: function(opts) {
+		opts = Ext.applyIf(opts, {
+		    value: '',
+		    callback: function(value) { console.warn('Please specify callback!', value); },
+		    scope: this
+		});
 
-        var me = this,
-            refs = me.getReferences(),
-            view = me.getView();
+		var me = this,
+		    refs = me.getReferences(),
+		    view = me.getView();
 
-        me._opts = opts;
+		me._opts = opts;
 
-        view.refs.source.update('<pre class="code">' + opts.value + '</pre>');
-        view.show();
-    }
+		view.refs.source.update('<pre class="code">' + opts.value + '</pre>');
+		view.show();
+	}
 
 });

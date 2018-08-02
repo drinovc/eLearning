@@ -686,7 +686,7 @@
                                 "designer|viewControllerFn": "duplicate",
                                 "fn": "handler",
                                 "implHandler": [
-                                    "console.log(\"Duplicate unsupported\");"
+                                    "console.warn(\"Duplicate unsupported\");"
                                 ]
                             },
                             "configAlternates": {
@@ -733,7 +733,7 @@
                                 "designer|viewControllerFn": "bookmark",
                                 "fn": "handler",
                                 "implHandler": [
-                                    "console.log(\"Bookmark unsupported\");"
+                                    "console.warn(\"Bookmark unsupported\");"
                                 ]
                             },
                             "configAlternates": {

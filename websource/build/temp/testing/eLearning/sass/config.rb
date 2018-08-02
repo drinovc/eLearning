@@ -1,1 +1,1 @@
-cache_path = 'C:\Work\Projekti\eLearning/build/.sass-cache'
+cache_path = 'C:\Users\jerne\Documents\GitHub\eLearning\websource/build/.sass-cache'
