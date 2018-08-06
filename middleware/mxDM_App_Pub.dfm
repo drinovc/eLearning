@@ -1052,6 +1052,18 @@ object Pub: TPub
         DataType = ftFixedChar
         Size = -1
         Value = Null
+      end
+      item
+        Name = 'created'
+        DataType = ftDateTime
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'lastChanged'
+        DataType = ftDateTime
+        Size = -1
+        Value = Null
       end>
     InsertQuery.SQL.Strings = (
       'DECLARE @pageId INT = NULL -- gets set later'
@@ -1090,9 +1102,9 @@ object Pub: TPub
       'DECLARE @deleted BIT = 0'
       'DECLARE @createdAtId INT = NULL'
       'DECLARE @createdById INT = NULL'
-      'DECLARE @created DATETIME = GETDATE()'
-      'DECLARE @lastChanged DATETIME = GETDATE()'
-      'DECLARE @changed CHAR(1) = 0'
+      'DECLARE @created DATETIME = :created'
+      'DECLARE @lastChanged DATETIME = :lastChanged'
+      'DECLARE @changed CHAR(1) = '#39'N'#39
       'DECLARE @lastChangedLog BIGINT = NULL'
       ''
       
@@ -1134,9 +1146,6 @@ object Pub: TPub
         't empty content is not allowed'
       #9'SET @active = 1'
       #9'SET @deleted = 0'
-      #9'SET @created = GETDATE()'
-      #9'SET @lastChanged = GETDATE()'
-      #9'SET @changed = GETDATE()'
       ''
       #9'INSERT INTO Training_Program_Pages ('
       #9#9'GUID'
@@ -1491,6 +1500,18 @@ object Pub: TPub
         Precision = 255
         Size = 100
         Value = Null
+      end
+      item
+        Name = 'created'
+        DataType = ftDateTime
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'lastChanged'
+        DataType = ftDateTime
+        Size = -1
+        Value = Null
       end>
     InsertQuery.SQL.Strings = (
       'DECLARE @id NVARCHAR(38) = :id -- this is question guid'
@@ -1513,8 +1534,8 @@ object Pub: TPub
       'DECLARE @deleted BIT = 0'
       'DECLARE @createdAtId INT = NULL'
       'DECLARE @createdById INT = NULL'
-      'DECLARE @created DATETIME = GETDATE()'
-      'DECLARE @lastChanged DATETIME = GETDATE()'
+      'DECLARE @created DATETIME = :created'
+      'DECLARE @lastChanged DATETIME = :lastChanged'
       'DECLARE @changed CHAR(1) = 0'
       'DECLARE @changeLogId BIGINT = 1'
       ''
@@ -1678,7 +1699,7 @@ object Pub: TPub
         Value = Null
       end
       item
-        Name = 'questionGuid'
+        Name = 'questionId'
         DataType = ftString
         NumericScale = 255
         Precision = 255
@@ -1695,7 +1716,7 @@ object Pub: TPub
       ''
       'DECLARE @programGuid NVARCHAR(38) = :programId'
       'DECLARE @programId INT = NULL -- gets set later '
-      'DECLARE @questionGuid NVARCHAR(38) = :questionGuid'
+      'DECLARE @questionGuid NVARCHAR(38) = :questionId'
       'DECLARE @questionId INT = NULL -- gets set later '
       
         'SET @questionId = (SELECT training_program_question_id FROM trai' +
@@ -1707,9 +1728,15 @@ object Pub: TPub
       'IF @questionId IS NULL'
       'BEGIN'
       'SELECT'
-      #9'answers.GUID '#39'questionGuid'#39' -- todo returning guid'
-      #9', answers.PERSON_TRAINING_PROGRAM_ID AS '#39'programId'#39
-      #9', answers.TRAINING_PROGRAM_QUESTION_ID AS '#39'questionId'#39
+      #9'answers.GUID AS '#39'id'#39' -- todo returning guid'
+      #9'--, PERSON_TRAINING_PROGRAM_ID AS '#39'programId'#39
+      #9', @programGuid AS '#39'programId'#39' -- todo returning guid'
+      ''
+      #9'--, TRAINING_PROGRAM_QUESTION_ID AS '#39'questionId'#39
+      
+        #9',Training_Program_Questions.GUID AS '#39'questionId'#39' -- todo return' +
+        'ing guid'
+      ''
       #9', answers.TRAINING_PROGRAM_ANSWER AS '#39'answer'#39
       #9', answers.TRAINING_PROGRAM_ANSWER_SCORE AS '#39'score'#39
       #9', answers.CREATED_AT_ID AS '#39'createdAtId'#39
@@ -1724,7 +1751,9 @@ object Pub: TPub
       
         '         ON( personPrograms.person_training_program_id = answers' +
         '.person_training_program_id ) '
-      '       JOIN (SELECT Max(answers.last_changed) AS '#39'lastChanged'#39' '
+      '       JOIN ('
+      #9'   '
+      #9#9#9' SELECT Max(answers.last_changed) AS '#39'lastChanged'#39' '
       #9#9#9#9', answers.TRAINING_PROGRAM_QUESTION_ID AS '#39'questionId'#39
       '             FROM   person_training_program_answers AS answers '
       
@@ -1742,20 +1771,33 @@ object Pub: TPub
         's.training_program_id = @programId ) )   -- get all answers for ' +
         'personProgram '
       '             GROUP  BY answers.person_training_program_id, '
-      
-        '                       answers.training_program_question_id) AS ' +
-        '"LatestAnswers" '
+      '                       answers.training_program_question_id) '
+      #9#9#9#9#9'   '
+      #9#9#9#9#9'   AS "LatestAnswers" '
+      ''
+      ''
       
         '         ON( "LatestAnswers".questionId = answers.training_progr' +
         'am_question_id ) '
+      ''
+      #9#9' JOIN Training_Program_Questions'
+      
+        #9#9' ON (Training_Program_Questions.TRAINING_PROGRAM_QUESTION_ID =' +
+        ' "LatestAnswers".questionId)'
+      ''
+      ''
       'WHERE  "LatestAnswers".lastchanged = "answers".last_changed '
       'END'
       'ELSE'
       'BEGIN'
       'SELECT'
       #9'  PERSON_TRAINING_PROGRAM_ANSWER_ID AS '#39'id'#39
-      #9', PERSON_TRAINING_PROGRAM_ID AS '#39'programId'#39
-      #9', TRAINING_PROGRAM_QUESTION_ID AS '#39'questionId'#39
+      #9'--, PERSON_TRAINING_PROGRAM_ID AS '#39'programId'#39
+      #9', @programGuid AS '#39'programId'#39' -- todo returning guid'
+      ''
+      #9'--, TRAINING_PROGRAM_QUESTION_ID AS '#39'questionId'#39
+      #9', @questionGuid AS '#39'questionId'#39' -- todo returning guid'
+      ''
       #9', TRAINING_PROGRAM_ANSWER AS '#39'answer'#39
       #9', TRAINING_PROGRAM_ANSWER_SCORE AS '#39'score'#39
       #9', CREATED_AT_ID AS '#39'createdAtId'#39
@@ -1773,7 +1815,7 @@ object Pub: TPub
     InsertQuery.Connection = ADOConnection1
     InsertQuery.Parameters = <
       item
-        Name = 'answerGuid'
+        Name = 'id'
         DataType = ftString
         NumericScale = 255
         Precision = 255
@@ -1797,7 +1839,7 @@ object Pub: TPub
         Value = Null
       end
       item
-        Name = 'answers'
+        Name = 'answer'
         DataType = ftString
         NumericScale = 255
         Precision = 255
@@ -1811,22 +1853,32 @@ object Pub: TPub
         Precision = 2
         Size = -1
         Value = Null
+      end
+      item
+        Name = 'created'
+        DataType = ftDateTime
+        Size = -1
+        Value = Null
+      end
+      item
+        Name = 'lastChanged'
+        DataType = ftDateTime
+        Size = -1
+        Value = Null
       end>
     InsertQuery.SQL.Strings = (
-      
-        'DECLARE @answerGuid NVARCHAR(38) = :answerGuid -- this is answer' +
-        ' id'
+      'DECLARE @answerGuid NVARCHAR(38) = :id -- this is answer id'
       'DECLARE @answerId INT = NULL -- gets set later'
       'DECLARE @personProgramGuid NVARCHAR(38) = :personProgramId'
       'DECLARE @personProgramid INT = NULL -- gets set later'
       'DECLARE @questionGuid NVARCHAR(38) = :questionId'
       'DECLARE @questionId INT = NULL -- gets set later'
-      'DECLARE @answer NVARCHAR(500) = :answers'
+      'DECLARE @answer NVARCHAR(500) = :answer'
       'DECLARE @answerScore NUMERIC(18,2) = :score'
       'DECLARE @createdAtId INT = NULL'
       'DECLARE @createdById INT = NULL'
-      'DECLARE @created DATETIME = GETDATE()'
-      'DECLARE @lastChanged DATETIME = GETDATE()'
+      'DECLARE @created DATETIME = :created'
+      'DECLARE @lastChanged DATETIME = :lastChanged'
       'DECLARE @changed CHAR(1) = 0'
       'DECLARE @changeLogId BIGINT = 1'
       ''
@@ -1880,7 +1932,6 @@ object Pub: TPub
       'ELSE'
       'BEGIN'
       #9'SET @changed = 1'
-      #9'SET @lastChanged = GETDATE()'
       ''
       ''
       #9'UPDATE Person_Training_Program_Answers SET'
@@ -1912,9 +1963,15 @@ object Pub: TPub
       'END'
       ''
       'SELECT'
-      #9'  PERSON_TRAINING_PROGRAM_ANSWER_ID AS '#39'id'#39
-      #9', PERSON_TRAINING_PROGRAM_ID AS '#39'programId'#39
-      #9', TRAINING_PROGRAM_QUESTION_ID AS '#39'questionId'#39
+      #9'  -- PERSON_TRAINING_PROGRAM_ANSWER_ID AS '#39'id'#39
+      #9'  @answerGuid AS '#39'id'#39' -- todo returning guid'
+      ''
+      #9'--, PERSON_TRAINING_PROGRAM_ID AS '#39'programId'#39
+      #9', @personProgramGuid AS '#39'programId'#39' -- todo returning guid'
+      ''
+      #9'--, TRAINING_PROGRAM_QUESTION_ID AS '#39'questionId'#39
+      #9', @questionGuid AS '#39'questionId'#39' -- todo returning guid'
+      ''
       #9', TRAINING_PROGRAM_ANSWER AS '#39'answer'#39
       #9', TRAINING_PROGRAM_ANSWER_SCORE AS '#39'score'#39
       #9', CREATED_AT_ID AS '#39'createdAtId'#39
@@ -2152,8 +2209,6 @@ object Pub: TPub
       'ELSE'
       'BEGIN'
       #9'SET @changed = 1'
-      #9'SET @lastChanged = GETDATE()'
-      ''
       #9'UPDATE Person_Training_Programs SET'
       
         #9#9'    -- PERSON_TRAINING_PROGRAM_ID = ISNULL(@personTrainingProg' +

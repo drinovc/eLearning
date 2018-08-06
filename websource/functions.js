@@ -79,29 +79,28 @@ function cleanTreeNodeData(data) {
     }
     catch (e) {} 
     
-    
-    
-    
     // delete content for selection components
-    try {
-        var content = Ext.decode(data.content);
+	if(data && data.content){
+		var content = Ext.decode(data.content);
 
-        for (var key in content.components){
-            var el = content.components[key];
-            if(el.type == "Single selection" || el.type == "Multi selection" ||el.type == "selection"){
-                delete el.options;
-                delete el.html;
-                delete el.id;
-                delete el.cls;
-                delete el.style;
-                delete el.multi;
-  
+		for (var key in content.components){
+			var el = content.components[key];
+			if(el.type == "Single selection" || el.type == "Multi selection" ||el.type == "selection"){
+				delete el.options;
+				delete el.html;
+				delete el.id;
+				delete el.cls;
+				delete el.style;
+				delete el.multi;
 
-            }
-        }
-        data.content = Ext.encode(content);
-    }
-    catch (e) {} 
+
+			}
+		}
+		data.content = Ext.encode(content);
+	}
+
+
+   
     return data;
 }
 

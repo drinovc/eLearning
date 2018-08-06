@@ -27,54 +27,6 @@ Ext.define('eLearning.view.EditSlidesViewModel', {
 	stores: {
 		TreeStoreSlides: {
 			type: 'tree',
-			removeAll: function(silent) {
-
-				var root = this.getRootNode();
-				if (root) {
-					root.destroy(true);
-				}
-
-				if(silent !== true){
-					this.fireEvent('clear', this);
-				}
-
-
-
-
-
-
-				/*
-
-
-
-				//called my remove all function in treestoreslides
-
-				var me = this,
-					root = me.getRootNode();
-
-				if(silent !== true){
-					if (root) {
-						// will fire the 'destroy' operation for every child of the root
-						root.destroy(true);
-					}
-					//fire the clear even only if not silent
-					this.fireEvent('clear', me);
-				}else{
-					if (root) {
-						// temporarily remove the onNodeRemove event listener so that when removeAll is called,
-						// the removed nodes do not get added to the removed array
-						//me.tree.on('remove', me.onNodeRemove, me); - todo this was before i added below line
-						me.on('remove', me.onNodeRemove, me);
-
-						//root.removeAll(false); // silent remove all children
-						//root.destroy(false); // destroy just the root
-
-						// reattach the onNodeRemove listener
-						//me.tree.on('remove', me.onNodeRemove, me); - todo this was before i added below line
-						me.on('remove', me.onNodeRemove, me);
-					}
-				}*/
-			},
 			model: 'eLearning.model.Slide',
 			defaultRootText: 'Slides',
 			parentIdProperty: 'parentId',

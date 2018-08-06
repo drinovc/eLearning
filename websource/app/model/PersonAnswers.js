@@ -20,12 +20,12 @@ Ext.define('eLearning.model.PersonAnswers', {
 		'Ext.data.field.String'
 	],
 
-	idProperty: 'answerGuid',
+	idProperty: 'questionGuid',
 
 	fields: [
 		{
 			type: 'string',
-			name: 'answerGuid'
+			name: 'questionGuid'
 		}
 	]
 });

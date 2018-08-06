@@ -261,7 +261,6 @@
                         "fn": "handler",
                         "implHandler": [
                             "var me = this;",
-                            "",
                             "me.closeFullscreen();",
                             "me._opts.editSlidesController.togglePreview();"
                         ]

@@ -66,7 +66,6 @@ Ext.define('eLearning.view.SlideNavigationViewController', {
 
 	closePreview: function(button, e) {
 		var me = this;
-
 		me.closeFullscreen();
 		me._opts.editSlidesController.togglePreview();
 	},
