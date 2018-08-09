@@ -24,7 +24,6 @@
             "codeClass": null,
             "userConfig": {
                 "autoLoad": false,
-                "autoSync": true,
                 "model": "Program",
                 "name": "StorePrograms"
             },
@@ -88,12 +87,14 @@
             },
             "codeClass": null,
             "userConfig": {
+                "autoLoad": false,
                 "model": "Lookup",
                 "name": "StoreProgramCategories"
             },
             "configAlternates": {
                 "model": "model",
-                "name": "string"
+                "name": "string",
+                "autoLoad": "boolean"
             },
             "name": "MyStore1",
             "designerId": "85a19d5b-1265-4227-ab6a-200c61c7465f"

@@ -105,6 +105,30 @@
                             "designerId": "d5f0f00a-a1a0-4099-9e72-fc1759ea3199"
                         }
                     ]
+                },
+                {
+                    "type": "viewcontrollereventbinding",
+                    "reference": {
+                        "name": "listeners",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "fn": "onTreeStoreRemove",
+                        "implHandler": [
+                            "print(\"called tree store remove\", store, records, index, isMove, eOpts );"
+                        ],
+                        "name": "remove",
+                        "scope": "me"
+                    },
+                    "configAlternates": {
+                        "fn": "string",
+                        "implHandler": "code",
+                        "name": "string",
+                        "scope": "string"
+                    },
+                    "name": "onTreeStoreRemove",
+                    "designerId": "ed148237-eb3c-467a-a3f3-6db89c24927d"
                 }
             ]
         },
@@ -116,18 +140,22 @@
             },
             "codeClass": null,
             "userConfig": {
+                "autoLoad": false,
+                "autoSync": true,
                 "model": "Question",
                 "name": "QuestionsStoreSlides"
             },
             "configAlternates": {
                 "model": "model",
-                "name": "string"
+                "name": "string",
+                "autoLoad": "boolean",
+                "autoSync": "boolean"
             },
             "name": "MyJsonStore1",
             "designerId": "2b340d21-6c78-4a37-9f1a-44e597f2a692",
             "cn": [
                 {
-                    "type": "Ext.data.proxy.Ajax",
+                    "type": "Ext.data.proxy.Rest",
                     "reference": {
                         "name": "proxy",
                         "type": "object"
@@ -141,14 +169,13 @@
                             "    update: '/POST/Pub/Questions',",
                             "    destroy: '/Pub/Questions'",
                             "}"
-                        ],
-                        "batchActions": false
+                        ]
                     },
                     "configAlternates": {
                         "api": "object",
                         "batchActions": "boolean"
                     },
-                    "name": "MyAjaxProxy",
+                    "name": "MyRestProxy",
                     "designerId": "0543a20f-8f9d-499a-b621-f371ce6d2baa",
                     "cn": [
                         {
@@ -190,7 +217,7 @@
             "designerId": "9a7b5c28-069c-4ba9-8869-d36701e76585",
             "cn": [
                 {
-                    "type": "Ext.data.proxy.Ajax",
+                    "type": "Ext.data.proxy.Rest",
                     "reference": {
                         "name": "proxy",
                         "type": "object"
@@ -204,14 +231,13 @@
                             "    update: '/POST/Pub/PersonAnswers',",
                             "    destroy: '/Pub/PersonAnswers'",
                             "}"
-                        ],
-                        "batchActions": false
+                        ]
                     },
                     "configAlternates": {
                         "api": "object",
                         "batchActions": "boolean"
                     },
-                    "name": "MyAjaxProxy",
+                    "name": "MyRestProxy2",
                     "designerId": "00c97668-a177-4678-b1e5-d824d10dceec",
                     "cn": [
                         {
@@ -253,7 +279,7 @@
             "designerId": "95c70e20-7db1-44e3-b06a-b28ccb53e222",
             "cn": [
                 {
-                    "type": "Ext.data.proxy.Ajax",
+                    "type": "Ext.data.proxy.Rest",
                     "reference": {
                         "name": "proxy",
                         "type": "object"
@@ -267,14 +293,13 @@
                             "    update: '/POST/Pub/PersonPrograms',",
                             "    destroy: '/Pub/PersonPrograms'",
                             "}"
-                        ],
-                        "batchActions": false
+                        ]
                     },
                     "configAlternates": {
                         "api": "object",
                         "batchActions": "boolean"
                     },
-                    "name": "MyAjaxProxy",
+                    "name": "MyRestProxy3",
                     "designerId": "2d1f4ca7-9719-46e4-a111-88c967d76f9e",
                     "cn": [
                         {

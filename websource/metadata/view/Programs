@@ -138,7 +138,6 @@
                         ],
                         "fn": "renderer",
                         "implHandler": [
-                            "",
                             "return !value ? '' : App.lookups.ProgramCategories.filter(function(item) { return item.id == value; })[0].text;",
                             ""
                         ]
@@ -584,12 +583,8 @@
                                     "    };",
                                     "",
                                     "var rec = store.add(data)[0];",
-                                    "",
                                     "rec.phantom = true;",
-                                    "//store.sync();",
-                                    "editor.startEdit(rec);",
-                                    "",
-                                    "// me.saveState();"
+                                    "editor.startEdit(rec);"
                                 ]
                             },
                             "configAlternates": {
@@ -636,10 +631,18 @@
                                 "designer|viewControllerFn": "remove",
                                 "fn": "handler",
                                 "implHandler": [
-                                    "var me = this;",
+                                    "var me = this,",
+                                    "\tstore = me.getStore('StorePrograms'),",
+                                    "\tcurrentProgram = me.getSelection(),",
+                                    "\tnextProgramIdx = store.indexOf(currentProgram) + 1,",
+                                    "\tnextProgram = store.getAt(nextProgramIdx),",
+                                    "\tprevProgramIdx = store.indexOf(currentProgram) - 1,",
+                                    "\tprevProgram = store.getAt(prevProgramIdx);",
                                     "",
-                                    "me.getStore('StorePrograms').remove(me.getView().getSelection()[0]);",
-                                    "me.saveState();"
+                                    "",
+                                    "store.remove(me.getSelection());",
+                                    "me.saveState();",
+                                    "me.getView().setSelection(nextProgram || prevProgram || store.first()); // set new selection"
                                 ]
                             },
                             "configAlternates": {
@@ -686,7 +689,24 @@
                                 "designer|viewControllerFn": "duplicate",
                                 "fn": "handler",
                                 "implHandler": [
-                                    "console.warn(\"Duplicate unsupported\");"
+                                    "console.warn(\"Duplicate unsupported - we have to copy current program, its slides, slides' questions, questions' answers and user program\");",
+                                    "",
+                                    "return;",
+                                    "",
+                                    "var me = this,",
+                                    "\tstore = me.getStore('StorePrograms'),",
+                                    "\tselection = me.getView.getSelection()[0];",
+                                    "var duplicateProgram = Ext.clone(selection);",
+                                    "//change its id",
+                                    "duplicateProgram.id = createGUID(); // todo is this correct?",
+                                    "store.add(duplicateProgram)[0].phantom = true;",
+                                    "",
+                                    "",
+                                    "// todo iterate through its original programs slides, questions, answers and personProgram",
+                                    "// programs view model doesn't have all the other needed stores, so i will have to access editSlides' stores somehow",
+                                    "",
+                                    "me.saveState();",
+                                    "me.getView().setSelection(store.last()); // set new selection"
                                 ]
                             },
                             "configAlternates": {
@@ -733,7 +753,7 @@
                                 "designer|viewControllerFn": "bookmark",
                                 "fn": "handler",
                                 "implHandler": [
-                                    "console.warn(\"Bookmark unsupported\");"
+                                    "console.warn(\"Bookmark unsupported - field in database needs to be added to support bookmarks\");"
                                 ]
                             },
                             "configAlternates": {
@@ -771,12 +791,14 @@
                     },
                     "codeClass": null,
                     "userConfig": {
+                        "id": "btnEdit",
                         "layout|flex": null,
                         "text": "Edit Slides"
                     },
                     "configAlternates": {
                         "layout|flex": "number",
-                        "text": "string"
+                        "text": "string",
+                        "id": "string"
                     },
                     "name": "MyButton20",
                     "designerId": "9c77c0ec-8184-4fc6-ad3e-51017caea8af",
@@ -796,26 +818,14 @@
                                 "designer|viewControllerFn": "editSlides",
                                 "fn": "handler",
                                 "implHandler": [
-                                    "",
                                     "var me = this,",
                                     "    view = me.getView(),",
-                                    "    selection = view.getSelection()[0],",
+                                    "    selection = me.getSelection(),",
                                     "    mainView = view.up('#mainView');",
                                     "",
-                                    "if(!selection){",
-                                    "    console.warn(\"NO SELECTION CHOSEN - fix so item is always selected\");",
-                                    "    return;",
-                                    "}",
-                                    "",
-                                    "",
                                     "me.saveState();",
-                                    "//mainView.setActiveItem('editSlides');",
-                                    "//mainView.getController().load({ program: selection });",
-                                    "",
-                                    "",
-                                    "// new code Jernej Habjan 2018-07-23 - calling load on editSlides:",
+                                    "me.unload();",
                                     "var newActiveItem = mainView.setActiveItem('editSlides');",
-                                    "console.log(\"clicked edit slides\",newActiveItem, selection);",
                                     "newActiveItem.getController().load({ program: selection });"
                                 ]
                             },
@@ -864,6 +874,7 @@
                         "designer|viewControllerFn": "close",
                         "fn": "callback",
                         "implHandler": [
+                            "this.unload();",
                             "this.getView().up('#mainView').setActiveItem('homePage');"
                         ]
                     },
@@ -888,6 +899,26 @@
             "userConfig": {
                 "fn": "onGridProgramsActivate",
                 "implHandler": [
+                    "var me = this;",
+                    "",
+                    "// create online / offline event listenere - when coming back online, we want to sync localstorage with database",
+                    "me.connectionChange = function() {",
+                    "    if (navigator.onLine){",
+                    "        var callback = function(){",
+                    "            Ext.toast('Welcome back online! Content saved on server.');",
+                    "        };",
+                    "",
+                    "",
+                    "        me.serverSync(callback); // calls sync of everything (slides, questions, answers, pageConfig...) - it retrieves data and pushes latest data to server",
+                    "",
+                    "    }else{",
+                    "        Ext.toast('We went offline! Content is still saved locally. Reconnect to save content with server.');",
+                    "    }",
+                    "};",
+                    "// Update the online status icon based on connectivity",
+                    "window.addEventListener('online',  me.connectionChange);",
+                    "window.addEventListener('offline', me.connectionChange);",
+                    "",
                     "this.load();",
                     ""
                 ],

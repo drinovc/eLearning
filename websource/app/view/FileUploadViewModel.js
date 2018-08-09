@@ -14,7 +14,7 @@
  */
 
 Ext.define('eLearning.view.FileUploadViewModel', {
-    extend: 'Ext.app.ViewModel',
-    alias: 'viewmodel.fileupload'
+	extend: 'Ext.app.ViewModel',
+	alias: 'viewmodel.fileupload'
 
 });

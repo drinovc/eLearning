@@ -148,7 +148,6 @@
                                 "fn": "handler",
                                 "implHandler": [
                                     "var me = this;",
-                                    "",
                                     "me.getView().close();"
                                 ]
                             },
@@ -454,6 +453,31 @@
                     ]
                 }
             ]
+        },
+        {
+            "type": "viewcontrollereventbinding",
+            "reference": {
+                "name": "listeners",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "onSelectioneditorClose",
+                "implHandler": [
+                    "var me = this;",
+                    "me._opts.scope.currentlyEditing = false;"
+                ],
+                "name": "close",
+                "scope": "me"
+            },
+            "configAlternates": {
+                "fn": "string",
+                "name": "string",
+                "scope": "string",
+                "implHandler": "code"
+            },
+            "name": "onSelectioneditorClose",
+            "designerId": "b7a1a695-d437-46cf-be20-412872edc7ca"
         }
     ]
 }

@@ -106,6 +106,7 @@ Ext.define('eLearning.view.EditSlides', {
 							handler: function(button, e) {
 								this.up('#editSlides').getController().deleteSlide();
 							},
+							id: 'btnDeleteSlide',
 							itemId: 'btnDeleteSlide',
 							text: 'Delete Page'
 						},
@@ -509,7 +510,8 @@ Ext.define('eLearning.view.EditSlides', {
 					],
 					listeners: {
 						select: 'onTreeSlidesSelect',
-						deselect: 'onTreeSlidesDeselect'
+						deselect: 'onTreeSlidesDeselect',
+						itemcollapse: 'onTreeSlidesItemCollapse'
 					}
 				}
 			]

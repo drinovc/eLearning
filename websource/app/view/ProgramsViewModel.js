@@ -26,7 +26,6 @@ Ext.define('eLearning.view.ProgramsViewModel', {
 	stores: {
 		StorePrograms: {
 			autoLoad: false,
-			autoSync: true,
 			model: 'eLearning.model.Program',
 			proxy: {
 				type: 'rest',
@@ -43,6 +42,7 @@ Ext.define('eLearning.view.ProgramsViewModel', {
 			}
 		},
 		StoreProgramCategories: {
+			autoLoad: false,
 			model: 'eLearning.model.Lookup'
 		}
 	}

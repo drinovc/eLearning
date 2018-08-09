@@ -89,6 +89,10 @@
                                     "\tme.getStore('QuestionsStoreSlides').loadData([],false);",
                                     "\tme.getStore('PersonAnswers').loadData([],false);",
                                     "\tme.getStore('PersonPrograms').loadData([],false);",
+                                    "",
+                                    "",
+                                    "\twindow.removeEventListener('online',  me.connectionChange);",
+                                    "\twindow.removeEventListener('offline',  me.connectionChange);",
                                     "};",
                                     "",
                                     "if(me.previewing){ // only if we are previewing show close dialog",
@@ -307,6 +311,7 @@
                             },
                             "codeClass": null,
                             "userConfig": {
+                                "id": "btnDeleteSlide",
                                 "itemId": "btnDeleteSlide",
                                 "layout|flex": null,
                                 "text": "Delete Page"
@@ -314,7 +319,8 @@
                             "configAlternates": {
                                 "itemId": "string",
                                 "layout|flex": "number",
-                                "text": "string"
+                                "text": "string",
+                                "id": "string"
                             },
                             "name": "MyButton3",
                             "designerId": "bd0b6324-a80d-49e6-bbb7-a8f72a923975",
@@ -1949,7 +1955,10 @@
                             "userConfig": {
                                 "fn": "onTreeSlidesDeselect",
                                 "implHandler": [
-                                    "this.clearSlidePanel();"
+                                    "",
+                                    "this.clearSlidePanel();",
+                                    "",
+                                    ""
                                 ],
                                 "name": "deselect",
                                 "scope": "me"
@@ -1962,6 +1971,34 @@
                             },
                             "name": "onTreeSlidesDeselect",
                             "designerId": "75a45609-a3f7-48ad-960d-7d49a693ae09"
+                        },
+                        {
+                            "type": "viewcontrollereventbinding",
+                            "reference": {
+                                "name": "listeners",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "fn": "onTreeSlidesItemCollapse",
+                                "implHandler": [
+                                    "print(\"tree slides item colapse\",nodeinterface, eOpts);",
+                                    "var me = this,",
+                                    "\trefs = me.getReferences();",
+                                    "me.saveState();",
+                                    "refs.treeSlides.setSelection(nodeinterface);"
+                                ],
+                                "name": "itemcollapse",
+                                "scope": "me"
+                            },
+                            "configAlternates": {
+                                "fn": "string",
+                                "implHandler": "code",
+                                "name": "string",
+                                "scope": "string"
+                            },
+                            "name": "onTreeSlidesItemCollapse",
+                            "designerId": "acba72aa-98a7-4b1c-bea0-179a31d0373e"
                         }
                     ]
                 }
@@ -2113,6 +2150,7 @@
                     "    refs = me.getReferences();",
                     "",
                     "me.previewing = false; // used for toggling event actions when previewing or not",
+                    "me.currentlyEditing = false;",
                     "",
                     "me._pageSetup = {",
                     "    snap: 25,",
@@ -2172,25 +2210,25 @@
                     "    }",
                     "    if(event.keyCode === KEY_A){",
                     "        if (event.ctrlKey) {",
-                    "            // clear all selected components",
-                    "            me._selectedComponents = [];",
-                    "            if(!me.previewing && me.allComponents.length){",
-                    "                me._selectedComponents = me.allComponents; //select all components",
-                    "                // iterate through all components - they are getting reset on slide deselect and on editSlides load",
-                    "                for(var i = 0; i < me.allComponents.length; i++){",
-                    "                    me.allComponents[i].addCls('selected');",
-                    "                }",
-                    "                me.showComponentTools( me.allComponents[ me.allComponents.length-1]);",
-                    "            }",
+                    "\t\t\tif(!me.currentlyEditing){",
+                    "\t\t\t\t// clear all selected components",
+                    "\t\t\t\tme._selectedComponents = [];",
+                    "\t\t\t\tif(!me.previewing && me.allComponents.length){",
+                    "\t\t\t\t\tme._selectedComponents = me.allComponents; //select all components",
+                    "\t\t\t\t\t// iterate through all components - they are getting reset on slide deselect and on editSlides load",
+                    "\t\t\t\t\tfor(var i = 0; i < me.allComponents.length; i++){",
+                    "\t\t\t\t\t\tme.allComponents[i].addCls('selected');",
+                    "\t\t\t\t\t}",
+                    "\t\t\t\t\tme.showComponentTools( me.allComponents[ me.allComponents.length-1]);",
+                    "\t\t\t\t}",
+                    "\t\t\t\tevent.preventDefault();",
+                    "\t\t\t}",
                     "        }",
-                    "        event.preventDefault();",
                     "    }",
                     "});",
                     "",
-                    "",
-                    "",
                     "// create online / offline event listenere - when coming back online, we want to sync localstorage with database",
-                    "function connectionChange() {",
+                    "me.connectionChange = function() {",
                     "    if (navigator.onLine){",
                     "        var callback = function(){",
                     "            var currentSlide = me.getCurrentSlide();",
@@ -2199,20 +2237,15 @@
                     "\t\t\tme.saveState(); // save ALL data that is after all initial data syncs to localstorage",
                     "            Ext.toast('Welcome back online! Content saved on server.');",
                     "        };",
-                    "",
-                    "",
                     "        me.serverSync(callback); // calls sync of everything (slides, questions, answers, pageConfig...) - it retrieves data and pushes latest data to server",
-                    "",
-                    "",
-                    "",
                     "",
                     "    }else{",
                     "        Ext.toast('We went offline! Content is still saved locally. Reconnect to save content with server.');",
                     "    }",
-                    "}",
+                    "};",
                     "// Update the online status icon based on connectivity",
-                    "window.addEventListener('online',  connectionChange);",
-                    "window.addEventListener('offline', connectionChange);",
+                    "window.addEventListener('online',  me.connectionChange);",
+                    "window.addEventListener('offline', me.connectionChange);",
                     "",
                     "// add eventlistenere on fullscreen change to remove this panel on fullscreen off",
                     "var me = this;",

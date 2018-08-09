@@ -143,6 +143,9 @@ Ext.define('eLearning.view.SelectionEditor', {
 				}
 			]
 		}
-	]
+	],
+	listeners: {
+		close: 'onSelectioneditorClose'
+	}
 
 });

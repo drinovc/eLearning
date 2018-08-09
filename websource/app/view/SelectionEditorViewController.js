@@ -21,7 +21,7 @@ Ext.define('eLearning.view.SelectionEditorViewController', {
 		opts = Ext.applyIf(opts, {
 		    text: '',
 		    options: [],
-		    callback: function(value) { console.log('Please specify a callback!', value); },
+		    callback: function(value) { console.warn('Please specify a callback!', value); },
 		    scope: this
 		});
 
@@ -37,6 +37,7 @@ Ext.define('eLearning.view.SelectionEditorViewController', {
 		refs.text.setValue(opts.text);
 
 		view.show();
+		opts.scope.currentlyEditing = true;
 	},
 
 	btnSaveHandler: function(button, e) {
@@ -56,7 +57,6 @@ Ext.define('eLearning.view.SelectionEditorViewController', {
 
 	btnCancelHandler: function(button, e) {
 		var me = this;
-
 		me.getView().close();
 	},
 
@@ -80,6 +80,11 @@ Ext.define('eLearning.view.SelectionEditorViewController', {
 			rec = refs.grid.getSelection()[0];
 
 		refs.grid.store.remove(rec);
+	},
+
+	onSelectioneditorClose: function(panel, eOpts) {
+		var me = this;
+		me._opts.scope.currentlyEditing = false;
 	}
 
 });

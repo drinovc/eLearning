@@ -8,7 +8,7 @@
     "userConfig": {
         "designer|userClassName": "js_v1rqrovg",
         "includeInBundle": true,
-        "url": "functions.js"
+        "url": "app/functions/functions.js"
     },
     "configAlternates": {
         "designer|userClassName": "string",

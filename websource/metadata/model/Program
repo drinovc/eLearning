@@ -284,7 +284,7 @@
             },
             "codeClass": null,
             "userConfig": {
-                "name": "lastChanges"
+                "name": "lastChanged"
             },
             "configAlternates": {
                 "name": "string"

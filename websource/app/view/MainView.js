@@ -14,38 +14,38 @@
  */
 
 Ext.define('eLearning.view.MainView', {
-    extend: 'Ext.container.Viewport',
-    alias: 'widget.mainview',
+	extend: 'Ext.container.Viewport',
+	alias: 'widget.mainview',
 
-    requires: [
-        'eLearning.view.MainViewViewModel',
-        'eLearning.view.MainViewViewController',
-        'eLearning.view.HomePage',
-        'eLearning.view.Programs',
-        'eLearning.view.EditSlides',
-        'Ext.grid.Panel'
-    ],
+	requires: [
+		'eLearning.view.MainViewViewModel',
+		'eLearning.view.MainViewViewController',
+		'eLearning.view.HomePage',
+		'eLearning.view.Programs',
+		'eLearning.view.EditSlides',
+		'Ext.grid.Panel'
+	],
 
-    controller: 'mainview',
-    viewModel: {
-        type: 'mainview'
-    },
-    itemId: 'mainView',
-    layout: 'card',
+	controller: 'mainview',
+	viewModel: {
+		type: 'mainview'
+	},
+	itemId: 'mainView',
+	layout: 'card',
 
-    items: [
-        {
-            xtype: 'homepage'
-        },
-        {
-            xtype: 'programs'
-        },
-        {
-            xtype: 'editslides'
-        }
-    ],
-    listeners: {
-        boxready: 'onMainViewBoxReady'
-    }
+	items: [
+		{
+			xtype: 'homepage'
+		},
+		{
+			xtype: 'programs'
+		},
+		{
+			xtype: 'editslides'
+		}
+	],
+	listeners: {
+		boxready: 'onMainViewBoxReady'
+	}
 
 });

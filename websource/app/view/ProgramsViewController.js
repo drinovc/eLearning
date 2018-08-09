@@ -18,18 +18,32 @@ Ext.define('eLearning.view.ProgramsViewController', {
 	alias: 'controller.programs',
 
 	load: function() {
+		var me = this;
 
-		var me = this,
-		    store = me.getStore('StorePrograms');
+		var callback = function(){
+			me.saveState(); // save ALL data that is after all initial data syncs to localstorage
+		};
 
 		me.getStore('StoreProgramCategories').setData(App.lookups.ProgramCategories);
-		store.load({
-		    callback:function(){
-		        me.saveState(); // save everything to localstorage
-		    }
-		});
 
-		//me.loadState();
+		if(navigator.onLine){
+			// sync with server
+			me.serverSync(callback); // calls sync of everything (slides, questions, answers, pageConfig...) - it retrieves data and pushes latest data to server
+		}else{
+			// store data from localstorage
+			var store = me.getStore('StorePrograms');
+
+			var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
+			// init store
+			var localStorageEntries = [];
+			for (var key in localStorageData){
+				localStorageEntries.push(localStorageData[key].programInfo);
+			}
+			store.setData(localStorageEntries);
+		}
+
+
+
 	},
 
 	getCurrentState: function() {
@@ -41,28 +55,10 @@ Ext.define('eLearning.view.ProgramsViewController', {
 		var programs = {};
 		for (var i = 0; i < data.length; i++){
 		    var entry = data[i];
-
 		    programs[entry.id] = {programInfo: entry};
 		}
 
-
-		//return data;
 		return programs;
-	},
-
-	loadState: function() {
-		var me = this,
-		    refs = me.getReferences(),
-		    store = me.getStore('StorePrograms'),
-		    data = localStorage.getItem('mxp_elearning');
-
-		if(data) {
-		    data = Ext.decode(data);
-		    delete data.slides;
-		    delete data.questions;
-		    delete data.answers;
-		    store.setData(data);
-		}
 	},
 
 	saveState: function() {
@@ -70,29 +66,81 @@ Ext.define('eLearning.view.ProgramsViewController', {
 		    data = me.getCurrentState();
 
 		var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
-
+		// init store
 		if(!localStorageData){
-		    localStorageData = {};
-		}
-		for (var key in data) {
-		    if(!localStorageData[key]){
-		        localStorageData[key]={};
-		    }
-
-		    localStorageData[key].programInfo = data[key].programInfo;
+			localStorageData = {};
 		}
 
+		var newLocalStorageData = {};
+		for (var key in data){
+			// init program id
+			if(!localStorageData[data[key].programInfo.id]){
+				localStorageData[data[key].programInfo.id] = {};
+			}// add program info to this program id
+			localStorageData[data[key].programInfo.id].programInfo = data[key].programInfo;
+			newLocalStorageData[key] = localStorageData[key]; // takes localstorage entries that their programs are avaliable in programs store
+		}
 		// sets current state to localstorage and calls update with server
-		localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+		localStorage.setItem('mxp_elearning', Ext.encode(newLocalStorageData));
+
+		if(navigator.onLine){
+			// sync all stores
+			me.getStore('StorePrograms').sync();
+		}
+
+		var editButton = Ext.getCmp('btnEdit');
+		if(!me.getSelection()){
+			editButton.disable();
+			editButton.setText('Edit Slides (No Programs)');
+		}
+		else{
+			editButton.enable();
+			editButton.setText('Edit Slides');
+		}
+	},
+
+	serverSync: function(callback) {
+		// calls sync of everything - it retrieves data and pushes latest data to server
+		// syncs all data with server - this is called on program load and on navigator onLine
+		var me = this,
+			TEST_PERSON_ID = 10000112,
+			store = me.getStore('StorePrograms'),
+			syncStateCallback = function(){
+				store.sync();
+
+				me.getView().setSelection(me.getSelection());
+
+				if(callback){ callback(); }
+			};
+
+		var params = {userId: TEST_PERSON_ID}; // Todo - this query by user is unsupported by 2018-08-08
+		initialDataSyncPrograms('StorePrograms', 'programInfo', params, syncStateCallback, 'id', me);
+
+	},
+
+	unload: function() {
+		// unload page
+
+		// unload store data silently
+
+		var me = this;
+		me.getStore('StorePrograms').loadData([],false);
+		me.getStore('StoreProgramCategories').loadData([],false);
+
+		// remove all listeners so they are not interfering with other views
+		window.removeEventListener('online',  me.connectionChange);
+		window.removeEventListener('offline',  me.connectionChange);
+
+	},
+
+	getSelection: function() {
+		var me = this,
+			store = me.getStore('StorePrograms'),
+			selection =  me.getView().getSelection()[0] || store.first(); // backup is store first - this is usefull when initially loading data;
+
+		return selection;
 
 
-		//below is old code that overwrittes completely whole xmp_elearning store
-
-		/*var me = this,
-		    refs = me.getReferences(),
-		    data = me.getCurrentState();
-
-		localStorage.setItem('mxp_elearning', Ext.encode(data));*/
 	},
 
 	onRowEditingCanceledit: function(editor, context, eOpts) {
@@ -130,58 +178,88 @@ Ext.define('eLearning.view.ProgramsViewController', {
 			};
 
 		var rec = store.add(data)[0];
-
 		rec.phantom = true;
-		//store.sync();
 		editor.startEdit(rec);
-
-		// me.saveState();
 	},
 
 	remove: function(button, e) {
-		var me = this;
+		var me = this,
+			store = me.getStore('StorePrograms'),
+			currentProgram = me.getSelection(),
+			nextProgramIdx = store.indexOf(currentProgram) + 1,
+			nextProgram = store.getAt(nextProgramIdx),
+			prevProgramIdx = store.indexOf(currentProgram) - 1,
+			prevProgram = store.getAt(prevProgramIdx);
 
-		me.getStore('StorePrograms').remove(me.getView().getSelection()[0]);
+
+		store.remove(me.getSelection());
 		me.saveState();
+		me.getView().setSelection(nextProgram || prevProgram || store.first()); // set new selection
 	},
 
 	duplicate: function(button, e) {
-		console.warn("Duplicate unsupported");
+		console.warn("Duplicate unsupported - we have to copy current program, its slides, slides' questions, questions' answers and user program");
+
+		return;
+
+		var me = this,
+			store = me.getStore('StorePrograms'),
+			selection = me.getView.getSelection()[0];
+		var duplicateProgram = Ext.clone(selection);
+		//change its id
+		duplicateProgram.id = createGUID(); // todo is this correct?
+		store.add(duplicateProgram)[0].phantom = true;
+
+
+		// todo iterate through its original programs slides, questions, answers and personProgram
+		// programs view model doesn't have all the other needed stores, so i will have to access editSlides' stores somehow
+
+		me.saveState();
+		me.getView().setSelection(store.last()); // set new selection
 	},
 
 	bookmark: function(button, e) {
-		console.warn("Bookmark unsupported");
+		console.warn("Bookmark unsupported - field in database needs to be added to support bookmarks");
 	},
 
 	editSlides: function(button, e) {
-
 		var me = this,
 			view = me.getView(),
-			selection = view.getSelection()[0],
+			selection = me.getSelection(),
 			mainView = view.up('#mainView');
 
-		if(!selection){
-			console.warn("NO SELECTION CHOSEN - fix so item is always selected");
-			return;
-		}
-
-
 		me.saveState();
-		//mainView.setActiveItem('editSlides');
-		//mainView.getController().load({ program: selection });
-
-
-		// new code Jernej Habjan 2018-07-23 - calling load on editSlides:
+		me.unload();
 		var newActiveItem = mainView.setActiveItem('editSlides');
-		console.log("clicked edit slides",newActiveItem, selection);
 		newActiveItem.getController().load({ program: selection });
 	},
 
 	close: function(owner, tool, event) {
+		this.unload();
 		this.getView().up('#mainView').setActiveItem('homePage');
 	},
 
 	onGridProgramsActivate: function(component, eOpts) {
+		var me = this;
+
+		// create online / offline event listenere - when coming back online, we want to sync localstorage with database
+		me.connectionChange = function() {
+			if (navigator.onLine){
+				var callback = function(){
+					Ext.toast('Welcome back online! Content saved on server.');
+				};
+
+
+				me.serverSync(callback); // calls sync of everything (slides, questions, answers, pageConfig...) - it retrieves data and pushes latest data to server
+
+			}else{
+				Ext.toast('We went offline! Content is still saved locally. Reconnect to save content with server.');
+			}
+		};
+		// Update the online status icon based on connectivity
+		window.addEventListener('online',  me.connectionChange);
+		window.addEventListener('offline', me.connectionChange);
+
 		this.load();
 
 	}

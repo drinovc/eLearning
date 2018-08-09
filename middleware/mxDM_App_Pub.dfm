@@ -636,7 +636,7 @@ object Pub: TPub
       #9', programs.CREATED_BY_ID AS '#39'createdById'#39
       #9', programs.CREATED_AT_ID AS '#39'createdAtId'#39
       #9', programs.CREATED AS '#39'created'#39
-      #9', programs.LAST_CHANGED AS '#39'lastChanges'#39
+      #9', programs.LAST_CHANGED AS '#39'lastChanged'#39
       #9', programs.CHANGED AS '#39'changed'#39
       #9', programs.LAST_CHANGE_LOG_ID AS '#39'lastChangeLogId'#39
       'FROM Training_Programs AS programs'
@@ -838,7 +838,7 @@ object Pub: TPub
       #9', programs.CREATED_BY_ID AS '#39'createdById'#39
       #9', programs.CREATED_AT_ID AS '#39'createdAtId'#39
       #9', programs.CREATED AS '#39'created'#39
-      #9', programs.LAST_CHANGED AS '#39'lastChanges'#39
+      #9', programs.LAST_CHANGED AS '#39'lastChanged'#39
       #9', programs.CHANGED AS '#39'changed'#39
       #9', programs.LAST_CHANGE_LOG_ID AS '#39'lastChangeLogId'#39
       'FROM Training_Programs AS programs'
@@ -1486,7 +1486,7 @@ object Pub: TPub
         Value = Null
       end
       item
-        Name = 'answers'
+        Name = 'lookups'
         DataType = ftString
         NumericScale = 255
         Precision = 255
@@ -1524,7 +1524,7 @@ object Pub: TPub
       'DECLARE @fieldSize INT = NULL'
       'DECLARE @required BIT = 1'
       
-        'DECLARE @lookups NVARCHAR(1000) = :answers -- here are written a' +
+        'DECLARE @lookups NVARCHAR(1000) = :lookups -- here are written a' +
         'll answers with their guids, values, text...'
       
         'DECLARE @correctValue NVARCHAR(100) = :correctValue -- written a' +
@@ -1597,7 +1597,6 @@ object Pub: TPub
       'END'
       'ELSE'
       'BEGIN'
-      #9'SET @deleted = 1'
       #9'SET @changed = 1'
       ''
       ''

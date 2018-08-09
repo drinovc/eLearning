@@ -14,89 +14,89 @@
  */
 
 Ext.define('eLearning.view.FileUploadViewController', {
-    extend: 'Ext.app.ViewController',
-    alias: 'controller.fileupload',
+	extend: 'Ext.app.ViewController',
+	alias: 'controller.fileupload',
 
-    show: function(opts) {
-        opts = Ext.applyIf(opts || {}, {
-            title: 'Upload File',
-            uploadUrl: 'upload',
-            callback: Ext.emptyFn,
-            scope: this
-        });
+	show: function(opts) {
+		opts = Ext.applyIf(opts || {}, {
+		    title: 'Upload File',
+		    uploadUrl: 'upload',
+		    callback: Ext.emptyFn,
+		    scope: this
+		});
 
-        var me = this,
-            refs = me.getReferences(),
-            view = me.getView();
+		var me = this,
+		    refs = me.getReferences(),
+		    view = me.getView();
 
-        view._opts = opts;
-        view.setTitle(opts.title);
+		view._opts = opts;
+		view.setTitle(opts.title);
 
-        view.show();
-    },
+		view.show();
+	},
 
-    btnSaveHandler: function(button, e) {
-        var me = this,
-            refs = me.getReferences(),
-            view = me.getView(),
-            opts = view._opts,
-            form = view.down('form').getForm();
+	btnSaveHandler: function(button, e) {
+		var me = this,
+			refs = me.getReferences(),
+			view = me.getView(),
+			opts = view._opts,
+			form = view.down('form').getForm();
 
-        if(form.isValid()) {
-            form.submit({
-                url: opts.uploadUrl,
-                waitMsg: 'Uploading...',
-                success: function(form, action) {
-                    console.log(arguments);
-                    opts.callback.call(view.opts);
-                    view.close();
-                },
-                failure: function(form, action) {
-                    console.log(arguments);
-                }
-            });
-        }
-    },
+		if(form.isValid()) {
+			form.submit({
+				url: opts.uploadUrl,
+				waitMsg: 'Uploading...',
+				success: function(form, action) {
+					print("success upload arguments", arguments);
+					opts.callback.call(view.opts);
+					view.close();
+				},
+				failure: function(form, action) {
+					print("failure upload arguments", arguments);
+				}
+			});
+		}
+	},
 
-    btnCancelHandler: function(button, e) {
-        var me = this,
-            refs = me.getReferences(),
-            view = me.getView();
+	btnCancelHandler: function(button, e) {
+		var me = this,
+			refs = me.getReferences(),
+			view = me.getView();
 
-        view.close();
-    },
+		view.close();
+	},
 
-    btnSelectHandler: function(button, e) {
-        var me = this,
-            refs = me.getReferences(),
-            view = me.getView(),
-            opts = view._opts,
-            form = view.down('form').getForm();
+	btnSelectHandler: function(button, e) {
+		var me = this,
+			refs = me.getReferences(),
+			view = me.getView(),
+			opts = view._opts,
+			form = view.down('form').getForm();
 
-        if(form.isValid()) {
-            //form.submit({
-            //    url: opts.uploadUrl,
-            //    waitMsg: 'Uploading...',
-            //    success: function(form, action) {
-            //        console.log(arguments);
-            //        opts.callback.call(view.opts);
-            //        view.close();
-            //    },
-            //    failure: function(form, action) {
-            //        console.log(arguments);
-            //    }
-            //});
+		if(form.isValid()) {
+			//form.submit({
+			//    url: opts.uploadUrl,
+			//    waitMsg: 'Uploading...',
+			//    success: function(form, action) {
+			//        console.log(arguments);
+			//        opts.callback.call(view.opts);
+			//        view.close();
+			//    },
+			//    failure: function(form, action) {
+			//        console.log(arguments);
+			//    }
+			//});
 
-            console.log("URL upload unsupported");
-        }
-    },
+			console.warn("URL upload unsupported");
+		}
+	},
 
-    btnCancelHandler: function(button, e) {
-        var me = this,
-            refs = me.getReferences(),
-            view = me.getView();
+	btnCancelHandler: function(button, e) {
+		var me = this,
+			refs = me.getReferences(),
+			view = me.getView();
 
-        view.close();
-    }
+		view.close();
+	}
 
 });

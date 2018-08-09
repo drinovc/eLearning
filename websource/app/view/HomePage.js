@@ -74,7 +74,7 @@ Ext.define('eLearning.view.HomePage', {
 				{
 					xtype: 'button',
 					handler: function(button, e) {
-						var TEMP_ID = "{01A26F88-5649-4693-9227-28E8E2F7A963}";
+						var TEMP_ID = "{BA8780A3-9D57-40D5-8623-7033A31323D8}";
 
 						var mainView = this.up('#mainView');
 						var newActiveItem = mainView.setActiveItem('editSlides');
@@ -105,7 +105,7 @@ Ext.define('eLearning.view.HomePage', {
 								"createdAtId":5,
 								"createdById":0,
 								"description":"New Training Program Description",
-								"id":"{01A26F88-5649-4693-9227-28E8E2F7A963}",
+								"id":TEMP_ID,
 								"lastChangeLogId":191175066,
 								"lastChanges":"2018-07-23T12:04:00",
 								"maxAttemptsScoreMode":1000,

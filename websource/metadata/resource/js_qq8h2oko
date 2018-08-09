@@ -8,7 +8,7 @@
     "userConfig": {
         "designer|userClassName": "js_qq8h2oko",
         "includeInBundle": true,
-        "url": "indexedDbProxy.js"
+        "url": "app/functions/indexedDbProxy.js"
     },
     "configAlternates": {
         "designer|userClassName": "string",

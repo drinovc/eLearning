@@ -9,7 +9,7 @@
       "font-awesome"
    ],
    "indexHtmlPath": "index.html",
-   "classpath": "${app.dir}/app,${app.dir}/node_modules/html2canvas/dist/",
+   "classpath": "${app.dir}/app,${app.dir}/app/functions/",
    "overrides": [
       "overrides"
    ],
@@ -41,23 +41,27 @@
          "path": "${framework.dir}/build/ext-all-rtl-debug.js"
       },
       {
-         "path": "overrides.js",
+         "path": "app/functions/overrides.js",
          "includeInBundle": true
       },
       {
-         "path": "functions.js",
+         "path": "app/functions/functions.js",
          "includeInBundle": true
       },
       {
-         "path": "database.js",
+         "path": "app/functions/database.js",
          "includeInBundle": true
       },
       {
-         "path": "indexedDbProxy.js",
+         "path": "app/functions/indexedDbProxy.js",
          "includeInBundle": true
       },
       {
-         "path": "IndexedDB.js",
+         "path": "app/functions/IndexedDB.js",
+         "includeInBundle": true
+      },
+      {
+         "path": "app/functions/syncing.js",
          "includeInBundle": true
       },
       {

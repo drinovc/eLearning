@@ -31,7 +31,7 @@
                     "opts = Ext.applyIf(opts, {",
                     "    text: '',",
                     "    options: [],",
-                    "    callback: function(value) { console.log('Please specify a callback!', value); },",
+                    "    callback: function(value) { console.warn('Please specify a callback!', value); },",
                     "    scope: this",
                     "});",
                     "",
@@ -46,7 +46,8 @@
                     "}",
                     "refs.text.setValue(opts.text);",
                     "",
-                    "view.show();"
+                    "view.show();",
+                    "opts.scope.currentlyEditing = true;"
                 ]
             },
             "configAlternates": {

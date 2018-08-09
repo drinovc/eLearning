@@ -25,18 +25,32 @@
             "userConfig": {
                 "fn": "load",
                 "implHandler": [
+                    "var me = this;",
                     "",
-                    "var me = this,",
-                    "    store = me.getStore('StorePrograms');",
+                    "var callback = function(){",
+                    "\tme.saveState(); // save ALL data that is after all initial data syncs to localstorage",
+                    "};",
                     "",
                     "me.getStore('StoreProgramCategories').setData(App.lookups.ProgramCategories);",
-                    "store.load({",
-                    "    callback:function(){",
-                    "        me.saveState(); // save everything to localstorage",
-                    "    }",
-                    "});",
                     "",
-                    "//me.loadState();"
+                    "if(navigator.onLine){",
+                    "\t// sync with server",
+                    "\tme.serverSync(callback); // calls sync of everything (slides, questions, answers, pageConfig...) - it retrieves data and pushes latest data to server",
+                    "}else{",
+                    "\t// store data from localstorage",
+                    "\tvar store = me.getStore('StorePrograms');",
+                    "",
+                    "\tvar localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));",
+                    "\t// init store",
+                    "\tvar localStorageEntries = [];",
+                    "\tfor (var key in localStorageData){",
+                    "\t\tlocalStorageEntries.push(localStorageData[key].programInfo);",
+                    "\t}",
+                    "\tstore.setData(localStorageEntries);",
+                    "}",
+                    "",
+                    "",
+                    ""
                 ]
             },
             "configAlternates": {
@@ -64,12 +78,9 @@
                     "var programs = {};",
                     "for (var i = 0; i < data.length; i++){",
                     "    var entry = data[i];",
-                    "",
                     "    programs[entry.id] = {programInfo: entry};",
                     "}",
                     "",
-                    "",
-                    "//return data;",
                     "return programs;"
                 ]
             },
@@ -88,66 +99,43 @@
             },
             "codeClass": null,
             "userConfig": {
-                "fn": "loadState",
-                "implHandler": [
-                    "var me = this,",
-                    "    refs = me.getReferences(),",
-                    "    store = me.getStore('StorePrograms'),",
-                    "    data = localStorage.getItem('mxp_elearning');",
-                    "",
-                    "if(data) {",
-                    "    data = Ext.decode(data);",
-                    "    delete data.slides;",
-                    "    delete data.questions;",
-                    "    delete data.answers;",
-                    "    store.setData(data);",
-                    "}"
-                ]
-            },
-            "configAlternates": {
-                "fn": "string",
-                "implHandler": "code"
-            },
-            "name": "loadState",
-            "designerId": "1366313d-6d5b-4603-b8b2-a57099afc455"
-        },
-        {
-            "type": "basicfunction",
-            "reference": {
-                "name": "items",
-                "type": "array"
-            },
-            "codeClass": null,
-            "userConfig": {
                 "fn": "saveState",
                 "implHandler": [
                     "var me = this,",
                     "    data = me.getCurrentState();",
                     "",
                     "var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));",
-                    "",
+                    "// init store",
                     "if(!localStorageData){",
-                    "    localStorageData = {};",
-                    "}",
-                    "for (var key in data) {",
-                    "    if(!localStorageData[key]){",
-                    "        localStorageData[key]={};",
-                    "    }",
-                    "",
-                    "    localStorageData[key].programInfo = data[key].programInfo;",
+                    "\tlocalStorageData = {};",
                     "}",
                     "",
+                    "var newLocalStorageData = {};",
+                    "for (var key in data){",
+                    "\t// init program id",
+                    "\tif(!localStorageData[data[key].programInfo.id]){",
+                    "\t\tlocalStorageData[data[key].programInfo.id] = {};",
+                    "\t}// add program info to this program id",
+                    "\tlocalStorageData[data[key].programInfo.id].programInfo = data[key].programInfo;",
+                    "\tnewLocalStorageData[key] = localStorageData[key]; // takes localstorage entries that their programs are avaliable in programs store",
+                    "}",
                     "// sets current state to localstorage and calls update with server",
-                    "localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));",
+                    "localStorage.setItem('mxp_elearning', Ext.encode(newLocalStorageData));",
                     "",
+                    "if(navigator.onLine){",
+                    "\t// sync all stores",
+                    "\tme.getStore('StorePrograms').sync();",
+                    "}",
                     "",
-                    "//below is old code that overwrittes completely whole xmp_elearning store",
-                    "",
-                    "/*var me = this,",
-                    "    refs = me.getReferences(),",
-                    "    data = me.getCurrentState();",
-                    "",
-                    "localStorage.setItem('mxp_elearning', Ext.encode(data));*/"
+                    "var editButton = Ext.getCmp('btnEdit');",
+                    "if(!me.getSelection()){",
+                    "\teditButton.disable();",
+                    "\teditButton.setText('Edit Slides (No Programs)');",
+                    "}",
+                    "else{",
+                    "\teditButton.enable();",
+                    "\teditButton.setText('Edit Slides');",
+                    "}"
                 ]
             },
             "configAlternates": {
@@ -157,6 +145,102 @@
             },
             "name": "saveState",
             "designerId": "89f60217-9afa-494b-8f45-b336c4795b47"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "callback"
+                ],
+                "fn": "serverSync",
+                "implHandler": [
+                    "// calls sync of everything - it retrieves data and pushes latest data to server",
+                    "// syncs all data with server - this is called on program load and on navigator onLine",
+                    "var me = this,",
+                    "\tTEST_PERSON_ID = 10000112,",
+                    "\tstore = me.getStore('StorePrograms'),",
+                    "\tsyncStateCallback = function(){",
+                    "\t\tstore.sync();",
+                    "",
+                    "\t\tme.getView().setSelection(me.getSelection());",
+                    "",
+                    "\t\tif(callback){ callback(); }",
+                    "\t};",
+                    "",
+                    "var params = {userId: TEST_PERSON_ID}; // Todo - this query by user is unsupported by 2018-08-08",
+                    "initialDataSyncPrograms('StorePrograms', 'programInfo', params, syncStateCallback, 'id', me);",
+                    ""
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "serverSync",
+            "designerId": "532f2aac-dfff-4c29-a93d-0584ec741e4b"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "unload",
+                "implHandler": [
+                    "// unload page",
+                    "",
+                    "// unload store data silently",
+                    "",
+                    "var me = this;",
+                    "me.getStore('StorePrograms').loadData([],false);",
+                    "me.getStore('StoreProgramCategories').loadData([],false);",
+                    "",
+                    "// remove all listeners so they are not interfering with other views",
+                    "window.removeEventListener('online',  me.connectionChange);",
+                    "window.removeEventListener('offline',  me.connectionChange);",
+                    ""
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "unload",
+            "designerId": "8c4be369-9087-4389-a665-41d1203ac4df"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "getSelection",
+                "implHandler": [
+                    "var me = this,",
+                    "\tstore = me.getStore('StorePrograms'),",
+                    "\tselection =  me.getView().getSelection()[0] || store.first(); // backup is store first - this is usefull when initially loading data;",
+                    "",
+                    "return selection;",
+                    "",
+                    ""
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "getSelection",
+            "designerId": "d132e90a-a7a2-4e4c-8b4d-18f10410b481"
         }
     ]
 }

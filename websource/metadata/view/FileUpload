@@ -218,12 +218,12 @@
                                                     "        url: opts.uploadUrl,",
                                                     "        waitMsg: 'Uploading...',",
                                                     "        success: function(form, action) {",
-                                                    "            console.log(arguments);            ",
+                                                    "            print(\"success upload arguments\", arguments);",
                                                     "            opts.callback.call(view.opts);",
                                                     "            view.close();",
                                                     "        },",
                                                     "        failure: function(form, action) {",
-                                                    "            console.log(arguments);",
+                                                    "            print(\"failure upload arguments\", arguments);",
                                                     "        }",
                                                     "    });",
                                                     "}"
@@ -443,8 +443,8 @@
                                                     "    //        console.log(arguments);",
                                                     "    //    }",
                                                     "    //});",
-                                                    "    ",
-                                                    "    console.log(\"URL upload unsupported\");",
+                                                    "",
+                                                    "    console.warn(\"URL upload unsupported\");",
                                                     "}"
                                                 ]
                                             },

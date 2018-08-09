@@ -14,139 +14,139 @@
  */
 
 Ext.define('eLearning.view.FileUpload', {
-    extend: 'Ext.window.Window',
-    alias: 'widget.fileupload',
+	extend: 'Ext.window.Window',
+	alias: 'widget.fileupload',
 
-    requires: [
-        'eLearning.view.FileUploadViewModel',
-        'eLearning.view.FileUploadViewController',
-        'Ext.tab.Panel',
-        'Ext.tab.Tab',
-        'Ext.form.Panel',
-        'Ext.form.field.File',
-        'Ext.form.field.FileButton',
-        'Ext.toolbar.Toolbar'
-    ],
+	requires: [
+		'eLearning.view.FileUploadViewModel',
+		'eLearning.view.FileUploadViewController',
+		'Ext.tab.Panel',
+		'Ext.tab.Tab',
+		'Ext.form.Panel',
+		'Ext.form.field.File',
+		'Ext.form.field.FileButton',
+		'Ext.toolbar.Toolbar'
+	],
 
-    controller: 'fileupload',
-    viewModel: {
-        type: 'fileupload'
-    },
-    modal: true,
-    width: 500,
-    title: 'File Upload',
+	controller: 'fileupload',
+	viewModel: {
+		type: 'fileupload'
+	},
+	modal: true,
+	width: 500,
+	title: 'File Upload',
 
-    items: [
-        {
-            xtype: 'tabpanel',
-            activeTab: 0,
-            items: [
-                {
-                    xtype: 'panel',
-                    title: 'From Computer',
-                    items: [
-                        {
-                            xtype: 'form',
-                            bodyPadding: 10,
-                            title: '',
-                            items: [
-                                {
-                                    xtype: 'textfield',
-                                    anchor: '1',
-                                    fieldLabel: 'Name',
-                                    name: 'name'
-                                },
-                                {
-                                    xtype: 'filefield',
-                                    anchor: '100%',
-                                    fieldLabel: 'File',
-                                    name: 'file',
-                                    emptyText: 'Select a file',
-                                    buttonConfig: {
-                                        xtype: 'filebutton',
-                                        iconCls: 'x-fa fa-paperclip',
-                                        text: ''
-                                    }
-                                }
-                            ]
-                        }
-                    ],
-                    dockedItems: [
-                        {
-                            xtype: 'toolbar',
-                            dock: 'bottom',
-                            ui: 'footer',
-                            layout: {
-                                type: 'hbox',
-                                pack: 'center'
-                            },
-                            items: [
-                                {
-                                    xtype: 'button',
-                                    handler: 'btnSaveHandler',
-                                    itemId: 'btnSave',
-                                    minWidth: 100,
-                                    text: 'Upload'
-                                },
-                                {
-                                    xtype: 'button',
-                                    handler: 'btnCancelHandler',
-                                    itemId: 'btnCancel',
-                                    minWidth: 100,
-                                    text: 'Cancel'
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    xtype: 'panel',
-                    title: 'From URL',
-                    items: [
-                        {
-                            xtype: 'form',
-                            bodyPadding: 10,
-                            title: '',
-                            items: [
-                                {
-                                    xtype: 'textfield',
-                                    anchor: '1',
-                                    fieldLabel: 'URL',
-                                    name: 'url'
-                                }
-                            ]
-                        }
-                    ],
-                    dockedItems: [
-                        {
-                            xtype: 'toolbar',
-                            dock: 'bottom',
-                            ui: 'footer',
-                            layout: {
-                                type: 'hbox',
-                                pack: 'center'
-                            },
-                            items: [
-                                {
-                                    xtype: 'button',
-                                    handler: 'btnSelectHandler',
-                                    itemId: 'btnSelect',
-                                    minWidth: 100,
-                                    text: 'Select'
-                                },
-                                {
-                                    xtype: 'button',
-                                    handler: 'btnCancelHandler',
-                                    itemId: 'btnCancel',
-                                    minWidth: 100,
-                                    text: 'Cancel'
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-    ]
+	items: [
+		{
+			xtype: 'tabpanel',
+			activeTab: 0,
+			items: [
+				{
+					xtype: 'panel',
+					title: 'From Computer',
+					items: [
+						{
+							xtype: 'form',
+							bodyPadding: 10,
+							title: '',
+							items: [
+								{
+									xtype: 'textfield',
+									anchor: '1',
+									fieldLabel: 'Name',
+									name: 'name'
+								},
+								{
+									xtype: 'filefield',
+									anchor: '100%',
+									fieldLabel: 'File',
+									name: 'file',
+									emptyText: 'Select a file',
+									buttonConfig: {
+										xtype: 'filebutton',
+										iconCls: 'x-fa fa-paperclip',
+										text: ''
+									}
+								}
+							]
+						}
+					],
+					dockedItems: [
+						{
+							xtype: 'toolbar',
+							dock: 'bottom',
+							ui: 'footer',
+							layout: {
+								type: 'hbox',
+								pack: 'center'
+							},
+							items: [
+								{
+									xtype: 'button',
+									handler: 'btnSaveHandler',
+									itemId: 'btnSave',
+									minWidth: 100,
+									text: 'Upload'
+								},
+								{
+									xtype: 'button',
+									handler: 'btnCancelHandler',
+									itemId: 'btnCancel',
+									minWidth: 100,
+									text: 'Cancel'
+								}
+							]
+						}
+					]
+				},
+				{
+					xtype: 'panel',
+					title: 'From URL',
+					items: [
+						{
+							xtype: 'form',
+							bodyPadding: 10,
+							title: '',
+							items: [
+								{
+									xtype: 'textfield',
+									anchor: '1',
+									fieldLabel: 'URL',
+									name: 'url'
+								}
+							]
+						}
+					],
+					dockedItems: [
+						{
+							xtype: 'toolbar',
+							dock: 'bottom',
+							ui: 'footer',
+							layout: {
+								type: 'hbox',
+								pack: 'center'
+							},
+							items: [
+								{
+									xtype: 'button',
+									handler: 'btnSelectHandler',
+									itemId: 'btnSelect',
+									minWidth: 100,
+									text: 'Select'
+								},
+								{
+									xtype: 'button',
+									handler: 'btnCancelHandler',
+									itemId: 'btnCancel',
+									minWidth: 100,
+									text: 'Cancel'
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
 
 });

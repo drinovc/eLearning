@@ -89,7 +89,7 @@ Ext.define('eLearning.model.Program', {
 		},
 		{
 			type: 'date',
-			name: 'lastChanges'
+			name: 'lastChanged'
 		},
 		{
 			name: 'changed'

@@ -8,7 +8,7 @@
     "userConfig": {
         "designer|userClassName": "js_wvorutmv",
         "includeInBundle": true,
-        "url": "overrides.js"
+        "url": "app/functions/overrides.js"
     },
     "configAlternates": {
         "designer|userClassName": "string",

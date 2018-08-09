@@ -51,13 +51,17 @@ Ext.define('eLearning.view.EditSlidesViewModel', {
 					writeAllFields: true,
 					rootProperty: 'data'
 				}
+			},
+			listeners: {
+				remove: 'onTreeStoreRemove'
 			}
 		},
 		QuestionsStoreSlides: {
+			autoLoad: false,
+			autoSync: true,
 			model: 'eLearning.model.Question',
 			proxy: {
-				type: 'ajax',
-				batchActions: false,
+				type: 'rest',
 				api: {
 					create: '/Pub/Questions',
 					read: '/Pub/Questions',
@@ -73,8 +77,7 @@ Ext.define('eLearning.view.EditSlidesViewModel', {
 		PersonAnswers: {
 			model: 'eLearning.model.PersonAnswers',
 			proxy: {
-				type: 'ajax',
-				batchActions: false,
+				type: 'rest',
 				api: {
 					create: '/Pub/PersonAnswers',
 					read: '/Pub/PersonAnswers',
@@ -90,8 +93,7 @@ Ext.define('eLearning.view.EditSlidesViewModel', {
 		PersonPrograms: {
 			model: 'eLearning.model.PersonPrograms',
 			proxy: {
-				type: 'ajax',
-				batchActions: false,
+				type: 'rest',
 				api: {
 					create: '/Pub/PersonPrograms',
 					read: '/Pub/PersonPrograms',

@@ -14,41 +14,41 @@
  */
 
 Ext.define('eLearning.controller.CApp', {
-    extend: 'Ext.app.Controller',
+	extend: 'Ext.app.Controller',
 
-    appLaunch: function() {
-        App = this;
+	appLaunch: function() {
+		App = this;
 
-        // Config variable for using mockup data
-        var MOCKUP = false;
-        if (MOCKUP){
-            console.warn("App is using mockup data.");
-        }
+		// Config variable for using mockup data
+		var MOCKUP = false;
+		if (MOCKUP){
+		    console.warn("App is using mockup data.");
+		}
 
-        App = Ext.merge(App, {
-            lookups: {},
-            shared: {}
-        });
+		App = Ext.merge(App, {
+		    lookups: {},
+		    shared: {}
+		});
 
-        // BEFORE EVERY REQUEST
+		// BEFORE EVERY REQUEST
 
-        Ext.Ajax.on("beforerequest", function(conn, options, eOpts) {
-            if(options.url) {
-                // check if url hasn't been modified yet
-                if (options.url.split('/')[0] === ""){
-                    if(MOCKUP) {
-                        options.url = 'mockup' + options.url.split('?')[0] + '.json';
-                    }
-                    else{
-                         options.url = 'MXP_App_ISAPI.dll' + options.url.split('?')[0];
-                    }
-                }
-            }
-        });
+		Ext.Ajax.on("beforerequest", function(conn, options, eOpts) {
+		    if(options.url) {
+		        // check if url hasn't been modified yet
+		        if (options.url.split('/')[0] === ""){
+		            if(MOCKUP) {
+		                options.url = 'mockup' + options.url.split('?')[0] + '.json';
+		            }
+		            else{
+		                 options.url = 'MXP_App_ISAPI.dll' + options.url.split('?')[0];
+		            }
+		        }
+		    }
+		});
 
-        var grid = Ext.create("eLearning.view.MainView");
+		var grid = Ext.create("eLearning.view.MainView");
 
 
-    }
+	}
 
 });

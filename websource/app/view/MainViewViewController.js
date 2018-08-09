@@ -14,91 +14,91 @@
  */
 
 Ext.define('eLearning.view.MainViewViewController', {
-    extend: 'Ext.app.ViewController',
-    alias: 'controller.mainview',
+	extend: 'Ext.app.ViewController',
+	alias: 'controller.mainview',
 
-    load: function() {
-        this.loadLookups();
-    },
+	load: function() {
+		this.loadLookups();
+	},
 
-    getAjax: function(url, params, name) {
-        /*
-        Ext.Ajax.request({
-            url: 'feed.json',
-        }).then(function(response) {
-            // use response
-        }).always(function() {
-           // clean-up logic, regardless the outcome
-        }).otherwise(function(reason){
-           // handle failure
-        });
-        */
+	getAjax: function(url, params, name) {
+		/*
+		Ext.Ajax.request({
+		    url: 'feed.json',
+		}).then(function(response) {
+		    // use response
+		}).always(function() {
+		   // clean-up logic, regardless the outcome
+		}).otherwise(function(reason){
+		   // handle failure
+		});
+		*/
 
-        return new Ext.Promise(function (resolve, reject) {
-            Ext.Ajax.request({
-                url: url,
-                params: params,
-                success: function (response) {
-                    var rObj = Ext.decode(response.responseText || '{}');
+		return new Ext.Promise(function (resolve, reject) {
+		    Ext.Ajax.request({
+		        url: url,
+		        params: params,
+		        success: function (response) {
+		            var rObj = Ext.decode(response.responseText || '{}');
 
-                    if(rObj.success) {
-                        resolve({
-                            name: name,
-                            data: rObj.data,
-                        });
-                    }
-                    else {
-                        reject(rObj.reason || 'Success false');
-                    }
-                },
-                failure: function (response) {
-                    reject(response.status);
-                }
-            });
-        });
-    },
+		            if(rObj.success) {
+		                resolve({
+		                    name: name,
+		                    data: rObj.data,
+		                });
+		            }
+		            else {
+		                reject(rObj.reason || 'Success false');
+		            }
+		        },
+		        failure: function (response) {
+		            reject(response.status);
+		        }
+		    });
+		});
+	},
 
-    loadLookups: function() {
-        var me = this;
+	loadLookups: function() {
+		var me = this;
 
-        Ext.Promise.all([
-            me.getAjax('/Lookups/ProgramCategories', {}, 'ProgramCategories'),
-            me.getAjax('/Lookups/ProgramPageCategories', {}, 'ProgramPageCategories'),
-            me.getAjax('/Lookups/CoursesAndCertificates', {}, 'CoursesAndCertificates'),
-            me.getAjax('/Lookups/ProgramStatuses', {}, 'ProgramStatuses')
-        ]).then(function(data) {
-            Ext.each(data, function(data) {
-                App.lookups[data.name] = data.data;
-            });
+		Ext.Promise.all([
+		    me.getAjax('/Lookups/ProgramCategories', {}, 'ProgramCategories'),
+		    me.getAjax('/Lookups/ProgramPageCategories', {}, 'ProgramPageCategories'),
+		    me.getAjax('/Lookups/CoursesAndCertificates', {}, 'CoursesAndCertificates'),
+		    me.getAjax('/Lookups/ProgramStatuses', {}, 'ProgramStatuses')
+		]).then(function(data) {
+		    Ext.each(data, function(data) {
+		        App.lookups[data.name] = data.data;
+		    });
 
-            var i = 0,
-                obj = null;
+		    var i = 0,
+		        obj = null;
 
-            // Getting ProgramPageCategories into dictionary where key is text ('Chapter', 'Page') and value is id (1, 2)
-            App.ProgramPageCategoriesEnum = {};
-            for(i = 0; i < App.lookups.ProgramPageCategories.length; i++){
-                obj = App.lookups.ProgramPageCategories[i];
-                App.ProgramPageCategoriesEnum[obj.text] = obj.id;
-            }
-            Object.freeze(App.ProgramPageCategoriesEnum); // freezing enum so it cannot be changed later
+		    // Getting ProgramPageCategories into dictionary where key is text ('Chapter', 'Page') and value is id (1, 2)
+		    App.ProgramPageCategoriesEnum = {};
+		    for(i = 0; i < App.lookups.ProgramPageCategories.length; i++){
+		        obj = App.lookups.ProgramPageCategories[i];
+		        App.ProgramPageCategoriesEnum[obj.text] = obj.id;
+		    }
+		    Object.freeze(App.ProgramPageCategoriesEnum); // freezing enum so it cannot be changed later
 
-             // Getting ProgramStatuses into dictionary where key is text ('In Progress', 'Passed'...) and value is id (1, 2...)
-            App.ProgramStatuses = {};
-            for(i = 0; i < App.lookups.ProgramStatuses.length; i++){
-                obj = App.lookups.ProgramStatuses[i];
-                App.ProgramStatuses[obj.text] = obj.id;
-            }
-            Object.freeze(App.ProgramStatuses); // freezing enum so it cannot be changed later
+		     // Getting ProgramStatuses into dictionary where key is text ('In Progress', 'Passed'...) and value is id (1, 2...)
+		    App.ProgramStatuses = {};
+		    for(i = 0; i < App.lookups.ProgramStatuses.length; i++){
+		        obj = App.lookups.ProgramStatuses[i];
+		        App.ProgramStatuses[obj.text] = obj.id;
+		    }
+		    Object.freeze(App.ProgramStatuses); // freezing enum so it cannot be changed later
 
 
 
-        }, function(err) {
-            Ext.Msg.alert('Load Lookups Error', err);
-        });
-    },
+		}, function(err) {
+		    Ext.Msg.alert('Load Lookups Error', err);
+		});
+	},
 
-    onMainViewBoxReady: function(component, width, height, eOpts) {
-        this.load();
-    }
+	onMainViewBoxReady: function(component, width, height, eOpts) {
+		this.load();
+	}
 
 });
