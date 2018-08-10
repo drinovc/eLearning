@@ -1,12 +1,6 @@
 $app-name:  dynamic( 'eLearning' );
 $image-search-path: 'C:/Users/jerne/Documents/GitHub/eLearning/websource/build/testing/eLearning/resources';
 $theme-name:  dynamic( 'theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d' );
-$include-accordionmenu-application: dynamic(true);;
-$include-accordionmenu-store-personnel: dynamic(true);;
-$include-accordionmenu-view-main-list: dynamic(true);;
-$include-accordionmenu-view-main-main: dynamic(true);;
-$include-accordionmenu-view-main-maincontroller: dynamic(true);;
-$include-accordionmenu-view-main-mainmodel: dynamic(true);;
 $include-ext-abstractcomponent: dynamic(true);;
 $include-ext-abstractcontainer: dynamic(true);;
 $include-ext-abstractmanager: dynamic(true);;

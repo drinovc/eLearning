@@ -8,6 +8,7 @@
     "userConfig": {
         "designer|userAlias": "programs",
         "designer|userClassName": "Programs",
+        "id": "gridPrograms",
         "itemId": "gridPrograms",
         "store": [
             "{StorePrograms}"
@@ -20,7 +21,8 @@
         "designer|userClassName": "string",
         "itemId": "string",
         "reference": "string",
-        "title": "string"
+        "title": "string",
+        "id": "string"
     },
     "name": "MyGridPanel",
     "designerId": "021f8bd2-ddcc-4d3c-8e48-905c69773429",
@@ -499,6 +501,8 @@
                     "userConfig": {
                         "fn": "onRowEditingEdit",
                         "implHandler": [
+                            "context.record.phantom = true;",
+                            "context.record.data.lastChanged = new Date();",
                             "this.saveState();"
                         ],
                         "name": "edit",
@@ -839,6 +843,59 @@
                             "designerId": "daa71325-b580-464b-bf11-7039a8a27a78"
                         }
                     ]
+                },
+                {
+                    "type": "Ext.toolbar.TextItem",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "cls": [
+                            "x-fa fa-exclamation-triangle warning"
+                        ],
+                        "id": "syncIndicatorPrograms",
+                        "layout|flex": null
+                    },
+                    "configAlternates": {
+                        "cls": "typedarray",
+                        "id": "string",
+                        "layout|flex": "number"
+                    },
+                    "name": "MyTextItem4",
+                    "designerId": "cf7295ed-88c1-454d-8126-e57de1d9133a",
+                    "cn": [
+                        {
+                            "type": "viewcontrollereventbinding",
+                            "reference": {
+                                "name": "listeners",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "fn": "createTooltip",
+                                "implHandler": [
+                                    "// this function could be basic binding but if it is, defaultListenerScope becomes true and then store bindings dont work!!!!!!!!",
+                                    "",
+                                    "component.tooltip = Ext.create('Ext.tip.ToolTip', {",
+                                    "    target: component.id,",
+                                    "    html: 'Not Synced'",
+                                    "});"
+                                ],
+                                "name": "afterrender",
+                                "scope": "me"
+                            },
+                            "configAlternates": {
+                                "fn": "string",
+                                "implHandler": "code",
+                                "name": "string",
+                                "scope": "string"
+                            },
+                            "name": "createTooltip",
+                            "designerId": "9b24e6b5-70e1-4869-9aa8-e5a75188adae"
+                        }
+                    ]
                 }
             ]
         },
@@ -906,6 +963,8 @@
                     "    if (navigator.onLine){",
                     "        var callback = function(){",
                     "            Ext.toast('Welcome back online! Content saved on server.');",
+                    "\t\t\tme.saveState();",
+                    "",
                     "        };",
                     "",
                     "",
@@ -915,9 +974,6 @@
                     "        Ext.toast('We went offline! Content is still saved locally. Reconnect to save content with server.');",
                     "    }",
                     "};",
-                    "// Update the online status icon based on connectivity",
-                    "window.addEventListener('online',  me.connectionChange);",
-                    "window.addEventListener('offline', me.connectionChange);",
                     "",
                     "this.load();",
                     ""

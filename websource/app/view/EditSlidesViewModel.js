@@ -72,6 +72,9 @@ Ext.define('eLearning.view.EditSlidesViewModel', {
 					type: 'json',
 					rootProperty: 'data'
 				}
+			},
+			listeners: {
+				remove: 'onQuestionsRemove'
 			}
 		},
 		PersonAnswers: {

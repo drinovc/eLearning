@@ -284,7 +284,8 @@ Ext.define('eLearning.view.EditSlides', {
 						},
 						{
 							xtype: 'tbtext',
-							html: 'Layout'
+							html: 'Layout',
+							itemId: 'Layout'
 						},
 						{
 							xtype: 'cycle',
@@ -346,6 +347,16 @@ Ext.define('eLearning.view.EditSlides', {
 							},
 							itemId: 'btnSettings',
 							text: 'Settings'
+						},
+						{
+							xtype: 'tbtext',
+							cls: 'x-fa fa-exclamation-triangle warning',
+							html: '',
+							id: 'syncIndicator',
+							itemId: 'syncIndicator',
+							listeners: {
+								afterrender: 'createTooltip'
+							}
 						},
 						{
 							xtype: 'tbspacer',
@@ -489,7 +500,7 @@ Ext.define('eLearning.view.EditSlides', {
 							}
 						],
 						listeners: {
-							drop: 'onTreeViewDragDrop'
+							drop: 'onTreeDragDrop'
 						}
 					},
 					columns: [
@@ -509,9 +520,9 @@ Ext.define('eLearning.view.EditSlides', {
 						}
 					],
 					listeners: {
-						select: 'onTreeSlidesSelect',
+						select: 'onTreeItemSelect',
 						deselect: 'onTreeSlidesDeselect',
-						itemcollapse: 'onTreeSlidesItemCollapse'
+						itemcollapse: 'onTreeItemCollapse'
 					}
 				}
 			]
@@ -563,7 +574,7 @@ Ext.define('eLearning.view.EditSlides', {
 		}
 	],
 	listeners: {
-		boxready: 'onEditSlidesBoxReady'
+		boxready: 'onEditBoxReady'
 	}
 
 });

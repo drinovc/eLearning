@@ -8,7 +8,7 @@
     "userConfig": {
         "designer|userClassName": "js_gxqk3wcm",
         "includeInBundle": true,
-        "url": "app/functions/IndexedDB.js"
+        "url": "functions/IndexedDB.js"
     },
     "configAlternates": {
         "designer|userClassName": "string",

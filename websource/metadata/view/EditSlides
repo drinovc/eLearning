@@ -1142,11 +1142,13 @@
                             "codeClass": null,
                             "userConfig": {
                                 "html": "Layout",
+                                "itemId": "Layout",
                                 "layout|flex": null
                             },
                             "configAlternates": {
                                 "html": "string",
-                                "layout|flex": "number"
+                                "layout|flex": "number",
+                                "itemId": "string"
                             },
                             "name": "MyTextItem1",
                             "designerId": "7af74d53-625c-4534-8035-8f1bbde19d9e"
@@ -1353,6 +1355,65 @@
                                     },
                                     "name": "handler",
                                     "designerId": "ed4feadb-4fbb-4295-977d-12f72d7f28ff"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Ext.toolbar.TextItem",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "cls": [
+                                    "x-fa fa-exclamation-triangle warning"
+                                ],
+                                "html": "",
+                                "id": "syncIndicator",
+                                "itemId": "syncIndicator",
+                                "layout|flex": null
+                            },
+                            "configAlternates": {
+                                "html": "string",
+                                "layout|flex": "number",
+                                "cls": "typedarray",
+                                "id": "string",
+                                "itemId": "string"
+                            },
+                            "name": "MyTextItem3",
+                            "designerId": "989a43be-6485-470c-b595-80e921112a19",
+                            "cn": [
+                                {
+                                    "type": "viewcontrollereventbinding",
+                                    "reference": {
+                                        "name": "listeners",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "fn": "createTooltip",
+                                        "implHandler": [
+                                            "// this function could be basic binding but if it is, defaultListenerScope becomes true and then store bindings dont work!!!!!!!!",
+                                            "",
+                                            "component.tooltip = Ext.create('Ext.tip.ToolTip', {",
+                                            "    target: component.id,",
+                                            "    html: 'Not Synced'",
+                                            "});",
+                                            "",
+                                            ""
+                                        ],
+                                        "name": "afterrender",
+                                        "scope": "me"
+                                    },
+                                    "configAlternates": {
+                                        "fn": "string",
+                                        "implHandler": "code",
+                                        "name": "string",
+                                        "scope": "string"
+                                    },
+                                    "name": "createTooltip",
+                                    "designerId": "0dd76047-8e80-4487-8e8e-0fad1fb2c820"
                                 }
                             ]
                         },
@@ -1830,7 +1891,7 @@
                                                 "designer|params": [
                                                     "treeviewdragdrop"
                                                 ],
-                                                "fn": "onTreeViewDragDrop",
+                                                "fn": "onTreeDragDrop",
                                                 "implHandler": [
                                                     "var me = this,",
                                                     "    refs = me.getReferences();",
@@ -1856,7 +1917,7 @@
                                                 "name": "string",
                                                 "scope": "string"
                                             },
-                                            "name": "onTreeViewDragDrop",
+                                            "name": "onTreeDragDrop",
                                             "designerId": "85fa343a-d0e8-498b-b891-915e2db1bc49"
                                         }
                                     ]
@@ -1913,7 +1974,7 @@
                             },
                             "codeClass": null,
                             "userConfig": {
-                                "fn": "onTreeSlidesSelect",
+                                "fn": "onTreeItemSelect",
                                 "implHandler": [
                                     "// loading slide state for both sections and slides, because creating title every time caused sync with database",
                                     "",
@@ -1942,7 +2003,7 @@
                                 "name": "string",
                                 "scope": "string"
                             },
-                            "name": "onTreeSlidesSelect",
+                            "name": "onTreeItemSelect",
                             "designerId": "37b1134e-9890-44d0-b5fc-9aeca186c4e4"
                         },
                         {
@@ -1980,7 +2041,7 @@
                             },
                             "codeClass": null,
                             "userConfig": {
-                                "fn": "onTreeSlidesItemCollapse",
+                                "fn": "onTreeItemCollapse",
                                 "implHandler": [
                                     "print(\"tree slides item colapse\",nodeinterface, eOpts);",
                                     "var me = this,",
@@ -1997,7 +2058,7 @@
                                 "name": "string",
                                 "scope": "string"
                             },
-                            "name": "onTreeSlidesItemCollapse",
+                            "name": "onTreeItemCollapse",
                             "designerId": "acba72aa-98a7-4b1c-bea0-179a31d0373e"
                         }
                     ]
@@ -2144,7 +2205,7 @@
             },
             "codeClass": null,
             "userConfig": {
-                "fn": "onEditSlidesBoxReady",
+                "fn": "onEditBoxReady",
                 "implHandler": [
                     "var me = this,",
                     "    refs = me.getReferences();",
@@ -2172,15 +2233,14 @@
                     "    SELECTION: 'selection'",
                     "};",
                     "",
-                    "refs.panelContent.removeAll();",
-                    "refs.toolbarPreview.hide();",
                     "",
-                    "",
-                    "component.el.on('click', function(e, t) {",
+                    "component.el.on('mouseup', function(e, t) {",
                     "    // hiding component tools if component itself (like bodyPanel, ImageComponent...) didn't stop click event to backpropagate",
-                    "",
+                    "\tif(me._dragged){ // if we were just dragging - dont trigger mouse up event",
+                    "\t\tme._dragged = null;",
+                    "\t\treturn;",
+                    "\t}",
                     "    if(!e.ctrlKey && !e.shiftKey){",
-                    "",
                     "        // if we clicked on background without holding shift or ctrl key - remove all selected components",
                     "        // if we are holding shift or ctrl key, we are multiselecting and we might have clicked on background by accident",
                     "        me.hideComponentTools();",
@@ -2190,9 +2250,6 @@
                     "        }",
                     "        me._selectedComponents = [];",
                     "    }",
-                    "",
-                    "",
-                    "",
                     "});",
                     "",
                     "document.addEventListener(\"keydown\", function onPress(event) {",
@@ -2243,12 +2300,8 @@
                     "        Ext.toast('We went offline! Content is still saved locally. Reconnect to save content with server.');",
                     "    }",
                     "};",
-                    "// Update the online status icon based on connectivity",
-                    "window.addEventListener('online',  me.connectionChange);",
-                    "window.addEventListener('offline', me.connectionChange);",
                     "",
                     "// add eventlistenere on fullscreen change to remove this panel on fullscreen off",
-                    "var me = this;",
                     "var screen_change_events = [\"webkitfullscreenchange\", \"mozfullscreenchange\", \"fullscreenchange\", \"MSFullscreenChange\"];",
                     "",
                     "for (var i in screen_change_events){",
@@ -2274,7 +2327,7 @@
                 "name": "string",
                 "scope": "string"
             },
-            "name": "onEditSlidesBoxReady",
+            "name": "onEditBoxReady",
             "designerId": "e94d9c83-cc00-4637-b3a1-258207e7a4ab"
         }
     ]

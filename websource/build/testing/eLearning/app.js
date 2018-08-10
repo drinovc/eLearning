@@ -87426,23 +87426,15 @@ Ext.define('eLearning.controller.CApp', {extend:Ext.app.Controller, appLaunch:fu
 }});
 Ext.define('eLearning.model.Lookup', {extend:Ext.data.Model, fields:[{type:'int', name:'id'}, {name:'text'}, {name:'code'}, {name:'category'}, {type:'boolean', name:'active'}]});
 Ext.define('eLearning.model.Option', {extend:Ext.data.Model, fields:[{type:'string', name:'id'}, {type:'int', name:'sequence'}, {type:'string', name:'text'}, {type:'boolean', name:'correct'}]});
-Ext.define('eLearning.model.PersonAnswers', {extend:Ext.data.Model, idProperty:'answerGuid', fields:[{type:'string', name:'answerGuid'}]});
+Ext.define('eLearning.model.PersonAnswers', {extend:Ext.data.Model, idProperty:'questionGuid', fields:[{type:'string', name:'questionGuid'}]});
 Ext.define('eLearning.model.PersonPrograms', {extend:Ext.data.Model, idProperty:'personProgramGuid', fields:[{type:'string', name:'personProgramGuid'}]});
 Ext.define('eLearning.model.Program', {extend:Ext.data.Model, fields:[{type:'string', name:'id', unique:true}, {type:'int', name:'programId'}, {name:'name'}, {type:'int', name:'categoryId'}, {name:'description'}, {type:'date', name:'validFrom', dateWriteFormat:'c'}, {type:'date', name:'validTo', dateWriteFormat:'c'}, {type:'float', name:'completionTime'}, {type:'int', name:'maxAttemptsTrainingMode'}, {type:'int', name:'maxAttemptsScoreMode'}, {name:'passScore'}, {name:'certificateFileName'}, {type:'boolean', 
-name:'active'}, {type:'int', name:'createdById'}, {type:'int', name:'createdAtId'}, {type:'date', name:'created'}, {type:'date', name:'lastChanges'}, {name:'changed'}, {type:'int', name:'lastChangeLogId'}]});
+name:'active'}, {type:'int', name:'createdById'}, {type:'int', name:'createdAtId'}, {type:'date', name:'created'}, {type:'date', name:'lastChanged'}, {name:'changed'}, {type:'int', name:'lastChangeLogId'}]});
 Ext.define('eLearning.model.Question', {extend:Ext.data.Model, fields:[{type:'string', name:'id'}, {type:'string', name:'pageId'}, {type:'int', name:'sequence'}, {type:'string', name:'text'}, {type:'string', name:'type'}, {type:'string', name:'options'}, {type:'int', name:'height'}, {type:'int', name:'width'}, {type:'int', name:'x'}, {type:'int', name:'y'}]});
 Ext.define('eLearning.model.Slide', {extend:Ext.data.Model, fields:[{type:'string', name:'id', unique:true}, {type:'string', name:'parentId'}, {type:'string', name:'title'}, {type:'string', name:'content'}, {type:'int', name:'sequence'}, {type:'int', name:'categoryId'}, {type:'string', name:'scoreMethod'}, {type:'int', name:'multiSelect'}]});
-Ext.define('eLearning.view.EditSlidesViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.editslides', stores:{TreeStoreSlides:{type:'tree', removeAll:function(silent) {
-  var root = this.getRootNode();
-  if (root) {
-    root.destroy(true);
-  }
-  if (silent !== true) {
-    this.fireEvent('clear', this);
-  }
-}, model:'eLearning.model.Slide', defaultRootText:'Slides', parentIdProperty:'parentId', root:{expanded:true, loaded:true}, proxy:{type:'rest', api:{create:'/Pub/Pages', read:'/Pub/Pages', update:'/POST/Pub/Pages', destroy:'/Pub/Pages'}, reader:{type:'json', rootProperty:'data'}, writer:{type:'json', writeAllFields:true, rootProperty:'data'}}}, QuestionsStoreSlides:{model:'eLearning.model.Question', proxy:{type:'ajax', batchActions:false, api:{create:'/Pub/Questions', read:'/Pub/Questions', update:'/POST/Pub/Questions', 
-destroy:'/Pub/Questions'}, reader:{type:'json', rootProperty:'data'}}}, PersonAnswers:{model:'eLearning.model.PersonAnswers', proxy:{type:'ajax', batchActions:false, api:{create:'/Pub/PersonAnswers', read:'/Pub/PersonAnswers', update:'/POST/Pub/PersonAnswers', destroy:'/Pub/PersonAnswers'}, reader:{type:'json', rootProperty:'data'}}}, PersonPrograms:{model:'eLearning.model.PersonPrograms', proxy:{type:'ajax', batchActions:false, api:{create:'/Pub/PersonPrograms', read:'/Pub/PersonPrograms', update:'/POST/Pub/PersonPrograms', 
-destroy:'/Pub/PersonPrograms'}, reader:{type:'json', rootProperty:'data'}}}}});
+Ext.define('eLearning.view.EditSlidesViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.editslides', stores:{TreeStoreSlides:{type:'tree', model:'eLearning.model.Slide', defaultRootText:'Slides', parentIdProperty:'parentId', root:{expanded:true, loaded:true}, proxy:{type:'rest', api:{create:'/Pub/Pages', read:'/Pub/Pages', update:'/POST/Pub/Pages', destroy:'/Pub/Pages'}, reader:{type:'json', rootProperty:'data'}, writer:{type:'json', writeAllFields:true, rootProperty:'data'}}, listeners:{remove:'onTreeStoreRemove'}}, 
+QuestionsStoreSlides:{autoLoad:false, autoSync:true, model:'eLearning.model.Question', proxy:{type:'rest', api:{create:'/Pub/Questions', read:'/Pub/Questions', update:'/POST/Pub/Questions', destroy:'/Pub/Questions'}, reader:{type:'json', rootProperty:'data'}}, listeners:{remove:'onQuestionsRemove'}}, PersonAnswers:{model:'eLearning.model.PersonAnswers', proxy:{type:'rest', api:{create:'/Pub/PersonAnswers', read:'/Pub/PersonAnswers', update:'/POST/Pub/PersonAnswers', destroy:'/Pub/PersonAnswers'}, 
+reader:{type:'json', rootProperty:'data'}}}, PersonPrograms:{model:'eLearning.model.PersonPrograms', proxy:{type:'rest', api:{create:'/Pub/PersonPrograms', read:'/Pub/PersonPrograms', update:'/POST/Pub/PersonPrograms', destroy:'/Pub/PersonPrograms'}, reader:{type:'json', rootProperty:'data'}}}}});
 Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewController, alias:'controller.editslides', load:function(opts) {
   var me = this, refs = me.getReferences();
   opts = Ext.applyIf(opts || {}, {program:null});
@@ -87456,35 +87448,50 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
   this.clearSlidePanel();
   me.allComponents = [];
   me._selectedComponents = [];
-  var me = this, localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId], treeStoreSlides = me.getStore('TreeStoreSlides'), questionsStoreSlides = me.getStore('QuestionsStoreSlides'), personAnswersStore = me.getStore('PersonAnswers');
-  if (!localStorageData.slides) {
-    localStorageData.slides = {};
+  var me = this, localStorageData = Ext.decode(localStorage.getItem('mxp_elearning')), treeStoreSlides = me.getStore('TreeStoreSlides'), questionsStoreSlides = me.getStore('QuestionsStoreSlides'), personAnswersStore = me.getStore('PersonAnswers');
+  if (!localStorageData[me.programId].slides) {
+    localStorageData[me.programId].slides = {};
   }
-  if (!localStorageData.questions) {
-    localStorageData.questions = {};
+  if (!localStorageData[me.programId].questions) {
+    localStorageData[me.programId].questions = {};
   }
-  if (!localStorageData.answers) {
-    localStorageData.answers = {};
+  if (!localStorageData[me.programId].answers) {
+    localStorageData[me.programId].answers = {};
   }
-  me.saveState(localStorageData);
+  localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+  var me = this, refs = me.getReferences(), personProgramsStore = me.getStore('PersonPrograms'), personAnswersStore = me.getStore('PersonAnswers');
+  var TEST_PERSON_ID = 10000112;
+  var previewButton = Ext.getCmp('btnPreview');
+  previewButton.removeCls('active-program');
+  previewButton.setText('Preview');
+  if (me.programData.validTo < new Date) {
+    Ext.toast('Program is not valid anymore!');
+    previewButton.setText('Program Not Valid');
+    return;
+  }
   if (navigator.onLine) {
     var syncAnswersCallback = function() {
       me.setInitialSlide();
+      me.saveState();
     };
-    var syncQuestionsCallback = function() {
-      var params = {programId:me.programId};
-      me.initialDataSync('QuestionsStoreSlides', 'questions', params, syncAnswersCallback, 'id');
-    };
-    var syncStateCallback = function() {
-      me.updateServerStore();
-      var params = {programId:me.programId};
-      me.initialDataSync('PersonAnswers', 'answers', params, syncQuestionsCallback, 'id');
-    };
-    if (localStorageData.pageSetup) {
-      me._pageSetup = localStorageData.pageSetup;
-    }
-    var params = {programId:me.programId};
-    me.initialDataSync('TreeStoreSlides', 'slides', params, syncStateCallback, 'id');
+    personProgramsStore.load({params:{personId:TEST_PERSON_ID, programId:me.programId}, callback:function(record) {
+      if (record && record.length > 0) {
+        me.currentPersonProgram = record[0].data;
+        if (me.currentPersonProgram.attempt >= me.programData.maxAttemptsTrainingMode + me.programData.maxAttemptsScoreMode) {
+          var btnPreview = Ext.getCmp('btnPreview');
+          btnPreview.disable();
+          btnPreview.setText('Preview (No More Attempts)');
+          return;
+        }
+        var endTime = new Date((new Date(me.currentPersonProgram.programStarted)).getTime() + me.programData.completionTime * 60000);
+        var remainingMS = endTime.getTime() - (new Date).getTime();
+        if (remainingMS > 0 && (me.currentPersonProgram.programStatusId == App.ProgramStatuses['In Progress'] || me.currentPersonProgram.programStatusId == App.ProgramStatuses.Repeat)) {
+          previewButton.addCls('active-program');
+          previewButton.setText('Preview (Resume)');
+        }
+      }
+      me.serverSync(syncAnswersCallback);
+    }});
   } else {
     treeStoreSlides.setData(localStorageData.slides);
     questionsStoreSlides.setData(localStorageData.questions);
@@ -87493,114 +87500,114 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
       me._pageSetup = localStorageData.pageSetup;
     }
     me.setInitialSlide();
+    me.saveState();
   }
-  var me = this, refs = me.getReferences(), personProgramsStore = me.getStore('PersonPrograms'), personAnswersStore = me.getStore('PersonAnswers');
-  var TEST_PERSON_ID = 10000112;
-  var previewButton = Ext.getCmp('btnPreview');
-  previewButton.removeCls('active-program');
-  previewButton.setText('Preview');
-  if (me.programData.validTo < new Date) {
-    Ext.toast('Program is not valid anymore!');
-    Ext.get('btnPreview').disable();
-    return;
-  }
-  personProgramsStore.load({params:{personId:TEST_PERSON_ID, programId:me.programId}, callback:function(record) {
-    console.log('recieved personProgramStore load callback', record);
-    if (record && record.length > 0) {
-      console.log('recieved record');
-      me.currentPersonProgram = record[0].data;
-      if (me.currentPersonProgram.attempt >= me.programData.maxAttemptsTrainingMode + me.programData.maxAttemptsScoreMode) {
-        console.log('Cannot attempt any more tries... returning');
-        return;
-      }
-      var endTime = new Date((new Date(me.currentPersonProgram.programStarted)).getTime() + me.programData.completionTime * 60000);
-      var remainingMS = endTime.getTime() - (new Date).getTime();
-      if (remainingMS > 0 && (me.currentPersonProgram.programStatusId == App.ProgramStatuses['In Progress'] || me.currentPersonProgram.programStatusId == App.ProgramStatuses.Repeat)) {
-        previewButton.addCls('active-program');
-        previewButton.setText('Resume preview');
-      }
-    }
-  }});
+  window.addEventListener('online', me.connectionChange);
+  window.addEventListener('offline', me.connectionChange);
+  refs.panelContent.removeAll();
+  refs.toolbarPreview.hide();
 }, newSection:function() {
-  console.log('creating new section', 'TODO -leaf is here set to true, but it should be pulled from database if this section has any children');
-  var me = this, refs = me.getReferences(), store = me.getStore('TreeStoreSlides');
-  var data = {id:createGUID(), programId:me.programId, title:'New Section', content:null, expanded:false, children:[], categoryId:App.ProgramPageCategoriesEnum.Chapter, scoreMethod:'A', sequence:1234};
-  var parentNode = store.getRoot();
+  var me = this, refs = me.getReferences(), store = me.getStore('TreeStoreSlides'), now = new Date, parentNode = store.getRoot(), data = {id:createGUID(), programId:me.programId, title:'New Section', content:null, expanded:false, children:[], categoryId:App.ProgramPageCategoriesEnum.Chapter, scoreMethod:'A', sequence:1234, lastChanged:now, created:now};
   slide = parentNode.appendChild(data);
   refs.treeSlides.setSelection(slide);
-  me.saveSlideState(slide);
+  me.saveState();
 }, newSlide:function() {
-  var me = this, refs = me.getReferences(), store = me.getStore('TreeStoreSlides'), parentNode = refs.treeSlides.getSelection()[0] || store.getRoot(), slide, data = {id:createGUID(), programId:me.programId, sequence:me.getNumSlides(), title:'New Page ' + me.getNumSlides() + 1, content:null, expanded:true, leaf:true, isSlide:true, categoryId:App.ProgramPageCategoriesEnum.Page, scoreMethod:'A'};
+  var me = this, refs = me.getReferences(), store = me.getStore('TreeStoreSlides'), parentNode = me.getCurrentSlide() || store.getRoot(), slide, now = new Date;
+  data = {id:createGUID(), programId:me.programId, sequence:me.getNumSlides(), title:'New Page ' + (me.getNumSlides() + 1), content:null, expanded:true, leaf:true, isSlide:true, categoryId:App.ProgramPageCategoriesEnum.Page, scoreMethod:'A', lastChanged:now, created:now};
+  if (parentNode.data.categoryId == App.ProgramPageCategoriesEnum.Chapter) {
+    parentNode.data.expanded = true;
+  }
   if (parentNode.isLeaf()) {
     parentNode = parentNode.parentNode;
   }
   slide = parentNode.appendChild(data);
+  me.saveState();
   refs.treeSlides.setSelection(slide);
-  me.saveSlideState(slide);
 }, deleteSlide:function(slide) {
-  var me = this, refs = me.getReferences(), store = me.getStore('TreeStoreSlides');
+  var me = this, refs = me.getReferences(), store = me.getStore('TreeStoreSlides'), deleteSlideWithContent = function(slide, treeStoreSlides, questionsStore) {
+    if (slide.childNodes && slide.childNodes.length > 0) {
+      for (var i = 0; i < slide.childNodes.length; i++) {
+        deleteSlideWithContent(slide.childNodes[i], treeStoreSlides, questionsStore);
+      }
+    }
+    var components = Ext.decode(slide.get('content') || '{}').components;
+    if (components && Object.keys(components).length > 0) {
+      for (var key in components) {
+        var cmp = components[key];
+        var cmpType = cmp.type;
+        if (cmpType == me.cmpTypes.SELECTION || cmpType == 'Single selection' || cmpType == 'Multi selection') {
+          var rec = questionsStore.findRecord('id', cmp.id);
+          questionsStore.remove(rec);
+        }
+        var personAnswers = me.getStore('PersonAnswers');
+        var answerRecord = personAnswers.findRecord('questionId', cmp.id);
+        if (answerRecord) {
+          personAnswers.remove(answerRecord);
+          personAnswers.sync();
+        }
+      }
+    }
+    slide.parentNode.removeChild(slide);
+  }, deleteWrapup = function(slide) {
+    var treeStoreSlides = me.getStore('TreeStoreSlides'), questionsStore = me.getStore('QuestionsStoreSlides');
+    deleteSlideWithContent(slide, treeStoreSlides, questionsStore);
+    me.saveState();
+    me.clearSlidePanel();
+    me.nextSlide();
+  };
   slide = slide || me.getCurrentSlide();
   if (slide) {
-    console.log('printing current slide', slide);
-    var nextSlideIdx = store.indexOf(slide) - 1, nextSlide = store.getAt(nextSlideIdx >= 0 ? nextSlideIdx : 1), components = Ext.decode(slide.get('content') || '{}').components, childNodes = slide.childNodes;
-    if (components && components.length > 0 || childNodes && childNodes.length > 0) {
+    var components = Ext.decode(slide.get('content') || '{}').components, childNodes = slide.childNodes;
+    if (components && Object.keys(components).length > 0 || childNodes && childNodes.length > 0) {
       Ext.Msg.confirm('Delete slide', 'Are you sure?' + (childNodes && childNodes.length > 0 ? ' You will delete whole subtree!' : ''), function(btn) {
         if (btn == 'yes') {
-          slide.parentNode.removeChild(slide);
-          me.saveState();
-          me.clearSlidePanel();
-          me.nextSlide();
+          deleteWrapup(slide);
         }
       });
     } else {
-      slide.parentNode.removeChild(slide);
-      me.saveState();
-      me.clearSlidePanel();
-      me.nextSlide();
+      deleteWrapup(slide);
     }
   }
 }, getCurrentSlide:function() {
-  var me = this, refs = me.getReferences(), store = me.getStore('TreeStoreSlides');
-  var currentSlideIdx = store.indexOf(me.currentSlide);
-  me.currentSlide = refs.treeSlides.getSelection()[0] || store.getAt(currentSlideIdx);
+  var me = this, refs = me.getReferences(), store = me.getStore('TreeStoreSlides'), currentSlideIdx = store.indexOf(me.currentSlide);
+  me.currentSlide = refs.treeSlides.getSelection()[0] || store.getAt(currentSlideIdx) || store.first();
   return me.currentSlide;
-}, nextSlide:function() {
-  var REC_TO_SLIDE = true;
+}, nextSlide:function(slidesOnly) {
+  slidesOnly = slidesOnly === undefined ? true : slidesOnly;
   var me = this, refs = me.getReferences(), store = me.getStore('TreeStoreSlides'), slide = me.getCurrentSlide(), nextSlideIdx = store.indexOf(slide) + 1, nextSlide = store.getAt(nextSlideIdx);
   if (nextSlide) {
     refs.treeSlides.setSelection(nextSlide);
     if (nextSlide.data.leaf === false) {
-      me.nextSlide();
-      if (REC_TO_SLIDE) {
+      me.nextSlide(slidesOnly);
+      if (slidesOnly) {
         if (this.getNumSlides() === 0) {
-          console.log('cannot switch recursively to next slide', 'no slides exist');
           return;
         }
         if (me.getCurrentSlide().data.leaf === false) {
-          me.prevSlide();
+          me.prevSlide(slidesOnly);
         }
       }
     }
   }
-}, prevSlide:function() {
-  var REC_TO_SLIDE = true;
+}, prevSlide:function(slidesOnly) {
+  slidesOnly = slidesOnly === undefined ? true : slidesOnly;
   var me = this, refs = me.getReferences(), store = me.getStore('TreeStoreSlides'), slide = me.getCurrentSlide(), prevSlideIdx = store.indexOf(slide) - 1, prevSlide = store.getAt(prevSlideIdx);
   if (prevSlide) {
     refs.treeSlides.setSelection(prevSlide);
     if (prevSlide.data.leaf === false) {
-      me.prevSlide();
-      if (REC_TO_SLIDE) {
+      me.prevSlide(slidesOnly);
+      if (slidesOnly) {
         if (this.getNumSlides() === 0) {
-          console.log('cannot switch recursively to prev slide', 'no slides exist');
           return;
         }
         if (me.getCurrentSlide().data.leaf === false) {
-          me.nextSlide();
+          me.nextSlide(slidesOnly);
         }
       }
     }
   }
-}, setBackground:function(src) {
+}, setBackground:function(src, save) {
+  save = save === undefined ? true : save;
   var me = this, refs = me.getReferences();
   me._pageSetup.background = src;
   if (src) {
@@ -87608,21 +87615,24 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
   } else {
     Ext.getCmp('panelContent').setStyle('background', null);
   }
-  me.saveState();
-}, togglePreview:function(preview, forceClose) {
+  if (save) {
+    me.saveState();
+  }
+}, togglePreview:function(preview, yesCallback) {
   var me = this, refs = me.getReferences();
-  me.previewing = preview;
   if (preview) {
     me.showPreview();
   } else {
     Ext.Msg.confirm('Close preview', 'Are you sure?', function(btn) {
       if (btn == 'yes') {
-        me.closePreview(false);
+        me.closePreview();
+        if (yesCallback) {
+          yesCallback();
+        }
       }
     });
   }
 }, getFreePosition:function() {
-  print('called function get free position');
   var me = this, refs = me.getReferences(), snap = me._pageSetup.snap, pos = {x:snap * 2, y:snap * 2, width:me.round(refs.panelContent.el.getWidth() - 2 * snap * 2), height:snap * 2};
   Ext.each(refs.panelContent.el.query('.html-component'), function(component) {
     pos.y = me.round(Math.max(pos.y, component.y + component.height + snap));
@@ -87639,31 +87649,21 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
     slidesDict[slides[i].id] = slides[i];
   }
   questions = Ext.clone(Ext.pluck(me.getStore('QuestionsStoreSlides').getRange(), 'data')).map(function(node) {
-    console.log('printing current question in get current state', node);
     return node;
   });
   var questionsDict = {};
   for (var i = 0; i < questions.length; i++) {
     questionsDict[questions[i].id] = questions[i];
   }
-  data = {slides:slidesDict, pageSetup:me._pageSetup, questions:questionsDict};
-  return data;
-}, saveSlideState:function(slide) {
-  var me = this, refs = me.getReferences(), content = {components:{}};
-  slide = slide || me.getCurrentSlide();
-  if (slide) {
-    Ext.each(me.getSlideComponents(), function(component) {
-      if (component._opts.type == me.cmpTypes.SELECTION) {
-        var _opts = Ext.clone(component._opts);
-        var _optsNew = {'type':_opts.type, 'id':_opts.id};
-        content.components[_opts.id] = _optsNew;
-      } else {
-        content.components[component._opts.id] = component._opts;
-      }
-    });
-    slide.set('content', Ext.encode(content));
-    me.saveState();
+  answers = Ext.clone(Ext.pluck(me.getStore('PersonAnswers').getRange(), 'data')).map(function(node) {
+    return node;
+  });
+  var answersDict = {};
+  for (var i = 0; i < answers.length; i++) {
+    answersDict[answers[i].questionId] = answers[i];
   }
+  data = {slides:slidesDict, pageSetup:me._pageSetup, questions:questionsDict, answers:answersDict};
+  return data;
 }, loadSlideState:function(slide) {
   var me = this, refs = me.getReferences(), parentEl = refs.panelContent.el.down('#html-slide');
   me.clearSlidePanel();
@@ -87671,17 +87671,34 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
     var content = Ext.decode(slide.get('content') || '{}');
     for (var key in content.components) {
       var component = content.components[key];
+      if (!component.id) {
+        component.id = key;
+      }
       this.insertComponent(component);
     }
   }
 }, clearSlidePanel:function() {
   var me = this, refs = me.getReferences(), parentEl = refs.panelContent.el.down('#html-slide');
-  me.hideComponentTools();
   Ext.each(parentEl.query('.html-component'), function(component) {
     parentEl.removeChild(component);
   }, this);
+  if (me._selectedComponents) {
+    for (var i = 0; i < me._selectedComponents.length; i++) {
+      me._selectedComponents[i].fireEvent('deselect');
+    }
+  }
+  me._selectedComponents = [];
+  me.allComponents = [];
+  me.hideComponentTools();
 }, addComponentListeners:function(item) {
   var me = this, item = Ext.get(item);
+  item.on('deselect', function(e, t) {
+    item.removeCls('selected');
+  });
+  item.on('select', function(e, t) {
+    me._selectedComponents.push(item);
+    item.addCls('selected');
+  });
   item.on('click', function(e, t) {
     if (e.stopPropagation) {
       e.stopPropagation();
@@ -87689,7 +87706,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
     if (me.previewing || !e.ctrlKey && !e.shiftKey) {
       for (var i = 0; i < me._selectedComponents.length; i++) {
         var cmp = me._selectedComponents[i];
-        cmp.removeCls('selected');
+        cmp.fireEvent('deselect');
       }
       me._selectedComponents = [];
       me.hideComponentTools();
@@ -87698,7 +87715,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
         var index = me._selectedComponents.indexOf(item);
         if (index > -1) {
           var removedItem = me._selectedComponents.splice(index, 1)[0];
-          removedItem.removeCls('selected');
+          item.fireEvent('deselect');
           if (!me._selectedComponents.length) {
             me.hideComponentTools();
           }
@@ -87707,44 +87724,59 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
       }
     }
     if (!me.previewing) {
-      me._selectedComponents.push(item);
-      item.addCls('selected');
+      item.fireEvent('select');
       me.showComponentTools(item);
     }
     if (me.previewing) {
+      if (!t) {
+        console.warn('Error occured - maybe with sliders, drag and drop etc');
+      }
       var SELECTED_VALUE = t.getAttribute('idx');
       if (SELECTED_VALUE) {
-        var answers = Array.from(item.dom.children[0].children);
-        var answers_js = item.el._opts.options;
+        var answers = Array.from(item.dom.children[0].children), questionId = item.el._opts.id, prevAnswer = me.getStore('PersonAnswers').findRecord('questionId', questionId), answers_js = prevAnswer ? Ext.decode(prevAnswer.data.answer) : {};
         answers.shift();
         var type = answers[0].getAttribute('type');
         switch(type) {
           case 'radio':
             for (var i = 0, len = answers.length; i < len; i++) {
               answers[i].classList.remove('selected');
-              answers_js[i].answer = false;
+              answers_js[i] = false;
             }
             answers[SELECTED_VALUE].classList.add('selected');
-            answers_js[SELECTED_VALUE].answer = true;
+            answers_js[SELECTED_VALUE] = true;
             break;
           case 'check':
-            for (var i = 0, len = answers_js.length; i < len; i++) {
-              answers_js[i].answer = answers_js[i].answer || false;
-            }
             answers[SELECTED_VALUE].classList.toggle('selected');
-            answers_js[SELECTED_VALUE].answer = !answers_js[SELECTED_VALUE].answer;
+            answers_js[SELECTED_VALUE] = !answers_js[SELECTED_VALUE];
+            if (answers_js[SELECTED_VALUE] === undefined) {
+              answers_js[SELECTED_VALUE] = true;
+            }
             break;
           default:
             console.warn('Caller - addComponentListeners', 'Unsupported component type', type);
+            return;
         }
-        var recordAnswers = {answer:{}};
-        for (var i = 0, len = answers_js.length; i < len; i++) {
-          recordAnswers.answer[i] = answers_js[i].answer;
+        var now = new Date;
+        var recordAnswers = {questionId:item._opts.id, id:createGUID(), created:now, lastChanged:now, personProgramId:me.currentPersonProgram.personTrainingProgramId, answer:{}, score:0};
+        for (var key in answers_js) {
+          recordAnswers.answer[key] = answers_js[key];
         }
         recordAnswers.answer = Ext.encode(recordAnswers.answer);
-        var storageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
-        storageData.answers[item._opts.id] = recordAnswers;
-        me.saveState(storageData);
+        var personAnswersStore = me.getStore('PersonAnswers');
+        var answerExists = personAnswersStore.findRecord('questionId', recordAnswers.questionId);
+        if (answerExists) {
+          var tmpNewArray = [];
+          for (var j = 0; j < personAnswersStore.data.items.length; j++) {
+            var _tempAnswer = personAnswersStore.data.items[j];
+            if (_tempAnswer.data.questionId == recordAnswers.questionId) {
+              tmpNewArray.push(_tempAnswer);
+            }
+          }
+          personAnswersStore.remove(tmpNewArray);
+        }
+        var answerRec = personAnswersStore.add(recordAnswers)[0];
+        answerRec.phantom = true;
+        me.saveState(true);
       }
     }
   });
@@ -87760,7 +87792,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
   });
   item.on('_duplicate', function(e, t) {
     if (!me.previewing) {
-      print('triggered _duplicate on component', item);
       me.duplicateComponent(item);
     }
   });
@@ -87782,26 +87813,29 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
     me._componentTools = me.getView().add({xtype:'edittools'});
   }
   me._componentTools.close();
-}, insertComponent:function(opts) {
-  console.log('called insert component with opts', opts);
+}, insertComponent:function(opts, callback) {
   opts = Ext.applyIf(opts || {}, {type:null, height:null, width:null, x:null, y:null, html:'', options:[], multi:false, src:'', cls:null, style:null});
   if (!opts.type) {
-    Ext.Msg.alert('Error', 'No component type');
+    console.warn('Error', 'No component type');
+    return;
   }
   if (opts.cls && typeof opts.cls == 'string') {
     opts.cls = [opts.cls];
   }
   var me = this, refs = me.getReferences(), pos = me.getFreePosition(), snap = me._pageSetup.snap, parentEl = refs.panelContent.el.down('#html-slide'), cmp = document.createElement('div'), currentSlide = me.getCurrentSlide();
-  if (!currentSlide) {
+  if (!me.currentSlide) {
     me.newSlide();
   }
-  opts.x = cmp.x = pos.x = me.round(opts.x || pos.x);
-  opts.y = cmp.y = pos.y = me.round(opts.y || pos.y);
+  if (opts.x === undefined || opts.x === null) {
+    opts.x = pos.x;
+  }
+  if (opts.y === undefined || opts.y === null) {
+    opts.y = pos.y;
+  }
+  opts.x = cmp.x = pos.x = me.round(opts.x);
+  opts.y = cmp.y = pos.y = me.round(opts.y);
   opts.width = cmp.width = pos.width = me.round(opts.width || pos.width);
   opts.height = cmp.height = pos.height = me.round(opts.height || pos.height);
-  if (pos.y + pos.height > refs.panelContent.el.getHeight()) {
-    opts.y = cmp.y = pos.y = me.round(refs.panelContent.el.getHeight() - pos.height);
-  }
   cmp.style.width = cmp.width + 'px';
   cmp.style.height = cmp.height + 'px';
   cmp.classList.add('html-component');
@@ -87812,15 +87846,16 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
   var content = document.createElement('div');
   var html = opts.html;
   if (opts.type == me.cmpTypes.SELECTION && opts.options || opts.type == 'Single selection' || opts.type == 'Multi selection') {
+    cmp.style.height = '';
     opts.cls = [me.cmpTypes.SELECTION];
-    var storageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId], questions = storageData.questions, question = questions[opts.id];
+    var question = me.getStore('QuestionsStoreSlides').findRecord('id', opts.id);
     if (!question) {
       console.warn('No questions exist for this program. Returning...');
       return;
     }
-    var record = question;
+    var record = question.data;
     opts.type = record.fieldType;
-    opts.options = Ext.decode(record.lookups) || Ext.decode(record.answers.answer) || Ext.decode(record.answers);
+    opts.options = Ext.decode(record.lookups);
     html = record.question;
     opts.multi = opts.type == 'Multi selection';
     opts.html = html;
@@ -87832,10 +87867,9 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
       if (option.correct) {
         cls.push('correct');
       }
-      if (storageData && storageData.answers && storageData.answers[opts.id] !== undefined) {
-        var answers = Ext.decode(storageData.answers[opts.id].answer);
-        console.log('answers for this question are stored in localstorage');
-        if (answers[index] === true) {
+      var answerRecord = me.getStore('PersonAnswers').findRecord('questionId', opts.id);
+      if (answerRecord) {
+        if (Ext.decode(answerRecord.data.answer)[index] === true) {
           cls.push('selected');
         }
       }
@@ -87857,6 +87891,11 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
   content.innerHTML = html;
   content = cmp.appendChild(content);
   cmp = parentEl.dom.appendChild(cmp);
+  cmp.style.height = me.round(cmp.clientHeight) + 'px';
+  if (pos.y + me.round(cmp.clientHeight) > refs.panelContent.el.getHeight()) {
+    opts.y = cmp.y = pos.y = me.round(refs.panelContent.el.getHeight() - cmp.clientHeight);
+    cmp.style.top = opts.y + 'px';
+  }
   cmp._opts = opts;
   cmp.type = opts.type;
   extCmp = Ext.get(cmp);
@@ -87864,81 +87903,76 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
   extCmp.type = opts.type;
   if (!me.previewing) {
     cmp._dragger = new Ext.drag.Source({element:extCmp, constrain:{element:parentEl, snap:{x:snap, y:snap}}, listeners:{beforedragstart:function(component, info, event, eOpts) {
+      if (!me._selectedComponents.length) {
+        component.config.element.fireEvent('click');
+      }
       if (info.eventTarget.classList.contains('x-resizable-handle')) {
         return false;
       }
     }, dragcancel:function(component, info, event, eOpts) {
-      console.log('dragcancel', arguments);
+      var prevWrapper = document.getElementById('lineWrapper');
+      if (prevWrapper) {
+        prevWrapper.outerHTML = '';
+      }
     }, dragend:function(component, info, event, eOpts) {
-      var id = component.config.element._opts.id;
+      var prevWrapper = document.getElementById('lineWrapper');
+      if (prevWrapper) {
+        prevWrapper.outerHTML = '';
+      }
       var currentSlide = me.getCurrentSlide();
       var alteredContent = Ext.decode(currentSlide.data.content);
-      for (var key in alteredContent.components) {
-        if (alteredContent.components[key].id == id) {
-          alteredContent.components[key].x = component._element.dom.offsetLeft;
-          alteredContent.components[key].y = component._element.dom.offsetTop;
+      for (var i = 0; i < me._selectedComponents.length; i++) {
+        var id = me._selectedComponents[i]._opts.id;
+        for (var key in alteredContent.components) {
+          if (alteredContent.components[key].id == id) {
+            alteredContent.components[key].x = component._element.dom.offsetLeft;
+            alteredContent.components[key].y = component._element.dom.offsetTop;
+          }
         }
       }
-      var slides = Ext.decode(localStorage.mxp_elearning)[me.programId].slides;
-      slides[currentSlide.id].content = Ext.encode(alteredContent);
-      me.saveState({slides:slides});
       var storeItems = me.getStore('TreeStoreSlides').data.items;
       for (var i = 0; i < storeItems.length; i++) {
         if (storeItems[i].id == currentSlide.id) {
           storeItems[i].data.content = Ext.encode(alteredContent);
+          storeItems[i].data.lastChanged = new Date;
           storeItems[i].phantom = true;
           break;
         }
       }
-      me.getStore('TreeStoreSlides').sync();
+      me.saveState();
+      me._dragged = true;
     }, dragmove:function(component, info, event, eOpts) {
-      var pos = info.element.current, x = pos.x - parentEl.getX(), y = pos.y - parentEl.getY();
-      cmp._opts.x = x;
-      cmp._opts.y = y;
-      console.log(Ext.String.format('dragmove X: {0}, Y: {1}', x, y));
-      var content = '\x3csvg height\x3d"210" width\x3d"500"\x3e\x3cline x1\x3d" ' + x + '" y1\x3d"0" x2\x3d"' + x + '" y2\x3d"200" style\x3d"stroke:rgb(255,0,0);stroke-width:2" /\x3e   \x3c/svg\x3e';
+      var difx = component._element.dom.offsetLeft - component.config.element._opts.x, dify = component._element.dom.offsetTop - component.config.element._opts.y;
+      for (var i = 0; i < me._selectedComponents.length; i++) {
+        var selectedCmp = me._selectedComponents[i];
+        selectedCmp._opts.x += difx;
+        selectedCmp._opts.y += dify;
+        selectedCmp.dom.offsetLeft = selectedCmp._opts.x;
+        selectedCmp.dom.offsetTop = selectedCmp._opts.y;
+        selectedCmp.dom.style.left = selectedCmp._opts.x + 'px';
+        selectedCmp.dom.style.top = selectedCmp._opts.y + 'px';
+      }
+      me.drawHelperLines(component);
+      me.showComponentTools(component);
     }, dragstart:function(component, info, event, eOpts) {
-      console.log('dragstart', arguments);
+      component.config.element._opts.x = component._element.dom.offsetLeft;
+      component.config.element._opts.y = component._element.dom.offsetTop;
+      me.drawHelperLines(component);
     }}});
-    cmp._resizer = Ext.create('Ext.create', 'Ext.resizer.Resizer', {target:extCmp, minWidth:snap, minHeight:snap, heightIncrement:snap, widthIncrement:snap, preserveRatio:false, dynamic:true, transparent:false, handles:'all', listeners:{resize:function(component, width, height, e, eOpts) {
-      cmp.width = width;
-      cmp.height = height;
-      cmp._opts.width = width;
-      cmp._opts.height = height;
-      var id = component.target._opts.id;
-      var currentSlide = me.getCurrentSlide();
-      var alteredContent = Ext.decode(currentSlide.data.content);
-      for (var key in alteredContent.components) {
-        if (alteredContent.components[key].id == id) {
-          alteredContent.components[key].width = me.round(width);
-          alteredContent.components[key].height = me.round(height);
-          alteredContent.components[key].x = me.round(component.target.dom.offsetLeft);
-          alteredContent.components[key].y = me.round(component.target.dom.offsetTop);
-        }
-      }
-      var slides = Ext.decode(localStorage.mxp_elearning)[me.programId].slides;
-      slides[currentSlide.id].content = Ext.encode(alteredContent);
-      me.saveState({slides:slides});
-      var storeItems = me.getStore('TreeStoreSlides').data.items;
-      for (var i = 0; i < storeItems.length; i++) {
-        if (storeItems[i].id == currentSlide.id) {
-          storeItems[i].data.content = Ext.encode(alteredContent);
-          storeItems[i].phantom = true;
-          break;
-        }
-      }
-      me.getStore('TreeStoreSlides').sync();
-    }}});
+    me.createResizer(cmp);
   }
   me.addComponentListeners(cmp);
   me.allComponents.push(extCmp);
+  if (callback) {
+    callback();
+  }
   return extCmp;
 }, editComponent:function(component) {
   var me = this, refs = me.getReferences();
   component = component || me._selectedComponent;
   if (component) {
     if (component.type == me.cmpTypes.IMAGE || component.type == me.cmpTypes.VIDEO || component.type == me.cmpTypes.AUDIO) {
-      console.log('Cannot edit image, video or audio');
+      Ext.toast('Cannot edit image, video or audio.');
       return;
     }
     if (component.type == me.cmpTypes.SELECTION || component.type == 'Single selection' || component.type == 'Multi selection') {
@@ -87948,132 +87982,81 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
       wnd.getController().show({value:component.el.down('.html-content').dom.innerHTML, callback:function(value) {
         component.el.down('.html-content').dom.innerHTML = value;
         component._opts.html = value;
-        me.saveSlideState();
+        me.saveState();
       }, scope:me});
     }
   }
 }, duplicateComponent:function(component) {
+  var me = this, component = Ext.clone(component);
   var opts = Ext.clone(component._opts);
   delete opts.x;
   delete opts.y;
-  opts.id = createGUID();
-  var cmp = this.insertComponent(opts);
+  var cmpType = component._opts.type;
+  if (cmpType == me.cmpTypes.SELECTION || cmpType == 'Single selection' || cmpType == 'Multi selection') {
+    opts.text = component._opts.html;
+    opts.answers = component._opts.options;
+    me.createSelection(opts);
+  } else {
+    opts.id = createGUID();
+    var cmp = this.insertComponent(opts);
+  }
+  me.saveState();
 }, deleteComponent:function(component, sync) {
   var me = this, refs = this.getReferences(), questionStore = me.getStore('QuestionsStoreSlides'), treeStoreSlides = me.getStore('TreeStoreSlides');
   if (component) {
     if (sync) {
-      var rec = questionStore.findRecord('id', component.el._opts.id);
-      questionStore.remove(rec);
-      questionStore.sync();
-      questionStore.removeAt(questionStore.find('id', component.el._opts.id));
-      questionStore.sync();
-      for (var i = 0; i < questionStore.data.items.length; i++) {
-        var rec = questionStore.data.items[i];
-        rec.phantom = false;
-        if (rec.id == component.el._opts.id) {
-          rec.phantom = true;
-        }
-      }
-      questionStore.sync();
       var id = component.el._opts.id;
       var currentSlide = me.getCurrentSlide();
-      var removedComponentsArray = [];
+      var rec = questionStore.findRecord('id', id);
+      questionStore.remove(rec);
+      var removedComponentsArray = {};
       var slideContent = Ext.decode(currentSlide.data.content);
       for (var key in slideContent.components) {
-        if (slideContent.components[key].id == id) {
-        } else {
-          removedComponentsArray.push(slideContent.components[key]);
+        if (slideContent.components[key].id != id) {
+          removedComponentsArray[key] = slideContent.components[key];
         }
       }
-      var slides = Ext.decode(localStorage.mxp_elearning)[me.programId].slides;
-      slides[currentSlide.id].content = Ext.encode(removedComponentsArray);
-      me.saveState({slides:slides});
-      var storeItems = me.getStore('TreeStoreSlides').data.items;
-      for (var i = 0; i < storeItems.length; i++) {
-        if (storeItems[i].id == currentSlide.id) {
-          storeItems[i].data.content = Ext.encode(removedComponentsArray);
-          storeItems[i].phantom = true;
-          break;
-        }
+      var componentsDict = {'components':removedComponentsArray};
+      var store = me.getStore('TreeStoreSlides');
+      var rec = store.findRecord('id', currentSlide.id);
+      rec.data.content = Ext.encode(componentsDict);
+      rec.data.changed = 'Y';
+      rec.data.lastChanged = new Date;
+      rec.phantom = true;
+      var personAnswers = me.getStore('PersonAnswers');
+      var answerRecord = personAnswers.findRecord('questionId', id);
+      if (answerRecord) {
+        personAnswers.remove(answerRecord);
+        personAnswers.sync();
       }
-      me.getStore('TreeStoreSlides').sync();
-      me.saveState();
+    }
+    if (!me.allComponents) {
+      console.warn('Error - For some reason this component was not in \x3eallComponents\x3c array.');
+      me.allComponents.remove(component);
     }
     component.destroy();
     component = null;
+    if (sync) {
+      me.saveState();
+    }
   }
 }, insertTitle:function(value) {
   var me = this, cmp = me.insertComponent({id:createGUID(), type:me.cmpTypes.TITLE, cls:'title', html:value || 'Title', height:50});
-  me.saveSlideState();
+  me.saveState();
 }, insertText:function(value) {
-  var me = this, cmp = me.insertComponent({id:createGUID(), type:me.cmpTypes.TEXT, cls:'text', html:value || 'Text', height:425});
-  me.saveSlideState();
+  var me = this, cmp = me.insertComponent({id:createGUID(), type:me.cmpTypes.TEXT, cls:'text', html:value || 'Text', height:200});
+  me.saveState();
 }, insertImage:function() {
   var me = this, cmp = me.insertComponent({id:createGUID(), type:me.cmpTypes.IMAGE, cls:'image', html:'', src:'resources/images/example.jpg', height:275});
-  me.saveSlideState();
+  me.saveState();
 }, insertSelection:function(opts) {
   this.editSelection(null, opts);
 }, editSelection:function(component, opts) {
-  console.log('printing selection in editSelection at begining', this.getCurrentSlide());
   opts = Ext.applyIf(opts || {}, {multi:false});
   var me = this, refs = me.getReferences(), state = component && component._opts, multi = state && state.multi || opts.multi, wnd = me.getView().add({xtype:'selectioneditor'});
   wnd.getController().show({text:state && state.html, options:state && state.options, multi:multi, callback:function(text, answers) {
-    if (answers.length === 0) {
-      return 'Please specify at least one answer';
-    }
-    if (answers.filter(function(item) {
-      return item.correct;
-    }).length === 0) {
-      return 'Please mark at least one answer as correct';
-    }
-    if (!multi && answers.filter(function(item) {
-      return item.correct;
-    }).length > 1) {
-      return 'Only one correct answer is allowed for single selection';
-    }
-    var questionsStore = me.getStore('QuestionsStoreSlides');
-    var correctAnswersIds = [];
-    for (var i = 0; i < answers.length; i++) {
-      var element = answers[i];
-      if (element.correct === true) {
-        correctAnswersIds.push(element.id);
-      }
-    }
-    var refs = this.getReferences(), selection = refs.treeSlides.getSelection()[0];
-    if (!selection) {
-      console.warn('NO SELECTIOn - TODO - fix so one slide or section is always selected... returning');
-      return;
-    }
-    var pageGuid = selection.data.id;
-    var componentGuid = createGUID();
-    var record = {id:componentGuid, pageId:pageGuid, question:text, answers:Ext.encode(answers), correctValue:Ext.encode(correctAnswersIds), fieldType:(multi ? 'Multi' : 'Single') + ' ' + me.cmpTypes.SELECTION};
-    console.log('adding new record to localstorage', record);
-    var storageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
-    if (!storageData.questions) {
-      storageData.questions = {};
-    }
-    storageData.questions[componentGuid] = record;
-    me.saveState(storageData);
-    console.log('adding new record to store:', record);
-    var rec = questionsStore.add(record)[0];
-    rec.phantom = true;
-    questionsStore.sync({callback:function() {
-      if (component) {
-        var state = component._opts;
-        me.deleteComponent(component, false);
-        state.html = text;
-        state.options = answers;
-        state.id = componentGuid;
-        component = me.insertComponent(state);
-        console.log('condition went into if');
-      } else {
-        console.log('triggered inserting component selection');
-        console.log('printing current selection', me.getCurrentSlide());
-        component = me.insertComponent({type:me.cmpTypes.SELECTION, cls:'selection', html:text, options:answers, multi:multi, id:componentGuid});
-        console.log('condition went into else');
-      }
-      me.saveSlideState();
-    }});
+    var opts = {text:text, answers:answers, multi:multi, component:component};
+    me.createSelection(opts);
   }, scope:me});
 }, round:function(value) {
   var snap = this._pageSetup.snap;
@@ -88083,10 +88066,10 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
   return Math.ceil(value / snap) * snap;
 }, insertAudio:function() {
   var me = this, cmp = me.insertComponent({id:createGUID(), type:me.cmpTypes.AUDIO, cls:'audio', html:'\x3caudio controls\x3e  \x3csource src\x3d"resources/audio/horse.mp3" type\x3d"audio/mpeg"\x3eYour browser does not support the audio element.\x3c/audio\x3e', src:'resources/audio/horse.mp3', height:50});
-  me.saveSlideState();
+  me.saveState();
 }, insertVideo:function() {
   var me = this, cmp = me.insertComponent({id:createGUID(), type:me.cmpTypes.VIDEO, cls:'video', html:'\x3cvideo width\x3d"320" height\x3d"240" controls\x3e  \x3csource src\x3d"resources/videos/mov.mp4" type\x3d"video/mp4"\x3e Your browser does not support the video tag.\x3c/video\x3e', src:'resources/videos/mov.mp4', height:240});
-  me.saveSlideState();
+  me.saveState();
 }, getNumSlides:function() {
   var me = this, countSlides = 0, data = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
   if (!data.slides || !Object.keys(data.slides).length) {
@@ -88102,29 +88085,38 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
   Number.prototype.clamp = function(min, max) {
     return Math.min(Math.max(this, min), max);
   };
-  var me = this, usingNegativeScore = false, programScore = {'questions':{}, 'totalProgramScore':0};
-  me.saveState();
-  var data = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
-  for (var key in data.questions) {
-    var question = data.questions[key];
-    var answer = data.answers[question.id];
-    programScore.questions[question.id] = me.getScore(question, answer, usingNegativeScore);
+  var me = this, usingNegativeScore = false, programScore = {'questions':{}, 'totalProgramScore':-1};
+  var questions = me.getStore('QuestionsStoreSlides').data.items;
+  var answersStore = me.getStore('PersonAnswers');
+  for (var i = 0; i < questions.length; i++) {
+    var question = questions[i].data;
+    var answerData = answersStore.findRecord('questionId', question.id).data;
+    programScore.questions[question.id] = me.getScore(question, answerData.answer, usingNegativeScore);
+    answerData.score = programScore.questions[question.id];
+    print('setting new answer score for this answer', programScore.questions[question.id], 'to', answerData);
   }
   var totalProgramScore = sumDict(programScore.questions);
-  console.log('printing final user score:', totalProgramScore);
+  if (totalProgramScore >= me.programData.passScore) {
+    console.log('%cFinal user score:', 'color: green', totalProgramScore);
+  } else {
+    console.log('%cFinal user score:', 'color: red', totalProgramScore);
+  }
   programScore.totalProgramScore = totalProgramScore;
   return programScore;
 }, getScore:function(question, answer, usingNegativeScore) {
   if (!answer) {
-    console.log('user didnt check any options on this question - return');
     return 0;
   }
-  answer = Ext.decode(answer.answer);
+  answer = Ext.decode(answer);
   var answerScore = 0;
   var correctAnswer;
   var usersAnswer = answer;
-  console.log('printing user answer', usersAnswer);
-  var _question = Ext.decode(question.options || question.lookups || question.answers);
+  var question_answers = question.options || question.lookups;
+  if (typeof question_answers === 'string') {
+    var _question = Ext.decode(question_answers);
+  } else {
+    var _question = question_answers;
+  }
   var questionNumAnswers = _question.length;
   if (question.multi || question.fieldType == 'Multi selection') {
     var numCorrectAnswers = 0;
@@ -88136,6 +88128,9 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
     for (var i = 0; i < _question.length; i++) {
       usersAnswer = answer[i];
       correctAnswer = _question[i].correct;
+      if (usersAnswer === undefined) {
+        usersAnswer = false;
+      }
       if (usersAnswer == correctAnswer) {
         if (correctAnswer === true) {
           answerScore += 1 / numCorrectAnswers;
@@ -88148,7 +88143,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
         }
       }
     }
-    console.log('user score appended with', answerScore);
     if (!usingNegativeScore) {
       answerScore = answerScore.clamp(0, questionNumAnswers);
     }
@@ -88157,7 +88151,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
       usersAnswer = answer[i];
       correctAnswer = _question[i].correct;
       if (correctAnswer === true && usersAnswer == correctAnswer) {
-        console.log('setting answer score to 1');
         answerScore = 1;
       } else {
         if (usersAnswer == correctAnswer) {
@@ -88169,112 +88162,101 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
     }
   }
   return answerScore;
-}, saveState:function(specificData) {
-  var me = this, data = specificData || this.getCurrentState();
+}, saveState:function(dontSync) {
+  var me = this, refs = me.getReferences(), syncIndicator = Ext.getCmp('syncIndicator'), content = {components:{}};
+  slide = me.getCurrentSlide();
+  if (slide) {
+    var slideComponents = me.getSlideComponents();
+    for (var key in slideComponents) {
+      var component = slideComponents[key];
+      if (component._opts.type == me.cmpTypes.SELECTION) {
+        var _opts = Ext.clone(component._opts);
+        var _optsNew = {'type':_opts.type, 'id':_opts.id};
+        content.components[_opts.id] = _optsNew;
+      } else {
+        content.components[component._opts.id] = component._opts;
+      }
+    }
+    slide.set('content', Ext.encode(content));
+  }
+  var data = this.getCurrentState();
   var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
   for (var key in data) {
     localStorageData[me.programId][key] = data[key];
   }
   localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
-  this.updateServerStore();
-}, updateServerStore:function() {
-  var me = this, localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId], treeStoreSlides = me.getStore('TreeStoreSlides');
-  if (!localStorageData) {
-    console.log('no localstorage data in updateServerStore - returning');
+  if (dontSync) {
     return;
   }
-  console.log('printing treeStoreSlides root', treeStoreSlides.getRootNode());
-  console.log('deleting root children');
-  console.log('appending slides', localStorageData.slides);
-  treeStoreSlides.sync();
+  var storeSlides = me.getStore('TreeStoreSlides'), storeQuestions = me.getStore('QuestionsStoreSlides'), storePrograms = me.getStore('PersonPrograms');
+  if (navigator.onLine) {
+    storeSlides.sync();
+    storeQuestions.sync();
+    storePrograms.sync();
+    localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
+    if (localStorageData[me.programId].removed) {
+      delete localStorageData[me.programId].removed;
+    }
+    localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+    syncIndicator.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
+    syncIndicator.addCls('fa-check success');
+    syncIndicator.tooltip.html = 'Synced';
+  } else {
+    syncIndicator.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
+    syncIndicator.addCls('fa-exclamation-triangle warning');
+    syncIndicator.tooltip.html = 'Not Synced';
+  }
+  var btnDeleteSlide = Ext.getCmp('btnDeleteSlide'), btnPreview = Ext.getCmp('btnPreview');
+  btnDeleteSlide.setDisabled(!storeSlides.data.length);
+  if (me.programData.validTo > new Date) {
+    btnPreview.setText('Preview (Not Valid Anymore)');
+    btnPreview.removeCls('active-program');
+    btnPreview.disable();
+  } else {
+    if (!storeQuestions.data.length) {
+      btnPreview.disable();
+      btnPreview.setText('Preview (No Questions)');
+    } else {
+      btnPreview.enable();
+      if (btnPreview.hasCls('active-program')) {
+        btnPreview.setText('Preview (Resume)');
+      }
+    }
+  }
+  btnPreview.setDisabled(!storeQuestions.data.length || me.programData.validTo > new Date);
 }, setInitialSlide:function() {
-  var me = this, refs = me.getReferences();
-  var currentSlide = me.getCurrentSlide();
-  if (currentSlide) {
-    refs.treeSlides.setSelection(currentSlide);
-    return;
-  }
-  Ext.defer(function() {
-    me.nextSlide();
-  }, 100);
-  me.setBackground(me._pageSetup.background);
+  var me = this, refs = me.getReferences(), currentSlide = me.getCurrentSlide();
+  me.setBackground(me._pageSetup.background, false);
   refs.panelContent.setWidth(me._pageSetup.width);
   refs.panelContent.setHeight(me._pageSetup.height);
-}, initialDataSync:function(storeName, localStorageAttribute, LoadParams, callback, dataId) {
-  if (!navigator.onLine) {
-    if (callback) {
-      callback();
-    }
-    return;
+  if (currentSlide) {
+    refs.treeSlides.setSelection(null);
+    refs.treeSlides.setSelection(currentSlide);
   }
-  var me = this, localStorageData = Ext.decode(localStorage.getItem('mxp_elearning')), initialDataStore = me.getStore(storeName);
-  initialDataStore.load({params:LoadParams, callback:function(records, operation, success) {
-    if (initialDataStore.data.length === 0) {
-      if (localStorageData && localStorageData[me.programId] && localStorageData[me.programId][localStorageAttribute]) {
-        me.updateServerStore();
-      }
-      if (callback) {
-        callback();
-      }
-      return;
-    }
-    if (!localStorageData || !localStorageData[me.programId]) {
-      localStorageData = me.getCurrentState();
-      initialDataStore.data.items.forEach(function(entry) {
-        localStorageData[localStorageAttribute].push(entry.data);
-      });
-      me.saveState(localStorageData);
-      if (callback) {
-        callback();
-      }
-      return;
-    }
-    localStorageData = localStorageData[me.programId];
-    if (!localStorageData[localStorageAttribute]) {
-      var entriessFromStore = {};
-      for (var i = 0; i < initialDataStore.data.length; i++) {
-        var entry = initialDataStore.data.items[i].data;
-        entriessFromStore[entry[dataId]] = entry;
-        console.log(entry);
-      }
-      localStorageData[localStorageAttribute] = entriessFromStore;
-      me.saveState(localStorageData);
-      if (callback) {
-        callback();
-      }
-      return;
-    }
-    var localStorageDataValues = [];
-    for (var key in localStorageData[localStorageAttribute]) {
-      localStorageDataValues.push(localStorageData[localStorageAttribute][key]);
-    }
-    for (var i = 0; i < initialDataStore.data.items.length; i++) {
-      var entry = initialDataStore.data.items[i];
-      if (localStorageDataValues.some(function(item) {
-        return item[dataId] === entry.data[dataId];
-      })) {
-      } else {
-        localStorageData[localStorageAttribute][entry.data[dataId]] = entry.data;
-        localStorageDataValues.push(entry.data);
-      }
-    }
-    me.saveState(localStorageData);
-    if (callback) {
-      callback();
-    }
-  }});
-}, closePreview:function(force) {
+}, closePreview:function() {
   var TEST_PERSON_ID = 10000112;
-  var me = this, refs = me.getReferences(), personProgramsStore = me.getStore('PersonPrograms'), personAnswersStore = me.getStore('PersonAnswers');
+  var me = this, refs = me.getReferences(), personProgramsStore = me.getStore('PersonPrograms'), personAnswersStore = me.getStore('PersonAnswers'), questionsStore = me.getStore('QuestionsStoreSlides');
+  me.previewing = false;
+  for (var i = 0; i < questionsStore.data.items.length; i++) {
+    var question = questionsStore.data.items[i].data;
+    var answerExists = personAnswersStore.findRecord('questionId', question.id);
+    if (!answerExists) {
+      var now = new Date;
+      var recordAnswers = {questionId:question.id, id:createGUID(), created:now, lastChanged:now, personProgramId:me.currentPersonProgram.personTrainingProgramId, answer:{}, score:0};
+      var answersTEMP = Ext.decode(question.lookups);
+      for (var j = 0; j < answersTEMP.length; j++) {
+        recordAnswers.answer[j] = false;
+      }
+      recordAnswers.answer = Ext.encode(recordAnswers.answer);
+      var answerRec = personAnswersStore.add(recordAnswers)[0];
+      answerRec.phantom = true;
+    }
+  }
   var programScore = me.evaluate();
   var questionsScores = programScore.questions;
   var totalProgramScore = programScore.totalProgramScore;
-  var data = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
-  for (var questionId in data.answers) {
-    var rec = personAnswersStore.add({answerGuid:createGUID(), personProgramId:me.currentPersonProgram.personTrainingProgramId, questionId:questionId, answers:Ext.encode(data.answers[questionId]), score:questionsScores[questionId]})[0];
-    rec.phantom = true;
-  }
   personAnswersStore.sync();
+  me.saveState();
   if (!me.currentPersonProgram) {
     console.warn('for some reason current person program id is not set - it should be created new if person doesnt have any records yet or it should be recieved from store.');
     return;
@@ -88293,14 +88275,20 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
       scoreResults = App.ProgramStatuses.Passed;
     }
   }
-  var rec = personProgramsStore.add({personProgramGuid:me.currentPersonProgram.personTrainingProgramId, lastChanged:new Date, programCompleted:new Date, programStatusId:scoreResults, changed:'Y'})[0];
-  rec.phantom = true;
+  var existingRecord = personProgramsStore.findRecord('personTrainingProgramId', me.currentPersonProgram.personTrainingProgramId);
+  var alteredRecord = {personProgramGuid:me.currentPersonProgram.personTrainingProgramId, lastChanged:new Date, programCompleted:new Date, programStatusId:scoreResults, changed:'Y'};
+  existingRecord.data = alteredRecord;
+  existingRecord.phantom = true;
   personProgramsStore.sync();
   clearInterval(me.previewTimer);
   me.togglePreviewFrame(false);
+  var previewButton = Ext.getCmp('btnPreview');
+  previewButton.removeCls('active-program');
+  previewButton.setText('Preview');
 }, showPreview:function() {
+  var TEST_PERSON_ID = 10000112;
   var me = this, refs = me.getReferences(), personProgramsStore = me.getStore('PersonPrograms'), personAnswersStore = me.getStore('PersonAnswers');
-  var numQuestions = Object.keys(Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId].questions).length;
+  var numQuestions = me.getNumQuestions();
   if (this.getNumSlides() === 0) {
     Ext.toast('Unable to preview program with no pages.');
     return;
@@ -88309,26 +88297,25 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
     Ext.toast('Unable to start preview with no questions.');
     return;
   }
-  var TEST_PERSON_ID = 10000112;
   if (me.programData.validTo < new Date) {
     Ext.toast('Program is not valid anymore!');
-    Ext.get('btnPreview').disable();
     return;
   }
   personProgramsStore.load({params:{personId:TEST_PERSON_ID, programId:me.programId}, callback:function(record) {
-    console.log('recieved personProgramStore load callback', record);
     if (!record || record.length === 0) {
-      console.log('recieved no record back - maybe here we know that this persons program doesnt exist yet so add it');
-      me.currentPersonProgram = {personProgramGuid:createGUID(), personId:TEST_PERSON_ID, programId:me.programId, programStatusId:App.ProgramStatuses['In Progress'], createdById:TEST_PERSON_ID, created:new Date, programStarted:new Date, lastChanged:new Date, changed:'N'};
-      var rec = personProgramsStore.add(me.currentPersonProgram)[0];
-      rec.phantom = true;
-      personProgramsStore.sync();
-      me.switchToPreviewing();
+      Ext.Msg.confirm('Start preview', 'Start your first preview?', function(btn) {
+        if (btn == 'yes') {
+          me.currentPersonProgram = {personProgramGuid:createGUID(), personId:TEST_PERSON_ID, programId:me.programId, programStatusId:App.ProgramStatuses['In Progress'], createdById:TEST_PERSON_ID, created:new Date, programStarted:new Date, lastChanged:new Date, changed:'N', attempt:0};
+          var rec = personProgramsStore.add(me.currentPersonProgram)[0];
+          rec.phantom = true;
+          personProgramsStore.sync();
+          me.switchToPreviewing();
+        }
+      });
     } else {
-      console.log('recieved record');
       me.currentPersonProgram = record[0].data;
       if (me.currentPersonProgram.attempt >= me.programData.maxAttemptsTrainingMode + me.programData.maxAttemptsScoreMode) {
-        console.log('Cannot attempt any more tries... returning');
+        Ext.toast('No more tries avaliable.');
         return;
       }
       var endTime = new Date((new Date(me.currentPersonProgram.programStarted)).getTime() + me.programData.completionTime * 60000);
@@ -88338,9 +88325,10 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
       } else {
         Ext.Msg.confirm('Start preview', 'Start new program preview?', function(btn) {
           if (btn == 'yes') {
+            var existingRecord = personProgramsStore.findRecord('personTrainingProgramId', me.currentPersonProgram.personTrainingProgramId);
             me.currentPersonProgram = {personProgramGuid:me.currentPersonProgram.personTrainingProgramId, attempt:me.currentPersonProgram.attempt + 1, lastChanged:new Date, changed:'Y', programStatusId:App.ProgramStatuses.Repeat, programStarted:new Date};
-            var rec = personProgramsStore.add(me.currentPersonProgram)[0];
-            rec.phantom = true;
+            existingRecord.data = me.currentPersonProgram;
+            existingRecord.phantom = true;
             personProgramsStore.sync();
             me.switchToPreviewing();
           }
@@ -88369,36 +88357,194 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
     var minutes = Math.floor(distance % (1000 * 60 * 60) / (1000 * 60));
     var seconds = Math.floor(distance % (1000 * 60) / 1000);
     var timerCountdownText = refs.toolbarPreview.el.down('#timerCountdown');
-    timerCountdownText.dom.innerHTML = 'Remaining: ' + days + 'd ' + hours + 'h ' + minutes + 'm ' + seconds + 's ';
+    timerCountdownText.dom.innerHTML = 'Remaining: ' + hours + 'h ' + minutes + 'm ' + seconds + 's ';
     if (distance < 0) {
       clearInterval(me.previewTimer);
       timerCountdownText.dom.innerHTML = 'EXPIRED';
       Ext.toast('Time is up! We will evaluate your score.');
-      me.closePreview(true);
+      me.closePreview();
     }
   }, 1000);
-  me.saveSlideState(me.getCurrentSlide());
+  me.previewing = true;
+  me.getStore('PersonAnswers').loadData([], false);
   var firstSlide = refs.treeSlides.store.getAt(0);
   refs.treeSlides.setSelection(firstSlide);
   if (firstSlide.data.leaf === false) {
     me.nextSlide();
   }
   me.togglePreviewFrame(true);
-}, close:function(owner, tool, event) {
-  this.getView().up('#mainView').setActiveItem('gridPrograms');
-}, onTreeViewDragDrop:function(treeviewdragdrop) {
-  var me = this, refs = me.getReferences();
-  var treeStoreSlides = me.getStore('TreeStoreSlides');
-  for (var i = 0; i < treeStoreSlides.data.items.length; i++) {
-    var rec = treeStoreSlides.data.items[i];
-    rec.dirty = true;
+}, drawHelperLines:function(component) {
+  var me = this, _component = component.config.element ? component.config.element : component.el, refs = me.getReferences(), panelWidth = refs.panelContent.el.getWidth(), panelHeight = refs.panelContent.el.getHeight(), componentWidth = _component._opts.width, componentMiddleWidth = componentWidth / 2, componentHeight = _component._opts.height, componentMiddleHeight = componentHeight / 2, x = _component._opts.x, y = _component._opts.y;
+  var svgContent = '\x3csvg height\x3d"' + panelHeight + '" width\x3d"' + panelWidth + '"\x3e';
+  var currentSlide = me.getCurrentSlide();
+  var slideComponents = Ext.decode(currentSlide.data.content);
+  for (var key in slideComponents.components) {
+    if (key != _component._opts.id) {
+      var neighbourCmp = slideComponents.components[key];
+      if (neighbourCmp.x == x) {
+        svgContent += '\x3cline x1\x3d" ' + x + '" y1\x3d"0" x2\x3d"' + x + '" y2\x3d"' + panelHeight + '" style\x3d"stroke:black;stroke-width:1" stroke-dasharray\x3d"5 20"\x3e\x3c/line\x3e';
+      }
+      if (neighbourCmp.x + neighbourCmp.width / 2 == x + componentMiddleWidth) {
+        svgContent += '\x3cline x1\x3d" ' + (x + componentMiddleWidth) + '" y1\x3d"0" x2\x3d"' + (x + componentMiddleWidth) + '" y2\x3d"' + panelHeight + '" style\x3d"stroke:black;stroke-width:1" stroke-dasharray\x3d"5 20"\x3e\x3c/line\x3e';
+      }
+      if (neighbourCmp.x + neighbourCmp.width == x + componentWidth) {
+        svgContent += '\x3cline x1\x3d" ' + (x + componentWidth) + '" y1\x3d"0" x2\x3d"' + (x + componentWidth) + '" y2\x3d"' + panelHeight + '" style\x3d"stroke:black;stroke-width:1" stroke-dasharray\x3d"5 20"\x3e\x3c/line\x3e';
+      }
+      if (neighbourCmp.y == y) {
+        svgContent += '\x3cline y1\x3d" ' + y + '" x1\x3d"0" y2\x3d"' + y + '" x2\x3d"' + panelWidth + '" style\x3d"stroke:black;stroke-width:1" stroke-dasharray\x3d"5 20"\x3e\x3c/line\x3e                                  ';
+      }
+      if (neighbourCmp.y + neighbourCmp.height / 2 == y + componentMiddleHeight) {
+        svgContent += '\x3cline y1\x3d" ' + (y + componentMiddleHeight) + '" x1\x3d"0" y2\x3d"' + (y + componentMiddleHeight) + '" x2\x3d"' + panelWidth + '" style\x3d"stroke:black;stroke-width:1" stroke-dasharray\x3d"5 20"\x3e\x3c/line\x3e';
+      }
+      if (neighbourCmp.y + neighbourCmp.height == y + componentHeight) {
+        svgContent += '\x3cline y1\x3d" ' + (y + componentHeight) + '" x1\x3d"0" y2\x3d"' + (y + componentHeight) + '" x2\x3d"' + panelWidth + '" style\x3d"stroke:black;stroke-width:1" stroke-dasharray\x3d"5 20"\x3e\x3c/line\x3e';
+      }
+    }
+  }
+  svgContent += '\x3c/svg\x3e';
+  var wrapper;
+  var prevWrapper = document.getElementById('lineWrapper');
+  if (prevWrapper) {
+    wrapper = prevWrapper;
+  } else {
+    wrapper = document.createElement('div');
+  }
+  wrapper.setAttribute('id', 'lineWrapper');
+  wrapper.innerHTML = svgContent;
+  refs.panelContent.el.dom.firstChild.firstChild.firstChild.insertAdjacentElement('afterbegin', wrapper);
+}, createSelection:function(opts) {
+  var text = opts.text, answers = opts.answers, multi = opts.multi, component = opts.component;
+  if (answers.length === 0) {
+    return 'Please specify at least one answer';
+  }
+  if (answers.filter(function(item) {
+    return item.correct;
+  }).length === 0) {
+    return 'Please mark at least one answer as correct';
+  }
+  if (!multi && answers.filter(function(item) {
+    return item.correct;
+  }).length > 1) {
+    return 'Only one correct answer is allowed for single selection';
+  }
+  var me = this;
+  var questionsStore = me.getStore('QuestionsStoreSlides'), treeStoreSlides = me.getStore('TreeStoreSlides');
+  var correctAnswersIds = [];
+  for (var i = 0; i < answers.length; i++) {
+    var element = answers[i];
+    if (element.correct === true) {
+      correctAnswersIds.push(element.id);
+    }
+  }
+  var refs = this.getReferences(), selection = me.getCurrentSlide();
+  if (!selection) {
+    me.newSlide();
+    selection = me.getCurrentSlide();
+  }
+  var pageGuid = selection.data.id;
+  var componentGuid = createGUID();
+  var now = new Date;
+  if (component) {
+    var state = component._opts;
+    state.question = text;
+    state.lookups = Ext.encode(answers);
+    state.id = component._opts.id;
+    state.correctValue = Ext.encode(correctAnswersIds);
+    state.fieldType = state.type;
+    state.pageId = pageGuid;
+    state.lastChanged = now;
+    state.changed = 'Y';
+    var rec = questionsStore.findRecord('id', state.id);
+    rec.data = state;
+    rec.phantom = true;
+    var answerRecord = me.getStore('PersonAnswers').findRecord('questionId', state.id);
+    if (answerRecord) {
+      me.getStore('PersonAnswers').remove(answerRecord);
+    }
+    me.deleteComponent(component, false);
+    component = me.insertComponent(state);
+    component.fireEvent('click');
+  } else {
+    var record = {id:componentGuid, pageId:pageGuid, question:text, created:now, lastChanged:now, lookups:Ext.encode(answers), correctValue:Ext.encode(correctAnswersIds), fieldType:(multi ? 'Multi' : 'Single') + ' ' + me.cmpTypes.SELECTION};
+    questionsStore.add(record)[0].phantom = true;
+    treeStoreSlides.findRecord('id', me.getCurrentSlide().id).phantom = true;
+    component = me.insertComponent({type:me.cmpTypes.SELECTION, cls:'selection', html:text, options:answers, multi:multi, id:componentGuid, width:opts.width, height:opts.height});
+    component.fireEvent('click');
   }
   me.saveState();
-  refs.treeSlides.setSelection(me.getCurrentSlide());
-}, onTreeSlidesSelect:function(rowmodel, record, index, eOpts) {
-  var me = this, refs = me.getReferences();
-  me.loadSlideState(record);
-  return;
+}, createResizer:function(cmp) {
+  var me = this, snap = me._pageSetup.snap;
+  cmp._resizer = Ext.create('Ext.create', 'Ext.resizer.Resizer', {target:Ext.get(cmp), minWidth:snap, minHeight:snap, heightIncrement:snap, widthIncrement:snap, preserveRatio:false, dynamic:true, transparent:false, handles:'all', listeners:{beforeresize:function(component) {
+    component.el.fireEvent('click');
+  }, resizedrag:function(component, width, height) {
+    component.el._opts.width = width;
+    component.el._opts.height = height;
+    component.el._opts.x = component.el.dom.offsetLeft;
+    component.el._opts.y = component.el.dom.offsetTop;
+    me.drawHelperLines(component);
+    me.showComponentTools(component);
+  }, resize:function(component, width, height, e, eOpts) {
+    var prevWrapper = document.getElementById('lineWrapper');
+    if (prevWrapper) {
+      prevWrapper.outerHTML = '';
+    }
+    cmp.width = width;
+    cmp.height = height;
+    cmp._opts.width = width;
+    cmp._opts.height = height;
+    var id = component.target._opts.id;
+    var currentSlide = me.getCurrentSlide();
+    var alteredContent = Ext.decode(currentSlide.data.content);
+    for (var key in alteredContent.components) {
+      if (alteredContent.components[key].id == id) {
+        alteredContent.components[key].width = me.round(width);
+        alteredContent.components[key].height = me.round(height);
+        alteredContent.components[key].x = me.round(component.target.dom.offsetLeft);
+        alteredContent.components[key].y = me.round(component.target.dom.offsetTop);
+      }
+    }
+    var storeItems = me.getStore('TreeStoreSlides').data.items;
+    for (var i = 0; i < storeItems.length; i++) {
+      if (storeItems[i].id == currentSlide.id) {
+        storeItems[i].data.content = Ext.encode(alteredContent);
+        storeItems[i].data.lastChanged = new Date;
+        storeItems[i].phantom = true;
+        break;
+      }
+    }
+    me.saveState();
+  }}});
+}, serverSync:function(callback) {
+  var me = this, localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId], syncIndicator = Ext.getCmp('syncIndicator');
+  var syncQuestionsCallback = function() {
+    if (me.currentPersonProgram) {
+      var params = {programId:me.programId};
+      initialDataSync('PersonAnswers', 'answers', params, callback, 'questionId', me);
+    } else {
+      if (callback) {
+        callback();
+      }
+    }
+  };
+  var syncStateCallback = function() {
+    me.getStore('TreeStoreSlides').sync({callback:function() {
+      print('called sync');
+      me.getStore('TreeStoreSlides').load({params:{programId:me.programId}, callback:function(records, operation, success) {
+        print('loaded again');
+      }});
+    }});
+    var params = {programId:me.programId};
+    initialDataSync('QuestionsStoreSlides', 'questions', params, syncQuestionsCallback, 'id', me);
+  };
+  syncIndicator.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
+  syncIndicator.addCls('fa-spin fa-refresh warning');
+  syncIndicator.tooltip.html = 'Syncing';
+  if (localStorageData.pageSetup) {
+    me._pageSetup = localStorageData.pageSetup;
+  }
+  var params = {programId:me.programId};
+  initialDataSync('TreeStoreSlides', 'slides', params, syncStateCallback, 'id', me);
+}, renderThumbnails:function() {
   var treeView = refs.treeSlides.el.dom.children[0].children[1].children[0].children[1].children;
   for (var i = 0, n = treeView.length; i < n; i++) {
     var children = treeView[i].children[0].children[0].children[0].children[0].children;
@@ -88407,23 +88553,71 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
       slide.outerHTML = '\x3cdiv role\x3d"presentation" class\x3d"  x-tree-icon"\x3e\x3cimg src\x3d"https://www.vaporfi.com.au/media/catalog/product/cache/34/thumbnail/600x600/9df78eab33525d08d6e5fb8d27136e95/v/z/vz_eliquid_juicy_red_apple.jpg" style\x3d"width:20px; height:20px;"\x3e\x3c/div\x3e';
     }
   }
-}, onTreeSlidesDeselect:function(rowmodel, record, index, eOpts) {
+  var data = Ext.decode(localStorage.getItem('mxp_elearning')[me.programId][me.slideId]);
+  for (var key in data.slides) {
+    var value = data.slides[key];
+    if (value.isSlide) {
+    }
+  }
+  document.body.innerHTML += '\x3cdiv id\x3d"capture" style\x3d"padding: 10px; background: #f5da55"\x3e    \x3ch4 style\x3d"color: #000; "\x3eHello world!\x3c/h4\x3e\x3c/div\x3e';
+  html2canvas(document.querySelector('#capture')).then(function(canvas) {
+    document.body.appendChild(canvas);
+  });
+}, getNumQuestions:function() {
   var me = this;
-  me.clearSlidePanel();
-  me.allComponents = [];
-  me._selectedComponents = [];
-}, onEditSlidesBoxReady:function(component, width, height, eOpts) {
+  return me.getStore('QuestionsStoreSlides').data.items.length;
+}, close:function(owner, tool, event) {
+  var me = this;
+  var yesCallback = function() {
+    me.getView().up('#mainView').setActiveItem('gridPrograms');
+    me.getStore('TreeStoreSlides').loadData([], false);
+    me.getStore('QuestionsStoreSlides').loadData([], false);
+    me.getStore('PersonAnswers').loadData([], false);
+    me.getStore('PersonPrograms').loadData([], false);
+    window.removeEventListener('online', me.connectionChange);
+    window.removeEventListener('offline', me.connectionChange);
+  };
+  if (me.previewing) {
+    me.togglePreview(false, yesCallback);
+  } else {
+    yesCallback();
+  }
+}, createTooltip:function(component, eOpts) {
+  component.tooltip = Ext.create('Ext.tip.ToolTip', {target:component.id, html:'Not Synced'});
+}, onTreeDragDrop:function(treeviewdragdrop) {
+  var me = this, refs = me.getReferences();
+  var treeStoreSlides = me.getStore('TreeStoreSlides');
+  for (var i = 0; i < treeStoreSlides.data.items.length; i++) {
+    var rec = treeStoreSlides.data.items[i];
+    rec.dirty = true;
+  }
+  me.saveState();
+  refs.treeSlides.setSelection(me.getCurrentSlide());
+}, onTreeItemSelect:function(rowmodel, record, index, eOpts) {
+  var me = this, refs = me.getReferences();
+  me.loadSlideState(record);
+}, onTreeSlidesDeselect:function(rowmodel, record, index, eOpts) {
+  this.clearSlidePanel();
+}, onTreeItemCollapse:function(nodeinterface, eOpts) {
+  print('tree slides item colapse', nodeinterface, eOpts);
+  var me = this, refs = me.getReferences();
+  me.saveState();
+  refs.treeSlides.setSelection(nodeinterface);
+}, onEditBoxReady:function(component, width, height, eOpts) {
   var me = this, refs = me.getReferences();
   me.previewing = false;
+  me.currentlyEditing = false;
   me._pageSetup = {snap:25, width:800, height:600, headerHeight:50, footerHeight:50, padding:50, background:null};
   me.cmpTypes = {HTML:'html', TITLE:'title', TEXT:'text', IMAGE:'image', AUDIO:'audio', VIDEO:'video', SELECTION:'selection'};
-  refs.panelContent.removeAll();
-  refs.toolbarPreview.hide();
-  component.el.on('click', function(e, t) {
+  component.el.on('mouseup', function(e, t) {
+    if (me._dragged) {
+      me._dragged = null;
+      return;
+    }
     if (!e.ctrlKey && !e.shiftKey) {
       me.hideComponentTools();
       for (var i = 0; i < me.allComponents.length; i++) {
-        me.allComponents[i].removeCls('selected');
+        me.allComponents[i].fireEvent('deselect');
       }
       me._selectedComponents = [];
     }
@@ -88442,50 +88636,62 @@ Ext.define('eLearning.view.EditSlidesViewController', {extend:Ext.app.ViewContro
     }
     if (event.keyCode === KEY_A) {
       if (event.ctrlKey) {
-        me._selectedComponents = [];
-        if (!me.previewing && me.allComponents.length) {
-          me._selectedComponents = me.allComponents;
-          for (var i = 0; i < me.allComponents.length; i++) {
-            me.allComponents[i].addCls('selected');
+        if (!me.currentlyEditing) {
+          me._selectedComponents = [];
+          if (!me.previewing && me.allComponents.length) {
+            me._selectedComponents = me.allComponents;
+            for (var i = 0; i < me.allComponents.length; i++) {
+              me.allComponents[i].addCls('selected');
+            }
+            me.showComponentTools(me.allComponents[me.allComponents.length - 1]);
           }
-          me.showComponentTools(me.allComponents[me.allComponents.length - 1]);
+          event.preventDefault();
         }
       }
-      event.preventDefault();
     }
   });
-  function connectionChange() {
+  me.connectionChange = function() {
     if (navigator.onLine) {
-      me.syncState();
-      var currentSlide = me.getCurrentSlide();
-      me.getReferences().treeSlides.setSelection(null);
-      me.getReferences().treeSlides.setSelection(currentSlide);
-      Ext.toast('Welcome back online! Content saved on server.');
+      var callback = function() {
+        var currentSlide = me.getCurrentSlide();
+        me.getReferences().treeSlides.setSelection(null);
+        me.getReferences().treeSlides.setSelection(currentSlide);
+        me.saveState();
+        Ext.toast('Welcome back online! Content saved on server.');
+      };
+      me.serverSync(callback);
     } else {
       Ext.toast('We went offline! Content is still saved locally. Reconnect to save content with server.');
     }
-  }
-  window.addEventListener('online', connectionChange);
-  window.addEventListener('offline', connectionChange);
-  var me = this;
+  };
   var screen_change_events = ['webkitfullscreenchange', 'mozfullscreenchange', 'fullscreenchange', 'MSFullscreenChange'];
   for (var i in screen_change_events) {
-    console.log('triggered onslidenavigation box ready', i);
     document.addEventListener(screen_change_events[i], function(event) {
-      console.log('called fullscreen change', event);
-      console.log('states', document.fullscreenElement, document.fullscreenEnabled);
       if (document.webkitFullscreenElement || document.fullscreenElement || document.mozFullscreenElement || document.msFullscreenElement) {
       } else {
-        print('called close fullscreen function');
         refs.slideNavigation.getController().closeFullscreen();
       }
     });
+  }
+}, onTreeStoreRemove:function(store, records, index, isMove, eOpts) {
+  var me = this;
+  for (var i = 0; i < records.length; i++) {
+    var deletedRec = records[i];
+    var recId = deletedRec.id;
+    writeDeleted(recId, 'slides', me, false, me.programId);
+  }
+}, onQuestionsRemove:function(store, records, index, isMove, eOpts) {
+  var me = this;
+  for (var i = 0; i < records.length; i++) {
+    var deletedRec = records[i];
+    var recId = deletedRec.id;
+    writeDeleted(recId, 'questions', me, false, me.programId);
   }
 }});
 Ext.define('eLearning.view.SlideNavigationViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.slidenavigation'});
 Ext.define('eLearning.view.SlideNavigationViewController', {extend:Ext.app.ViewController, alias:'controller.slidenavigation', show:function(opts) {
   opts = Ext.applyIf(opts, {callback:function(value) {
-    console.log('Please specify callback!', value);
+    console.warn('Please specify callback!', value);
   }, scope:this});
   var me = this, refs = me.getReferences(), view = me.getView();
   me._opts = opts;
@@ -88524,7 +88730,7 @@ Ext.define('eLearning.view.EditSlides', {extend:Ext.container.Container, alias:'
   me.insertText();
 }, text:'New page from template'}]}}, {xtype:'button', handler:function(button, e) {
   this.up('#editSlides').getController().deleteSlide();
-}, itemId:'btnDeleteSlide', text:'Delete Page'}, {xtype:'button', itemId:'btnSetBackground', text:'Set background', menu:{xtype:'menu', width:150, items:[{xtype:'menuitem', handler:function(item, e) {
+}, id:'btnDeleteSlide', itemId:'btnDeleteSlide', text:'Delete Page'}, {xtype:'button', itemId:'btnSetBackground', text:'Set background', menu:{xtype:'menu', width:150, items:[{xtype:'menuitem', handler:function(item, e) {
   this.up('#editSlides').getController().setBackground();
 }, text:'Blank'}, {xtype:'menuitem', handler:function(item, e) {
   this.up('#editSlides').getController().setBackground('resources/images/background-0.jpg');
@@ -88558,12 +88764,11 @@ Ext.define('eLearning.view.EditSlides', {extend:Ext.container.Container, alias:'
   this.up('#editSlides').getController().insertSelection({multi:false});
 }, text:'Single selection'}, {xtype:'menuitem', handler:function(item, e) {
   this.up('#editSlides').getController().insertSelection({multi:true});
-}, text:'Multiple selection'}]}}, {xtype:'tbseparator'}, {xtype:'tbtext', html:'Layout'}, {xtype:'cycle', itemId:'btnLayout', minWidth:110, showText:true, menu:{xtype:'menu', width:120, items:[{xtype:'menucheckitem', text:'Computer'}, {xtype:'menucheckitem', text:'Tablet'}, {xtype:'menucheckitem', text:'Phone'}]}}, {xtype:'button', handler:function(button, e) {
+}, text:'Multiple selection'}]}}, {xtype:'tbseparator'}, {xtype:'tbtext', html:'Layout', itemId:'Layout'}, {xtype:'cycle', itemId:'btnLayout', minWidth:110, showText:true, menu:{xtype:'menu', width:120, items:[{xtype:'menucheckitem', text:'Computer'}, {xtype:'menucheckitem', text:'Tablet'}, {xtype:'menucheckitem', text:'Phone'}]}}, {xtype:'button', handler:function(button, e) {
   var me = this.up('#editSlides'), refs = me.getReferences(), data = me.getController().getCurrentState();
   wnd = me.add({xtype:'sourceview'});
   Ext.each(data.slides, function(slide) {
     if (slide.content) {
-      console.log('caller - ViewSource button handler', 'printing slide content', slide.content);
       slide.content = Ext.decode(slide.content);
     }
   });
@@ -88571,8 +88776,8 @@ Ext.define('eLearning.view.EditSlides', {extend:Ext.container.Container, alias:'
 }, itemId:'btnViewSource', text:'View source'}, {xtype:'button', handler:function(button, e) {
   var me = this.up('#editSlides'), refs = me.getReferences(), data = me.getController().getCurrentState();
   wnd = me.add({xtype:'settings'});
-  wnd.getController().show({data:data});
-}, itemId:'btnSettings', text:'Settings'}, {xtype:'tbspacer', flex:1}, {xtype:'button', handler:function(button, e) {
+  wnd.getController().show({data:data, scope:me});
+}, itemId:'btnSettings', text:'Settings'}, {xtype:'tbtext', cls:'x-fa fa-exclamation-triangle warning', html:'', id:'syncIndicator', itemId:'syncIndicator', listeners:{afterrender:'createTooltip'}}, {xtype:'tbspacer', flex:1}, {xtype:'button', handler:function(button, e) {
   this.up('#editSlides').getController().togglePreview(true);
 }, id:'btnPreview', itemId:'btnPreview', minWidth:120, text:'Preview'}]}, {xtype:'toolbar', reference:'toolbarPreview', dock:'top', items:[{xtype:'button', handler:function(button, e) {
   this.up('#editSlides').getController().prevSlide();
@@ -88602,15 +88807,14 @@ Ext.define('eLearning.view.EditSlides', {extend:Ext.container.Container, alias:'
 }, itemId:'btnFullscreen', minWidth:80, text:'Fullscreen'}, {xtype:'button', handler:function(button, e) {
   this.up('#editSlides').getController().togglePreview(false);
 }, itemId:'btnClosePreview', minWidth:120, text:'Close preview'}]}]}, {xtype:'panel', region:'west', split:true, reference:'panelMenu', itemId:'panelMenu', margin:'10 0 10 10', padding:0, width:300, collapseDirection:'left', title:'', layout:{type:'vbox', align:'stretch'}, items:[{xtype:'treepanel', reference:'treeSlides', flex:1, itemId:'treeSlides', padding:10, title:'', emptyText:'No pages to show.\x3cbr\x3eCreate new with button \x3ci\x3eNew page\x3c/i\x3e.\x3cbr\x3e\x3cbr\x3eDouble click on page name to rename it.', 
-hideHeaders:true, rootVisible:false, useArrows:true, bind:{store:'{TreeStoreSlides}'}, viewConfig:{rootVisible:false, plugins:[{ptype:'treeviewdragdrop'}], listeners:{drop:'onTreeViewDragDrop'}}, columns:[{xtype:'treecolumn', flex:1, dataIndex:'title', text:'Pages', editor:{xtype:'textfield'}}], plugins:[{ptype:'cellediting'}], listeners:{select:'onTreeSlidesSelect', deselect:'onTreeSlidesDeselect'}}]}, {xtype:'container', region:'center', reference:'panelSlide', cls:'slide-container', itemId:'panelSlide', 
-margin:'10 10 10 0', items:[{xtype:'container', reference:'panelContentWrapper', cls:['edit', 'slide'], height:600, html:'\x3cdiv id\x3d"html-slide"\x3e\x3c/div\x3e', id:'panelContentWrapper', itemId:'panelContentWrapper', width:800, items:[{xtype:'container', reference:'panelContent', cls:['edit', 'slide'], dock:'top', height:600, html:'\x3cdiv id\x3d"html-slide"\x3e\x3c/div\x3e', id:'panelContent', itemId:'panelContent', width:800}, {xtype:'slidenavigation', reference:'slideNavigation', height:30, 
-width:590}]}]}], listeners:{boxready:'onEditSlidesBoxReady'}});
+hideHeaders:true, rootVisible:false, useArrows:true, bind:{store:'{TreeStoreSlides}'}, viewConfig:{rootVisible:false, plugins:[{ptype:'treeviewdragdrop'}], listeners:{drop:'onTreeDragDrop'}}, columns:[{xtype:'treecolumn', flex:1, dataIndex:'title', text:'Pages', editor:{xtype:'textfield'}}], plugins:[{ptype:'cellediting'}], listeners:{select:'onTreeItemSelect', deselect:'onTreeSlidesDeselect', itemcollapse:'onTreeItemCollapse'}}]}, {xtype:'container', region:'center', reference:'panelSlide', cls:'slide-container', 
+itemId:'panelSlide', margin:'10 10 10 0', items:[{xtype:'container', reference:'panelContentWrapper', cls:['edit', 'slide'], height:600, html:'\x3cdiv id\x3d"html-slide"\x3e\x3c/div\x3e', id:'panelContentWrapper', itemId:'panelContentWrapper', width:800, items:[{xtype:'container', reference:'panelContent', cls:['edit', 'slide'], dock:'top', height:600, html:'\x3cdiv id\x3d"html-slide"\x3e\x3c/div\x3e', id:'panelContent', itemId:'panelContent', width:800}, {xtype:'slidenavigation', reference:'slideNavigation', 
+height:30, width:590}]}]}], listeners:{boxready:'onEditBoxReady'}});
 Ext.define('eLearning.view.EditToolsViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.edittools'});
 Ext.define('eLearning.view.EditToolsViewController', {extend:Ext.app.ViewController, alias:'controller.edittools', show:function(opts) {
   opts = Ext.applyIf(opts || {}, {components:[]});
   var me = this, view = me.getView();
   me._opts = opts;
-  print('lets see how many components to duplicate -on begin', this._opts.components.length);
   if (opts.components.length > 1) {
     Ext.getCmp('btn_Edit').disable();
     Ext.getCmp('nfScore').disable();
@@ -88629,7 +88833,6 @@ Ext.define('eLearning.view.EditToolsViewController', {extend:Ext.app.ViewControl
 }, edit:function(button, e) {
   this._opts.components[0].fireEvent('_edit');
 }, duplicate:function(button, e) {
-  print('lets see how many components to duplicate', this._opts.components.length);
   for (var i = 0; i < this._opts.components.length; i++) {
     this._opts.components[i].fireEvent('_duplicate');
   }
@@ -88655,11 +88858,11 @@ Ext.define('eLearning.view.FileUploadViewController', {extend:Ext.app.ViewContro
   var me = this, refs = me.getReferences(), view = me.getView(), opts = view._opts, form = view.down('form').getForm();
   if (form.isValid()) {
     form.submit({url:opts.uploadUrl, waitMsg:'Uploading...', success:function(form, action) {
-      console.log(arguments);
+      print('success upload arguments', arguments);
       opts.callback.call(view.opts);
       view.close();
     }, failure:function(form, action) {
-      console.log(arguments);
+      print('failure upload arguments', arguments);
     }});
   }
 }, btnCancelHandler:function(button, e) {
@@ -88668,7 +88871,7 @@ Ext.define('eLearning.view.FileUploadViewController', {extend:Ext.app.ViewContro
 }, btnSelectHandler:function(button, e) {
   var me = this, refs = me.getReferences(), view = me.getView(), opts = view._opts, form = view.down('form').getForm();
   if (form.isValid()) {
-    console.log('URL upload unsupported');
+    console.warn('URL upload unsupported');
   }
 }, btnCancelHandler:function(button, e) {
   var me = this, refs = me.getReferences(), view = me.getView();
@@ -88678,30 +88881,55 @@ Ext.define('eLearning.view.FileUpload', {extend:Ext.window.Window, alias:'widget
 iconCls:'x-fa fa-paperclip', text:''}}]}], dockedItems:[{xtype:'toolbar', dock:'bottom', ui:'footer', layout:{type:'hbox', pack:'center'}, items:[{xtype:'button', handler:'btnSaveHandler', itemId:'btnSave', minWidth:100, text:'Upload'}, {xtype:'button', handler:'btnCancelHandler', itemId:'btnCancel', minWidth:100, text:'Cancel'}]}]}, {xtype:'panel', title:'From URL', items:[{xtype:'form', bodyPadding:10, title:'', items:[{xtype:'textfield', anchor:'1', fieldLabel:'URL', name:'url'}]}], dockedItems:[{xtype:'toolbar', 
 dock:'bottom', ui:'footer', layout:{type:'hbox', pack:'center'}, items:[{xtype:'button', handler:'btnSelectHandler', itemId:'btnSelect', minWidth:100, text:'Select'}, {xtype:'button', handler:'btnCancelHandler', itemId:'btnCancel', minWidth:100, text:'Cancel'}]}]}]}]});
 Ext.define('eLearning.view.HomePageViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.homepage'});
-Ext.define('eLearning.view.HomePage', {extend:Ext.container.Container, alias:'widget.homepage', viewModel:{type:'homepage'}, itemId:'homePage', defaults:{width:200, height:50, margin:5}, layout:{type:'vbox', align:'center', pack:'center'}, items:[{xtype:'button', handler:function(button, e) {
-  this.up('#mainView').setActiveItem('gridPrograms');
-}, text:'Training Programs'}, {xtype:'button', handler:function(button, e) {
-}, text:'Help'}, {xtype:'container', height:200, defaults:{flex:1}, layout:{type:'vbox', align:'stretch'}, items:[{xtype:'label', flex:0, height:20, text:'DEV / DEBUG / TEST'}, {xtype:'button', handler:function(button, e) {
-  var TEMP_ID = '{01A26F88-5649-4693-9227-28E8E2F7A963}';
-  var mainView = this.up('#mainView');
-  var newActiveItem = mainView.setActiveItem('editSlides');
-  var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
-  console.log('printing localstorage', localStorageData);
-  if (!localStorageData) {
-    localStorageData = {};
-  }
-  if (!localStorageData[TEMP_ID]) {
-    localStorageData[TEMP_ID] = {};
-  }
-  for (var key in localStorageData[TEMP_ID]) {
-    if (!localStorageData[TEMP_ID][key]) {
-      localStorageData[TEMP_ID][key] = {};
+Ext.define('eLearning.view.HomePageViewController', {extend:Ext.app.ViewController, alias:'controller.homepage', routes:{'training-programs':{name:'routeTrainingPrograms', action:'triggerTrainingPrograms'}, 'edit-pages':{name:'routeEditPages', action:'triggerEditPages'}}, getAjax:function(url, params, name) {
+  return new Ext.Promise(function(resolve, reject) {
+    Ext.Ajax.request({url:url, params:params, success:function(response) {
+      var rObj = Ext.decode(response.responseText || '{}');
+      if (rObj.success) {
+        resolve({name:name, data:rObj.data});
+      } else {
+        reject(rObj.reason || 'Success false');
+      }
+    }, failure:function(response) {
+      reject(response.status);
+    }});
+  });
+}, triggerTrainingPrograms:function() {
+  this.getView().up('#mainView').setActiveItem('gridPrograms');
+}, triggerEditPages:function() {
+  var me = this;
+  Ext.Promise.all([me.getAjax('/Pub/Programs', {}, 'Programs')]).then(function(data) {
+    if (data[0].data.length === 0) {
+      Ext.toast('No programs exist in database - go through training programs');
+      return;
     }
-  }
-  localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
-  newActiveItem.getController().load({program:{data:{'active':true, 'categoryId':30231143, 'certificateFileName':'', 'changed':'Y', 'completionTime':60, 'created':'2018-07-23T12:04:00', 'createdAtId':5, 'createdById':0, 'description':'New Training Program Description', 'id':'{01A26F88-5649-4693-9227-28E8E2F7A963}', 'lastChangeLogId':191175066, 'lastChanges':'2018-07-23T12:04:00', 'maxAttemptsScoreMode':1000, 'maxAttemptsTrainingMode':1000, 'name':'First program', 'passScore':2, 'programId':50000026, 
-  'validFrom':'2018-07-23T00:00:00', 'validTo':'2019-07-23T00:00:00'}, id:TEMP_ID}});
-}, text:'Edit Pages'}, {xtype:'button', handler:function(button, e) {
+    var returnedRec = data[0].data[0];
+    var TEMP_ID = '{BA8780A3-9D57-40D5-8623-7033A31323D8}';
+    TEMP_ID = returnedRec.id;
+    var mainView = me.getView().up('#mainView');
+    var newActiveItem = mainView.setActiveItem('editSlides');
+    var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
+    if (!localStorageData) {
+      localStorageData = {};
+    }
+    if (!localStorageData[TEMP_ID]) {
+      localStorageData[TEMP_ID] = {};
+    }
+    for (var key in localStorageData[TEMP_ID]) {
+      if (!localStorageData[TEMP_ID][key]) {
+        localStorageData[TEMP_ID][key] = {};
+      }
+    }
+    localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+    newActiveItem.getController().load({program:{data:returnedRec, id:TEMP_ID}});
+  });
+}, showTrainingPrograms:function(button, e) {
+  this.redirectTo('training-programs');
+}, showEditPages:function(button, e) {
+  this.redirectTo('edit-pages');
+}});
+Ext.define('eLearning.view.HomePage', {extend:Ext.container.Container, alias:'widget.homepage', controller:'homepage', viewModel:{type:'homepage'}, itemId:'homePage', defaults:{width:200, height:50, margin:5}, layout:{type:'vbox', align:'center', pack:'center'}, items:[{xtype:'button', handler:'showTrainingPrograms', text:'Training Programs'}, {xtype:'button', handler:function(button, e) {
+}, text:'Help'}, {xtype:'container', height:200, defaults:{flex:1}, layout:{type:'vbox', align:'stretch'}, items:[{xtype:'label', flex:0, height:20, text:'DEV / DEBUG / TEST'}, {xtype:'button', handler:'showEditPages', text:'Edit Pages'}, {xtype:'button', handler:function(button, e) {
   Ext.toast('This is a toast message');
 }, text:'Test'}]}]});
 Ext.define('eLearning.view.MainViewViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.mainview'});
@@ -88745,53 +88973,104 @@ Ext.define('eLearning.view.MainViewViewController', {extend:Ext.app.ViewControll
 }, onMainViewBoxReady:function(component, width, height, eOpts) {
   this.load();
 }});
-Ext.define('eLearning.view.ProgramsViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.programs', stores:{StorePrograms:{autoLoad:false, autoSync:true, model:'eLearning.model.Program', proxy:{type:'rest', api:{create:'/Pub/Programs', read:'/Pub/Programs', update:'/POST/Pub/Programs', destroy:'/Pub/Programs'}, reader:{type:'json', rootProperty:'data'}}}, StoreProgramCategories:{model:'eLearning.model.Lookup'}}});
+Ext.define('eLearning.view.ProgramsViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.programs', stores:{StorePrograms:{autoLoad:false, model:'eLearning.model.Program', proxy:{type:'rest', api:{create:'/Pub/Programs', read:'/Pub/Programs', update:'/POST/Pub/Programs', destroy:'/Pub/Programs'}, reader:{type:'json', rootProperty:'data'}}, listeners:{remove:{fn:'onStoreProgramsRemove', delay:100, single:false}}}, StoreProgramCategories:{autoLoad:false, model:'eLearning.model.Lookup'}}});
 Ext.define('eLearning.view.ProgramsViewController', {extend:Ext.app.ViewController, alias:'controller.programs', load:function() {
-  var me = this, store = me.getStore('StorePrograms');
-  me.getStore('StoreProgramCategories').setData(App.lookups.ProgramCategories);
-  store.load({callback:function() {
+  var me = this;
+  var callback = function() {
     me.saveState();
-  }});
+  };
+  me.getStore('StoreProgramCategories').setData(App.lookups.ProgramCategories);
+  if (navigator.onLine) {
+    me.serverSync(callback);
+  } else {
+    var store = me.getStore('StorePrograms');
+    var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
+    var localStorageEntries = [];
+    for (var key in localStorageData) {
+      localStorageEntries.push(localStorageData[key].programInfo);
+    }
+    store.setData(localStorageEntries);
+  }
+  window.addEventListener('online', me.connectionChange);
+  window.addEventListener('offline', me.connectionChange);
 }, getCurrentState:function() {
   var me = this, refs = me.getReferences(), store = me.getStore('StorePrograms'), data = Ext.clone(Ext.pluck(store.getRange(), 'data'));
   var programs = {};
   for (var i = 0; i < data.length; i++) {
     var entry = data[i];
-    console.log('printing data entry in programs get current state', entry);
     programs[entry.id] = {programInfo:entry};
   }
   return programs;
-}, loadState:function() {
-  var me = this, refs = me.getReferences(), store = me.getStore('StorePrograms'), data = localStorage.getItem('mxp_elearning');
-  if (data) {
-    data = Ext.decode(data);
-    delete data.slides;
-    delete data.questions;
-    delete data.answers;
-    store.setData(data);
-  }
 }, saveState:function() {
-  var me = this, data = me.getCurrentState();
-  var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
-  console.log('printing localstorage', localStorageData);
+  var me = this, data = me.getCurrentState(), syncIndicatorPrograms = Ext.getCmp('syncIndicatorPrograms'), localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
   if (!localStorageData) {
     localStorageData = {};
   }
+  var newLocalStorageData = {};
   for (var key in data) {
-    if (!localStorageData[key]) {
-      localStorageData[key] = {};
+    if (!localStorageData[data[key].programInfo.id]) {
+      localStorageData[data[key].programInfo.id] = {};
     }
-    localStorageData[key].programInfo = data[key].programInfo;
-    console.log('printing loalstorage', localStorageData);
+    localStorageData[data[key].programInfo.id].programInfo = data[key].programInfo;
+    newLocalStorageData[key] = localStorageData[key];
   }
-  localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
-  console.log('printing localstorage', localStorageData);
+  if (localStorageData.removed) {
+    newLocalStorageData.removed = localStorageData.removed;
+  }
+  localStorage.setItem('mxp_elearning', Ext.encode(newLocalStorageData));
+  if (navigator.onLine) {
+    me.getStore('StorePrograms').sync();
+    localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
+    if (localStorageData.removed) {
+      delete localStorageData.removed;
+    }
+    localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+    syncIndicatorPrograms.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
+    syncIndicatorPrograms.addCls('fa-check success');
+    syncIndicatorPrograms.tooltip.html = 'Synced';
+  } else {
+    syncIndicatorPrograms.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
+    syncIndicatorPrograms.addCls('fa-exclamation-triangle warning');
+    syncIndicatorPrograms.tooltip.html = 'Not Synced';
+  }
+  var editButton = Ext.getCmp('btnEdit');
+  if (!me.getSelection()) {
+    editButton.disable();
+    editButton.setText('Edit Slides (No Programs)');
+  } else {
+    editButton.enable();
+    editButton.setText('Edit Slides');
+  }
+}, serverSync:function(callback) {
+  var me = this, TEST_PERSON_ID = 10000112, store = me.getStore('StorePrograms'), syncIndicatorPrograms = Ext.getCmp('syncIndicatorPrograms'), syncStateCallback = function() {
+    me.getView().setSelection(me.getSelection());
+    Ext.getCmp('gridPrograms').getView().refresh();
+    if (callback) {
+      callback();
+    }
+  };
+  syncIndicatorPrograms.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
+  syncIndicatorPrograms.addCls('fa-spin fa-refresh warning');
+  syncIndicatorPrograms.tooltip.html = 'Syncing';
+  var params = {userId:TEST_PERSON_ID};
+  initialDataSync('StorePrograms', 'programInfo', params, syncStateCallback, 'id', me);
+}, unload:function() {
+  var me = this;
+  me.getStore('StorePrograms').loadData([], false);
+  me.getStore('StoreProgramCategories').loadData([], false);
+  window.removeEventListener('online', me.connectionChange);
+  window.removeEventListener('offline', me.connectionChange);
+}, getSelection:function() {
+  var me = this, store = me.getStore('StorePrograms'), selection = me.getView().getSelection()[0] || store.first();
+  return selection;
 }, onRowEditingCanceledit:function(editor, context, eOpts) {
   var me = this, refs = me.getReferences(), store = me.getStore('StorePrograms');
   if (context.record.phantom) {
     store.remove(context.record);
   }
 }, onRowEditingEdit:function(editor, context, eOpts) {
+  context.record.phantom = true;
+  context.record.data.lastChanged = new Date;
   this.saveState();
 }, add:function(button, e) {
   var me = this, refs = me.getReferences(), store = me.getStore('StorePrograms'), editor = me.getView().getPlugin('rowEditing'), data = {id:createGUID(), name:'New Training Program', categoryId:null, description:'New Training Program Description', validFrom:new Date, validTo:Ext.Date.add(new Date, Ext.Date.YEAR, 1), completionTime:60, maxAttemptsTrainingMode:1, maxAttemptsScoreMode:1, passScore:75, active:true};
@@ -88799,41 +89078,69 @@ Ext.define('eLearning.view.ProgramsViewController', {extend:Ext.app.ViewControll
   rec.phantom = true;
   editor.startEdit(rec);
 }, remove:function(button, e) {
-  var me = this;
-  me.getStore('StorePrograms').remove(me.getView().getSelection()[0]);
+  var me = this, store = me.getStore('StorePrograms'), currentProgram = me.getSelection(), nextProgramIdx = store.indexOf(currentProgram) + 1, nextProgram = store.getAt(nextProgramIdx), prevProgramIdx = store.indexOf(currentProgram) - 1, prevProgram = store.getAt(prevProgramIdx);
+  store.remove(me.getSelection());
   me.saveState();
+  me.getView().setSelection(nextProgram || prevProgram || store.first());
 }, duplicate:function(button, e) {
-  console.log('Duplicate unsupported');
-}, bookmark:function(button, e) {
-  console.log('Bookmark unsupported');
-}, editSlides:function(button, e) {
-  var me = this, view = me.getView(), selection = view.getSelection()[0], mainView = view.up('#mainView');
-  if (!selection) {
-    console.warn('NO SELECTION CHOSEN - fix so item is always selected');
-    return;
-  }
+  console.warn("Duplicate unsupported - we have to copy current program, its slides, slides' questions, questions' answers and user program");
+  return;
+  var me = this, store = me.getStore('StorePrograms'), selection = me.getView.getSelection()[0];
+  var duplicateProgram = Ext.clone(selection);
+  duplicateProgram.id = createGUID();
+  store.add(duplicateProgram)[0].phantom = true;
   me.saveState();
+  me.getView().setSelection(store.last());
+}, bookmark:function(button, e) {
+  console.warn('Bookmark unsupported - field in database needs to be added to support bookmarks');
+}, editSlides:function(button, e) {
+  var me = this, view = me.getView(), selection = me.getSelection(), mainView = view.up('#mainView');
+  me.saveState();
+  me.unload();
   var newActiveItem = mainView.setActiveItem('editSlides');
-  console.log('clicked edit slides', newActiveItem, selection);
   newActiveItem.getController().load({program:selection});
+}, createTooltip:function(component, eOpts) {
+  component.tooltip = Ext.create('Ext.tip.ToolTip', {target:component.id, html:'Not Synced'});
 }, close:function(owner, tool, event) {
+  this.unload();
   this.getView().up('#mainView').setActiveItem('homePage');
 }, onGridProgramsActivate:function(component, eOpts) {
+  var me = this;
+  me.connectionChange = function() {
+    if (navigator.onLine) {
+      var callback = function() {
+        Ext.toast('Welcome back online! Content saved on server.');
+        me.saveState();
+      };
+      me.serverSync(callback);
+    } else {
+      Ext.toast('We went offline! Content is still saved locally. Reconnect to save content with server.');
+    }
+  };
   this.load();
+}, onStoreProgramsRemove:function(store, records, index, isMove, eOpts) {
+  var me = this;
+  print('called store remove programs', store, records, index, isMove, eOpts);
+  for (var i = 0; i < records.length; i++) {
+    var deletedRec = records[i];
+    var recId = deletedRec.id;
+    print('we deleted record with id', recId);
+    writeDeleted(recId, null, me, true, null);
+  }
 }});
-Ext.define('eLearning.view.Programs', {extend:Ext.grid.Panel, alias:'widget.programs', controller:'programs', viewModel:{type:'programs'}, itemId:'gridPrograms', title:'Training Programs', bind:{store:'{StorePrograms}'}, columns:[{xtype:'gridcolumn', flex:1, minWidth:150, cellWrap:true, dataIndex:'name', text:'Name', editor:{xtype:'textfield'}}, {xtype:'gridcolumn', renderer:function(value, metaData, record, rowIndex, colIndex, store, view) {
+Ext.define('eLearning.view.Programs', {extend:Ext.grid.Panel, alias:'widget.programs', controller:'programs', viewModel:{type:'programs'}, id:'gridPrograms', itemId:'gridPrograms', title:'Training Programs', bind:{store:'{StorePrograms}'}, columns:[{xtype:'gridcolumn', flex:1, minWidth:150, cellWrap:true, dataIndex:'name', text:'Name', editor:{xtype:'textfield'}}, {xtype:'gridcolumn', renderer:function(value, metaData, record, rowIndex, colIndex, store, view) {
   return !value ? '' : App.lookups.ProgramCategories.filter(function(item) {
     return item.id == value;
   })[0].text;
 }, minWidth:150, cellWrap:true, dataIndex:'categoryId', text:'Category', editor:{xtype:'combobox', queryMode:'local', valueField:'id', bind:{store:'{StoreProgramCategories}'}}}, {xtype:'gridcolumn', flex:2, minWidth:200, cellWrap:true, dataIndex:'description', text:'Description', editor:{xtype:'textfield'}}, {xtype:'datecolumn', minWidth:150, dataIndex:'validFrom', text:'Valid From', format:'m/j/Y', editor:{xtype:'datefield'}}, {xtype:'datecolumn', minWidth:150, dataIndex:'validTo', text:'Valid To', 
 format:'m/j/Y', editor:{xtype:'datefield'}}, {xtype:'numbercolumn', minWidth:150, dataIndex:'completionTime', text:'Completion Time', editor:{xtype:'numberfield'}}, {xtype:'numbercolumn', dataIndex:'maxAttemptsTrainingMode', text:'Max Attempts Training Mode', format:'00', editor:{xtype:'numberfield'}}, {xtype:'numbercolumn', dataIndex:'maxAttemptsScoreMode', text:'Max Attempts Score Mode', format:'00', editor:{xtype:'numberfield'}}, {xtype:'gridcolumn', dataIndex:'passScore', text:'Pass Score', editor:{xtype:'numberfield'}}, 
 {xtype:'gridcolumn', dataIndex:'certificateFileName', text:'Certificate', editor:{xtype:'textfield'}}, {xtype:'checkcolumn', dataIndex:'active', text:'Active', editor:{xtype:'checkboxfield'}}], plugins:[{ptype:'rowediting', pluginId:'rowEditing', listeners:{canceledit:'onRowEditingCanceledit', edit:'onRowEditingEdit'}}], dockedItems:[{xtype:'toolbar', dock:'top', items:[{xtype:'button', handler:'add', text:'Add'}, {xtype:'button', handler:'remove', text:'Remove'}, {xtype:'button', handler:'duplicate', 
-text:'Duplicate'}, {xtype:'button', handler:'bookmark', text:'Bookmark'}, {xtype:'tbseparator'}, {xtype:'button', handler:'editSlides', text:'Edit Slides'}]}], tools:[{xtype:'tool', callback:'close', iconCls:'x-fa fa-close'}], listeners:{activate:'onGridProgramsActivate'}});
+text:'Duplicate'}, {xtype:'button', handler:'bookmark', text:'Bookmark'}, {xtype:'tbseparator'}, {xtype:'button', handler:'editSlides', id:'btnEdit', text:'Edit Slides'}, {xtype:'tbtext', cls:'x-fa fa-exclamation-triangle warning', id:'syncIndicatorPrograms', listeners:{afterrender:'createTooltip'}}]}], tools:[{xtype:'tool', callback:'close', iconCls:'x-fa fa-close'}], listeners:{activate:'onGridProgramsActivate'}});
 Ext.define('eLearning.view.MainView', {extend:Ext.container.Viewport, alias:'widget.mainview', controller:'mainview', viewModel:{type:'mainview'}, itemId:'mainView', layout:'card', items:[{xtype:'homepage'}, {xtype:'programs'}, {xtype:'editslides'}], listeners:{boxready:'onMainViewBoxReady'}});
 Ext.define('eLearning.view.SelectionEditorViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.selectioneditor', stores:{StoreOptions:{model:'eLearning.model.Option'}}});
 Ext.define('eLearning.view.SelectionEditorViewController', {extend:Ext.app.ViewController, alias:'controller.selectioneditor', show:function(opts) {
   opts = Ext.applyIf(opts, {text:'', options:[], callback:function(value) {
-    console.log('Please specify a callback!', value);
+    console.warn('Please specify a callback!', value);
   }, scope:this});
   var me = this, refs = me.getReferences(), view = me.getView();
   me._opts = opts;
@@ -88842,6 +89149,7 @@ Ext.define('eLearning.view.SelectionEditorViewController', {extend:Ext.app.ViewC
   }
   refs.text.setValue(opts.text);
   view.show();
+  opts.scope.currentlyEditing = true;
 }, btnSaveHandler:function(button, e) {
   var me = this, refs = me.getReferences(), opts = me._opts, options = refs.grid.store.data.items, text = refs.text.getValue(), reason = opts.callback.call(opts.scope, text, Ext.clone(Ext.pluck(options, 'data')));
   if (reason) {
@@ -88855,30 +89163,34 @@ Ext.define('eLearning.view.SelectionEditorViewController', {extend:Ext.app.ViewC
 }, btnAddHandler:function(button, e) {
   var me = this, refs = me.getReferences(), sequence = Ext.Array.max(Ext.pluck2(refs.grid.store.data.items, 'data.sequence')) || 0;
   sequence++;
-  console.log('selectionEditor - button add handler printing sequence', sequence);
   refs.grid.store.add({id:sequence, sequence:sequence, text:'New Answer ' + sequence});
 }, btnRemoveHandler:function(button, e) {
   var me = this, refs = me.getReferences(), rec = refs.grid.getSelection()[0];
   refs.grid.store.remove(rec);
+}, onSelectioneditorClose:function(panel, eOpts) {
+  var me = this;
+  me._opts.scope.currentlyEditing = false;
 }});
 Ext.define('eLearning.view.SelectionEditor', {extend:Ext.window.Window, alias:'widget.selectioneditor', controller:'selectioneditor', viewModel:{type:'selectioneditor'}, modal:true, height:600, itemId:'selectioneditor', width:1000, layout:'border', title:'Selection editor', dockedItems:[{xtype:'toolbar', dock:'bottom', ui:'footer', layout:{type:'hbox', pack:'center'}, items:[{xtype:'button', handler:'btnSaveHandler', itemId:'btnSave', text:'Save'}, {xtype:'button', handler:'btnCancelHandler', itemId:'btnCancel', 
 text:'Cancel'}]}], items:[{xtype:'textareafield', region:'north', split:true, reference:'text', flex:1, margin:'0 10', fieldLabel:'Question', labelAlign:'top'}, {xtype:'gridpanel', flex:3, region:'center', reference:'grid', itemId:'grid', title:'', bind:{store:'{StoreOptions}'}, columns:[{xtype:'rownumberer'}, {xtype:'gridcolumn', flex:1, cellWrap:true, dataIndex:'text', text:'Answer text', editor:{xtype:'textfield'}}, {xtype:'checkcolumn', dataIndex:'correct', text:'Correct'}], viewConfig:{plugins:[{ptype:'gridviewdragdrop'}]}, 
-plugins:[{ptype:'cellediting', clicksToEdit:1}], dockedItems:[{xtype:'toolbar', dock:'top', items:[{xtype:'button', handler:'btnAddHandler', itemId:'btnAdd', text:'Add'}, {xtype:'button', handler:'btnRemoveHandler', itemId:'btnRemove', text:'Remove'}]}]}]});
+plugins:[{ptype:'cellediting', clicksToEdit:1}], dockedItems:[{xtype:'toolbar', dock:'top', items:[{xtype:'button', handler:'btnAddHandler', itemId:'btnAdd', text:'Add'}, {xtype:'button', handler:'btnRemoveHandler', itemId:'btnRemove', text:'Remove'}]}]}], listeners:{close:'onSelectioneditorClose'}});
 Ext.define('eLearning.view.SettingsViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.settings'});
 Ext.define('eLearning.view.SettingsViewController', {extend:Ext.app.ViewController, alias:'controller.settings', show:function(opts) {
   opts = Ext.applyIf(opts, {data:{}, callback:function(value) {
-    console.log('Please specify callback!', value);
+    console.warn('Please specify callback!', value);
   }, scope:this});
   var me = this, refs = me.getReferences(), view = me.getView();
   me._opts = opts;
   view.refs.pageSetup.setSource(opts.data.pageSetup);
   view.show();
+}, onPropertygridPropertyChange:function(source, recordId, value, oldValue, eOpts) {
+  this._opts.scope.getController().saveState();
 }});
-Ext.define('eLearning.view.Settings', {extend:Ext.window.Window, alias:'widget.settings', controller:'settings', viewModel:{type:'settings'}, modal:true, width:500, layout:'fit', title:'Settings', items:[{xtype:'propertygrid', reference:'pageSetup', padding:20, title:'Page Setup', source:{'Property 1':'String', 'Property 2':true, 'Property 3':'2018-03-08T14:09:40', 'Property 4':123}}]});
+Ext.define('eLearning.view.Settings', {extend:Ext.window.Window, alias:'widget.settings', controller:'settings', viewModel:{type:'settings'}, modal:true, width:500, layout:'fit', title:'Settings', items:[{xtype:'propertygrid', reference:'pageSetup', padding:20, title:'Page Setup', source:{'Property 1':'String', 'Property 2':true, 'Property 3':'2018-03-08T14:09:40', 'Property 4':123}, listeners:{propertychange:'onPropertygridPropertyChange'}}]});
 Ext.define('eLearning.view.SourceViewViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.sourceview'});
 Ext.define('eLearning.view.SourceViewViewController', {extend:Ext.app.ViewController, alias:'controller.sourceview', show:function(opts) {
   opts = Ext.applyIf(opts, {value:'', callback:function(value) {
-    console.log('Please specify callback!', value);
+    console.warn('Please specify callback!', value);
   }, scope:this});
   var me = this, refs = me.getReferences(), view = me.getView();
   me._opts = opts;
@@ -88891,7 +89203,7 @@ Ext.define('eLearning.view.Templates', {extend:Ext.window.Window, alias:'widget.
 Ext.define('eLearning.view.TextEditorViewModel', {extend:Ext.app.ViewModel, alias:'viewmodel.texteditor'});
 Ext.define('eLearning.view.TextEditorViewController', {extend:Ext.app.ViewController, alias:'controller.texteditor', show:function(opts) {
   opts = Ext.applyIf(opts, {value:'', callback:function(value) {
-    console.log('Please specify callback!', value);
+    console.warn('Please specify callback!', value);
   }, scope:this});
   var me = this, refs = me.getReferences(), view = me.getView();
   me._opts = opts;
@@ -88990,7 +89302,7 @@ function cleanTreeNodeData(data) {
     delete data.visible;
   } catch (e$45) {
   }
-  try {
+  if (data && data.content) {
     var content = Ext.decode(data.content);
     for (var key in content.components) {
       var el = content.components[key];
@@ -89004,9 +89316,7 @@ function cleanTreeNodeData(data) {
       }
     }
     data.content = Ext.encode(content);
-  } catch (e$46) {
   }
-  console.log('printing filtered data', data);
   return data;
 }
 function sumDict(obj) {
@@ -89438,7 +89748,7 @@ Ext.define('Ext.data.proxy.IndexedDB', {extend:Ext.data.proxy.Proxy, alias:'prox
 }, getObjectStore:function(type, callback, scope) {
   try {
     var me = this, transTypes = {'rw':IDBTransaction.READ_WRITE, 'r':IDBTransaction.READ_ONLY, 'vc':IDBTransaction.VERSION_CHANGE}, transaction = me.db.transaction([me.objectStoreName], type ? transTypes[type] : undefined), objectStore = transaction.objectStore(me.objectStoreName);
-  } catch (e$47) {
+  } catch (e$46) {
     Ext.defer(callback, 20, scope || me, [type, callback, scope]);
     return false;
   }
@@ -89540,6 +89850,106 @@ Ext.define('Ext.data.proxy.IndexedDB', {extend:Ext.data.proxy.Proxy, alias:'prox
     callback.call(scope || me);
   };
 }});
+function containsObject(obj, list, dataId) {
+  for (var i = 0; i < list.length; i++) {
+    if (list[i].data[dataId] == obj[dataId]) {
+      return i;
+    }
+  }
+  return -1;
+}
+function initialDataSync(storeName, localStorageAttribute, LoadParams, callback, dataId, scope) {
+  if (!navigator.onLine) {
+    if (callback) {
+      callback();
+    }
+    return;
+  }
+  var me = scope, localStorageData = Ext.decode(localStorage.getItem('mxp_elearning')), initialDataStore = me.getStore(storeName);
+  initialDataStore.load({params:LoadParams, callback:function(records, operation, success) {
+    var check;
+    if (localStorageAttribute == 'programInfo') {
+      check = localStorageData && Object.keys(localStorageData).length;
+    } else {
+      check = localStorageData && localStorageData[me.programId] && localStorageData[me.programId][localStorageAttribute];
+    }
+    if (check) {
+      if (localStorageAttribute != 'programInfo') {
+        localStorageData = localStorageData[me.programId][localStorageAttribute];
+      }
+      for (var key in localStorageData) {
+        if (localStorageAttribute == 'programInfo') {
+          if (!localStorageData[key][localStorageAttribute]) {
+            continue;
+          }
+        }
+        var localStorageEntry = localStorageData[key];
+        if (localStorageAttribute == 'programInfo') {
+          localStorageEntry = localStorageEntry[localStorageAttribute];
+        }
+        var objectIndex = containsObject(localStorageEntry, initialDataStore.data.items, dataId);
+        if (initialDataStore.data.length > 0 && objectIndex > -1) {
+          if ((new Date(localStorageEntry.lastChanged)).getTime() > (new Date(initialDataStore.data.items[objectIndex].data.lastChanged)).getTime()) {
+            var rec = initialDataStore.findRecord(dataId, localStorageEntry[dataId]);
+            rec.data = localStorageEntry;
+            rec.phantom = true;
+          }
+        } else {
+          if (initialDataStore.type == 'tree') {
+            initialDataStore.getRootNode().appendChild(localStorageEntry);
+            initialDataStore.findRecord(dataId, localStorageEntry[dataId]).phantom = true;
+          } else {
+            var rec = initialDataStore.add(localStorageEntry)[0];
+            rec.phantom = true;
+          }
+        }
+      }
+      var check = false;
+      if (localStorageAttribute == 'programInfo') {
+        check = localStorageData.removed;
+      } else {
+        check = localStorageData.removed && localStorageData.removed[localStorageAttribute];
+      }
+      if (check) {
+        var removed = localStorageData.removed;
+        if (localStorageAttribute != 'programInfo') {
+          removed = removed[localStorageAttribute];
+        }
+        for (var i = 0; i < removed.length; i++) {
+          var rec = initialDataStore.findRecord(dataId, removed[i]);
+          if (rec) {
+            if (initialDataStore.type == 'tree') {
+              rec.parentNode.removeChild(rec);
+            } else {
+              initialDataStore.remove(rec);
+            }
+          }
+        }
+      }
+    }
+    if (callback) {
+      callback();
+    }
+  }});
+}
+function writeDeleted(record, localStorageAttribute, scope, isProgram, programId) {
+  var me = scope, localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
+  if (isProgram) {
+    if (!localStorageData.removed) {
+      localStorageData.removed = [];
+    }
+    localStorageData.removed.push(record);
+  } else {
+    if (!localStorageData[programId].removed) {
+      localStorageData[programId].removed = {};
+    }
+    if (!localStorageData[programId].removed[localStorageAttribute]) {
+      localStorageData[programId].removed[localStorageAttribute] = [];
+    }
+    localStorageData[programId].removed[localStorageAttribute].push(record);
+  }
+  localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+}
 Ext.Loader.setConfig({});
 Ext.application({models:['Slide', 'Option', 'Lookup', 'Program', 'Question', 'PersonAnswers', 'PersonPrograms'], views:['MainView', 'TextEditor', 'SelectionEditor', 'SourceView', 'Settings', 'Templates', 'FileUpload', 'Programs', 'HomePage', 'EditTools', 'EditSlides', 'SlideNavigation'], controllers:['CApp'], name:'eLearning', launch:function() {
   this.getController('CApp').appLaunch.call(this);

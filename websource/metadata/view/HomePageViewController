@@ -13,5 +13,180 @@
         "designer|userAlias": "string",
         "designer|userClassName": "string"
     },
-    "designerId": "fab9b3e0-2e83-416b-805f-a20803425381"
+    "designerId": "fab9b3e0-2e83-416b-805f-a20803425381",
+    "cn": [
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "url",
+                    "params",
+                    "name"
+                ],
+                "fn": "getAjax",
+                "implHandler": [
+                    "/*",
+                    "\t\tExt.Ajax.request({",
+                    "\t\t    url: 'feed.json',",
+                    "\t\t}).then(function(response) {",
+                    "\t\t    // use response",
+                    "\t\t}).always(function() {",
+                    "\t\t   // clean-up logic, regardless the outcome",
+                    "\t\t}).otherwise(function(reason){",
+                    "\t\t   // handle failure",
+                    "\t\t});",
+                    "\t\t*/",
+                    "",
+                    "return new Ext.Promise(function (resolve, reject) {",
+                    "\tExt.Ajax.request({",
+                    "\t\turl: url,",
+                    "\t\tparams: params,",
+                    "\t\tsuccess: function (response) {",
+                    "\t\t\tvar rObj = Ext.decode(response.responseText || '{}');",
+                    "",
+                    "\t\t\tif(rObj.success) {",
+                    "\t\t\t\tresolve({",
+                    "\t\t\t\t\tname: name,",
+                    "\t\t\t\t\tdata: rObj.data,",
+                    "\t\t\t\t});",
+                    "\t\t\t}",
+                    "\t\t\telse {",
+                    "\t\t\t\treject(rObj.reason || 'Success false');",
+                    "\t\t\t}",
+                    "\t\t},",
+                    "\t\tfailure: function (response) {",
+                    "\t\t\treject(response.status);",
+                    "\t\t}",
+                    "\t});",
+                    "});"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "getAjax",
+            "designerId": "1f2047ce-bb81-4007-8660-7ec54d59b9cd"
+        },
+        {
+            "type": "Ext.route.Route",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "triggerTrainingPrograms",
+                "implHandler": [
+                    "this.getView().up('#mainView').setActiveItem('gridPrograms');"
+                ],
+                "name": "routeTrainingPrograms",
+                "url": "training-programs"
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code",
+                "name": "string",
+                "url": "string"
+            },
+            "name": "triggerTrainingPrograms",
+            "designerId": "fcc68265-15b9-4c12-b98a-c929b13c2ee2"
+        },
+        {
+            "type": "Ext.route.Route",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "triggerEditPages",
+                "implHandler": [
+                    "var me = this;",
+                    "",
+                    "Ext.Promise.all([",
+                    "    me.getAjax('/Pub/Programs', {}, 'Programs')",
+                    "]).then(function(data) {",
+                    "",
+                    "\tif(data[0].data.length === 0){",
+                    "\t\tExt.toast(\"No programs exist in database - go through training programs\");",
+                    "\t\treturn;",
+                    "\t}",
+                    "\tvar returnedRec = data[0].data[0];",
+                    "",
+                    "",
+                    "\tvar TEMP_ID = \"{BA8780A3-9D57-40D5-8623-7033A31323D8}\";",
+                    "\tTEMP_ID = returnedRec.id; // using returned records id",
+                    "",
+                    "\tvar mainView = me.getView().up('#mainView');",
+                    "\tvar newActiveItem = mainView.setActiveItem('editSlides');",
+                    "",
+                    "\tvar localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));",
+                    "",
+                    "\tif(!localStorageData){",
+                    "\t\tlocalStorageData = {};",
+                    "\t}",
+                    "\tif(!localStorageData[TEMP_ID]){",
+                    "\t\tlocalStorageData[TEMP_ID] = {};",
+                    "\t}",
+                    "\tfor (var key in localStorageData[TEMP_ID]) {",
+                    "\t\tif(!localStorageData[TEMP_ID][key]){",
+                    "\t\t\tlocalStorageData[TEMP_ID][key]={};",
+                    "\t\t}",
+                    "\t}",
+                    "\tlocalStorage.setItem('mxp_elearning', Ext.encode(localStorageData));",
+                    "\t/*newActiveItem.getController().load({ program :{",
+                    "\t\tdata:{",
+                    "\t\t\t\"active\":true,",
+                    "\t\t\t\"categoryId\":30231143,",
+                    "\t\t\t\"certificateFileName\":\"\",",
+                    "\t\t\t\"changed\":\"Y\",",
+                    "\t\t\t\"completionTime\":60,",
+                    "\t\t\t\"created\":\"2018-07-23T12:04:00\",",
+                    "\t\t\t\"createdAtId\":5,",
+                    "\t\t\t\"createdById\":0,",
+                    "\t\t\t\"description\":\"New Training Program Description\",",
+                    "\t\t\t\"id\":TEMP_ID,",
+                    "\t\t\t\"lastChangeLogId\":191175066,",
+                    "\t\t\t\"lastChanges\":\"2018-07-23T12:04:00\",",
+                    "\t\t\t\"maxAttemptsScoreMode\":1000,",
+                    "\t\t\t\"maxAttemptsTrainingMode\":1000,",
+                    "\t\t\t\"name\":\"First program\",",
+                    "\t\t\t\"passScore\":2,",
+                    "\t\t\t\"programId\":50000026,",
+                    "\t\t\t\"validFrom\":\"2018-07-23T00:00:00\",",
+                    "\t\t\t\"validTo\":\"2019-07-23T00:00:00\"",
+                    "\t\t},",
+                    "\t\tid :TEMP_ID",
+                    "\t} }); // with programId",
+                    "\t*/",
+                    "",
+                    "\tnewActiveItem.getController().load({ program :{",
+                    "\t\tdata: returnedRec,",
+                    "\t\tid :TEMP_ID",
+                    "\t} }); // with programId",
+                    "",
+                    "",
+                    "});",
+                    ""
+                ],
+                "name": "routeEditPages",
+                "url": "edit-pages"
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code",
+                "name": "string",
+                "url": "string"
+            },
+            "name": "triggerEditPages",
+            "designerId": "f4a03561-b8bd-4873-bc69-b008ed57bc0c"
+        }
+    ]
 }

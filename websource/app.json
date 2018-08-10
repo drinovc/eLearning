@@ -9,7 +9,7 @@
       "font-awesome"
    ],
    "indexHtmlPath": "index.html",
-   "classpath": "${app.dir}/app,${app.dir}/app/functions/",
+   "classpath": "${app.dir}/app,${app.dir}/functions/",
    "overrides": [
       "overrides"
    ],
@@ -41,27 +41,27 @@
          "path": "${framework.dir}/build/ext-all-rtl-debug.js"
       },
       {
-         "path": "app/functions/overrides.js",
+         "path": "functions/overrides.js",
          "includeInBundle": true
       },
       {
-         "path": "app/functions/functions.js",
+         "path": "functions/functions.js",
          "includeInBundle": true
       },
       {
-         "path": "app/functions/database.js",
+         "path": "functions/database.js",
          "includeInBundle": true
       },
       {
-         "path": "app/functions/indexedDbProxy.js",
+         "path": "functions/indexedDbProxy.js",
          "includeInBundle": true
       },
       {
-         "path": "app/functions/IndexedDB.js",
+         "path": "functions/IndexedDB.js",
          "includeInBundle": true
       },
       {
-         "path": "app/functions/syncing.js",
+         "path": "functions/syncing.js",
          "includeInBundle": true
       },
       {

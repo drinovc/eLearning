@@ -94,7 +94,10 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 						me.currentPersonProgram = record[0].data;
 						if(me.currentPersonProgram.attempt >= me.programData.maxAttemptsTrainingMode + me.programData.maxAttemptsScoreMode){
 							// Cannot attempt any more tries... returning
-							Ext.toast("No more attempts allowed!");
+							var btnPreview = Ext.getCmp('btnPreview');
+							btnPreview.disable();
+							btnPreview.setText('Preview (No More Attempts)');
+
 							return;
 						}
 						// here we can read the records id to use in posting answers
@@ -128,6 +131,16 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 
 		}
+
+
+		// Update the online status icon based on connectivity
+		window.addEventListener('online',  me.connectionChange);
+		window.addEventListener('offline', me.connectionChange);
+
+
+		refs.panelContent.removeAll();
+		refs.toolbarPreview.hide();
+
 
 	},
 
@@ -387,7 +400,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		        y: snap * 2,
 		        width: me.round(refs.panelContent.el.getWidth() - 2 * snap * 2),
 		        height: snap * 2
-		    };
+		    }
+
 		Ext.each(refs.panelContent.el.query('.html-component'), function(component) {
 		    pos.y = me.round(Math.max(pos.y, component.y + component.height + snap));
 		});
@@ -715,8 +729,14 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		// }
 		// else {
 
-		opts.x = cmp.x = pos.x = me.round(opts.x || pos.x);
-		opts.y = cmp.y = pos.y = me.round(opts.y || pos.y);
+		if(opts.x === undefined || opts.x === null){
+			opts.x = pos.x;
+		}
+		if(opts.y === undefined || opts.y === null){
+			opts.y = pos.y;
+		}
+		opts.x = cmp.x = pos.x = me.round(opts.x);
+		opts.y = cmp.y = pos.y = me.round(opts.y);
 		opts.width = cmp.width = pos.width = me.round(opts.width || pos.width);
 		opts.height = cmp.height = pos.height = me.round(opts.height || pos.height);
 
@@ -835,10 +855,15 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		        },
 		        listeners: {
 		            beforedragstart: function (component, info, event, eOpts) {
-		                component.config.element.fireEvent('click');
-		                if (info.eventTarget.classList.contains('x-resizable-handle')) {
-		                    return false;
-		                }
+
+						if(!me._selectedComponents.length){
+							// if no componets are selected - fire click for this component
+							component.config.element.fireEvent('click');
+						}
+						if (info.eventTarget.classList.contains('x-resizable-handle')) {
+							return false;
+						}
+
 		            },
 		            dragcancel: function (component, info, event, eOpts) {
 		                var prevWrapper = document.getElementById("lineWrapper");
@@ -849,52 +874,65 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		            dragend: function (component, info, event, eOpts) {
 		                var prevWrapper = document.getElementById("lineWrapper");
 		                if(prevWrapper){
-		                    prevWrapper.outerHTML = ""; // remove old wrapper
-		                }
+							prevWrapper.outerHTML = ""; // remove old wrapper
+						}
+						var currentSlide = me.getCurrentSlide();
 
-		                var id = component.config.element._opts.id;
-		                var currentSlide = me.getCurrentSlide();
+						// set new info to this new altered component
 
-		                // THIS FUNCTION NOW WORKS FOR ALL - IMAGES, AUDIO, SELECTIONS, BECAUSE EVERYONE HAS ITS OWN ID
-
-		                // set new info to this new altered component
-		                var alteredContent = Ext.decode(currentSlide.data.content);
-		                for (var key in alteredContent.components){
-		                    if(alteredContent.components[key].id == id){
-		                        alteredContent.components[key].x = component._element.dom.offsetLeft;
-		                        alteredContent.components[key].y = component._element.dom.offsetTop;
-		                    }
-		                }
+						var alteredContent = Ext.decode(currentSlide.data.content);
+						for(var i = 0; i < me._selectedComponents.length; i++){
+							//var id = component.config.element._opts.id;
+							var id = me._selectedComponents[i]._opts.id;
+							for (var key in alteredContent.components){
+								if(alteredContent.components[key].id == id){
+									alteredContent.components[key].x = component._element.dom.offsetLeft;
+									alteredContent.components[key].y = component._element.dom.offsetTop;
+								}
+							}
+						}
 		                // change store and sync
 		                var storeItems = me.getStore('TreeStoreSlides').data.items;
-		                for(var i = 0; i < storeItems.length; i++){
-		                    if(storeItems[i].id == currentSlide.id){
 
-		                        storeItems[i].data.content = Ext.encode(alteredContent);
-		                        storeItems[i].data.lastChanged = new Date();
-		                        storeItems[i].phantom = true;
-		                        break;
-		                    }
-		                }
+						/*var slide = me.getStore('TreeStoreSlides').findRecord('id', currentSlide.id);
+						slide.data.content = Ext.encode(alteredContent);
+						slide.data.lastChanged = new Date();
+						slide.phantom = true;
+						*/
+						for(var i = 0; i < storeItems.length; i++){
+							if(storeItems[i].id == currentSlide.id){
+								storeItems[i].data.content = Ext.encode(alteredContent);
+								storeItems[i].data.lastChanged = new Date();
+								storeItems[i].phantom = true;
+								break;
+							}
+						}
 						me.saveState();
+						me._dragged = true;
 		            },
 		            dragmove: function (component, info, event, eOpts) {
-		                // Todo - drag move multiple componets at once - when holding down to drag, only 1 component is selected
-		                for(var i = 0; i < me._selectedComponents.length; i++){
-		                    var selectedCmp = me._selectedComponents[i];
-		                    selectedCmp._opts.x = selectedCmp.dom.offsetLeft;
-		                    selectedCmp._opts.y = selectedCmp.dom.offsetTop;
-		                }
-		                me.drawHelperLines(component); // todo draw helper lines for whole bounding box of all selected components
+						var difx = component._element.dom.offsetLeft - component.config.element._opts.x,
+							dify = component._element.dom.offsetTop - component.config.element._opts.y;
 
-		                me.showComponentTools(component);
+						for(var i = 0; i < me._selectedComponents.length; i++){
+		                    var selectedCmp = me._selectedComponents[i];
+		                    selectedCmp._opts.x += difx;
+		                    selectedCmp._opts.y += dify;
+
+							selectedCmp.dom.offsetLeft = selectedCmp._opts.x;
+							selectedCmp.dom.offsetTop = selectedCmp._opts.y;
+
+							selectedCmp.dom.style.left = selectedCmp._opts.x+'px';
+							selectedCmp.dom.style.top = selectedCmp._opts.y+'px';
+
+		                }
+						me.drawHelperLines(component);
+						me.showComponentTools(component);
+
 		            },
 		            dragstart: function (component, info, event, eOpts) {
-
 		                component.config.element._opts.x = component._element.dom.offsetLeft;
 		                component.config.element._opts.y = component._element.dom.offsetTop;
-
-
 		                me.drawHelperLines(component);
 
 		            }
@@ -1321,6 +1359,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 	saveState: function(dontSync) {
 		var me = this,
 		    refs = me.getReferences(),
+			syncIndicator = Ext.getCmp('syncIndicator'),
 		    content = {
 		        components: {}
 		    };
@@ -1374,6 +1413,28 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 			storeSlides.sync();
 			storeQuestions.sync();
 			storePrograms.sync();
+
+
+			// after syncing everything - we can delete current programs' removed entries
+
+			localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
+			if(localStorageData[me.programId].removed){
+				delete localStorageData[me.programId].removed;
+			}
+			localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+
+
+
+			syncIndicator.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
+			syncIndicator.addCls("fa-check success");
+			syncIndicator.tooltip.html = 'Synced';
+
+
+
+		}else{
+			syncIndicator.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
+			syncIndicator.addCls("fa-exclamation-triangle warning");
+			syncIndicator.tooltip.html = 'Not Synced';
 		}
 
 		var btnDeleteSlide = Ext.getCmp('btnDeleteSlide'),
@@ -1973,12 +2034,13 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		// calls sync of everything (slides, questions, answers, pageConfig...) - it retrieves data and pushes latest data to server
 		// syncs all data with server - this is called on program load and on navigator onLine
 		var me = this,
-		    localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId];
+		    localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId],
+			syncIndicator = Ext.getCmp('syncIndicator');
 
 		var syncQuestionsCallback = function(){
 		    // after loading slides, load questions
-
 			if(me.currentPersonProgram){
+
 				//var params = {programId: me.currentPersonProgram.personTrainingProgramId}; //get all data from current person program id
 				var params = {programId: me.programId};
 				initialDataSync('PersonAnswers', 'answers', params, callback, 'questionId', me);
@@ -1990,10 +2052,37 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 			}
 		};
 		var syncStateCallback = function(){
+
+			me.getStore('TreeStoreSlides').sync({
+
+				callback: function(){
+					print("called sync");
+
+
+					me.getStore('TreeStoreSlides').load({
+
+
+						params: {programId: me.programId},
+						callback: function(records, operation, success){
+							print("loaded again");
+						}
+					});
+				}
+			});
+
+
 		    var params = {programId: me.programId};
 		    initialDataSync('QuestionsStoreSlides', 'questions', params, syncQuestionsCallback, 'id', me);
 
 		};
+
+		// update sync icon
+		syncIndicator.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
+		syncIndicator.addCls("fa-spin fa-refresh warning");
+		syncIndicator.tooltip.html = 'Syncing';
+
+
+
 		if(localStorageData.pageSetup){ // TODO retrieve it later from database
 		    me._pageSetup = localStorageData.pageSetup;
 		}
@@ -2082,7 +2171,18 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		}
 	},
 
-	onTreeViewDragDrop: function(treeviewdragdrop) {
+	createTooltip: function(component, eOpts) {
+		// this function could be basic binding but if it is, defaultListenerScope becomes true and then store bindings dont work!!!!!!!!
+
+		component.tooltip = Ext.create('Ext.tip.ToolTip', {
+			target: component.id,
+			html: 'Not Synced'
+		});
+
+
+	},
+
+	onTreeDragDrop: function(treeviewdragdrop) {
 		var me = this,
 			refs = me.getReferences();
 
@@ -2098,7 +2198,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 	},
 
-	onTreeSlidesSelect: function(rowmodel, record, index, eOpts) {
+	onTreeItemSelect: function(rowmodel, record, index, eOpts) {
 		// loading slide state for both sections and slides, because creating title every time caused sync with database
 
 		var me = this,
@@ -2125,7 +2225,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 	},
 
-	onTreeSlidesItemCollapse: function(nodeinterface, eOpts) {
+	onTreeItemCollapse: function(nodeinterface, eOpts) {
 		print("tree slides item colapse",nodeinterface, eOpts);
 		var me = this,
 			refs = me.getReferences();
@@ -2133,7 +2233,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		refs.treeSlides.setSelection(nodeinterface);
 	},
 
-	onEditSlidesBoxReady: function(component, width, height, eOpts) {
+	onEditBoxReady: function(component, width, height, eOpts) {
 		var me = this,
 			refs = me.getReferences();
 
@@ -2160,15 +2260,14 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 			SELECTION: 'selection'
 		};
 
-		refs.panelContent.removeAll();
-		refs.toolbarPreview.hide();
 
-
-		component.el.on('click', function(e, t) {
+		component.el.on('mouseup', function(e, t) {
 			// hiding component tools if component itself (like bodyPanel, ImageComponent...) didn't stop click event to backpropagate
-
+			if(me._dragged){ // if we were just dragging - dont trigger mouse up event
+				me._dragged = null;
+				return;
+			}
 			if(!e.ctrlKey && !e.shiftKey){
-
 				// if we clicked on background without holding shift or ctrl key - remove all selected components
 				// if we are holding shift or ctrl key, we are multiselecting and we might have clicked on background by accident
 				me.hideComponentTools();
@@ -2178,9 +2277,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 				}
 				me._selectedComponents = [];
 			}
-
-
-
 		});
 
 		document.addEventListener("keydown", function onPress(event) {
@@ -2231,12 +2327,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 				Ext.toast('We went offline! Content is still saved locally. Reconnect to save content with server.');
 			}
 		};
-		// Update the online status icon based on connectivity
-		window.addEventListener('online',  me.connectionChange);
-		window.addEventListener('offline', me.connectionChange);
 
 		// add eventlistenere on fullscreen change to remove this panel on fullscreen off
-		var me = this;
 		var screen_change_events = ["webkitfullscreenchange", "mozfullscreenchange", "fullscreenchange", "MSFullscreenChange"];
 
 		for (var i in screen_change_events){
@@ -2255,7 +2347,21 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 	},
 
 	onTreeStoreRemove: function(store, records, index, isMove, eOpts) {
-		print("called tree store remove", store, records, index, isMove, eOpts );
+		var me = this;
+		for(var i = 0; i < records.length; i++){
+			var deletedRec = records[i];
+			var recId = deletedRec.id;
+			writeDeleted(recId, 'slides', me, false, me.programId);
+		}
+	},
+
+	onQuestionsRemove: function(store, records, index, isMove, eOpts) {
+		var me = this;
+		for(var i = 0; i < records.length; i++){
+			var deletedRec = records[i];
+			var recId = deletedRec.id;
+			writeDeleted(recId, 'questions', me, false, me.programId);
+		}
 	}
 
 });

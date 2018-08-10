@@ -42,6 +42,9 @@ Ext.define('eLearning.view.ProgramsViewController', {
 			store.setData(localStorageEntries);
 		}
 
+		// Update the online status icon based on connectivity
+		window.addEventListener('online',  me.connectionChange);
+		window.addEventListener('offline', me.connectionChange);
 
 
 	},
@@ -63,9 +66,10 @@ Ext.define('eLearning.view.ProgramsViewController', {
 
 	saveState: function() {
 		var me = this,
-		    data = me.getCurrentState();
+			data = me.getCurrentState(),
+			syncIndicatorPrograms = Ext.getCmp('syncIndicatorPrograms'),
+			localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
 
-		var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
 		// init store
 		if(!localStorageData){
 			localStorageData = {};
@@ -80,12 +84,38 @@ Ext.define('eLearning.view.ProgramsViewController', {
 			localStorageData[data[key].programInfo.id].programInfo = data[key].programInfo;
 			newLocalStorageData[key] = localStorageData[key]; // takes localstorage entries that their programs are avaliable in programs store
 		}
+		if(localStorageData.removed){
+			newLocalStorageData.removed = localStorageData.removed;
+		}
+
+
 		// sets current state to localstorage and calls update with server
 		localStorage.setItem('mxp_elearning', Ext.encode(newLocalStorageData));
 
 		if(navigator.onLine){
 			// sync all stores
 			me.getStore('StorePrograms').sync();
+
+
+			// after syncing everything - we can delete current programs' removed entries
+
+			localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
+			if(localStorageData.removed){
+				delete localStorageData.removed;
+			}
+			localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+
+
+			syncIndicatorPrograms.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
+			syncIndicatorPrograms.addCls("fa-check success");
+			syncIndicatorPrograms.tooltip.html = 'Synced';
+
+
+		}else{
+			syncIndicatorPrograms.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
+			syncIndicatorPrograms.addCls("fa-exclamation-triangle warning");
+			syncIndicatorPrograms.tooltip.html = 'Not Synced';
+
 		}
 
 		var editButton = Ext.getCmp('btnEdit');
@@ -105,16 +135,23 @@ Ext.define('eLearning.view.ProgramsViewController', {
 		var me = this,
 			TEST_PERSON_ID = 10000112,
 			store = me.getStore('StorePrograms'),
+			syncIndicatorPrograms = Ext.getCmp('syncIndicatorPrograms'),
 			syncStateCallback = function(){
-				store.sync();
 
 				me.getView().setSelection(me.getSelection());
-
+				Ext.getCmp('gridPrograms').getView().refresh();
 				if(callback){ callback(); }
 			};
 
+
+		syncIndicatorPrograms.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
+		syncIndicatorPrograms.addCls("fa-spin fa-refresh warning");
+		syncIndicatorPrograms.tooltip.html = 'Syncing';
+
+
 		var params = {userId: TEST_PERSON_ID}; // Todo - this query by user is unsupported by 2018-08-08
-		initialDataSyncPrograms('StorePrograms', 'programInfo', params, syncStateCallback, 'id', me);
+		//initialDataSyncPrograms('StorePrograms', 'programInfo', params, syncStateCallback, 'id', me);
+		initialDataSync('StorePrograms', 'programInfo', params, syncStateCallback, 'id', me);
 
 	},
 
@@ -155,6 +192,8 @@ Ext.define('eLearning.view.ProgramsViewController', {
 	},
 
 	onRowEditingEdit: function(editor, context, eOpts) {
+		context.record.phantom = true;
+		context.record.data.lastChanged = new Date();
 		this.saveState();
 	},
 
@@ -234,6 +273,15 @@ Ext.define('eLearning.view.ProgramsViewController', {
 		newActiveItem.getController().load({ program: selection });
 	},
 
+	createTooltip: function(component, eOpts) {
+		// this function could be basic binding but if it is, defaultListenerScope becomes true and then store bindings dont work!!!!!!!!
+
+		component.tooltip = Ext.create('Ext.tip.ToolTip', {
+			target: component.id,
+			html: 'Not Synced'
+		});
+	},
+
 	close: function(owner, tool, event) {
 		this.unload();
 		this.getView().up('#mainView').setActiveItem('homePage');
@@ -247,6 +295,8 @@ Ext.define('eLearning.view.ProgramsViewController', {
 			if (navigator.onLine){
 				var callback = function(){
 					Ext.toast('Welcome back online! Content saved on server.');
+					me.saveState();
+
 				};
 
 
@@ -256,11 +306,20 @@ Ext.define('eLearning.view.ProgramsViewController', {
 				Ext.toast('We went offline! Content is still saved locally. Reconnect to save content with server.');
 			}
 		};
-		// Update the online status icon based on connectivity
-		window.addEventListener('online',  me.connectionChange);
-		window.addEventListener('offline', me.connectionChange);
 
 		this.load();
+
+	},
+
+	onStoreProgramsRemove: function(store, records, index, isMove, eOpts) {
+		var me = this;
+		print("called store remove programs", store, records, index, isMove, eOpts );
+		for(var i = 0; i < records.length; i++){
+			var deletedRec = records[i];
+			var recId = deletedRec.id;
+			print("we deleted record with id", recId);
+			writeDeleted(recId, null, me, true, null);
+		}
 
 	}
 

@@ -39,6 +39,13 @@ Ext.define('eLearning.view.ProgramsViewModel', {
 					type: 'json',
 					rootProperty: 'data'
 				}
+			},
+			listeners: {
+				remove: {
+					fn: 'onStoreProgramsRemove',
+					delay: 100,
+					single: false
+				}
 			}
 		},
 		StoreProgramCategories: {

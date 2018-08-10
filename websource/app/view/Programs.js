@@ -32,6 +32,7 @@ Ext.define('eLearning.view.Programs', {
 		'Ext.toolbar.Toolbar',
 		'Ext.button.Button',
 		'Ext.toolbar.Separator',
+		'Ext.toolbar.TextItem',
 		'Ext.panel.Tool'
 	],
 
@@ -39,6 +40,7 @@ Ext.define('eLearning.view.Programs', {
 	viewModel: {
 		type: 'programs'
 	},
+	id: 'gridPrograms',
 	itemId: 'gridPrograms',
 	title: 'Training Programs',
 
@@ -202,6 +204,14 @@ Ext.define('eLearning.view.Programs', {
 					handler: 'editSlides',
 					id: 'btnEdit',
 					text: 'Edit Slides'
+				},
+				{
+					xtype: 'tbtext',
+					cls: 'x-fa fa-exclamation-triangle warning',
+					id: 'syncIndicatorPrograms',
+					listeners: {
+						afterrender: 'createTooltip'
+					}
 				}
 			]
 		}

@@ -19,35 +19,44 @@ Ext.define('eLearning.controller.CApp', {
 	appLaunch: function() {
 		App = this;
 
-		// Config variable for using mockup data
 		var MOCKUP = false;
+
 		if (MOCKUP){
-		    console.warn("App is using mockup data.");
+			console.warn("App is using mockup data.");
 		}
 
 		App = Ext.merge(App, {
-		    lookups: {},
-		    shared: {}
+			lookups: {},
+			shared: {}
 		});
 
 		// BEFORE EVERY REQUEST
 
 		Ext.Ajax.on("beforerequest", function(conn, options, eOpts) {
-		    if(options.url) {
-		        // check if url hasn't been modified yet
-		        if (options.url.split('/')[0] === ""){
-		            if(MOCKUP) {
-		                options.url = 'mockup' + options.url.split('?')[0] + '.json';
-		            }
-		            else{
-		                 options.url = 'MXP_App_ISAPI.dll' + options.url.split('?')[0];
-		            }
-		        }
-		    }
+			if(options.url) {
+				// check if url hasn't been modified yet
+				if (options.url.split('/')[0] === ""){
+					if(MOCKUP) {
+						options.url = 'mockup' + options.url.split('?')[0] + '.json';
+					}
+					else{
+						options.url = 'MXP_App_ISAPI.dll' + options.url.split('?')[0];
+					}
+				}
+			}
 		});
 
 		var grid = Ext.create("eLearning.view.MainView");
 
+
+		/* tooltips area:
+
+		- If SQL query for single entry is created, make sure stores bach option is false
+		- When removing from tree store, you append to item.parent.removeChild(item)
+		- When adding to tree store, use appendChild()
+		- To silently delete data from store, use .loadTata([],false)
+		- Do not mix basic event bindings and controller envet bindings, otherwise store event bindings won't work
+		*/
 
 	}
 

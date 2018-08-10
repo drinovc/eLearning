@@ -116,7 +116,12 @@
                     "userConfig": {
                         "fn": "onTreeStoreRemove",
                         "implHandler": [
-                            "print(\"called tree store remove\", store, records, index, isMove, eOpts );"
+                            "var me = this;",
+                            "for(var i = 0; i < records.length; i++){",
+                            "\tvar deletedRec = records[i];",
+                            "\tvar recId = deletedRec.id;",
+                            "\twriteDeleted(recId, 'slides', me, false, me.programId);",
+                            "}"
                         ],
                         "name": "remove",
                         "scope": "me"
@@ -128,7 +133,7 @@
                         "scope": "string"
                     },
                     "name": "onTreeStoreRemove",
-                    "designerId": "ed148237-eb3c-467a-a3f3-6db89c24927d"
+                    "designerId": "a1e06f01-92ba-4260-ab96-33749d8257e4"
                 }
             ]
         },
@@ -195,6 +200,35 @@
                             "designerId": "5df6fb6d-0563-4072-b2e9-17619fd1b0f9"
                         }
                     ]
+                },
+                {
+                    "type": "viewcontrollereventbinding",
+                    "reference": {
+                        "name": "listeners",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "fn": "onQuestionsRemove",
+                        "implHandler": [
+                            "var me = this;",
+                            "for(var i = 0; i < records.length; i++){",
+                            "\tvar deletedRec = records[i];",
+                            "\tvar recId = deletedRec.id;",
+                            "\twriteDeleted(recId, 'questions', me, false, me.programId);",
+                            "}"
+                        ],
+                        "name": "remove",
+                        "scope": "me"
+                    },
+                    "configAlternates": {
+                        "fn": "string",
+                        "implHandler": "code",
+                        "name": "string",
+                        "scope": "string"
+                    },
+                    "name": "onQuestionsRemove",
+                    "designerId": "ca780ed8-8af2-4e45-9053-5c06879f762c"
                 }
             ]
         },

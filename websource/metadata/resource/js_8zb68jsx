@@ -8,7 +8,7 @@
     "userConfig": {
         "designer|userClassName": "js_8zb68jsx",
         "includeInBundle": true,
-        "url": "app/functions/syncing.js"
+        "url": "functions/syncing.js"
     },
     "configAlternates": {
         "designer|userClassName": "string",

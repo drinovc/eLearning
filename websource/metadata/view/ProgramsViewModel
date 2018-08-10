@@ -76,6 +76,42 @@
                             "designerId": "11c6e5ad-75ed-444d-99eb-acdd1ff0bef8"
                         }
                     ]
+                },
+                {
+                    "type": "viewcontrollereventbinding",
+                    "reference": {
+                        "name": "listeners",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "delay": 100,
+                        "fn": "onStoreProgramsRemove",
+                        "implHandler": [
+                            "var me = this;",
+                            "print(\"called store remove programs\", store, records, index, isMove, eOpts );",
+                            "for(var i = 0; i < records.length; i++){",
+                            "\tvar deletedRec = records[i];",
+                            "\tvar recId = deletedRec.id;",
+                            "\tprint(\"we deleted record with id\", recId);",
+                            "\twriteDeleted(recId, null, me, true, null);",
+                            "}",
+                            ""
+                        ],
+                        "name": "remove",
+                        "scope": "me",
+                        "single": false
+                    },
+                    "configAlternates": {
+                        "fn": "string",
+                        "implHandler": "code",
+                        "name": "string",
+                        "scope": "string",
+                        "delay": "number",
+                        "single": "boolean"
+                    },
+                    "name": "onStoreProgramsRemove",
+                    "designerId": "43ec9268-0459-4b09-8282-b62f247ef1eb"
                 }
             ]
         },
