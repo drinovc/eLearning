@@ -65,6 +65,14 @@
          "includeInBundle": true
       },
       {
+         "path": "functions/html2canvas.js",
+         "includeInBundle": true
+      },
+      {
+         "path": "functions/lz-string.js",
+         "includeInBundle": true
+      },
+      {
          "path": "app.js",
          "bundle": true
       }

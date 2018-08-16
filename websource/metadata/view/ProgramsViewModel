@@ -124,7 +124,7 @@
             "codeClass": null,
             "userConfig": {
                 "autoLoad": false,
-                "model": "Lookup",
+                "model": "LookupCategories",
                 "name": "StoreProgramCategories"
             },
             "configAlternates": {
@@ -134,6 +134,26 @@
             },
             "name": "MyStore1",
             "designerId": "85a19d5b-1265-4227-ab6a-200c61c7465f"
+        },
+        {
+            "type": "Ext.data.Store",
+            "reference": {
+                "name": "stores",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "autoLoad": false,
+                "model": "LookupCertificates",
+                "name": "StoreProgramCertificates"
+            },
+            "configAlternates": {
+                "model": "model",
+                "name": "string",
+                "autoLoad": "boolean"
+            },
+            "name": "MyStore",
+            "designerId": "827295c2-9d31-4aa2-9c9d-0d13a1cca7ac"
         }
     ]
 }

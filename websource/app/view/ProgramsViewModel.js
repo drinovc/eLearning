@@ -50,7 +50,11 @@ Ext.define('eLearning.view.ProgramsViewModel', {
 		},
 		StoreProgramCategories: {
 			autoLoad: false,
-			model: 'eLearning.model.Lookup'
+			model: 'eLearning.model.LookupCategories'
+		},
+		StoreProgramCertificates: {
+			autoLoad: false,
+			model: 'eLearning.model.LookupCertificates'
 		}
 	}
 

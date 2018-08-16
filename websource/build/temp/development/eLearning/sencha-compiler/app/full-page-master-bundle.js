@@ -5,4 +5,6 @@
 // @require C:\Users\jerne\Documents\GitHub\eLearning\websource\functions\indexedDbProxy.js
 // @require C:\Users\jerne\Documents\GitHub\eLearning\websource\functions\IndexedDB.js
 // @require C:\Users\jerne\Documents\GitHub\eLearning\websource\functions\syncing.js
+// @require C:\Users\jerne\Documents\GitHub\eLearning\websource\functions\html2canvas.js
+// @require C:\Users\jerne\Documents\GitHub\eLearning\websource\functions\lz-string.js
 // @require C:\Users\jerne\Documents\GitHub\eLearning\websource\app.js

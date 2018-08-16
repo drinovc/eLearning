@@ -140,3 +140,96 @@ function closeFullscreen() {
 	}
 }
 
+
+
+
+
+
+
+function getAjax(url, params, name){
+
+	/*
+		Ext.Ajax.request({
+		    url: 'feed.json',
+		}).then(function(response) {
+		    // use response
+		}).always(function() {
+		   // clean-up logic, regardless the outcome
+		}).otherwise(function(reason){
+		   // handle failure
+		});
+		*/
+
+	return new Ext.Promise(function (resolve, reject) {
+		Ext.Ajax.request({
+			url: url,
+			params: params,
+			success: function (response) {
+				var rObj = Ext.decode(response.responseText || '{}');
+
+				if(rObj.success) {
+					resolve({
+						name: name,
+						data: rObj.data,
+					});
+				}
+				else {
+					reject(rObj.reason || 'Success false');
+				}
+			},
+			failure: function (response) {
+				reject(response.status);
+			}
+		});
+	});
+}
+
+
+
+
+
+
+function loadLookups(callback){
+
+	Ext.Promise.all([
+		getAjax('/Lookups/ProgramCategories', {}, 'ProgramCategories'),
+		getAjax('/Lookups/ProgramPageCategories', {}, 'ProgramPageCategories'),
+		getAjax('/Lookups/CoursesAndCertificates', {}, 'CoursesAndCertificates'),
+		getAjax('/Lookups/ProgramStatuses', {}, 'ProgramStatuses')
+	]).then(function(data) {
+		Ext.each(data, function(data) {
+			App.lookups[data.name] = data.data;
+		});
+
+		var i = 0,
+			obj = null;
+
+		// Getting ProgramPageCategories into dictionary where key is text ('Chapter', 'Page') and value is id (1, 2)
+		App.ProgramPageCategoriesEnum = {};
+		for(i = 0; i < App.lookups.ProgramPageCategories.length; i++){
+			obj = App.lookups.ProgramPageCategories[i];
+			App.ProgramPageCategoriesEnum[obj.text] = obj.id;
+		}
+		Object.freeze(App.ProgramPageCategoriesEnum); // freezing enum so it cannot be changed later
+
+		// Getting ProgramStatuses into dictionary where key is text ('In Progress', 'Passed'...) and value is id (1, 2...)
+		App.ProgramStatuses = {};
+		for(i = 0; i < App.lookups.ProgramStatuses.length; i++){
+			obj = App.lookups.ProgramStatuses[i];
+			App.ProgramStatuses[obj.text] = obj.id;
+		}
+		Object.freeze(App.ProgramStatuses); // freezing enum so it cannot be changed later
+
+		// Getting Programs and certificates into dictionary where key is text ('In Progress', 'Passed'...) and value is id (1, 2...)
+		App.CoursesAndCertificates = {};
+		for(i = 0; i < App.lookups.CoursesAndCertificates.length; i++){
+			obj = App.lookups.CoursesAndCertificates[i];
+			App.CoursesAndCertificates[obj.id] = obj.text;
+		}
+		Object.freeze(App.CoursesAndCertificates); // freezing enum so it cannot be changed later
+
+		if(callback){ callback(); }
+	}, function(err) {
+		Ext.Msg.alert('Load Lookups Error', err);
+	});
+}

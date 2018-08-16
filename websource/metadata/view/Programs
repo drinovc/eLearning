@@ -392,25 +392,74 @@
             },
             "codeClass": null,
             "userConfig": {
+                "cellWrap": true,
                 "dataIndex": "certificateFileName",
+                "minWidth": 250,
                 "text": "Certificate"
             },
             "configAlternates": {
                 "dataIndex": "datafield",
-                "text": "string"
+                "format": "string",
+                "text": "string",
+                "minWidth": "number",
+                "cellWrap": "boolean"
             },
-            "name": "MyColumn6",
-            "designerId": "d7b87287-11b5-4a23-b347-fd10035bc5fa",
+            "name": "MyColumn1",
+            "designerId": "66751a26-660e-483b-962a-bb5e3356d26e",
             "cn": [
                 {
-                    "type": "Ext.form.field.Text",
+                    "type": "Ext.form.field.ComboBox",
                     "reference": {
                         "name": "editor",
                         "type": "object"
                     },
                     "codeClass": null,
-                    "name": "MyTextField7",
-                    "designerId": "d51afcea-e92e-410a-86e5-804b84f5a540"
+                    "userConfig": {
+                        "queryMode": "local",
+                        "store": [
+                            "{StoreProgramCertificates}"
+                        ],
+                        "valueField": "id"
+                    },
+                    "configAlternates": {
+                        "value": "string",
+                        "store": "binding",
+                        "queryMode": "string",
+                        "valueField": "datafield"
+                    },
+                    "name": "MyComboBox",
+                    "designerId": "7740c723-5182-449a-bcb5-33d6c749aa04"
+                },
+                {
+                    "type": "fixedfunction",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "designer|params": [
+                            "value",
+                            "metaData",
+                            "record",
+                            "rowIndex",
+                            "colIndex",
+                            "store",
+                            "view"
+                        ],
+                        "fn": "renderer",
+                        "implHandler": [
+                            "return !value ? '' : App.lookups.CoursesAndCertificates.filter(function(item) {return item.id == value; })[0].text;",
+                            ""
+                        ]
+                    },
+                    "configAlternates": {
+                        "designer|params": "typedarray",
+                        "fn": "string",
+                        "implHandler": "code"
+                    },
+                    "name": "renderer",
+                    "designerId": "7aaf4e14-7be0-4435-bf05-d5ccf688f5a6"
                 }
             ]
         },
@@ -641,12 +690,24 @@
                                     "\tnextProgramIdx = store.indexOf(currentProgram) + 1,",
                                     "\tnextProgram = store.getAt(nextProgramIdx),",
                                     "\tprevProgramIdx = store.indexOf(currentProgram) - 1,",
-                                    "\tprevProgram = store.getAt(prevProgramIdx);",
+                                    "\tprevProgram = store.getAt(prevProgramIdx),",
+                                    "\tselection = me.getSelection(),",
+                                    "\tslidesController = me.getView().up('mainview').down('#editSlides').getController();",
                                     "",
                                     "",
-                                    "store.remove(me.getSelection());",
+                                    "//  delete all slides, questions...",
+                                    "slidesController.programId = selection.id;",
+                                    "slidesController.clean();",
+                                    "\t",
+                                    "//then delete program",
+                                    "",
+                                    "store.remove(selection);",
                                     "me.saveState();",
-                                    "me.getView().setSelection(nextProgram || prevProgram || store.first()); // set new selection"
+                                    "me.getView().setSelection(nextProgram || prevProgram || store.first()); // set new selection",
+                                    "",
+                                    "",
+                                    "",
+                                    ""
                                 ]
                             },
                             "configAlternates": {
@@ -693,24 +754,162 @@
                                 "designer|viewControllerFn": "duplicate",
                                 "fn": "handler",
                                 "implHandler": [
-                                    "console.warn(\"Duplicate unsupported - we have to copy current program, its slides, slides' questions, questions' answers and user program\");",
-                                    "",
-                                    "return;",
-                                    "",
-                                    "var me = this,",
+                                    "var REPLICATE_ANSWERS = true, // we might not want to replicate answers",
+                                    "\tme = this,",
                                     "\tstore = me.getStore('StorePrograms'),",
-                                    "\tselection = me.getView.getSelection()[0];",
-                                    "var duplicateProgram = Ext.clone(selection);",
+                                    "\tselection = me.getView().getSelection()[0],",
+                                    "\tslidesController = me.getView().up('mainview').down('#editSlides').getController();",
+                                    "",
+                                    "var duplicateProgram = me.getCurrentState()[selection.id].programInfo;",
                                     "//change its id",
-                                    "duplicateProgram.id = createGUID(); // todo is this correct?",
+                                    "print(\"printing duplicate program\", duplicateProgram);",
+                                    "duplicateProgram.id = createGUID();",
+                                    "duplicateProgram.name = duplicateProgram.name + \" (duplicate)\";",
+                                    "",
                                     "store.add(duplicateProgram)[0].phantom = true;",
                                     "",
+                                    "store.sync({",
+                                    "\tcallback:function(){",
                                     "",
-                                    "// todo iterate through its original programs slides, questions, answers and personProgram",
-                                    "// programs view model doesn't have all the other needed stores, so i will have to access editSlides' stores somehow",
+                                    "\t\t// todo iterate through its original programs slides, questions, answers and personProgram",
+                                    "\t\t// programs view model doesn't have all the other needed stores, so i will have to access editSlides' stores somehow",
                                     "",
-                                    "me.saveState();",
-                                    "me.getView().setSelection(store.last()); // set new selection"
+                                    "\t\t// ko mam duplicatan program id",
+                                    "\t\t// nardim serverSync editSlides s tastarmu idjam,",
+                                    "\t\t// potem poišem v localstorage ta tastar id",
+                                    "\t\t// ga preimenujem v tanov id od programa",
+                                    "\t\t// stisnem še enkrat serverSync in bo vse postal na tanov guid",
+                                    "",
+                                    "",
+                                    "",
+                                    "\t\t// save to localstorage this new program",
+                                    "\t\tme.saveState();",
+                                    "\t\tvar serverSyncCallback2 = function(){",
+                                    "\t\t\t// then save everything and set new selection to newly duplicated slide",
+                                    "\t\t\t//slidesController.saveState(); // DONT SAVE STATE FOR THAT CONTROLLER HERE",
+                                    "\t\t\t// save all changes that have been made to duplicated program",
+                                    "\t\t\tme.saveState();",
+                                    "\t\t\tme.getView().setSelection(store.last());",
+                                    "\t\t};",
+                                    "",
+                                    "\t\t",
+                                    "\t\tvar serverSyncCallback1 = function(){",
+                                    "\t\t\tslidesController.saveState(true); // save everything to localstorage",
+                                    "",
+                                    "\t\t\t// copy localstorage data into new id",
+                                    "\t\t\tvar localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));",
+                                    "\t\t\tlocalStorageData[duplicateProgram.id] = Ext.clone(localStorageData[selection.id]);",
+                                    "",
+                                    "\t\t\tvar slides = localStorageData[duplicateProgram.id].slides,",
+                                    "\t\t\t\tquestions = localStorageData[duplicateProgram.id].questions,",
+                                    "\t\t\t\tanswers = localStorageData[duplicateProgram.id].answers,",
+                                    "\t\t\t\tpersonProgram = localStorageData[duplicateProgram.id].personProgram,",
+                                    "\t\t\t\tslidesNew = {},",
+                                    "\t\t\t\tquestionsNew = {},",
+                                    "\t\t\t\tanswersNew = {};",
+                                    "",
+                                    "\t\t\t// reparent everything",
+                                    "",
+                                    "\t\t\tfor(var slideKey in slides){",
+                                    "\t\t\t\tvar slide = slides[slideKey];",
+                                    "",
+                                    "\t\t\t\t// memorize",
+                                    "\t\t\t\tslideOldId = slide.id;",
+                                    "\t\t\t\t// create new guid",
+                                    "\t\t\t\tslide.id = createGUID();",
+                                    "\t\t\t\tslide.programId = duplicateProgram.id;",
+                                    "",
+                                    "\t\t\t\t// iterate through all slides and check if anyone has set parent this slide",
+                                    "\t\t\t\tfor(var childSlideKey in slides){",
+                                    "\t\t\t\t\tvar childSlide = slides[childSlideKey];",
+                                    "",
+                                    "\t\t\t\t\tif(childSlide.parentId == slideOldId){",
+                                    "\t\t\t\t\t\t// reparent",
+                                    "\t\t\t\t\t\tchildSlide.parentId = slide.id;",
+                                    "\t\t\t\t\t}",
+                                    "\t\t\t\t}",
+                                    "",
+                                    "",
+                                    "\t\t\t\tif(!slide.content){",
+                                    "\t\t\t\t\tcontinue;",
+                                    "\t\t\t\t}",
+                                    "",
+                                    "\t\t\t\tvar slideComps = Ext.decode(slide.content);",
+                                    "\t\t\t\tvar slideNewComponents = {components:{}};",
+                                    "",
+                                    "\t\t\t\tfor(var compKey in slideComps.components){",
+                                    "\t\t\t\t\tvar comp = slideComps.components[compKey];",
+                                    "\t\t\t\t\tcomp.id = createGUID();",
+                                    "",
+                                    "\t\t\t\t\t// questions",
+                                    "\t\t\t\t\tfor(var questionKey in questions){",
+                                    "\t\t\t\t\t\tvar question = questions[questionKey];",
+                                    "",
+                                    "\t\t\t\t\t\t//if(slideOldId == questions.pageId){ // WITH THIS WORKED BUT ITS WRONG",
+                                    "\t\t\t\t\t\tif(slideOldId == question.pageId){",
+                                    "\t\t\t\t\t\t\t// first reparent",
+                                    "\t\t\t\t\t\t\tquestion.pageId = slide.id;",
+                                    "",
+                                    "\t\t\t\t\t\t\t// memorize",
+                                    "\t\t\t\t\t\t\tquestionOldId = question.id;",
+                                    "\t\t\t\t\t\t\t// use guid from component",
+                                    "\t\t\t\t\t\t\tquestion.id = comp.id;",
+                                    "",
+                                    "\t\t\t\t\t\t\tif(REPLICATE_ANSWERS){",
+                                    "\t\t\t\t\t\t\t\tfor(var answerKey in answers){",
+                                    "\t\t\t\t\t\t\t\t\tvar answer = answers[answerKey];",
+                                    "",
+                                    "\t\t\t\t\t\t\t\t\tif(questionOldId == answer.questionId){",
+                                    "\t\t\t\t\t\t\t\t\t\t// first reparent",
+                                    "\t\t\t\t\t\t\t\t\t\tanswer.questionId = question.id;",
+                                    "",
+                                    "\t\t\t\t\t\t\t\t\t\t// memorize",
+                                    "\t\t\t\t\t\t\t\t\t\tanswerOldId = answer.id;",
+                                    "\t\t\t\t\t\t\t\t\t\t// create new guid",
+                                    "\t\t\t\t\t\t\t\t\t\tanswer.id = createGUID();",
+                                    "\t\t\t\t\t\t\t\t\t}",
+                                    "\t\t\t\t\t\t\t\t\tanswersNew[answer.id] = answer;",
+                                    "\t\t\t\t\t\t\t\t}\t",
+                                    "\t\t\t\t\t\t\t}",
+                                    "\t\t\t\t\t\t\tquestionsNew[question.id] = question;",
+                                    "\t\t\t\t\t\t}",
+                                    "\t\t\t\t\t}",
+                                    "\t\t\t\t\tslideNewComponents.components[comp.id] = comp;",
+                                    "\t\t\t\t}",
+                                    "\t\t\t\tslide.content = Ext.encode(slideNewComponents);",
+                                    "\t\t\t\tslidesNew[slide.id] = slide;",
+                                    "\t\t\t}",
+                                    "\t\t\tlocalStorageData[duplicateProgram.id].slides = slidesNew;",
+                                    "\t\t\tlocalStorageData[duplicateProgram.id].questions = questionsNew;",
+                                    "\t\t\tlocalStorageData[duplicateProgram.id].answers = answersNew;",
+                                    "",
+                                    "\t\t\t// dont replicate person program",
+                                    "",
+                                    "\t\t\t// set data back to localstorage",
+                                    "\t\t\tlocalStorage.setItem('mxp_elearning', Ext.encode(localStorageData));",
+                                    "",
+                                    "",
+                                    "\t\t\t// call server sync to upload all data for this program id from localstorage to database",
+                                    "",
+                                    "\t\t\t// TEMP - DOEST THIS WORK???",
+                                    "\t\t\tslidesController.getStore('TreeStoreSlides').loadData([],false);",
+                                    "\t\t\tslidesController.getStore('TreeStoreSlides').getRootNode().removeAll(false, true,true);",
+                                    "\t\t\tslidesController.getStore('QuestionsStoreSlides').loadData([],false);",
+                                    "\t\t\tslidesController.getStore('PersonAnswers').loadData([],false);",
+                                    "\t\t\tslidesController.getStore('PersonPrograms').loadData([],false);",
+                                    "",
+                                    "\t\t\tslidesController.programId = duplicateProgram.id;",
+                                    "\t\t\tslidesController.serverSync(serverSyncCallback2);",
+                                    "\t\t};",
+                                    "",
+                                    "\t\t// first call save state to save everything from old program to localstorage",
+                                    "\t\tslidesController.programId = selection.id;",
+                                    "\t\tslidesController.serverSync(serverSyncCallback1);",
+                                    "",
+                                    "\t}",
+                                    "});",
+                                    "",
+                                    ""
                                 ]
                             },
                             "configAlternates": {
@@ -721,53 +920,6 @@
                             },
                             "name": "handler",
                             "designerId": "79f83b33-65b9-47a2-b97f-3efcf5dca88b"
-                        }
-                    ]
-                },
-                {
-                    "type": "Ext.button.Button",
-                    "reference": {
-                        "name": "items",
-                        "type": "array"
-                    },
-                    "codeClass": null,
-                    "userConfig": {
-                        "layout|flex": null,
-                        "text": "Bookmark"
-                    },
-                    "configAlternates": {
-                        "layout|flex": "number",
-                        "text": "string"
-                    },
-                    "name": "MyButton",
-                    "designerId": "a971485e-b6fb-4cc5-a5c5-923c5d64dec3",
-                    "cn": [
-                        {
-                            "type": "fixedfunction",
-                            "reference": {
-                                "name": "items",
-                                "type": "array"
-                            },
-                            "codeClass": null,
-                            "userConfig": {
-                                "designer|params": [
-                                    "button",
-                                    "e"
-                                ],
-                                "designer|viewControllerFn": "bookmark",
-                                "fn": "handler",
-                                "implHandler": [
-                                    "console.warn(\"Bookmark unsupported - field in database needs to be added to support bookmarks\");"
-                                ]
-                            },
-                            "configAlternates": {
-                                "designer|params": "typedarray",
-                                "designer|viewControllerFn": "string",
-                                "fn": "string",
-                                "implHandler": "code"
-                            },
-                            "name": "handler",
-                            "designerId": "0d1f5ed6-37f3-40fd-a649-3d8b7e634b1e"
                         }
                     ]
                 },
@@ -797,7 +949,7 @@
                     "userConfig": {
                         "id": "btnEdit",
                         "layout|flex": null,
-                        "text": "Edit Slides"
+                        "text": "Edit Program Data"
                     },
                     "configAlternates": {
                         "layout|flex": "number",
@@ -819,18 +971,19 @@
                                     "button",
                                     "e"
                                 ],
-                                "designer|viewControllerFn": "editSlides",
+                                "designer|viewControllerFn": "editProgramData",
                                 "fn": "handler",
                                 "implHandler": [
                                     "var me = this,",
-                                    "    view = me.getView(),",
-                                    "    selection = me.getSelection(),",
-                                    "    mainView = view.up('#mainView');",
+                                    "\tview = me.getView(),",
+                                    "\tselection = me.getSelection(),",
+                                    "\tmainView = view.up('#mainView');",
                                     "",
                                     "me.saveState();",
                                     "me.unload();",
-                                    "var newActiveItem = mainView.setActiveItem('editSlides');",
-                                    "newActiveItem.getController().load({ program: selection });"
+                                    "",
+                                    "this.redirectTo('edit-pages/' + selection.id.slice(1, -1)); // passing id without surrounding curly brackets { }",
+                                    ""
                                 ]
                             },
                             "configAlternates": {
@@ -896,6 +1049,75 @@
                             "designerId": "9b24e6b5-70e1-4869-9aa8-e5a75188adae"
                         }
                     ]
+                },
+                {
+                    "type": "Ext.toolbar.Separator",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "layout|flex": null
+                    },
+                    "configAlternates": {
+                        "layout|flex": "number"
+                    },
+                    "name": "MySeparator4",
+                    "designerId": "e5796f38-87b9-437f-8a9e-3fc0d307c81d"
+                },
+                {
+                    "type": "Ext.toolbar.TextItem",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "cls": [
+                            "x-fa fa-check success"
+                        ],
+                        "id": "syncIndicatorProgramsData",
+                        "layout|flex": null
+                    },
+                    "configAlternates": {
+                        "cls": "typedarray",
+                        "id": "string",
+                        "layout|flex": "number"
+                    },
+                    "name": "MyTextItem5",
+                    "designerId": "24cef681-4b15-4db2-95d7-ee1fdc00778e",
+                    "cn": [
+                        {
+                            "type": "viewcontrollereventbinding",
+                            "reference": {
+                                "name": "listeners",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "fn": "createTooltipData",
+                                "implHandler": [
+                                    "// this function could be basic binding but if it is, defaultListenerScope becomes true and then store bindings dont work!!!!!!!!",
+                                    "",
+                                    "component.tooltip = Ext.create('Ext.tip.ToolTip', {",
+                                    "    target: component.id,",
+                                    "    html: 'Synced Programs Data'",
+                                    "});"
+                                ],
+                                "name": "afterrender",
+                                "scope": "me"
+                            },
+                            "configAlternates": {
+                                "fn": "string",
+                                "implHandler": "code",
+                                "name": "string",
+                                "scope": "string"
+                            },
+                            "name": "createTooltipData",
+                            "designerId": "02177442-6af4-4119-b2e2-7bc247b83121"
+                        }
+                    ]
                 }
             ]
         },
@@ -932,7 +1154,7 @@
                         "fn": "callback",
                         "implHandler": [
                             "this.unload();",
-                            "this.getView().up('#mainView').setActiveItem('homePage');"
+                            "this.redirectTo('home');"
                         ]
                     },
                     "configAlternates": {
@@ -957,25 +1179,41 @@
                 "fn": "onGridProgramsActivate",
                 "implHandler": [
                     "var me = this;",
+                    "if(!App.lookups.ProgramCategories){",
+                    "\t// if we reloaded page on training programs, we have to reload lookups and refresh grid",
+                    "\tvar callback = function(){",
+                    "\t\tme.getStore('StoreProgramCategories').setData(App.lookups.ProgramCategories);",
+                    "\t\tme.getStore('StoreProgramCertificates').setData(App.lookups.CoursesAndCertificates);",
+                    "\t\tExt.getCmp('gridPrograms').getView().refresh();",
+                    "\t};",
+                    "\tloadLookups(callback);",
+                    "}",
+                    "",
+                    "",
+                    "// Update the online status icon based on connectivity",
+                    "window.addEventListener('online',  me.connectionChange);",
+                    "window.addEventListener('offline', me.connectionChange);",
+                    "",
+                    "",
                     "",
                     "// create online / offline event listenere - when coming back online, we want to sync localstorage with database",
                     "me.connectionChange = function() {",
-                    "    if (navigator.onLine){",
-                    "        var callback = function(){",
-                    "            Ext.toast('Welcome back online! Content saved on server.');",
+                    "\tif (navigator.onLine){",
+                    "\t\tvar callback = function(){",
+                    "\t\t\tExt.toast('Welcome back online! Content saved on server.');",
                     "\t\t\tme.saveState();",
                     "",
-                    "        };",
+                    "\t\t};",
                     "",
                     "",
-                    "        me.serverSync(callback); // calls sync of everything (slides, questions, answers, pageConfig...) - it retrieves data and pushes latest data to server",
+                    "\t\tme.serverSync(callback); // calls sync of everything (slides, questions, answers, pageConfig...) - it retrieves data and pushes latest data to server",
                     "",
-                    "    }else{",
-                    "        Ext.toast('We went offline! Content is still saved locally. Reconnect to save content with server.');",
-                    "    }",
+                    "\t}else{",
+                    "\t\tExt.toast('We went offline! Content is still saved locally. Reconnect to save content with server.');",
+                    "\t}",
                     "};",
                     "",
-                    "this.load();",
+                    "//this.load();",
                     ""
                 ],
                 "name": "activate",

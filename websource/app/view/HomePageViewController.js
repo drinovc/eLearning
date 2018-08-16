@@ -26,89 +26,55 @@ Ext.define('eLearning.view.HomePageViewController', {
 			name: 'routeTrainingPrograms',
 			action: 'triggerTrainingPrograms'
 		},
-		'edit-pages': {
+		'edit-pages/:id': {
+			before: function(id, action) {
+				// insert check if user can access this program id
+
+
+				// action.stop();
+				// action.stop(true);
+				action.resume();
+			},
 			name: 'routeEditPages',
 			action: 'triggerEditPages'
+		},
+		'home': {
+			name: 'routeHome',
+			action: 'triggerHome'
 		}
 	},
 
-	getAjax: function(url, params, name) {
-		/*
-				Ext.Ajax.request({
-				    url: 'feed.json',
-				}).then(function(response) {
-				    // use response
-				}).always(function() {
-				   // clean-up logic, regardless the outcome
-				}).otherwise(function(reason){
-				   // handle failure
-				});
-				*/
-
-		return new Ext.Promise(function (resolve, reject) {
-			Ext.Ajax.request({
-				url: url,
-				params: params,
-				success: function (response) {
-					var rObj = Ext.decode(response.responseText || '{}');
-
-					if(rObj.success) {
-						resolve({
-							name: name,
-							data: rObj.data,
-						});
-					}
-					else {
-						reject(rObj.reason || 'Success false');
-					}
-				},
-				failure: function (response) {
-					reject(response.status);
-				}
-			});
-		});
-	},
-
 	triggerTrainingPrograms: function() {
-		this.getView().up('#mainView').setActiveItem('gridPrograms');
+		var me = this,
+			mainView = me.getView().up('#mainView'),
+			newActiveItem = mainView.setActiveItem('gridPrograms');
+
+		// loading this programs edit slides
+		newActiveItem.getController().load({ person : me.person }); // pass person
 	},
 
-	triggerEditPages: function() {
+	triggerEditPages: function(id) {
 		var me = this;
 
+		if(navigator.onLine){
 		Ext.Promise.all([
-		    me.getAjax('/Pub/Programs', {}, 'Programs')
+			getAjax('/Pub/Programs', {}, 'Programs')
 		]).then(function(data) {
 
-			if(data[0].data.length === 0){
-				Ext.toast("No programs exist in database - go through training programs");
-				return;
-			}
-			var returnedRec = data[0].data[0];
+			var records = data[0].data;
 
+			id = ('{' + id + '}') || (records.length? records[0].id : "{BA8780A3-9D57-40D5-8623-7033A31323D8}");
 
-			var TEMP_ID = "{BA8780A3-9D57-40D5-8623-7033A31323D8}";
-			TEMP_ID = returnedRec.id; // using returned records id
-
-			var mainView = me.getView().up('#mainView');
-			var newActiveItem = mainView.setActiveItem('editSlides');
-
-			var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
-
-			if(!localStorageData){
-				localStorageData = {};
-			}
-			if(!localStorageData[TEMP_ID]){
-				localStorageData[TEMP_ID] = {};
-			}
-			for (var key in localStorageData[TEMP_ID]) {
-				if(!localStorageData[TEMP_ID][key]){
-					localStorageData[TEMP_ID][key]={};
+			var record;
+			for(var i = 0; i < records.length; i++){
+				if(records[i].id == id){
+					record = records[i];
 				}
 			}
-			localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
-			/*newActiveItem.getController().load({ program :{
-				data:{
+			if(!record){
+				console.warn("Record doesn't exist - debug program. Refresh page to keep data in localstorage, not everything supported");
+				record = {};
+				record.data ={
 					"active":true,
 					"categoryId":30231143,
 					"certificateFileName":"",
@@ -118,7 +84,7 @@ Ext.define('eLearning.view.HomePageViewController', {
 					"createdAtId":5,
 					"createdById":0,
 					"description":"New Training Program Description",
-					"id":TEMP_ID,
+					"id":id,
 					"lastChangeLogId":191175066,
 					"lastChanges":"2018-07-23T12:04:00",
 					"maxAttemptsScoreMode":1000,
@@ -128,27 +94,107 @@ Ext.define('eLearning.view.HomePageViewController', {
 					"programId":50000026,
 					"validFrom":"2018-07-23T00:00:00",
 					"validTo":"2019-07-23T00:00:00"
-				},
-				id :TEMP_ID
-			} }); // with programId
-			*/
+				};
 
+			}
+			var mainView = me.getView().up('#mainView');
+			var newActiveItem = mainView.setActiveItem('editSlides');
+
+
+			// initiating localstorage data for this program if it hasn't been yet
+			var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
+			if(!localStorageData){
+				localStorageData = {};
+			}
+			if(!localStorageData[id]){
+				localStorageData[id] = {};
+			}
+			for (var key in localStorageData[id]) {
+				if(!localStorageData[id][key]){
+					localStorageData[id][key]={};
+				}
+			}
+			localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+
+			print("reroiting when online data", record);
+
+
+			// loading this programs edit slides
 			newActiveItem.getController().load({ program :{
-				data: returnedRec,
-				id :TEMP_ID
+				data: record,
+				id :id
 			} }); // with programId
-
-
 		});
+		}else{
+			// if we are offline - get data from localStorage
 
+
+			var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),
+				mainView = me.getView().up('#mainView'),
+				newActiveItem = mainView.setActiveItem('editSlides'),
+				id = ('{' + id + '}'),
+
+			record = localStorageData[id].programInfo;
+
+			print("reroiting when offline data", record);
+			newActiveItem.getController().load({
+				program :{
+					data: record,
+					id :id
+				},
+				person: me.person
+			}); //
+		}
 	},
 
-	showTrainingPrograms: function(button, e) {
-		this.redirectTo('training-programs');
+	triggerHome: function() {
+		this.getView().up('#mainView').setActiveItem('homePage');
 	},
 
-	showEditPages: function(button, e) {
-		this.redirectTo('edit-pages');
+	onSave: function(button, e, eOpts) {
+		var me = this,
+			form = me.getReferences().form,
+			values = form.getForm().getValues(),
+			store = me.getStore('logins');
+
+		// Valid
+		if (form.isValid()) {
+
+			// TODO: Assign the record's ID from data source
+			// Normally, this value would be auto-generated,
+			// or returned from the server
+			values.id = store.count() + 1;
+
+			console.warn("Todo hash pin after sending on load");
+
+			store.load({
+				params:{
+					user: values.user,
+					pin: values.pin
+				},
+				callback: function(rec){
+					if(!rec[0].data){
+						Ext.toast("No results recieved");
+					}
+					rec = rec[0].data.data[0];
+					if(rec.PIN_CODE_CORRECT){
+						Ext.toast("Welcome " +rec.PERSON_FIRST_NAME + " " + rec.PERSON_LAST_NAME);
+						me.person = rec;
+						print("printing person", rec);
+						me.personId = rec.PERSON_ID;
+						form.close();
+					}else{
+						Ext.toast("Wrong username or password");
+					}
+				}
+
+			});
+		}
+	},
+
+	onCancel: function(button, e, eOpts) {
+		var form = this.getReferences().form;
+		form.close();
 	}
 
 });

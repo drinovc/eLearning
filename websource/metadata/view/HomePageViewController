@@ -16,65 +16,6 @@
     "designerId": "fab9b3e0-2e83-416b-805f-a20803425381",
     "cn": [
         {
-            "type": "basicfunction",
-            "reference": {
-                "name": "items",
-                "type": "array"
-            },
-            "codeClass": null,
-            "userConfig": {
-                "designer|params": [
-                    "url",
-                    "params",
-                    "name"
-                ],
-                "fn": "getAjax",
-                "implHandler": [
-                    "/*",
-                    "\t\tExt.Ajax.request({",
-                    "\t\t    url: 'feed.json',",
-                    "\t\t}).then(function(response) {",
-                    "\t\t    // use response",
-                    "\t\t}).always(function() {",
-                    "\t\t   // clean-up logic, regardless the outcome",
-                    "\t\t}).otherwise(function(reason){",
-                    "\t\t   // handle failure",
-                    "\t\t});",
-                    "\t\t*/",
-                    "",
-                    "return new Ext.Promise(function (resolve, reject) {",
-                    "\tExt.Ajax.request({",
-                    "\t\turl: url,",
-                    "\t\tparams: params,",
-                    "\t\tsuccess: function (response) {",
-                    "\t\t\tvar rObj = Ext.decode(response.responseText || '{}');",
-                    "",
-                    "\t\t\tif(rObj.success) {",
-                    "\t\t\t\tresolve({",
-                    "\t\t\t\t\tname: name,",
-                    "\t\t\t\t\tdata: rObj.data,",
-                    "\t\t\t\t});",
-                    "\t\t\t}",
-                    "\t\t\telse {",
-                    "\t\t\t\treject(rObj.reason || 'Success false');",
-                    "\t\t\t}",
-                    "\t\t},",
-                    "\t\tfailure: function (response) {",
-                    "\t\t\treject(response.status);",
-                    "\t\t}",
-                    "\t});",
-                    "});"
-                ]
-            },
-            "configAlternates": {
-                "designer|params": "typedarray",
-                "fn": "string",
-                "implHandler": "code"
-            },
-            "name": "getAjax",
-            "designerId": "1f2047ce-bb81-4007-8660-7ec54d59b9cd"
-        },
-        {
             "type": "Ext.route.Route",
             "reference": {
                 "name": "items",
@@ -84,7 +25,12 @@
             "userConfig": {
                 "fn": "triggerTrainingPrograms",
                 "implHandler": [
-                    "this.getView().up('#mainView').setActiveItem('gridPrograms');"
+                    "var me = this,",
+                    "\tmainView = me.getView().up('#mainView'),",
+                    "\tnewActiveItem = mainView.setActiveItem('gridPrograms');",
+                    "",
+                    "// loading this programs edit slides",
+                    "newActiveItem.getController().load({ person : me.person }); // pass person"
                 ],
                 "name": "routeTrainingPrograms",
                 "url": "training-programs"
@@ -106,43 +52,32 @@
             },
             "codeClass": null,
             "userConfig": {
+                "designer|params": [
+                    "id"
+                ],
                 "fn": "triggerEditPages",
                 "implHandler": [
                     "var me = this;",
                     "",
+                    "if(navigator.onLine){",
                     "Ext.Promise.all([",
-                    "    me.getAjax('/Pub/Programs', {}, 'Programs')",
+                    "\tgetAjax('/Pub/Programs', {}, 'Programs')",
                     "]).then(function(data) {",
                     "",
-                    "\tif(data[0].data.length === 0){",
-                    "\t\tExt.toast(\"No programs exist in database - go through training programs\");",
-                    "\t\treturn;",
-                    "\t}",
-                    "\tvar returnedRec = data[0].data[0];",
+                    "\tvar records = data[0].data;",
                     "",
+                    "\tid = ('{' + id + '}') || (records.length? records[0].id : \"{BA8780A3-9D57-40D5-8623-7033A31323D8}\");",
                     "",
-                    "\tvar TEMP_ID = \"{BA8780A3-9D57-40D5-8623-7033A31323D8}\";",
-                    "\tTEMP_ID = returnedRec.id; // using returned records id",
-                    "",
-                    "\tvar mainView = me.getView().up('#mainView');",
-                    "\tvar newActiveItem = mainView.setActiveItem('editSlides');",
-                    "",
-                    "\tvar localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));",
-                    "",
-                    "\tif(!localStorageData){",
-                    "\t\tlocalStorageData = {};",
-                    "\t}",
-                    "\tif(!localStorageData[TEMP_ID]){",
-                    "\t\tlocalStorageData[TEMP_ID] = {};",
-                    "\t}",
-                    "\tfor (var key in localStorageData[TEMP_ID]) {",
-                    "\t\tif(!localStorageData[TEMP_ID][key]){",
-                    "\t\t\tlocalStorageData[TEMP_ID][key]={};",
+                    "\tvar record;",
+                    "\tfor(var i = 0; i < records.length; i++){",
+                    "\t\tif(records[i].id == id){",
+                    "\t\t\trecord = records[i];",
                     "\t\t}",
                     "\t}",
-                    "\tlocalStorage.setItem('mxp_elearning', Ext.encode(localStorageData));",
-                    "\t/*newActiveItem.getController().load({ program :{",
-                    "\t\tdata:{",
+                    "\tif(!record){",
+                    "\t\tconsole.warn(\"Record doesn't exist - debug program. Refresh page to keep data in localstorage, not everything supported\");",
+                    "\t\trecord = {};",
+                    "\t\trecord.data ={",
                     "\t\t\t\"active\":true,",
                     "\t\t\t\"categoryId\":30231143,",
                     "\t\t\t\"certificateFileName\":\"\",",
@@ -152,7 +87,7 @@
                     "\t\t\t\"createdAtId\":5,",
                     "\t\t\t\"createdById\":0,",
                     "\t\t\t\"description\":\"New Training Program Description\",",
-                    "\t\t\t\"id\":TEMP_ID,",
+                    "\t\t\t\"id\":id,",
                     "\t\t\t\"lastChangeLogId\":191175066,",
                     "\t\t\t\"lastChanges\":\"2018-07-23T12:04:00\",",
                     "\t\t\t\"maxAttemptsScoreMode\":1000,",
@@ -162,22 +97,117 @@
                     "\t\t\t\"programId\":50000026,",
                     "\t\t\t\"validFrom\":\"2018-07-23T00:00:00\",",
                     "\t\t\t\"validTo\":\"2019-07-23T00:00:00\"",
-                    "\t\t},",
-                    "\t\tid :TEMP_ID",
-                    "\t} }); // with programId",
-                    "\t*/",
+                    "\t\t};",
                     "",
+                    "\t}",
+                    "\tvar mainView = me.getView().up('#mainView');",
+                    "\tvar newActiveItem = mainView.setActiveItem('editSlides');",
+                    "",
+                    "",
+                    "\t// initiating localstorage data for this program if it hasn't been yet",
+                    "\tvar localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));",
+                    "\tif(!localStorageData){",
+                    "\t\tlocalStorageData = {};",
+                    "\t}",
+                    "\tif(!localStorageData[id]){",
+                    "\t\tlocalStorageData[id] = {};",
+                    "\t}",
+                    "\tfor (var key in localStorageData[id]) {",
+                    "\t\tif(!localStorageData[id][key]){",
+                    "\t\t\tlocalStorageData[id][key]={};",
+                    "\t\t}",
+                    "\t}",
+                    "\tlocalStorage.setItem('mxp_elearning', Ext.encode(localStorageData));",
+                    "",
+                    "\tprint(\"reroiting when online data\", record);",
+                    "",
+                    "",
+                    "\t// loading this programs edit slides",
                     "\tnewActiveItem.getController().load({ program :{",
-                    "\t\tdata: returnedRec,",
-                    "\t\tid :TEMP_ID",
+                    "\t\tdata: record,",
+                    "\t\tid :id",
                     "\t} }); // with programId",
-                    "",
-                    "",
                     "});",
-                    ""
+                    "}else{",
+                    "\t// if we are offline - get data from localStorage",
+                    "",
+                    "",
+                    "\tvar localStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),",
+                    "\t\tmainView = me.getView().up('#mainView'),",
+                    "\t\tnewActiveItem = mainView.setActiveItem('editSlides'),",
+                    "\t\tid = ('{' + id + '}'),",
+                    "",
+                    "\trecord = localStorageData[id].programInfo;",
+                    "",
+                    "\tprint(\"reroiting when offline data\", record);",
+                    "\tnewActiveItem.getController().load({ ",
+                    "\t\tprogram :{",
+                    "\t\t\tdata: record,",
+                    "\t\t\tid :id",
+                    "\t\t},",
+                    "\t\tperson: me.person",
+                    "\t}); //",
+                    "}"
                 ],
                 "name": "routeEditPages",
-                "url": "edit-pages"
+                "url": "edit-pages/:id"
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code",
+                "name": "string",
+                "url": "string",
+                "designer|params": "typedarray"
+            },
+            "name": "triggerEditPages",
+            "designerId": "f4a03561-b8bd-4873-bc69-b008ed57bc0c",
+            "cn": [
+                {
+                    "type": "fixedfunction",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "designer|params": [
+                            "id",
+                            "action"
+                        ],
+                        "fn": "before",
+                        "implHandler": [
+                            "// insert check if user can access this program id",
+                            "",
+                            "",
+                            "// action.stop();",
+                            "// action.stop(true);",
+                            "action.resume();"
+                        ]
+                    },
+                    "configAlternates": {
+                        "designer|params": "typedarray",
+                        "fn": "string",
+                        "implHandler": "code"
+                    },
+                    "name": "before",
+                    "designerId": "19049ca0-ee1f-4bd3-9c08-3b19f8760c2c"
+                }
+            ]
+        },
+        {
+            "type": "Ext.route.Route",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "triggerHome",
+                "implHandler": [
+                    "this.getView().up('#mainView').setActiveItem('homePage');"
+                ],
+                "name": "routeHome",
+                "url": "home"
             },
             "configAlternates": {
                 "fn": "string",
@@ -185,8 +215,8 @@
                 "name": "string",
                 "url": "string"
             },
-            "name": "triggerEditPages",
-            "designerId": "f4a03561-b8bd-4873-bc69-b008ed57bc0c"
+            "name": "triggerHome",
+            "designerId": "fc295504-dca8-469a-a83d-4ca2cf29568d"
         }
     ]
 }

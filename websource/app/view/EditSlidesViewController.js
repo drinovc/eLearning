@@ -22,20 +22,25 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 			refs = me.getReferences();
 
 		opts = Ext.applyIf(opts || {}, {
-			program: null
+			program: null,
+			person: {PERSON_ID: -1}
 		});
+
+		me.person = opts.person;
+		me.personId = opts.person.PERSON_ID;
+
+		if(me.personId == -1){
+			console.warn("Using mockup test person id");
+		}
+
 
 		me.programData = opts.program.data; // create variable of this program that can be accessed from anywhere in this controller
 		me.programId = opts.program.id; //
 
+		print("editSlides, program data", me.programData, me.programId);
 
-		if(opts.program.get){
-			refs.panelHeader.setTitle(opts.program.get('name'));
-		}
-		else{
-			// this gets called if we clicked editSlides button in main view
-			refs.panelHeader.setTitle('Test title in debug mode');
-		}
+		refs.panelHeader.setTitle(me.programData.name);
+
 		// clear old panel if there is no slides on this program yet, so content from previous program doesn't remain on this one
 		this.clearSlidePanel();
 		me.allComponents = []; // clear old components - this array is used to store all ext components of this slide
@@ -52,6 +57,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		if(!localStorageData[me.programId].slides){localStorageData[me.programId].slides = {};}
 		if(!localStorageData[me.programId].questions){localStorageData[me.programId].questions = {};}
 		if(!localStorageData[me.programId].answers){localStorageData[me.programId].answers = {};}
+		if(!localStorageData[me.programId].pageSetup){localStorageData[me.programId].pageSetup = me._pageSetup;}
 		localStorage.setItem('mxp_elearning', Ext.encode(localStorageData)); // initializes localstorage if it is empty, otherwise overwrites it with same content
 
 
@@ -61,16 +67,15 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 			refs = me.getReferences(),
 			personProgramsStore = me.getStore('PersonPrograms'),
 			personAnswersStore = me.getStore('PersonAnswers');
-		var TEST_PERSON_ID = 10000112;
 
 		// reset button to default
-		var previewButton = Ext.getCmp('btnPreview');
-		previewButton.removeCls('active-program');
-		previewButton.setText('Preview');
+		var btnPreview = Ext.getCmp('btnPreview');
+		btnPreview.removeCls('active-program');
+		btnPreview.setText('Preview');
 
 		if(me.programData.validTo < new Date()){
 			Ext.toast("Program is not valid anymore!");
-			previewButton.setText('Program Not Valid');
+			btnPreview.setText('Program Not Valid');
 			return;
 		}
 
@@ -83,10 +88,9 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 			};
 
-
 			personProgramsStore.load({
 				params:{
-					personId: TEST_PERSON_ID,
+					personId: me.personId,
 					programId: me.programId
 				},
 				callback:function(record){
@@ -95,10 +99,10 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 						if(me.currentPersonProgram.attempt >= me.programData.maxAttemptsTrainingMode + me.programData.maxAttemptsScoreMode){
 							// Cannot attempt any more tries... returning
 							var btnPreview = Ext.getCmp('btnPreview');
-							btnPreview.disable();
-							btnPreview.setText('Preview (No More Attempts)');
 
-							return;
+							btnPreview.setText('Preview (No More Attempts)');
+							btnPreview.disable();
+							//return;
 						}
 						// here we can read the records id to use in posting answers
 						// add completion time minutes to initial programStarted time
@@ -107,17 +111,32 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 						var remainingMS = endTime.getTime() - new Date().getTime();
 						if(remainingMS > 0 && (me.currentPersonProgram.programStatusId == App.ProgramStatuses["In Progress"] ||
 											   me.currentPersonProgram.programStatusId == App.ProgramStatuses.Repeat)){
-							previewButton.addCls('active-program');
-							previewButton.setText('Preview (Resume)');
+							btnPreview.addCls('active-program');
+							btnPreview.setText('Preview (Resume)');
+
+							me.startPreviewTimer(); // start timer so active-program style gets automatically removed on timeout
+
 						}
+
+
+
 					}
 					me.serverSync(syncAnswersCallback);
 				}
 			});
 		}else{
 			// set localstorage data to tree store
+			localStorageData = localStorageData[me.programId];
 
-			treeStoreSlides.setData(localStorageData.slides);
+			var slidesDictToArray = [];
+			for(var key in localStorageData.slides){
+				slidesDictToArray.push(localStorageData.slides[key]);
+			}
+			treeStoreSlides.getRootNode().appendChild(slidesDictToArray);
+
+			//treeStoreSlides.setData(localStorageData.slides); // dont use set data
+			//treeStoreSlides.getRootNode().appendChild(localStorageData.slides); // also dont use append child with dict but with array
+
 			questionsStoreSlides.setData(localStorageData.questions);
 			personAnswersStore.setData(localStorageData.answers);
 			if(localStorageData.pageSetup){
@@ -737,8 +756,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		}
 		opts.x = cmp.x = pos.x = me.round(opts.x);
 		opts.y = cmp.y = pos.y = me.round(opts.y);
-		opts.width = cmp.width = pos.width = me.round(opts.width || pos.width);
-		opts.height = cmp.height = pos.height = me.round(opts.height || pos.height);
+		opts.width = cmp.width = pos.width = me.ceil(opts.width || pos.width);
+		opts.height = cmp.height = pos.height = me.ceil(opts.height || pos.height);
 
 		cmp.style.width = cmp.width + 'px';
 		cmp.style.height = cmp.height + 'px';
@@ -786,7 +805,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		    opts.cls = [me.cmpTypes.SELECTION];
 		    opts.id = opts.id;
 
-		    html = '<div clas="text">' + html + '</div>';
+		    html = '<div class="text">' +'<h3 style="text-align:center;">'+ html + '</h3>' + '</div>';
 
 		    Ext.each(opts.options, function (option, index, allItems) {
 		        var cls = ['option', (opts.multi ? 'check' : 'radio')];
@@ -804,7 +823,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 				}
 
 		        // added two custom attributes idx which is index of element (starting with 0) and type which can contain chech or radio
-		        html += '<div class="' + cls.join(' ') + '" idx=' + index + ' type=' + (opts.multi ? 'check' : 'radio') + '>' + option.text + '</div>';
+		        html += '<div class="' + cls.join(' ') + '" idx=' + index + ' type=' + (opts.multi ? 'check' : 'radio') + ' style="width:fit-content;">' + option.text + '</div>';
 		    });
 		}
 
@@ -827,7 +846,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		content = cmp.appendChild(content);
 		cmp = parentEl.dom.appendChild(cmp);
 
-		cmp.style.height = me.round(cmp.clientHeight)+'px'; // again make sure that components are snapping to corrent grid
+		cmp.style.height = me.ceil(cmp.clientHeight)+'px'; // again make sure that components are snapping to corrent grid
 
 		// check if content is overflowing the panel - reset it back to bottom of panel
 		if(pos.y +  me.round(cmp.clientHeight) > refs.panelContent.el.getHeight()){
@@ -1168,7 +1187,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		return Math.round(value / snap) * snap;
 	},
 
-	ceil: function() {
+	ceil: function(value) {
 		var snap = this._pageSetup.snap;
 
 		return Math.ceil(value / snap) * snap;
@@ -1357,12 +1376,14 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 	},
 
 	saveState: function(dontSync) {
+		print("called save state for edit slides");
+
 		var me = this,
-		    refs = me.getReferences(),
+			refs = me.getReferences(),
 			syncIndicator = Ext.getCmp('syncIndicator'),
-		    content = {
-		        components: {}
-		    };
+			content = {
+				components: {}
+			};
 
 		// first update current slide
 		slide = me.getCurrentSlide();
@@ -1371,29 +1392,30 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 			for (var key in slideComponents){
 				var component = slideComponents[key];
 				if(component._opts.type == me.cmpTypes.SELECTION){
-		            // if its question, append only guid of this question to content components
-		            var _opts = Ext.clone(component._opts);
+					// if its question, append only guid of this question to content components
+					var _opts = Ext.clone(component._opts);
 
-		            var _optsNew = {"type": _opts.type, "id": _opts.id };
-		            content.components[_opts.id]=_optsNew;
-		        }else{
-		            // append whole content
-		             content.components[component._opts.id] = component._opts;
-		        }
+					var _optsNew = {"type": _opts.type, "id": _opts.id };
+					content.components[_opts.id]=_optsNew;
+				}else{
+					// append whole content
+					content.components[component._opts.id] = component._opts;
+				}
 			}
-
-		    //slide.set('lastChanged', new Date()); // set last changed for this slide here
-		    slide.set('content', Ext.encode(content));
+			//slide.set('lastChanged', new Date()); // set last changed for this slide here
+			slide.set('content', Ext.encode(content));
 		}
-
 
 		var data = this.getCurrentState();
 
 		var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
-		for (var key in data) {
-		    localStorageData[me.programId][key] = data[key];
+		// init if we are saving content for duplicate program
+		if(!localStorageData[me.programId]){
+			localStorageData[me.programId] = {};
 		}
-
+		for (var key in data) {
+			localStorageData[me.programId][key] = data[key];
+		}
 
 		// sets current state to localstorage and calls update with server
 		localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
@@ -1402,6 +1424,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 			// for some reason we want to store current state in localstorage but not sync to server
 			// this is used for personAnswers where we dont post for every click on answer but just want to save to localstorage
 			// so he can return to this quiz if his computer crashes
+			me.updateStatusIndicator(false);
 			return;
 		}
 		var storeSlides = me.getStore('TreeStoreSlides'),
@@ -1416,53 +1439,63 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 
 			// after syncing everything - we can delete current programs' removed entries
-
 			localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
 			if(localStorageData[me.programId].removed){
 				delete localStorageData[me.programId].removed;
 			}
 			localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
 
-
-
-			syncIndicator.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
-			syncIndicator.addCls("fa-check success");
-			syncIndicator.tooltip.html = 'Synced';
-
-
-
+			me.updateStatusIndicator(true);
 		}else{
-			syncIndicator.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
-			syncIndicator.addCls("fa-exclamation-triangle warning");
-			syncIndicator.tooltip.html = 'Not Synced';
+			me.updateStatusIndicator(false);
 		}
 
 		var btnDeleteSlide = Ext.getCmp('btnDeleteSlide'),
 			btnPreview = Ext.getCmp('btnPreview');
 
-
-
 		btnDeleteSlide.setDisabled(!storeSlides.data.length);
 
-
-		if(me.programData.validTo > new Date()){
-			btnPreview.setText('Preview (Not Valid Anymore)');
-			btnPreview.removeCls('active-program');
-			btnPreview.disable();
+		if(!me.programData){
+			btnPreview.enable();
+			btnPreview.setText('Preview');
 		}else{
-			if(!storeQuestions.data.length){
+			if(me.programData.validTo > new Date()){
+				btnPreview.setText('Preview (Not Valid Anymore)');
+				btnPreview.removeCls('active-program');
 				btnPreview.disable();
-				btnPreview.setText('Preview (No Questions)');
 			}else{
-				btnPreview.enable();
-				if(btnPreview.hasCls('active-program')){
-					// restore text
-					btnPreview.setText('Preview (Resume)');
+				if(!storeQuestions.data.length){
+					btnPreview.disable();
+					btnPreview.setText('Preview (No Questions)');
+				}else{
+
+
+					if(me.currentPersonProgram && (me.currentPersonProgram.attempt >= me.programData.maxAttemptsTrainingMode + me.programData.maxAttemptsScoreMode)){
+						// Cannot attempt any more tries... returning
+						btnPreview.setText('Preview (No More Attempts)');
+						btnPreview.disable();
+					}else{
+						btnPreview.enable();
+						btnPreview.setText('Preview');
+
+						if(btnPreview.hasCls('active-program')){
+							// restore text
+							btnPreview.setText('Preview (Resume)');
+						}
+					}
 				}
 			}
 		}
 
-		btnPreview.setDisabled(!storeQuestions.data.length || me.programData.validTo > new Date()); // if no questions or not valid anymore
+		if(me.getCurrentSlide()){
+			callback =function(url,base64encodedImg){
+				print("encoded", base64encodedImg);
+			};
+
+			me.captureSlide(callback);
+			me.renderThumbnails();
+		}
+
 	},
 
 	setInitialSlide: function() {
@@ -1486,113 +1519,47 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 	},
 
-	closePreview: function() {
-		var TEST_PERSON_ID = 10000112;
-
-
+	closePreview: function(force = false) {
 		var me = this,
-		    refs = me.getReferences(),
-		    personProgramsStore = me.getStore('PersonPrograms'),
-		    personAnswersStore = me.getStore('PersonAnswers'),
-			questionsStore = me.getStore('QuestionsStoreSlides');
+			 btnPreview = Ext.getCmp('btnPreview');
 
 		me.previewing = false; // setting current previewing state
 
-		// we / timer toggled preview off - validate forms and submit
 
-		// iterate through questions and check if answer has been added to store - if it hasnt, still create an answer for this question
-		// this is a solve to a bug that when unchecking everything at multi-select, we dont post an answer and than retrieve previous answer back
-		for(var i = 0; i < questionsStore.data.items.length; i++){
-			var question = questionsStore.data.items[i].data;
-			// check if answer exists
-			var answerExists = personAnswersStore.findRecord('questionId', question.id);
-			if(!answerExists){
-				var now = new Date();
-				var recordAnswers = {
-						questionId: question.id,
-						id: createGUID(),
-						created: now,
-						lastChanged: now,
-						personProgramId: me.currentPersonProgram.personTrainingProgramId,
-						answer:{},
-						score: 0 // TEMP - TODO CHANGE RECORD AFTER EVALUATING
-					};
-				// add all answers for this question as false
-				var answersTEMP = Ext.decode(question.lookups);
-				for(var j = 0; j < answersTEMP.length; j++){
-					recordAnswers.answer[j] = false;
-				}recordAnswers.answer = Ext.encode(recordAnswers.answer);
 
-				// add this new record to store
-				var answerRec = personAnswersStore.add(recordAnswers)[0];
-				answerRec.phantom = true;
-			}
+		if(navigator.onLine){
+			me.validatePersonProgram();
+
+			// reset button to default
+			btnPreview.removeCls('active-program');
+			btnPreview.setText('Preview');
+
+			clearInterval(me.previewTimer);
+
+		}
+		else{
+			Ext.toast("Cannot validate program. Go online to submit answers.");
+
+			btnPreview.addCls('active-program');
+			btnPreview.setText('Preview (Resume)');
+
+
 		}
 
-		// GOOD TO KNOW - batchActions is disabled on store, so every request is handled on its own ->batchActions: false,
+		if(force){
+			// timer may force close
+			btnPreview.removeCls('active-program');
+			btnPreview.setText('Preview');
+			clearInterval(me.previewTimer);
 
-		// get scores for each question and total
-		var programScore = me.evaluate();
-		var questionsScores = programScore.questions;
-		var totalProgramScore = programScore.totalProgramScore;
-
-		// submit answers to server - these answers have written score in them
-		personAnswersStore.sync();
-		me.saveState();
-
-		if(!me.currentPersonProgram){
-		    console.warn("for some reason current person program id is not set - it should be created new if person doesnt have any records yet or it should be recieved from store.");
-		    return;
 		}
-
-		// get score results:
-		var scoreResults;
-
-		if(me.currentPersonProgram.attempt < me.programData.maxAttemptsTrainingMode + me.programData.maxAttemptsScoreMode){
-		    if(totalProgramScore >= me.programData.passScore){
-		        // we passed
-		        scoreResults = App.ProgramStatuses.Passed;
-		    }else{
-		        // we tried non -last time and we failed - status is chagned to discontinued
-		        scoreResults = App.ProgramStatuses.Discontinued;
-		    }
-		}else{
-		    if(totalProgramScore < me.programData.passScore){
-		        // if we tried last time and we didn't get enough we failed
-		        scoreResults = App.ProgramStatuses.Failed;
-		    }else{
-		        // we tried last time and we passed
-		        scoreResults = App.ProgramStatuses.Passed;
-		    }
-		}
-
-
-		var existingRecord = personProgramsStore.findRecord('personTrainingProgramId', me.currentPersonProgram.personTrainingProgramId);
-		var alteredRecord = {
-		    personProgramGuid: me.currentPersonProgram.personTrainingProgramId,
-		    lastChanged: new Date(),
-		    programCompleted: new Date(),
-		    programStatusId: scoreResults,
-		    changed: 'Y'
-		};
-		// add new content to this record and update it
-		existingRecord.data = alteredRecord;
-		existingRecord.phantom = true;
-		personProgramsStore.sync();
-
-
-		clearInterval(me.previewTimer);
 
 		me.togglePreviewFrame(false);
 
-		// reset button to default
-		var previewButton = Ext.getCmp('btnPreview');
-		previewButton.removeCls('active-program');
-		previewButton.setText('Preview');
 	},
 
 	showPreview: function() {
-		var TEST_PERSON_ID = 10000112;
+
 
 
 		var me = this,
@@ -1608,7 +1575,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 			return;
 		}
 		if(numQuestions === 0){
-
 			Ext.toast("Unable to start preview with no questions.");
 			return;
 		}
@@ -1616,10 +1582,16 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 			Ext.toast("Program is not valid anymore!");
 			return;
 		}
+
+		if(!navigator.onLine){
+			Ext.toast("Cannot start program in offline!");
+			return;
+		}
+
 		// Create PersonProgram or update it here
 		personProgramsStore.load({
 			params:{
-				personId: TEST_PERSON_ID,
+				personId: me.personId,
 				programId: me.programId
 			},
 			callback:function(record){
@@ -1630,10 +1602,10 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 						if(btn == 'yes') {
 							me.currentPersonProgram = { // store whole record
 								personProgramGuid: createGUID(),
-								personId: TEST_PERSON_ID,
+								personId: me.personId,
 								programId: me.programId,
 								programStatusId: App.ProgramStatuses["In Progress"],
-								createdById: TEST_PERSON_ID, // TODO - same person is also creating this program? can this be different?
+								createdById: me.personId, // TODO - same person is also creating this program? can this be different?
 								created: new Date(),
 								programStarted: new Date(),
 								lastChanged: new Date(),
@@ -1666,7 +1638,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 					if(remainingMS > 0 && (me.currentPersonProgram.programStatusId == App.ProgramStatuses["In Progress"] ||
 										   me.currentPersonProgram.programStatusId == App.ProgramStatuses.Repeat)){
 
-						me.switchToPreviewing();  // display still active try of this quiz
+						me.switchToPreviewing(false);  // display still active try of this quiz
 					}else{
 
 						//we show dialog that by proceeding we will use another try
@@ -1716,44 +1688,17 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		refs.treeSlides.setSelection(currentSlide);
 	},
 
-	switchToPreviewing: function() {
+	switchToPreviewing: function(clean = true) {
 		var me = this,
 		    refs = me.getReferences();
 
-		// Update the count down every 1 second
-		me.previewTimer = setInterval(function() {
-		    // add completion time minutes to initial programStarted time
-		    var endTime = new Date(new Date(me.currentPersonProgram.programStarted).getTime() +
-		                           me.programData.completionTime * 60000); // completion time in database is in minutes
-		    var now = new Date();
-
-		    // Find the distance between now an the count down date
-		    var distance = endTime.getTime() - now.getTime();
-
-		    // Time calculations for days, hours, minutes and seconds
-		    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-		    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-		    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-		    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-
-		    var timerCountdownText = refs.toolbarPreview.el.down('#timerCountdown');
-		    timerCountdownText.dom.innerHTML = "Remaining: " + hours + "h " + minutes + "m " + seconds + "s ";
-
-		    // If the count down is finished, write some text
-		    if (distance < 0) {
-		        clearInterval(me.previewTimer);
-
-		        timerCountdownText.dom.innerHTML = "EXPIRED";
-		        Ext.toast("Time is up! We will evaluate your score.");
-
-		        me.closePreview();
-		    }
-		}, 1000);
-
+		me.startPreviewTimer();
 
 		me.previewing = true;
-		me.getStore('PersonAnswers').loadData([],false); // remove previous answers
+		if(clean){
+			// when we are continuing previewing, we dont want to remove previous answers
+			me.getStore('PersonAnswers').loadData([],false); // remove previous answers
+		}
 
 		// show slide state
 
@@ -2033,46 +1978,61 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 	serverSync: function(callback) {
 		// calls sync of everything (slides, questions, answers, pageConfig...) - it retrieves data and pushes latest data to server
 		// syncs all data with server - this is called on program load and on navigator onLine
+
+
 		var me = this,
-		    localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId],
-			syncIndicator = Ext.getCmp('syncIndicator');
-
+			localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId],
+			syncIndicator = Ext.getCmp('syncIndicator'),
+			treeStoreSlides = me.getStore('TreeStoreSlides');
+		print("Server ssync program id", me.programId);
 		var syncQuestionsCallback = function(){
-		    // after loading slides, load questions
+			// after loading slides, load questions
 			if(me.currentPersonProgram){
-
 				//var params = {programId: me.currentPersonProgram.personTrainingProgramId}; //get all data from current person program id
 				var params = {programId: me.programId};
 				initialDataSync('PersonAnswers', 'answers', params, callback, 'questionId', me);
-
+				me.updateStatusIndicator(true);
 
 			}
 			else{
+				me.updateStatusIndicator(true);
 				if (callback){ callback(); }
 			}
 		};
 		var syncStateCallback = function(){
 
-			me.getStore('TreeStoreSlides').sync({
 
+			// get info for current program from database - if it exists, its valid program, otherwise its temp debug program
+
+
+			var controller = me.getView().up('mainview').down('programs').getController();
+
+
+
+			controller.getStore('StorePrograms').load({
 				callback: function(){
-					print("called sync");
-
-
-					me.getStore('TreeStoreSlides').load({
-
-
-						params: {programId: me.programId},
-						callback: function(records, operation, success){
-							print("loaded again");
-						}
-					});
+					rec = controller.getStore('StorePrograms').findRecord('id', me.programId);
+					if(rec){
+						// sync slides again so we get back apropriate structure in tree view after adding slides when returning from offline
+						// TODO - this may be fixed by correctly adding offline slides to storage when retrigering InitialDataSync()
+						treeStoreSlides.sync({
+							callback: function(){
+								treeStoreSlides.load({
+									params: {programId: me.programId},
+									callback: function(records, operation, success){
+										print("Slides data reloaded");
+									}
+								});
+							}
+						});
+					}else{
+						console.warn("current program doesnt exist in database - wont we resyncing slides");
+					}
 				}
 			});
 
-
-		    var params = {programId: me.programId};
-		    initialDataSync('QuestionsStoreSlides', 'questions', params, syncQuestionsCallback, 'id', me);
+			var params = {programId: me.programId};
+			initialDataSync('QuestionsStoreSlides', 'questions', params, syncQuestionsCallback, 'id', me);
 
 		};
 
@@ -2081,13 +2041,12 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		syncIndicator.addCls("fa-spin fa-refresh warning");
 		syncIndicator.tooltip.html = 'Syncing';
 
-
-
 		if(localStorageData.pageSetup){ // TODO retrieve it later from database
-		    me._pageSetup = localStorageData.pageSetup;
+			me._pageSetup = localStorageData.pageSetup;
 		}
 		var params = {programId: me.programId};
 		initialDataSync('TreeStoreSlides', 'slides', params, syncStateCallback, 'id', me);
+
 	},
 
 	renderThumbnails: function() {
@@ -2098,45 +2057,37 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		// todo - check if there are any children - possible crash here
 
 		// get all currently shown nodes in tree view - only parent of collapsed nodes is visible
-		var treeView = refs.treeSlides.el.dom.children[0].children[1].children[0].children[1].children;
-		for (var i=0, n=treeView.length; i < n; i++){
-
-		    var children = treeView[i].children[0].children[0].children[0].children[0].children;
-
-		    var slide = children[children.length - 2]; // slots before that occupy indents in tree view, slot after that is text
 
 
 
-		    // uncomment this if to allow rendering on all tree nodes - and not only on slides
-		    if(slide.classList.contains("x-tree-icon-leaf")){ // check if it is slide
-		        slide.outerHTML = '<div role="presentation" class="  x-tree-icon"><img src="https://www.vaporfi.com.au/media/catalog/product/cache/34/thumbnail/600x600/9df78eab33525d08d6e5fb8d27136e95/v/z/vz_eliquid_juicy_red_apple.jpg" style="width:20px; height:20px;"></div>';
-
-		        // Todo - replace apple photo with rendered slide with scale of 20, 20
 
 
-		    }
+		var me = this,
+			refs = me.getReferences(),
+			treeStore = me.getStore('TreeStoreSlides');
 
-		}
 
-		// Part 2 - rendering slides in appropriate slots:
-		var data = Ext.decode(localStorage.getItem('mxp_elearning')[me.programId][me.slideId]);
-		for (var key in data.slides){
-			var value = data.slides[key];
-			if(value.isSlide){
-				// access value here
+		var callback = function(url, base64EncodedImg){
+
+
+			var treeView = refs.treeSlides.el.dom.children[0].children[1].children[0].children[1].children;
+			for (var i=0, n=treeView.length; i < n; i++){
+
+				var children = treeView[i].children[0].children[0].children[0].children[0].children;
+				var slide = children[children.length - 2]; // slots before that occupy indents in tree view, slot after that is text
+
+				// uncomment this if to allow rendering on all tree nodes - and not only on slides
+				if(slide.classList.contains("x-tree-icon-leaf")){ // check if it is slide
+					//slide.outerHTML = '<div role="presentation" class="  x-tree-icon"><img src="https://www.vaporfi.com.au/media/catalog/product/cache/34/thumbnail/600x600/9df78eab33525d08d6e5fb8d27136e95/v/z/vz_eliquid_juicy_red_apple.jpg" style="width:20px; height:20px;"></div>';
+
+					slide.outerHTML = '<div role="presentation" class="  x-tree-icon"><img src="' + url + '" style="width:20px; height:20px;"></div>';
+
+					// Todo - replace apple photo with rendered slide with scale of 20, 20
+				}
 			}
-		}
+		};
 
-
-		// Part 3 - slide html to canvas - http://html2canvas.hertzen.com/
-
-		document.body.innerHTML += '<div id="capture" style="padding: 10px; background: #f5da55">    <h4 style="color: #000; ">Hello world!</h4></div>';
-
-		html2canvas(document.querySelector("#capture")).then(canvas => {
-		    document.body.appendChild(canvas);
-		});
-
-
+		me.captureSlide(callback);
 	},
 
 	getNumQuestions: function() {
@@ -2145,15 +2096,304 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		return me.getStore('QuestionsStoreSlides').data.items.length;
 	},
 
+	updateStatusIndicator: function(synced) {
+		var me = this,
+			localStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),
+			syncIndicator = Ext.getCmp('syncIndicator');
+
+		if(synced){
+			syncIndicator.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
+			syncIndicator.addCls("fa-check success");
+			syncIndicator.tooltip.html = 'Synced';
+
+		}
+		else{
+			syncIndicator.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
+			syncIndicator.addCls("fa-exclamation-triangle warning");
+			syncIndicator.tooltip.html = 'Not Synced';
+
+
+		}
+		// not initialized when duplicating programs
+		if(!localStorageData[me.programId]){
+			localStorageData[me.programId] = {};
+		}
+		if(!localStorageData[me.programId].pageSetup){
+			localStorageData[me.programId].pageSetup = {};
+		}
+		// change state of this program sync state so it can be visible in programs tab if this program is synced or not
+		localStorageData[me.programId].pageSetup.programSynced = synced;
+		print("setting page setup programSynced to", synced);
+		localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+	},
+
+	validatePersonProgram: function() {
+		var me = this,
+			refs = me.getReferences(),
+			personProgramsStore = me.getStore('PersonPrograms'),
+			personAnswersStore = me.getStore('PersonAnswers'),
+			questionsStore = me.getStore('QuestionsStoreSlides');
+
+		// we / timer toggled preview off - validate forms and submit
+		// here we can read the records id to use in posting answers
+		// add completion time minutes to initial programStarted time
+
+
+
+		// iterate through questions and check if answer has been added to store - if it hasnt, still create an answer for this question
+		// this is a solve to a bug that when unchecking everything at multi-select, we dont post an answer and than retrieve previous answer back
+		for(var i = 0; i < questionsStore.data.items.length; i++){
+			var question = questionsStore.data.items[i].data;
+			// check if answer exists
+			var answerExists = personAnswersStore.findRecord('questionId', question.id);
+			if(!answerExists){
+				var now = new Date();
+				var recordAnswers = {
+					questionId: question.id,
+					id: createGUID(),
+					created: now,
+					lastChanged: now,
+					personProgramId: me.currentPersonProgram.personTrainingProgramId,
+					answer:{},
+					score: 0 // TEMP - TODO CHANGE RECORD AFTER EVALUATING
+				};
+				// add all answers for this question as false
+				var answersTEMP = Ext.decode(question.lookups);
+				for(var j = 0; j < answersTEMP.length; j++){
+					recordAnswers.answer[j] = false;
+				}recordAnswers.answer = Ext.encode(recordAnswers.answer);
+
+				// add this new record to store
+				var answerRec = personAnswersStore.add(recordAnswers)[0];
+				answerRec.phantom = true;
+			}
+		}
+
+		// GOOD TO KNOW - batchActions is disabled on store, so every request is handled on its own ->batchActions: false,
+
+		// get scores for each question and total
+		var programScore = me.evaluate();
+		var questionsScores = programScore.questions;
+		var totalProgramScore = programScore.totalProgramScore;
+
+		// submit answers to server - these answers have written score in them
+		personAnswersStore.sync();
+		me.saveState();
+
+
+
+		if(!me.currentPersonProgram){
+			console.warn("for some reason current person program id is not set - it should be created new if person doesnt have any records yet or it should be recieved from store.");
+			return;
+		}
+
+		// get score results:
+		var scoreResults;
+
+		if(me.currentPersonProgram.attempt < me.programData.maxAttemptsTrainingMode + me.programData.maxAttemptsScoreMode){
+			if(totalProgramScore >= me.programData.passScore){
+				// we passed
+				scoreResults = App.ProgramStatuses.Passed;
+
+
+				print("User", me.person, "has been awarded certificate", App.CoursesAndCertificates[me.programData.certificateFileName]);
+				print("todo- show certificate modal window here");
+
+				me.showCertificate({
+					person:me.person,
+					certificateName: App.CoursesAndCertificates[me.programData.certificateFileName]
+				});
+
+			}else{
+				// we tried non -last time and we failed - status is chagned to discontinued
+				scoreResults = App.ProgramStatuses.Discontinued;
+			}
+		}else{
+			if(totalProgramScore < me.programData.passScore){
+				// if we tried last time and we didn't get enough we failed
+				scoreResults = App.ProgramStatuses.Failed;
+			}else{
+				// we tried last time and we passed
+				scoreResults = App.ProgramStatuses.Passed;
+			}
+		}
+
+
+		var existingRecord = personProgramsStore.findRecord('personTrainingProgramId', me.currentPersonProgram.personTrainingProgramId);
+		var alteredRecord = {
+			personProgramGuid: me.currentPersonProgram.personTrainingProgramId,
+			lastChanged: new Date(),
+			programCompleted: new Date(),
+			programStatusId: scoreResults,
+			changed: 'Y'
+		};
+		// add new content to this record and update it
+		existingRecord.data = alteredRecord;
+		existingRecord.phantom = true;
+		personProgramsStore.sync();
+
+
+		// temp print text to show user that program has been evaluated
+		var status = "";
+		for(var key in App.lookups.ProgramStatuses){
+			if(App.lookups.ProgramStatuses[key].id == scoreResults){
+				status = App.lookups.ProgramStatuses[key].text;
+			}
+		}
+		Ext.toast("Program successfully validated with score " + totalProgramScore + " and score result " + status);
+	},
+
+	startPreviewTimer: function() {
+		// this timer is also started when returning on editSlides page so it auto removes previewing (continue) label
+		var me = this,
+			refs = me.getReferences();
+		if(me.previewTimer){
+			// preview timer already exists so dont make another interval
+			return;
+		}
+		// Update the count down every 1 second
+		me.previewTimer = setInterval(function() {
+			// add completion time minutes to initial programStarted time
+			var endTime = new Date(new Date(me.currentPersonProgram.programStarted).getTime() +
+								   me.programData.completionTime * 60000); // completion time in database is in minutes
+			var now = new Date();
+
+			// Find the distance between now an the count down date
+			var distance = endTime.getTime() - now.getTime();
+
+			// Time calculations for days, hours, minutes and seconds
+			var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+			var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+			var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+			var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+
+			var timerCountdownText = refs.toolbarPreview.el.down('#timerCountdown');
+			timerCountdownText.dom.innerHTML = "Remaining: " + hours + "h " + minutes + "m " + seconds + "s ";
+
+
+			//print("timer interval","Remaining: " + hours + "h " + minutes + "m " + seconds + "s " );
+			// If the count down is finished, write some text
+			if (distance < 0) {
+				clearInterval(me.previewTimer);
+
+				timerCountdownText.dom.innerHTML = "EXPIRED";
+				Ext.toast("Time is up! We will evaluate your score.");
+
+				me.closePreview(true);
+
+
+			}
+		}, 1000);
+
+	},
+
+	showCertificate: function(opts) {
+		var me = this;
+
+		certificateWindow = me.getView().add({ xtype: 'certificate' });
+		certificateWindow.getController().show(opts);
+	},
+
+	captureSlide: function(callback) {
+
+		var me = this,
+			refs = me.getReferences();
+
+
+		// TODO - Jernej Habjan 2018-08-16 - saving current slides' thumbnails in
+		// localStorageData[me.programId].slides[me.getCurrentSlide().id].content.thumbnail
+
+
+		//var thumbnailb64 = btoa(me.renderThumbnail(me.getCurrentSlide()));
+
+		function dataURItoBlob(dataURI) {
+		    // convert base64/URLEncoded data component to raw binary data held in a string
+		    var byteString;
+		    if (dataURI.split(',')[0].indexOf('base64') >= 0)
+		        byteString = atob(dataURI.split(',')[1]);
+		    else
+		        byteString = unescape(dataURI.split(',')[1]);
+
+		    // separate out the mime component
+		    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+		    // write the bytes of the string to a typed array
+		    var ia = new Uint8Array(byteString.length);
+		    for (var i = 0; i < byteString.length; i++) {
+		        ia[i] = byteString.charCodeAt(i);
+		    }
+
+		    return new Blob([ia], {type:mimeString});
+		}
+
+		html2canvas(refs.panelContent.el.dom,
+					{
+			scale:0.1
+		}).then(canvas => {
+
+		    //document.body.appendChild(canvas);
+			//print("canvas",   btoa(canvas.toDataURL('image/png', 0.1)));
+			var dataURL = canvas.toDataURL('image/jpeg', 0.5);
+
+			var currentSlide = me.getCurrentSlide();
+			var rec = me.getStore("TreeStoreSlides").findRecord('id', currentSlide.data.id);
+
+			var content =  Ext.decode(rec.data.content);
+			content.thumbnail = LZString.compressToEncodedURIComponent(dataURL);
+			rec.data.content = Ext.encode(content);
+
+			rec.phantom = true;
+
+			print("printing record", rec);
+
+
+			var blob = dataURItoBlob(dataURL);
+
+
+			/*
+			var img = new Image();
+			img.src = URL.createObjectURL(blob);
+			document.body.appendChild(img);
+		*/
+
+
+			callback(URL.createObjectURL(blob), LZString.compressToEncodedURIComponent(dataURL));
+			// dataUrl = atob(Base64String.decompress(...))
+		});
+		// END ENCODING PIC
+
+
+	},
+
+	clean: function() {
+		var me = this;
+		me.getStore('TreeStoreSlides').removeAll(false);
+		me.getStore('QuestionsStoreSlides').removeAll(false);
+		me.getStore('PersonAnswers').removeAll(false);
+		me.getStore('PersonPrograms').removeAll(false);
+
+		me.getStore('TreeStoreSlides').sync();
+		me.getStore('QuestionsStoreSlides').sync();
+		me.getStore('PersonAnswers').sync();
+		me.getStore('PersonPrograms').sync();
+
+	},
+
 	close: function(owner, tool, event) {
 		var me = this;
 		var yesCallback = function(){ // if user selects yes on close preview, set active item to programs, else do nothing
-			me.getView().up('#mainView').setActiveItem('gridPrograms');
 
 			// clear all stores so next program we are viewing wont be using this programs data
 			// to silently remove data from store - use loadData([],false) !!
 			// remove all data from these stores - silently
 			me.getStore('TreeStoreSlides').loadData([],false);
+			me.getStore('TreeStoreSlides').getRootNode().removeAll(false, true,true);
+
+
+
+
+
 			me.getStore('QuestionsStoreSlides').loadData([],false);
 			me.getStore('PersonAnswers').loadData([],false);
 			me.getStore('PersonPrograms').loadData([],false);
@@ -2161,6 +2401,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 			window.removeEventListener('online',  me.connectionChange);
 			window.removeEventListener('offline',  me.connectionChange);
+
+			me.redirectTo('training-programs');
 		};
 
 		if(me.previewing){ // only if we are previewing show close dialog
@@ -2196,6 +2438,11 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		me.saveState();
 		refs.treeSlides.setSelection(me.getCurrentSlide());
 
+	},
+
+	onTreeItemRename: function(editor, context, eOpts) {
+		// after rename save state
+		this.saveState();
 	},
 
 	onTreeItemSelect: function(rowmodel, record, index, eOpts) {
@@ -2247,7 +2494,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 			headerHeight: 50,
 			footerHeight: 50,
 			padding: 50,
-			background: null
+			background: null,
+			programSynced: true
 		};
 
 		me.cmpTypes = {

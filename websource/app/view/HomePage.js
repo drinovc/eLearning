@@ -21,8 +21,9 @@ Ext.define('eLearning.view.HomePage', {
 		'eLearning.view.HomePageViewModel',
 		'eLearning.view.HomePageViewController',
 		'Ext.button.Button',
-		'Ext.container.Container',
-		'Ext.form.Label'
+		'Ext.form.Label',
+		'Ext.form.Panel',
+		'Ext.form.field.Text'
 	],
 
 	controller: 'homepage',
@@ -30,11 +31,6 @@ Ext.define('eLearning.view.HomePage', {
 		type: 'homepage'
 	},
 	itemId: 'homePage',
-	defaults: {
-		width: 200,
-		height: 50,
-		margin: 5
-	},
 
 	layout: {
 		type: 'vbox',
@@ -43,28 +39,33 @@ Ext.define('eLearning.view.HomePage', {
 	},
 	items: [
 		{
-			xtype: 'button',
-			handler: 'showTrainingPrograms',
-			text: 'Training Programs'
-		},
-		{
-			xtype: 'button',
-			handler: function(button, e) {
-
-			},
-			text: 'Help'
-		},
-		{
 			xtype: 'container',
-			height: 200,
+			flex: 1,
 			defaults: {
-				flex: 1
+				width: 200,
+				height: 50,
+				margin: 5
 			},
 			layout: {
 				type: 'vbox',
-				align: 'stretch'
+				align: 'center',
+				pack: 'center'
 			},
 			items: [
+				{
+					xtype: 'button',
+					handler: function(button, e) {
+						this.up('homepage').getController().redirectTo('training-programs');
+					},
+					text: 'Training Programs'
+				},
+				{
+					xtype: 'button',
+					handler: function(button, e) {
+
+					},
+					text: 'Help'
+				},
 				{
 					xtype: 'label',
 					flex: 0,
@@ -73,16 +74,74 @@ Ext.define('eLearning.view.HomePage', {
 				},
 				{
 					xtype: 'button',
-					handler: 'showEditPages',
+					handler: function(button, e) {
+						this.up('homepage').getController().redirectTo('edit-pages/' + '-1');
+					},
 					text: 'Edit Pages'
+				}
+			]
+		},
+		{
+			xtype: 'form',
+			reference: 'form',
+			id: 'form',
+			itemId: 'form',
+			bodyPadding: 10,
+			defaultButton: 'btnSubmit',
+			title: 'Login',
+			layout: {
+				type: 'vbox',
+				align: 'stretch'
+			},
+			items: [
+				{
+					xtype: 'textfield',
+					flex: 1,
+					fieldLabel: 'User',
+					name: 'user',
+					inputType: 'number',
+					allowBlank: false
 				},
 				{
-					xtype: 'button',
-					handler: function(button, e) {
-						Ext.toast('This is a toast message');
-
+					xtype: 'textfield',
+					flex: 1,
+					fieldLabel: 'Pin',
+					name: 'pin',
+					inputType: 'password',
+					allowBlank: false
+				},
+				{
+					xtype: 'container',
+					flex: 1,
+					padding: 10,
+					layout: {
+						type: 'hbox',
+						align: 'middle',
+						pack: 'center'
 					},
-					text: 'Test'
+					items: [
+						{
+							xtype: 'button',
+							flex: 1,
+							formBind: true,
+							itemId: 'saveButton',
+							margin: 5,
+							text: 'Save',
+							listeners: {
+								click: 'onSave'
+							}
+						},
+						{
+							xtype: 'button',
+							flex: 1,
+							itemId: 'cancelButton',
+							margin: 5,
+							text: 'Cancel',
+							listeners: {
+								click: 'onCancel'
+							}
+						}
+					]
 				}
 			]
 		}

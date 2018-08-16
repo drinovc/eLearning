@@ -516,7 +516,10 @@ Ext.define('eLearning.view.EditSlides', {
 					],
 					plugins: [
 						{
-							ptype: 'cellediting'
+							ptype: 'cellediting',
+							listeners: {
+								edit: 'onTreeItemRename'
+							}
 						}
 					],
 					listeners: {

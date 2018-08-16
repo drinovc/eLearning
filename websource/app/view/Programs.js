@@ -146,10 +146,21 @@ Ext.define('eLearning.view.Programs', {
 		},
 		{
 			xtype: 'gridcolumn',
+			renderer: function(value, metaData, record, rowIndex, colIndex, store, view) {
+				return !value ? '' : App.lookups.CoursesAndCertificates.filter(function(item) {return item.id == value; })[0].text;
+
+			},
+			minWidth: 250,
+			cellWrap: true,
 			dataIndex: 'certificateFileName',
 			text: 'Certificate',
 			editor: {
-				xtype: 'textfield'
+				xtype: 'combobox',
+				queryMode: 'local',
+				valueField: 'id',
+				bind: {
+					store: '{StoreProgramCertificates}'
+				}
 			}
 		},
 		{
@@ -192,18 +203,13 @@ Ext.define('eLearning.view.Programs', {
 					text: 'Duplicate'
 				},
 				{
-					xtype: 'button',
-					handler: 'bookmark',
-					text: 'Bookmark'
-				},
-				{
 					xtype: 'tbseparator'
 				},
 				{
 					xtype: 'button',
-					handler: 'editSlides',
+					handler: 'editProgramData',
 					id: 'btnEdit',
-					text: 'Edit Slides'
+					text: 'Edit Program Data'
 				},
 				{
 					xtype: 'tbtext',
@@ -211,6 +217,17 @@ Ext.define('eLearning.view.Programs', {
 					id: 'syncIndicatorPrograms',
 					listeners: {
 						afterrender: 'createTooltip'
+					}
+				},
+				{
+					xtype: 'tbseparator'
+				},
+				{
+					xtype: 'tbtext',
+					cls: 'x-fa fa-check success',
+					id: 'syncIndicatorProgramsData',
+					listeners: {
+						afterrender: 'createTooltipData'
 					}
 				}
 			]

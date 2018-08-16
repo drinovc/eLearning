@@ -17,14 +17,27 @@ Ext.define('eLearning.view.ProgramsViewController', {
 	extend: 'Ext.app.ViewController',
 	alias: 'controller.programs',
 
-	load: function() {
+	load: function(opts) {
+
+
 		var me = this;
+
+
+		opts = Ext.applyIf(opts || {}, {
+			program: null,
+			person: {PERSON_ID: -1}
+		});
+
+		me.person = opts.person;
+		me.personId = opts.person.PERSON_ID;
+
+		if(me.personId == -1){
+			console.warn("Using mockup test person id");
+		}
 
 		var callback = function(){
 			me.saveState(); // save ALL data that is after all initial data syncs to localstorage
 		};
-
-		me.getStore('StoreProgramCategories').setData(App.lookups.ProgramCategories);
 
 		if(navigator.onLine){
 			// sync with server
@@ -40,11 +53,11 @@ Ext.define('eLearning.view.ProgramsViewController', {
 				localStorageEntries.push(localStorageData[key].programInfo);
 			}
 			store.setData(localStorageEntries);
+
+			me.updateDataStatusIndicator();
+
 		}
 
-		// Update the online status icon based on connectivity
-		window.addEventListener('online',  me.connectionChange);
-		window.addEventListener('offline', me.connectionChange);
 
 
 	},
@@ -106,16 +119,11 @@ Ext.define('eLearning.view.ProgramsViewController', {
 			localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
 
 
-			syncIndicatorPrograms.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
-			syncIndicatorPrograms.addCls("fa-check success");
-			syncIndicatorPrograms.tooltip.html = 'Synced';
-
+			me.updateStatusIndicator(true, syncIndicatorPrograms);
+			me.saveProgramsData();
 
 		}else{
-			syncIndicatorPrograms.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
-			syncIndicatorPrograms.addCls("fa-exclamation-triangle warning");
-			syncIndicatorPrograms.tooltip.html = 'Not Synced';
-
+			me.updateStatusIndicator(false, syncIndicatorPrograms);
 		}
 
 		var editButton = Ext.getCmp('btnEdit');
@@ -133,7 +141,6 @@ Ext.define('eLearning.view.ProgramsViewController', {
 		// calls sync of everything - it retrieves data and pushes latest data to server
 		// syncs all data with server - this is called on program load and on navigator onLine
 		var me = this,
-			TEST_PERSON_ID = 10000112,
 			store = me.getStore('StorePrograms'),
 			syncIndicatorPrograms = Ext.getCmp('syncIndicatorPrograms'),
 			syncStateCallback = function(){
@@ -149,10 +156,12 @@ Ext.define('eLearning.view.ProgramsViewController', {
 		syncIndicatorPrograms.tooltip.html = 'Syncing';
 
 
-		var params = {userId: TEST_PERSON_ID}; // Todo - this query by user is unsupported by 2018-08-08
+		var params = {userId: me.personId}; // Todo - this query by user is unsupported by 2018-08-08
 		//initialDataSyncPrograms('StorePrograms', 'programInfo', params, syncStateCallback, 'id', me);
 		initialDataSync('StorePrograms', 'programInfo', params, syncStateCallback, 'id', me);
 
+
+		me.saveProgramsData();
 	},
 
 	unload: function() {
@@ -163,6 +172,7 @@ Ext.define('eLearning.view.ProgramsViewController', {
 		var me = this;
 		me.getStore('StorePrograms').loadData([],false);
 		me.getStore('StoreProgramCategories').loadData([],false);
+		me.getStore('StoreProgramCertificates').loadData([],false);
 
 		// remove all listeners so they are not interfering with other views
 		window.removeEventListener('online',  me.connectionChange);
@@ -178,6 +188,79 @@ Ext.define('eLearning.view.ProgramsViewController', {
 		return selection;
 
 
+	},
+
+	saveProgramsData: function() {
+		var me = this,
+			localStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),
+			programsStore = me.getStore('StorePrograms'),
+			slidesController = me.getView().up('mainview').down('#editSlides').getController();
+
+		var callback = function(){
+			me.updateDataStatusIndicator();
+		};
+
+		for(var i = 0; i < programsStore.data.items.length; i++){
+			var programId =programsStore.data.items[i].data.id;
+			if(localStorageData[programId].pageSetup && localStorageData[programId].pageSetup.programSynced === false){
+				print("this program data is not synced");
+				slidesController.programId = programId;
+				slidesController.serverSync(callback);
+			}
+		}
+		me.updateDataStatusIndicator();
+
+	},
+
+	updateStatusIndicator: function(synced, indicator) {
+		var me = this;
+
+		if(synced){
+			indicator.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
+			indicator.addCls("fa-check success");
+			indicator.tooltip.html = 'Synced';
+		}else{
+			indicator.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');
+			indicator.addCls("fa-exclamation-triangle warning");
+			indicator.tooltip.html = 'Not Synced';
+		}
+
+
+
+
+
+
+	},
+
+	updateDataStatusIndicator: function() {
+		// also update data status indicator
+
+
+		// Count how many program data changes have been made - if any are made, update data status indicator to 'unsynced' and set tooltip text
+		var me = this,
+			programsStore = me.getStore('StorePrograms'),
+			syncDataIndicator = Ext.getCmp('syncIndicatorProgramsData'),
+			localStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),
+			unsyncedProgramsData = 0;
+		for(var i = 0; i < programsStore.data.items.length; i++){
+			var programId =programsStore.data.items[i].data.id;
+			// this may not be initialized because of program duplicate
+			if(!localStorageData[programId]){
+				localStorageData[programId] = {};
+			}
+			if(localStorageData[programId].pageSetup &&  localStorageData[programId].pageSetup.programSynced === false){
+				print("this program data is not synced");
+				unsyncedProgramsData++;
+			}
+		}
+
+		if(unsyncedProgramsData){
+			me.updateStatusIndicator(false, syncDataIndicator);
+			syncDataIndicator.tooltip.html = 'Not Synced ' + unsyncedProgramsData + ' Programs Data';
+		}else{
+			me.updateStatusIndicator(true, syncDataIndicator);
+			syncDataIndicator.tooltip.html = 'Synced programs Data';
+		}
 	},
 
 	onRowEditingCanceledit: function(editor, context, eOpts) {
@@ -228,40 +311,186 @@ Ext.define('eLearning.view.ProgramsViewController', {
 			nextProgramIdx = store.indexOf(currentProgram) + 1,
 			nextProgram = store.getAt(nextProgramIdx),
 			prevProgramIdx = store.indexOf(currentProgram) - 1,
-			prevProgram = store.getAt(prevProgramIdx);
+			prevProgram = store.getAt(prevProgramIdx),
+			selection = me.getSelection(),
+			slidesController = me.getView().up('mainview').down('#editSlides').getController();
 
 
-		store.remove(me.getSelection());
+		//  delete all slides, questions...
+		slidesController.programId = selection.id;
+		slidesController.clean();
+
+		//then delete program
+
+		store.remove(selection);
 		me.saveState();
 		me.getView().setSelection(nextProgram || prevProgram || store.first()); // set new selection
+
+
+
+
 	},
 
 	duplicate: function(button, e) {
-		console.warn("Duplicate unsupported - we have to copy current program, its slides, slides' questions, questions' answers and user program");
+		var REPLICATE_ANSWERS = true, // we might not want to replicate answers
+		me = this,
+		store = me.getStore('StorePrograms'),
+		selection = me.getView().getSelection()[0],
+		slidesController = me.getView().up('mainview').down('#editSlides').getController();
 
-		return;
-
-		var me = this,
-			store = me.getStore('StorePrograms'),
-			selection = me.getView.getSelection()[0];
-		var duplicateProgram = Ext.clone(selection);
+		var duplicateProgram = me.getCurrentState()[selection.id].programInfo;
 		//change its id
-		duplicateProgram.id = createGUID(); // todo is this correct?
+		print("printing duplicate program", duplicateProgram);
+		duplicateProgram.id = createGUID();
+		duplicateProgram.name = duplicateProgram.name + " (duplicate)";
+
 		store.add(duplicateProgram)[0].phantom = true;
 
+		store.sync({
+			callback:function(){
 
-		// todo iterate through its original programs slides, questions, answers and personProgram
-		// programs view model doesn't have all the other needed stores, so i will have to access editSlides' stores somehow
+				// todo iterate through its original programs slides, questions, answers and personProgram
+				// programs view model doesn't have all the other needed stores, so i will have to access editSlides' stores somehow
 
-		me.saveState();
-		me.getView().setSelection(store.last()); // set new selection
+				// ko mam duplicatan program id
+				// nardim serverSync editSlides s tastarmu idjam,
+				// potem poišem v localstorage ta tastar id
+				// ga preimenujem v tanov id od programa
+				// stisnem še enkrat serverSync in bo vse postal na tanov guid
+
+
+
+				// save to localstorage this new program
+				me.saveState();
+				var serverSyncCallback2 = function(){
+					// then save everything and set new selection to newly duplicated slide
+					//slidesController.saveState(); // DONT SAVE STATE FOR THAT CONTROLLER HERE
+					// save all changes that have been made to duplicated program
+					me.saveState();
+					me.getView().setSelection(store.last());
+				};
+
+
+				var serverSyncCallback1 = function(){
+					slidesController.saveState(true); // save everything to localstorage
+
+					// copy localstorage data into new id
+					var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
+					localStorageData[duplicateProgram.id] = Ext.clone(localStorageData[selection.id]);
+
+					var slides = localStorageData[duplicateProgram.id].slides,
+						questions = localStorageData[duplicateProgram.id].questions,
+						answers = localStorageData[duplicateProgram.id].answers,
+						personProgram = localStorageData[duplicateProgram.id].personProgram,
+						slidesNew = {},
+						questionsNew = {},
+						answersNew = {};
+
+					// reparent everything
+
+					for(var slideKey in slides){
+						var slide = slides[slideKey];
+
+						// memorize
+						slideOldId = slide.id;
+						// create new guid
+						slide.id = createGUID();
+						slide.programId = duplicateProgram.id;
+
+						// iterate through all slides and check if anyone has set parent this slide
+						for(var childSlideKey in slides){
+							var childSlide = slides[childSlideKey];
+
+							if(childSlide.parentId == slideOldId){
+								// reparent
+								childSlide.parentId = slide.id;
+							}
+						}
+
+
+						if(!slide.content){
+							continue;
+						}
+
+						var slideComps = Ext.decode(slide.content);
+						var slideNewComponents = {components:{}};
+
+						for(var compKey in slideComps.components){
+							var comp = slideComps.components[compKey];
+							comp.id = createGUID();
+
+							// questions
+							for(var questionKey in questions){
+								var question = questions[questionKey];
+
+								//if(slideOldId == questions.pageId){ // WITH THIS WORKED BUT ITS WRONG
+								if(slideOldId == question.pageId){
+									// first reparent
+									question.pageId = slide.id;
+
+									// memorize
+									questionOldId = question.id;
+									// use guid from component
+									question.id = comp.id;
+
+									if(REPLICATE_ANSWERS){
+										for(var answerKey in answers){
+											var answer = answers[answerKey];
+
+											if(questionOldId == answer.questionId){
+												// first reparent
+												answer.questionId = question.id;
+
+												// memorize
+												answerOldId = answer.id;
+												// create new guid
+												answer.id = createGUID();
+											}
+											answersNew[answer.id] = answer;
+										}
+									}
+									questionsNew[question.id] = question;
+								}
+							}
+							slideNewComponents.components[comp.id] = comp;
+						}
+						slide.content = Ext.encode(slideNewComponents);
+						slidesNew[slide.id] = slide;
+					}
+					localStorageData[duplicateProgram.id].slides = slidesNew;
+					localStorageData[duplicateProgram.id].questions = questionsNew;
+					localStorageData[duplicateProgram.id].answers = answersNew;
+
+					// dont replicate person program
+
+					// set data back to localstorage
+					localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+
+
+					// call server sync to upload all data for this program id from localstorage to database
+
+					// TEMP - DOEST THIS WORK???
+					slidesController.getStore('TreeStoreSlides').loadData([],false);
+					slidesController.getStore('TreeStoreSlides').getRootNode().removeAll(false, true,true);
+					slidesController.getStore('QuestionsStoreSlides').loadData([],false);
+					slidesController.getStore('PersonAnswers').loadData([],false);
+					slidesController.getStore('PersonPrograms').loadData([],false);
+
+					slidesController.programId = duplicateProgram.id;
+					slidesController.serverSync(serverSyncCallback2);
+				};
+
+				// first call save state to save everything from old program to localstorage
+				slidesController.programId = selection.id;
+				slidesController.serverSync(serverSyncCallback1);
+
+			}
+		});
+
+
 	},
 
-	bookmark: function(button, e) {
-		console.warn("Bookmark unsupported - field in database needs to be added to support bookmarks");
-	},
-
-	editSlides: function(button, e) {
+	editProgramData: function(button, e) {
 		var me = this,
 			view = me.getView(),
 			selection = me.getSelection(),
@@ -269,8 +498,9 @@ Ext.define('eLearning.view.ProgramsViewController', {
 
 		me.saveState();
 		me.unload();
-		var newActiveItem = mainView.setActiveItem('editSlides');
-		newActiveItem.getController().load({ program: selection });
+
+		this.redirectTo('edit-pages/' + selection.id.slice(1, -1)); // passing id without surrounding curly brackets { }
+
 	},
 
 	createTooltip: function(component, eOpts) {
@@ -282,13 +512,38 @@ Ext.define('eLearning.view.ProgramsViewController', {
 		});
 	},
 
+	createTooltipData: function(component, eOpts) {
+		// this function could be basic binding but if it is, defaultListenerScope becomes true and then store bindings dont work!!!!!!!!
+
+		component.tooltip = Ext.create('Ext.tip.ToolTip', {
+			target: component.id,
+			html: 'Synced Programs Data'
+		});
+	},
+
 	close: function(owner, tool, event) {
 		this.unload();
-		this.getView().up('#mainView').setActiveItem('homePage');
+		this.redirectTo('home');
 	},
 
 	onGridProgramsActivate: function(component, eOpts) {
 		var me = this;
+		if(!App.lookups.ProgramCategories){
+			// if we reloaded page on training programs, we have to reload lookups and refresh grid
+			var callback = function(){
+				me.getStore('StoreProgramCategories').setData(App.lookups.ProgramCategories);
+				me.getStore('StoreProgramCertificates').setData(App.lookups.CoursesAndCertificates);
+				Ext.getCmp('gridPrograms').getView().refresh();
+			};
+			loadLookups(callback);
+		}
+
+
+		// Update the online status icon based on connectivity
+		window.addEventListener('online',  me.connectionChange);
+		window.addEventListener('offline', me.connectionChange);
+
+
 
 		// create online / offline event listenere - when coming back online, we want to sync localstorage with database
 		me.connectionChange = function() {
@@ -307,7 +562,7 @@ Ext.define('eLearning.view.ProgramsViewController', {
 			}
 		};
 
-		this.load();
+		//this.load();
 
 	},
 

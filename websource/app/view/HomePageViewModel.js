@@ -15,6 +15,52 @@
 
 Ext.define('eLearning.view.HomePageViewModel', {
 	extend: 'Ext.app.ViewModel',
-	alias: 'viewmodel.homepage'
+	alias: 'viewmodel.homepage',
+
+	requires: [
+		'Ext.data.Store',
+		'Ext.data.proxy.Ajax',
+		'Ext.data.reader.Json'
+	],
+
+	stores: {
+		logins: {
+			model: 'eLearning.model.Login',
+			data: [
+				{
+					user: 'earum',
+					pin: 'non'
+				},
+				{
+					user: 'et',
+					pin: 'officia'
+				},
+				{
+					user: 'dolorum',
+					pin: 'quia'
+				},
+				{
+					user: 'molestias',
+					pin: 'cupiditate'
+				},
+				{
+					user: 'eos',
+					pin: 'doloribus'
+				}
+			],
+			proxy: {
+				type: 'ajax',
+				api: {
+					create: '/Pub/Login',
+					read: '/Pub/Login',
+					update: '/POST/Pub/Login',
+					destroy: '/Pub/Login'
+				},
+				reader: {
+					type: 'json'
+				}
+			}
+		}
+	}
 
 });

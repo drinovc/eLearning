@@ -8,13 +8,6 @@
     "userConfig": {
         "container|align": "center",
         "container|pack": "center",
-        "defaults": [
-            "{ ",
-            "    width: 200,",
-            "    height: 50,",
-            "    margin: 5",
-            "}"
-        ],
         "designer|userAlias": "homepage",
         "designer|userClassName": "HomePage",
         "itemId": "homePage",
@@ -35,92 +28,6 @@
     "viewModelInstanceId": "6fedad12-3a69-42e9-87ce-d30ea9b5fdbd",
     "cn": [
         {
-            "type": "Ext.button.Button",
-            "reference": {
-                "name": "items",
-                "type": "array"
-            },
-            "codeClass": null,
-            "userConfig": {
-                "text": "Training Programs"
-            },
-            "configAlternates": {
-                "text": "string"
-            },
-            "name": "MyButton17",
-            "designerId": "efe881b3-590b-40f5-a2ec-9156bb5ac41b",
-            "cn": [
-                {
-                    "type": "fixedfunction",
-                    "reference": {
-                        "name": "items",
-                        "type": "array"
-                    },
-                    "codeClass": null,
-                    "userConfig": {
-                        "designer|params": [
-                            "button",
-                            "e"
-                        ],
-                        "designer|viewControllerFn": "showTrainingPrograms",
-                        "fn": "handler",
-                        "implHandler": [
-                            "this.redirectTo('training-programs');"
-                        ]
-                    },
-                    "configAlternates": {
-                        "designer|params": "typedarray",
-                        "fn": "string",
-                        "implHandler": "code",
-                        "designer|viewControllerFn": "string"
-                    },
-                    "name": "handler",
-                    "designerId": "e5c1db1e-390e-47a9-ad1b-86c8d6a7d6da"
-                }
-            ]
-        },
-        {
-            "type": "Ext.button.Button",
-            "reference": {
-                "name": "items",
-                "type": "array"
-            },
-            "codeClass": null,
-            "userConfig": {
-                "text": "Help"
-            },
-            "configAlternates": {
-                "text": "string"
-            },
-            "name": "MyButton23",
-            "designerId": "b83e2dc8-b6f0-4f44-a228-880a6f581858",
-            "cn": [
-                {
-                    "type": "fixedfunction",
-                    "reference": {
-                        "name": "items",
-                        "type": "array"
-                    },
-                    "codeClass": null,
-                    "userConfig": {
-                        "designer|params": [
-                            "button",
-                            "e"
-                        ],
-                        "fn": "handler",
-                        "implHandler": null
-                    },
-                    "configAlternates": {
-                        "designer|params": "typedarray",
-                        "fn": "string",
-                        "implHandler": "code"
-                    },
-                    "name": "handler",
-                    "designerId": "6d3b26b1-7ce1-4bb9-9510-b85a5392212a"
-                }
-            ]
-        },
-        {
             "type": "Ext.container.Container",
             "reference": {
                 "name": "items",
@@ -128,24 +35,115 @@
             },
             "codeClass": null,
             "userConfig": {
-                "container|align": "stretch",
+                "container|align": "center",
+                "container|pack": "center",
                 "defaults": [
                     "{",
-                    "    flex: 1",
-                    "}"
+                    "width: 200,",
+                    "height: 50,",
+                    "margin: 5",
+                    "}   "
                 ],
-                "height": 200,
-                "layout": "vbox"
+                "dock": null,
+                "layout": "vbox",
+                "layout|flex": 1
             },
             "configAlternates": {
                 "container|align": "string",
+                "container|pack": "string",
                 "defaults": "object",
-                "height": "auto",
-                "layout": "string"
+                "dock": "string",
+                "layout": "string",
+                "layout|flex": "number"
             },
-            "name": "MyContainer2",
-            "designerId": "f585c66a-250d-45ce-84cd-c59321bf93aa",
+            "name": "MyContainer1",
+            "designerId": "0afa397a-d210-446d-95ba-defd82f19085",
             "cn": [
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "text": "Training Programs"
+                    },
+                    "configAlternates": {
+                        "text": "string"
+                    },
+                    "name": "MyButton17",
+                    "designerId": "efe881b3-590b-40f5-a2ec-9156bb5ac41b",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "fn": "handler",
+                                "implHandler": [
+                                    "this.up('homepage').getController().redirectTo('training-programs');"
+                                ]
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "fn": "string",
+                                "implHandler": "code",
+                                "designer|viewControllerFn": "string"
+                            },
+                            "name": "handler",
+                            "designerId": "e5c1db1e-390e-47a9-ad1b-86c8d6a7d6da"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "text": "Help"
+                    },
+                    "configAlternates": {
+                        "text": "string"
+                    },
+                    "name": "MyButton23",
+                    "designerId": "b83e2dc8-b6f0-4f44-a228-880a6f581858",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "fn": "handler",
+                                "implHandler": null
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "fn": "string",
+                                "implHandler": "code"
+                            },
+                            "name": "handler",
+                            "designerId": "6d3b26b1-7ce1-4bb9-9510-b85a5392212a"
+                        }
+                    ]
+                },
                 {
                     "type": "Ext.form.Label",
                     "reference": {
@@ -194,10 +192,9 @@
                                     "button",
                                     "e"
                                 ],
-                                "designer|viewControllerFn": "showEditPages",
                                 "fn": "handler",
                                 "implHandler": [
-                                    "this.redirectTo('edit-pages');"
+                                    "this.up('homepage').getController().redirectTo('edit-pages/' + '-1');"
                                 ]
                             },
                             "configAlternates": {
@@ -210,48 +207,250 @@
                             "designerId": "07ef4a90-5a43-495d-9458-e591bd8f0c6c"
                         }
                     ]
-                },
+                }
+            ]
+        },
+        {
+            "type": "Ext.form.Panel",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "bodyPadding": 10,
+                "container|align": "stretch",
+                "defaultButton": "btnSubmit",
+                "id": "form",
+                "itemId": "form",
+                "layout": "vbox",
+                "reference": "form",
+                "title": "Login"
+            },
+            "configAlternates": {
+                "bodyPadding": "auto",
+                "bodyStyle": "string",
+                "container|align": "string",
+                "layout": "string",
+                "layout|flex": "number",
+                "title": "string",
+                "defaultButton": "string",
+                "id": "string",
+                "itemId": "string",
+                "reference": "string"
+            },
+            "name": "MyForm",
+            "designerId": "0ec884e3-5b8a-4738-9958-d359bb4c8c2c",
+            "cn": [
                 {
-                    "type": "Ext.button.Button",
+                    "type": "Ext.form.field.Text",
                     "reference": {
                         "name": "items",
                         "type": "array"
                     },
                     "codeClass": null,
                     "userConfig": {
-                        "text": "Test"
+                        "allowBlank": false,
+                        "fieldLabel": "User",
+                        "inputType": "number",
+                        "layout|flex": 1,
+                        "name": "user"
                     },
                     "configAlternates": {
-                        "text": "string"
+                        "allowBlank": "boolean",
+                        "fieldLabel": "string",
+                        "inputType": "string",
+                        "layout|flex": "number",
+                        "name": "string"
                     },
-                    "name": "MyButton22",
-                    "designerId": "2892474e-65a0-4d76-97ad-0f710164ff88",
+                    "name": "MyTextField",
+                    "designerId": "1c2d0288-47d8-4272-8980-da0e0d15b027"
+                },
+                {
+                    "type": "Ext.form.field.Text",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "allowBlank": false,
+                        "fieldLabel": "Pin",
+                        "inputType": "password",
+                        "layout|flex": 1,
+                        "name": "pin"
+                    },
+                    "configAlternates": {
+                        "allowBlank": "boolean",
+                        "fieldLabel": "string",
+                        "inputType": "string",
+                        "layout|flex": "number",
+                        "name": "string"
+                    },
+                    "name": "MyTextField5",
+                    "designerId": "b1be2c4e-45ad-4ca9-9625-037b58246fab"
+                },
+                {
+                    "type": "Ext.container.Container",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "container|align": "middle",
+                        "container|pack": "center",
+                        "designer|displayName": "buttons",
+                        "layout": "hbox",
+                        "layout|flex": 1,
+                        "padding": 10
+                    },
+                    "configAlternates": {
+                        "container|align": "string",
+                        "container|pack": "string",
+                        "designer|displayName": "string",
+                        "layout": "string",
+                        "layout|flex": "number",
+                        "padding": "auto"
+                    },
+                    "name": "MyContainer5",
+                    "designerId": "48f62101-c905-483e-b486-675b21300efa",
                     "cn": [
                         {
-                            "type": "fixedfunction",
+                            "type": "Ext.button.Button",
                             "reference": {
                                 "name": "items",
                                 "type": "array"
                             },
                             "codeClass": null,
                             "userConfig": {
-                                "designer|params": [
-                                    "button",
-                                    "e"
-                                ],
-                                "fn": "handler",
-                                "implHandler": [
-                                    "Ext.toast('This is a toast message');",
-                                    ""
-                                ]
+                                "formBind": true,
+                                "itemId": "saveButton",
+                                "layout|flex": 1,
+                                "margin": 5,
+                                "text": "Save"
                             },
                             "configAlternates": {
-                                "designer|params": "typedarray",
-                                "fn": "string",
-                                "implHandler": "code"
+                                "formBind": "boolean",
+                                "itemId": "string",
+                                "layout|flex": "number",
+                                "margin": "auto",
+                                "text": "string"
                             },
-                            "name": "handler",
-                            "designerId": "617c4d47-dea9-4f4d-8291-67e5322948e2"
+                            "name": "MyButton4",
+                            "designerId": "bb405526-70a1-4d82-a454-4635a46cdc03",
+                            "cn": [
+                                {
+                                    "type": "viewcontrollereventbinding",
+                                    "reference": {
+                                        "name": "listeners",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "fn": "onSave",
+                                        "implHandler": [
+                                            "var me = this,",
+                                            "\tform = me.getReferences().form,",
+                                            "    values = form.getForm().getValues(),",
+                                            "    store = me.getStore('logins');",
+                                            "",
+                                            "// Valid",
+                                            "if (form.isValid()) {",
+                                            "",
+                                            "    // TODO: Assign the record's ID from data source",
+                                            "    // Normally, this value would be auto-generated,",
+                                            "    // or returned from the server",
+                                            "    values.id = store.count() + 1;",
+                                            "\t",
+                                            "\tconsole.warn(\"Todo hash pin after sending on load\");",
+                                            "\t",
+                                            "\tstore.load({",
+                                            "\t\tparams:{",
+                                            "\t\t\tuser: values.user,",
+                                            "\t\t\tpin: values.pin",
+                                            "\t\t},",
+                                            "\t\tcallback: function(rec){",
+                                            "\t\t\tif(!rec[0].data){",
+                                            "\t\t\t\tExt.toast(\"No results recieved\");",
+                                            "\t\t\t}",
+                                            "\t\t\trec = rec[0].data.data[0];",
+                                            "\t\t\tif(rec.PIN_CODE_CORRECT){",
+                                            "\t\t\t\tExt.toast(\"Welcome \" +rec.PERSON_FIRST_NAME + \" \" + rec.PERSON_LAST_NAME);",
+                                            "\t\t\t\tme.person = rec;",
+                                            "\t\t\t\tprint(\"printing person\", rec);",
+                                            "\t\t\t\tme.personId = rec.PERSON_ID;",
+                                            "\t\t\t\tform.close();",
+                                            "\t\t\t}else{",
+                                            "\t\t\t\tExt.toast(\"Wrong username or password\");",
+                                            "\t\t\t}",
+                                            "\t\t}",
+                                            "",
+                                            "\t});",
+                                            "}"
+                                        ],
+                                        "name": "click",
+                                        "scope": "me"
+                                    },
+                                    "configAlternates": {
+                                        "fn": "string",
+                                        "implHandler": "code",
+                                        "name": "string",
+                                        "scope": "string"
+                                    },
+                                    "name": "onSave",
+                                    "designerId": "79d9b6bd-ae95-4de6-a960-056b1f3fe4ed"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Ext.button.Button",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "itemId": "cancelButton",
+                                "layout|flex": 1,
+                                "margin": 5,
+                                "text": "Cancel"
+                            },
+                            "configAlternates": {
+                                "itemId": "string",
+                                "layout|flex": "number",
+                                "margin": "auto",
+                                "text": "string"
+                            },
+                            "name": "MyButton22",
+                            "designerId": "4d5e653c-f240-4b75-a28f-6cb081cbd684",
+                            "cn": [
+                                {
+                                    "type": "viewcontrollereventbinding",
+                                    "reference": {
+                                        "name": "listeners",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "fn": "onCancel",
+                                        "implHandler": [
+                                            "var form = this.getReferences().form;",
+                                            "form.close();"
+                                        ],
+                                        "name": "click",
+                                        "scope": "me"
+                                    },
+                                    "configAlternates": {
+                                        "fn": "string",
+                                        "implHandler": "code",
+                                        "name": "string",
+                                        "scope": "string"
+                                    },
+                                    "name": "onCancel",
+                                    "designerId": "88e07160-bcbf-4910-b843-e139e22b5bd9"
+                                }
+                            ]
                         }
                     ]
                 }

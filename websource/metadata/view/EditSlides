@@ -80,12 +80,17 @@
                                 "implHandler": [
                                     "var me = this;",
                                     "var yesCallback = function(){ // if user selects yes on close preview, set active item to programs, else do nothing",
-                                    "\tme.getView().up('#mainView').setActiveItem('gridPrograms');",
                                     "",
-                                    "\t// clear all stores so next program we are viewing wont be using this programs data",
+                                    "\t\t// clear all stores so next program we are viewing wont be using this programs data",
                                     "\t// to silently remove data from store - use loadData([],false) !!",
                                     "\t// remove all data from these stores - silently",
                                     "\tme.getStore('TreeStoreSlides').loadData([],false);",
+                                    "\tme.getStore('TreeStoreSlides').getRootNode().removeAll(false, true,true);",
+                                    "\t",
+                                    "\t",
+                                    "\t",
+                                    "\t",
+                                    "\t",
                                     "\tme.getStore('QuestionsStoreSlides').loadData([],false);",
                                     "\tme.getStore('PersonAnswers').loadData([],false);",
                                     "\tme.getStore('PersonPrograms').loadData([],false);",
@@ -93,6 +98,8 @@
                                     "",
                                     "\twindow.removeEventListener('online',  me.connectionChange);",
                                     "\twindow.removeEventListener('offline',  me.connectionChange);",
+                                    "",
+                                    "\tme.redirectTo('training-programs');",
                                     "};",
                                     "",
                                     "if(me.previewing){ // only if we are previewing show close dialog",
@@ -1964,7 +1971,34 @@
                             },
                             "codeClass": null,
                             "name": "MyCellEditingPlugin2",
-                            "designerId": "2439f51a-0c2d-4963-a545-899f742b9e5a"
+                            "designerId": "2439f51a-0c2d-4963-a545-899f742b9e5a",
+                            "cn": [
+                                {
+                                    "type": "viewcontrollereventbinding",
+                                    "reference": {
+                                        "name": "listeners",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "fn": "onTreeItemRename",
+                                        "implHandler": [
+                                            "// after rename save state",
+                                            "this.saveState();"
+                                        ],
+                                        "name": "edit",
+                                        "scope": "me"
+                                    },
+                                    "configAlternates": {
+                                        "fn": "string",
+                                        "implHandler": "code",
+                                        "name": "string",
+                                        "scope": "string"
+                                    },
+                                    "name": "onTreeItemRename",
+                                    "designerId": "de2c51ce-cf96-42d5-b456-cc03230d7324"
+                                }
+                            ]
                         },
                         {
                             "type": "viewcontrollereventbinding",
@@ -2220,7 +2254,8 @@
                     "    headerHeight: 50,",
                     "    footerHeight: 50,",
                     "    padding: 50,",
-                    "    background: null",
+                    "    background: null,",
+                    "\tprogramSynced: true",
                     "};",
                     "",
                     "me.cmpTypes = {",

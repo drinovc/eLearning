@@ -23,11 +23,13 @@ Ext.application({
 	models: [
 		'Slide',
 		'Option',
-		'Lookup',
+		'LookupCategories',
 		'Program',
 		'Question',
 		'PersonAnswers',
-		'PersonPrograms'
+		'PersonPrograms',
+		'Login',
+		'LookupCertificates'
 	],
 	views: [
 		'MainView',
@@ -41,11 +43,13 @@ Ext.application({
 		'HomePage',
 		'EditTools',
 		'EditSlides',
-		'SlideNavigation'
+		'SlideNavigation',
+		'Certificate'
 	],
 	controllers: [
 		'CApp'
 	],
+	defaultToken: 'home',
 	name: 'eLearning',
 
 	requires: [

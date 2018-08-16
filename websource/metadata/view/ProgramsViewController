@@ -23,15 +23,31 @@
             },
             "codeClass": null,
             "userConfig": {
+                "designer|params": [
+                    "opts"
+                ],
                 "fn": "load",
                 "implHandler": [
+                    "",
+                    "",
                     "var me = this;",
+                    "",
+                    "",
+                    "opts = Ext.applyIf(opts || {}, {",
+                    "\tprogram: null,",
+                    "\tperson: {PERSON_ID: -1}",
+                    "});",
+                    "",
+                    "me.person = opts.person;",
+                    "me.personId = opts.person.PERSON_ID;",
+                    "",
+                    "if(me.personId == -1){",
+                    "\tconsole.warn(\"Using mockup test person id\");",
+                    "}",
                     "",
                     "var callback = function(){",
                     "\tme.saveState(); // save ALL data that is after all initial data syncs to localstorage",
                     "};",
-                    "",
-                    "me.getStore('StoreProgramCategories').setData(App.lookups.ProgramCategories);",
                     "",
                     "if(navigator.onLine){",
                     "\t// sync with server",
@@ -47,18 +63,19 @@
                     "\t\tlocalStorageEntries.push(localStorageData[key].programInfo);",
                     "\t}",
                     "\tstore.setData(localStorageEntries);",
+                    "",
+                    "\tme.updateDataStatusIndicator();",
+                    "",
                     "}",
                     "",
-                    "// Update the online status icon based on connectivity",
-                    "window.addEventListener('online',  me.connectionChange);",
-                    "window.addEventListener('offline', me.connectionChange);",
                     "",
                     ""
                 ]
             },
             "configAlternates": {
                 "fn": "string",
-                "implHandler": "code"
+                "implHandler": "code",
+                "designer|params": "typedarray"
             },
             "name": "load",
             "designerId": "ddd2ccd5-bf92-4c21-9a78-77456a8020f1"
@@ -145,16 +162,11 @@
                     "\tlocalStorage.setItem('mxp_elearning', Ext.encode(localStorageData));",
                     "",
                     "",
-                    "\tsyncIndicatorPrograms.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');",
-                    "\tsyncIndicatorPrograms.addCls(\"fa-check success\");",
-                    "\tsyncIndicatorPrograms.tooltip.html = 'Synced';",
-                    "",
+                    "\tme.updateStatusIndicator(true, syncIndicatorPrograms);",
+                    "\tme.saveProgramsData();",
                     "",
                     "}else{",
-                    "\tsyncIndicatorPrograms.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');",
-                    "\tsyncIndicatorPrograms.addCls(\"fa-exclamation-triangle warning\");",
-                    "\tsyncIndicatorPrograms.tooltip.html = 'Not Synced';",
-                    "",
+                    "\tme.updateStatusIndicator(false, syncIndicatorPrograms);",
                     "}",
                     "",
                     "var editButton = Ext.getCmp('btnEdit');",
@@ -192,7 +204,6 @@
                     "// calls sync of everything - it retrieves data and pushes latest data to server",
                     "// syncs all data with server - this is called on program load and on navigator onLine",
                     "var me = this,",
-                    "\tTEST_PERSON_ID = 10000112,",
                     "\tstore = me.getStore('StorePrograms'),",
                     "\tsyncIndicatorPrograms = Ext.getCmp('syncIndicatorPrograms'),",
                     "\tsyncStateCallback = function(){",
@@ -208,10 +219,12 @@
                     "syncIndicatorPrograms.tooltip.html = 'Syncing';",
                     "",
                     "",
-                    "var params = {userId: TEST_PERSON_ID}; // Todo - this query by user is unsupported by 2018-08-08",
+                    "var params = {userId: me.personId}; // Todo - this query by user is unsupported by 2018-08-08",
                     "//initialDataSyncPrograms('StorePrograms', 'programInfo', params, syncStateCallback, 'id', me);",
                     "initialDataSync('StorePrograms', 'programInfo', params, syncStateCallback, 'id', me);",
-                    ""
+                    "",
+                    "",
+                    "me.saveProgramsData();"
                 ]
             },
             "configAlternates": {
@@ -239,6 +252,7 @@
                     "var me = this;",
                     "me.getStore('StorePrograms').loadData([],false);",
                     "me.getStore('StoreProgramCategories').loadData([],false);",
+                    "me.getStore('StoreProgramCertificates').loadData([],false);",
                     "",
                     "// remove all listeners so they are not interfering with other views",
                     "window.removeEventListener('online',  me.connectionChange);",
@@ -278,6 +292,132 @@
             },
             "name": "getSelection",
             "designerId": "d132e90a-a7a2-4e4c-8b4d-18f10410b481"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "saveProgramsData",
+                "implHandler": [
+                    "var me = this,",
+                    "\tlocalStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),",
+                    "\tprogramsStore = me.getStore('StorePrograms'),",
+                    "\tslidesController = me.getView().up('mainview').down('#editSlides').getController();",
+                    "",
+                    "var callback = function(){",
+                    "\tme.updateDataStatusIndicator();",
+                    "};",
+                    "",
+                    "for(var i = 0; i < programsStore.data.items.length; i++){",
+                    "\tvar programId =programsStore.data.items[i].data.id;",
+                    "\tif(localStorageData[programId].pageSetup && localStorageData[programId].pageSetup.programSynced === false){",
+                    "\t\tprint(\"this program data is not synced\");",
+                    "\t\tslidesController.programId = programId;",
+                    "\t\tslidesController.serverSync(callback);",
+                    "\t}",
+                    "}",
+                    "me.updateDataStatusIndicator();",
+                    ""
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "saveProgramsData",
+            "designerId": "69baa648-e100-4572-95a6-cff195c87035"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "synced",
+                    "indicator"
+                ],
+                "fn": "updateStatusIndicator",
+                "implHandler": [
+                    "var me = this;",
+                    "",
+                    "if(synced){",
+                    "\tindicator.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');",
+                    "\tindicator.addCls(\"fa-check success\");",
+                    "\tindicator.tooltip.html = 'Synced';",
+                    "}else{",
+                    "\tindicator.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');",
+                    "\tindicator.addCls(\"fa-exclamation-triangle warning\");",
+                    "\tindicator.tooltip.html = 'Not Synced';",
+                    "}",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "updateStatusIndicator",
+            "designerId": "490cdbac-af80-48b3-892f-60e5fa9082d0"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "updateDataStatusIndicator",
+                "implHandler": [
+                    "// also update data status indicator",
+                    "",
+                    "",
+                    "// Count how many program data changes have been made - if any are made, update data status indicator to 'unsynced' and set tooltip text",
+                    "var me = this,",
+                    "\tprogramsStore = me.getStore('StorePrograms'),",
+                    "\tsyncDataIndicator = Ext.getCmp('syncIndicatorProgramsData'),",
+                    "\tlocalStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),",
+                    "\tunsyncedProgramsData = 0;",
+                    "for(var i = 0; i < programsStore.data.items.length; i++){",
+                    "\tvar programId =programsStore.data.items[i].data.id;",
+                    "\t// this may not be initialized because of program duplicate",
+                    "\tif(!localStorageData[programId]){",
+                    "\t\tlocalStorageData[programId] = {};",
+                    "\t}",
+                    "\tif(localStorageData[programId].pageSetup &&  localStorageData[programId].pageSetup.programSynced === false){",
+                    "\t\tprint(\"this program data is not synced\");",
+                    "\t\tunsyncedProgramsData++;",
+                    "\t}",
+                    "}",
+                    "",
+                    "if(unsyncedProgramsData){",
+                    "\tme.updateStatusIndicator(false, syncDataIndicator);",
+                    "\tsyncDataIndicator.tooltip.html = 'Not Synced ' + unsyncedProgramsData + ' Programs Data';",
+                    "}else{",
+                    "\tme.updateStatusIndicator(true, syncDataIndicator);",
+                    "\tsyncDataIndicator.tooltip.html = 'Synced programs Data';",
+                    "}"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "updateDataStatusIndicator",
+            "designerId": "c131b5a3-eabc-4f87-837d-79dd42714dd7"
         }
     ]
 }

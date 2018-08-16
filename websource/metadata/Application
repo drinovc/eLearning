@@ -9,14 +9,17 @@
         "controllers": [
             "CApp"
         ],
+        "defaultToken": "home",
         "models": [
             "Slide",
             "Option",
-            "Lookup",
+            "LookupCategories",
             "Program",
             "Question",
             "PersonAnswers",
-            "PersonPrograms"
+            "PersonPrograms",
+            "Login",
+            "LookupCertificates"
         ],
         "name": "eLearning",
         "views": [
@@ -31,7 +34,8 @@
             "HomePage",
             "EditTools",
             "EditSlides",
-            "SlideNavigation"
+            "SlideNavigation",
+            "Certificate"
         ]
     },
     "configAlternates": {
@@ -39,7 +43,8 @@
         "views": "typedarray",
         "models": "typedarray",
         "stores": "typedarray",
-        "controllers": "typedarray"
+        "controllers": "typedarray",
+        "defaultToken": "string"
     },
     "name": "Application",
     "designerId": "application",

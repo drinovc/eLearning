@@ -23,7 +23,7 @@ function initialDataSync(storeName, localStorageAttribute, LoadParams, callback,
 	initialDataStore.load({
 		params: LoadParams,
 
-		callback: function(records, operation, success){
+		callback: function(){
 			// check if localstorage exists
 			
 			var check;
