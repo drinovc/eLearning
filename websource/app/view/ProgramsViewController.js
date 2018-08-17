@@ -202,6 +202,10 @@ Ext.define('eLearning.view.ProgramsViewController', {
 
 		for(var i = 0; i < programsStore.data.items.length; i++){
 			var programId =programsStore.data.items[i].data.id;
+			if(!localStorageData[programId]){
+				// Maybe its not initialized yet when reloading in editSlides and going to trainingPrograms
+				localStorageData[programId] = {};
+			}
 			if(localStorageData[programId].pageSetup && localStorageData[programId].pageSetup.programSynced === false){
 				print("this program data is not synced");
 				slidesController.programId = programId;
@@ -318,6 +322,7 @@ Ext.define('eLearning.view.ProgramsViewController', {
 
 		//  delete all slides, questions...
 		slidesController.programId = selection.id;
+		slidesController.personId = me.personId;
 		slidesController.clean();
 
 		//then delete program
@@ -340,11 +345,15 @@ Ext.define('eLearning.view.ProgramsViewController', {
 
 		var duplicateProgram = me.getCurrentState()[selection.id].programInfo;
 		//change its id
-		print("printing duplicate program", duplicateProgram);
+		Ext.toast("Duplicate not fully supported - some bugs with questions.");
+
 		duplicateProgram.id = createGUID();
 		duplicateProgram.name = duplicateProgram.name + " (duplicate)";
 
 		store.add(duplicateProgram)[0].phantom = true;
+		me.getView().setSelection(store.last());
+
+		var ORG_programId = me.programId;
 
 		store.sync({
 			callback:function(){
@@ -364,10 +373,15 @@ Ext.define('eLearning.view.ProgramsViewController', {
 				me.saveState();
 				var serverSyncCallback2 = function(){
 					// then save everything and set new selection to newly duplicated slide
-					//slidesController.saveState(); // DONT SAVE STATE FOR THAT CONTROLLER HERE
 					// save all changes that have been made to duplicated program
+
 					me.saveState();
-					me.getView().setSelection(store.last());
+
+					// save everything for duplicated program
+					slidesController.programId = duplicateProgram.id;
+					slidesController.saveState();
+					slidesController.clean(true);
+
 				};
 
 
@@ -469,12 +483,7 @@ Ext.define('eLearning.view.ProgramsViewController', {
 
 					// call server sync to upload all data for this program id from localstorage to database
 
-					// TEMP - DOEST THIS WORK???
-					slidesController.getStore('TreeStoreSlides').loadData([],false);
-					slidesController.getStore('TreeStoreSlides').getRootNode().removeAll(false, true,true);
-					slidesController.getStore('QuestionsStoreSlides').loadData([],false);
-					slidesController.getStore('PersonAnswers').loadData([],false);
-					slidesController.getStore('PersonPrograms').loadData([],false);
+					slidesController.clean(true);
 
 					slidesController.programId = duplicateProgram.id;
 					slidesController.serverSync(serverSyncCallback2);
@@ -528,15 +537,15 @@ Ext.define('eLearning.view.ProgramsViewController', {
 
 	onGridProgramsActivate: function(component, eOpts) {
 		var me = this;
-		if(!App.lookups.ProgramCategories){
-			// if we reloaded page on training programs, we have to reload lookups and refresh grid
-			var callback = function(){
-				me.getStore('StoreProgramCategories').setData(App.lookups.ProgramCategories);
-				me.getStore('StoreProgramCertificates').setData(App.lookups.CoursesAndCertificates);
-				Ext.getCmp('gridPrograms').getView().refresh();
-			};
-			loadLookups(callback);
-		}
+
+		// if we reloaded page on training programs, we have to reload lookups and refresh grid
+		var callback = function(){
+			print("recieved callback grid programsActivate");
+			me.getStore('StoreProgramCategories').setData(App.lookups.ProgramCategories);
+			me.getStore('StoreProgramCertificates').setData(App.lookups.CoursesAndCertificates);
+			Ext.getCmp('gridPrograms').getView().refresh();
+		};
+		loadLookups(callback);
 
 
 		// Update the online status icon based on connectivity
@@ -567,14 +576,15 @@ Ext.define('eLearning.view.ProgramsViewController', {
 	},
 
 	onStoreProgramsRemove: function(store, records, index, isMove, eOpts) {
-		var me = this;
-		print("called store remove programs", store, records, index, isMove, eOpts );
-		for(var i = 0; i < records.length; i++){
-			var deletedRec = records[i];
-			var recId = deletedRec.id;
-			print("we deleted record with id", recId);
-			writeDeleted(recId, null, me, true, null);
+		if(!navigator.onLine){
+			var me = this;
+			for(var i = 0; i < records.length; i++){
+				var deletedRec = records[i];
+				var recId = deletedRec.id;
+				writeDeleted(recId, null, me, true, null);
+			}
 		}
+
 
 	}
 

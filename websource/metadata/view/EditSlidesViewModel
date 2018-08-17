@@ -116,11 +116,13 @@
                     "userConfig": {
                         "fn": "onTreeStoreRemove",
                         "implHandler": [
-                            "var me = this;",
-                            "for(var i = 0; i < records.length; i++){",
-                            "\tvar deletedRec = records[i];",
-                            "\tvar recId = deletedRec.id;",
-                            "\twriteDeleted(recId, 'slides', me, false, me.programId);",
+                            "if(!navigator.onLine){",
+                            "\tvar me = this;",
+                            "\tfor(var i = 0; i < records.length; i++){",
+                            "\t\tvar deletedRec = records[i];",
+                            "\t\tvar recId = deletedRec.id;",
+                            "\t\twriteDeleted(recId, 'slides', me, false, me.programId);",
+                            "\t}",
                             "}"
                         ],
                         "name": "remove",
@@ -211,11 +213,13 @@
                     "userConfig": {
                         "fn": "onQuestionsRemove",
                         "implHandler": [
-                            "var me = this;",
-                            "for(var i = 0; i < records.length; i++){",
-                            "\tvar deletedRec = records[i];",
-                            "\tvar recId = deletedRec.id;",
-                            "\twriteDeleted(recId, 'questions', me, false, me.programId);",
+                            "if(!navigator.onLine){",
+                            "\tvar me = this;",
+                            "\tfor(var i = 0; i < records.length; i++){",
+                            "\t\tvar deletedRec = records[i];",
+                            "\t\tvar recId = deletedRec.id;",
+                            "\t\twriteDeleted(recId, 'questions', me, false, me.programId);",
+                            "\t}",
                             "}"
                         ],
                         "name": "remove",

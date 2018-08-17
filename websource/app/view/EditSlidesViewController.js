@@ -37,27 +37,29 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		me.programData = opts.program.data; // create variable of this program that can be accessed from anywhere in this controller
 		me.programId = opts.program.id; //
 
-		print("editSlides, program data", me.programData, me.programId);
-
 		refs.panelHeader.setTitle(me.programData.name);
 
 		// clear old panel if there is no slides on this program yet, so content from previous program doesn't remain on this one
 		this.clearSlidePanel();
 		me.allComponents = []; // clear old components - this array is used to store all ext components of this slide
 		me._selectedComponents = [];
+		me.clean(true);
 
 		// call sync state here and not save state, as we dont have anything to save yet
 		var me = this,
 			localStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),
 			treeStoreSlides = me.getStore('TreeStoreSlides'),
 			questionsStoreSlides = me.getStore('QuestionsStoreSlides'),
-			personAnswersStore = me.getStore('PersonAnswers');
+			personAnswersStore = me.getStore('PersonAnswers'),
+			btnPreview = Ext.getCmp('btnPreview');
 
 		// init subfolders it they are not yet
 		if(!localStorageData[me.programId].slides){localStorageData[me.programId].slides = {};}
 		if(!localStorageData[me.programId].questions){localStorageData[me.programId].questions = {};}
 		if(!localStorageData[me.programId].answers){localStorageData[me.programId].answers = {};}
-		if(!localStorageData[me.programId].pageSetup){localStorageData[me.programId].pageSetup = me._pageSetup;}
+		localStorageData[me.programId].pageSetup = Ext.applyIf(localStorageData[me.programId].pageSetup, me._pageSetup );
+		//if(!localStorageData[me.programId].pageSetup){localSorageData[me.programId].pageSetup = me._pageSetup;}
+
 		localStorage.setItem('mxp_elearning', Ext.encode(localStorageData)); // initializes localstorage if it is empty, otherwise overwrites it with same content
 
 
@@ -83,6 +85,16 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 			var syncAnswersCallback = function(){
 				me.setInitialSlide();
 
+
+				// this code below is causing sections to resync with server - in order to correctly append children to them and show folder icons
+				var treeStoreSlides = me.getStore("TreeStoreSlides");
+				for(var i = 0; i < treeStoreSlides.data.items.length;i++){
+					var entry = treeStoreSlides.data.items[i];
+					if(entry.data.categoryId == App.ProgramPageCategoriesEnum.Chapter){
+						entry.phantom = true;
+					}
+				}
+
 				me.saveState(); // save ALL data that is after all initial data syncs to localstorage
 				// set initial data
 
@@ -98,7 +110,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 						me.currentPersonProgram = record[0].data;
 						if(me.currentPersonProgram.attempt >= me.programData.maxAttemptsTrainingMode + me.programData.maxAttemptsScoreMode){
 							// Cannot attempt any more tries... returning
-							var btnPreview = Ext.getCmp('btnPreview');
 
 							btnPreview.setText('Preview (No More Attempts)');
 							btnPreview.disable();
@@ -143,7 +154,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 				me._pageSetup = localStorageData.pageSetup;
 			}
 
-				// set initial data
+			// set initial data
 			me.setInitialSlide();
 
 			me.saveState();
@@ -401,7 +412,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		    me.showPreview();
 
 		}else{
-		    Ext.Msg.confirm( 'Close preview', 'Are you sure?' , function(btn) { // show confirm dialog
+		    Ext.Msg.confirm( 'Close preview', 'Are you sure?' + (navigator.onLine? '': ' Warning - Answers will not be submitted until you reconnect!'), function(btn) { // show confirm dialog
 		        if(btn == 'yes') {
 		            me.closePreview();
 					if(yesCallback){ yesCallback(); }
@@ -436,6 +447,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		var me = this,
 		    refs = me.getReferences(),
 		    slides = Ext.clone(Ext.pluck(refs.treeSlides.store.getRange(), 'data')).map(function(node) {
+
+				print("printing node", node)
 		        return cleanTreeNodeData(node);
 		    });
 		     // make dict where key is its id
@@ -1376,9 +1389,8 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 	},
 
 	saveState: function(dontSync) {
-		print("called save state for edit slides");
-
-		var me = this,
+		var THUMBNAILS = false,
+			me = this,
 			refs = me.getReferences(),
 			syncIndicator = Ext.getCmp('syncIndicator'),
 			content = {
@@ -1431,6 +1443,13 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 			storeQuestions = me.getStore('QuestionsStoreSlides'),
 			storePrograms = me.getStore('PersonPrograms');
 
+
+
+
+
+
+
+
 		if(navigator.onLine){
 			// sync all stores
 			storeSlides.sync();
@@ -1453,7 +1472,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		var btnDeleteSlide = Ext.getCmp('btnDeleteSlide'),
 			btnPreview = Ext.getCmp('btnPreview');
 
-		btnDeleteSlide.setDisabled(!storeSlides.data.length);
+		btnDeleteSlide.setDisabled(!storeSlides.data.items.length);
 
 		if(!me.programData){
 			btnPreview.enable();
@@ -1464,7 +1483,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 				btnPreview.removeCls('active-program');
 				btnPreview.disable();
 			}else{
-				if(!storeQuestions.data.length){
+				if(!storeQuestions.data.items.length){
 					btnPreview.disable();
 					btnPreview.setText('Preview (No Questions)');
 				}else{
@@ -1492,8 +1511,12 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 				print("encoded", base64encodedImg);
 			};
 
-			me.captureSlide(callback);
-			me.renderThumbnails();
+			if(THUMBNAILS){
+				me.captureSlide(callback);
+				me.renderThumbnails();
+			}
+
+
 		}
 
 	},
@@ -1539,6 +1562,16 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		}
 		else{
 			Ext.toast("Cannot validate program. Go online to submit answers.");
+
+
+
+			// write unsynced: true to localstorage to sync person program on online change
+			var localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));
+			localStorageData[me.programId].personProgram = {unsynced: true};
+			localStorage.setItem('mxp_elearning', Ext.encode(localStorageData));
+
+
+
 
 			btnPreview.addCls('active-program');
 			btnPreview.setText('Preview (Resume)');
@@ -1981,21 +2014,31 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 
 		var me = this,
-			localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'))[me.programId],
+			localStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),
 			syncIndicator = Ext.getCmp('syncIndicator'),
 			treeStoreSlides = me.getStore('TreeStoreSlides');
-		print("Server ssync program id", me.programId);
+
+		var personAnwersCallback = function(){
+
+			// check if we have any unsubmitted person programs - if so - validate it
+			if(localStorageData[me.programId].personProgram && localStorageData[me.programId].personProgram.unsynced){
+				me.closePreview(true); // validate program and change button style to default
+				localStorageData[me.programId].personProgram.unsynced = false;
+				localStorage.setItem('mxp_elearning',Ext.encode(localStorageData));
+			}
+			if(callback){ callback(); }
+		};
+
 		var syncQuestionsCallback = function(){
 			// after loading slides, load questions
+			me.updateStatusIndicator(true);
+
 			if(me.currentPersonProgram){
 				//var params = {programId: me.currentPersonProgram.personTrainingProgramId}; //get all data from current person program id
 				var params = {programId: me.programId};
-				initialDataSync('PersonAnswers', 'answers', params, callback, 'questionId', me);
-				me.updateStatusIndicator(true);
-
+				initialDataSync('PersonAnswers', 'answers', params, personAnwersCallback, 'questionId', me);
 			}
 			else{
-				me.updateStatusIndicator(true);
 				if (callback){ callback(); }
 			}
 		};
@@ -2004,10 +2047,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 			// get info for current program from database - if it exists, its valid program, otherwise its temp debug program
 
-
 			var controller = me.getView().up('mainview').down('programs').getController();
-
-
 
 			controller.getStore('StorePrograms').load({
 				callback: function(){
@@ -2015,16 +2055,31 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 					if(rec){
 						// sync slides again so we get back apropriate structure in tree view after adding slides when returning from offline
 						// TODO - this may be fixed by correctly adding offline slides to storage when retrigering InitialDataSync()
-						treeStoreSlides.sync({
+						/* treeStoreSlides.sync({
 							callback: function(){
 								treeStoreSlides.load({
 									params: {programId: me.programId},
 									callback: function(records, operation, success){
 										print("Slides data reloaded");
+
+
+				// for(var i = 0; i < treeStoreSlides.data.items.length;i++){
+				// 	var entry = treeStoreSlides.data.items[i];
+				// 	if(entry.data.categoryId == App.ProgramPageCategoriesEnum.Chapter && !entry.data.children){
+				// 		entry.data.children = [];
+				// 	}
+				// }
+
+
+
+
+
+
+
 									}
 								});
 							}
-						});
+						}); */
 					}else{
 						console.warn("current program doesnt exist in database - wont we resyncing slides");
 					}
@@ -2041,11 +2096,12 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		syncIndicator.addCls("fa-spin fa-refresh warning");
 		syncIndicator.tooltip.html = 'Syncing';
 
-		if(localStorageData.pageSetup){ // TODO retrieve it later from database
-			me._pageSetup = localStorageData.pageSetup;
+		if(localStorageData[me.programId].pageSetup){ // TODO retrieve it later from database
+			me._pageSetup = localStorageData[me.programId].pageSetup;
 		}
 		var params = {programId: me.programId};
 		initialDataSync('TreeStoreSlides', 'slides', params, syncStateCallback, 'id', me);
+
 
 	},
 
@@ -2070,7 +2126,15 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		var callback = function(url, base64EncodedImg){
 
 
-			var treeView = refs.treeSlides.el.dom.children[0].children[1].children[0].children[1].children;
+			var treeView = refs.treeSlides.el.dom.children[0].children[1].children[0].children[1];
+			if(!treeView){
+				console.warn("Some error triggered after duplicate");
+				return;
+			}
+			treeView = treeView.children;
+
+
+
 			for (var i=0, n=treeView.length; i < n; i++){
 
 				var children = treeView[i].children[0].children[0].children[0].children[0].children;
@@ -2339,6 +2403,10 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 			var currentSlide = me.getCurrentSlide();
 			var rec = me.getStore("TreeStoreSlides").findRecord('id', currentSlide.data.id);
 
+			if(!rec){
+				return;
+			}
+
 			var content =  Ext.decode(rec.data.content);
 			content.thumbnail = LZString.compressToEncodedURIComponent(dataURL);
 			rec.data.content = Ext.encode(content);
@@ -2366,17 +2434,118 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 	},
 
-	clean: function() {
-		var me = this;
-		me.getStore('TreeStoreSlides').removeAll(false);
-		me.getStore('QuestionsStoreSlides').removeAll(false);
-		me.getStore('PersonAnswers').removeAll(false);
-		me.getStore('PersonPrograms').removeAll(false);
+	clean: function(silently) {
+		var me = this,
+			slidesStore = me.getStore('TreeStoreSlides'),
+			questionsStore = me.getStore('QuestionsStoreSlides'),
+			answersStore = me.getStore('PersonAnswers'),
+			programsStore = me.getStore('PersonPrograms');
 
-		me.getStore('TreeStoreSlides').sync();
-		me.getStore('QuestionsStoreSlides').sync();
-		me.getStore('PersonAnswers').sync();
-		me.getStore('PersonPrograms').sync();
+		if(silently){
+			slidesStore.loadData([],false);
+			slidesStore.getRootNode().removeAll(false, true,true);
+			questionsStore.loadData([],false);
+			answersStore.loadData([],false);
+			programsStore.loadData([],false);
+			return;
+		}
+
+		// loud delete all stores - used when deleting program
+
+
+		// clean all stores
+		slidesStore.loadData([],false);
+		slidesStore.getRootNode().removeAll(false, true,true);
+		questionsStore.loadData([],false);
+		answersStore.loadData([],false);
+		programsStore.loadData([],false);
+
+
+		// load all data into stores so you can delete this data after
+
+
+		slidesStore.load({
+			params:  {programId: me.programId},
+			callback: function(){
+				questionsStore.load({
+					params:  {programId: me.programId},
+					callback: function(){
+						answersStore.load({
+							params:  {programId: me.programId},
+							callback: function(){
+
+
+								for(var i = 0; i < slidesStore.data.items.length; i++){
+									var rec = slidesStore.data.items[i];
+									rec.parentNode.removeChild(rec);
+									//slidesStore.remove(slidesStore.data.items[i]);
+								}
+								slidesStore.sync();
+								for(var i = 0; i < questionsStore.data.items.length; i++){
+									questionsStore.remove(questionsStore.data.items[i]);
+								}
+								for(var i = 0; i < answersStore.data.items.length; i++){
+									answersStore.remove(answersStore.data.items[i]);
+								}
+							}
+						});
+					}
+				});
+			}
+		});
+
+
+		programsStore.load({
+			params: { personId: me.personId, programId: me.programId },
+			callback: function(){
+				for(var i = 0; i < programsStore.data.items.length; i++){
+					programsStore.remove(programsStore.data.items[i]);
+				}
+			}
+		});
+
+
+
+
+		/*Ext.Promise.all(
+			[
+				slidesStore.load({
+					params:  {programId: me.programId}
+				}),
+				questionsStore.load({
+					params:  {programId: me.programId}
+				}),
+				answersStore.load({
+					params:  {programId: me.programId}
+				}),
+				programsStore.load({
+					params: { personId: me.personId, programId: me.programId }
+				}),
+			]).then(function(results) {
+			print("all promises returned");
+
+
+			for(var i = 0; i < slidesStore.data.items.length; i++){
+				var rec = slidesStore.data.items[i];
+				rec.parentNode.removeChild(rec);
+				//slidesStore.remove(slidesStore.data.items[i]);
+			}
+			slidesStore.sync();
+			for(var i = 0; i < questionsStore.data.items.length; i++){
+				questionsStore.remove(questionsStore.data.items[i]);
+			}
+			for(var i = 0; i < answersStore.data.items.length; i++){
+				answersStore.remove(answersStore.data.items[i]);
+			}
+			for(var i = 0; i < programsStore.data.items.length; i++){
+				programsStore.remove(programsStore.data.items[i]);
+			}
+
+		});
+		*/
+
+
+
 
 	},
 
@@ -2387,16 +2556,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 			// clear all stores so next program we are viewing wont be using this programs data
 			// to silently remove data from store - use loadData([],false) !!
 			// remove all data from these stores - silently
-			me.getStore('TreeStoreSlides').loadData([],false);
-			me.getStore('TreeStoreSlides').getRootNode().removeAll(false, true,true);
-
-
-
-
-
-			me.getStore('QuestionsStoreSlides').loadData([],false);
-			me.getStore('PersonAnswers').loadData([],false);
-			me.getStore('PersonPrograms').loadData([],false);
+			me.clean(true);
 
 
 			window.removeEventListener('online',  me.connectionChange);
@@ -2508,6 +2668,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 			SELECTION: 'selection'
 		};
 
+		loadLookups();
 
 		component.el.on('mouseup', function(e, t) {
 			// hiding component tools if component itself (like bodyPanel, ImageComponent...) didn't stop click event to backpropagate
@@ -2595,20 +2756,24 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 	},
 
 	onTreeStoreRemove: function(store, records, index, isMove, eOpts) {
-		var me = this;
-		for(var i = 0; i < records.length; i++){
-			var deletedRec = records[i];
-			var recId = deletedRec.id;
-			writeDeleted(recId, 'slides', me, false, me.programId);
+		if(!navigator.onLine){
+			var me = this;
+			for(var i = 0; i < records.length; i++){
+				var deletedRec = records[i];
+				var recId = deletedRec.id;
+				writeDeleted(recId, 'slides', me, false, me.programId);
+			}
 		}
 	},
 
 	onQuestionsRemove: function(store, records, index, isMove, eOpts) {
-		var me = this;
-		for(var i = 0; i < records.length; i++){
-			var deletedRec = records[i];
-			var recId = deletedRec.id;
-			writeDeleted(recId, 'questions', me, false, me.programId);
+		if(!navigator.onLine){
+			var me = this;
+			for(var i = 0; i < records.length; i++){
+				var deletedRec = records[i];
+				var recId = deletedRec.id;
+				writeDeleted(recId, 'questions', me, false, me.programId);
+			}
 		}
 	}
 

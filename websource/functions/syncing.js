@@ -19,13 +19,14 @@ function initialDataSync(storeName, localStorageAttribute, LoadParams, callback,
 	var me = scope,
 		localStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),
 		initialDataStore = me.getStore(storeName);
-	
+
 	initialDataStore.load({
 		params: LoadParams,
 
 		callback: function(){
-			// check if localstorage exists
 			
+			// check if localstorage exists
+
 			var check;
 			if(localStorageAttribute == 'programInfo'){
 				check = localStorageData && Object.keys(localStorageData).length;
@@ -34,27 +35,27 @@ function initialDataSync(storeName, localStorageAttribute, LoadParams, callback,
 			}
 			if(check){
 				// add missing or outdated data from localstorage to store
-				
+
 				if(localStorageAttribute != 'programInfo'){
-					
+
 					localStorageData = localStorageData[me.programId][localStorageAttribute];
 				}
 				for (var key in localStorageData){
 					if(localStorageAttribute == 'programInfo'){
-						
+
 						if(!localStorageData[key][localStorageAttribute]){
 							continue;
 						}
 					}
-					
+
 					var localStorageEntry = localStorageData[key];
 					if(localStorageAttribute == 'programInfo'){
 						localStorageEntry = localStorageEntry[localStorageAttribute];
 					}
-					
-					
+
+
 					var objectIndex = containsObject(localStorageEntry, initialDataStore.data.items, dataId); // get index of this item
-					if(initialDataStore.data.length > 0 && objectIndex > -1) { // if returned index 0,1,2..
+					if(initialDataStore.data.items.length > 0 && objectIndex > -1) { // if returned index 0,1,2..
 						// we found localstorage entry in store - update it
 						if(new Date(localStorageEntry.lastChanged).getTime() > new Date(initialDataStore.data.items[objectIndex].data.lastChanged).getTime()){
 							// update entry in
@@ -66,8 +67,41 @@ function initialDataSync(storeName, localStorageAttribute, LoadParams, callback,
 						// entry was found in localstorage but is not in store
 						if(initialDataStore.type == 'tree'){ // if tree store
 							// for tree store, we add data to it by appending it to root node
-							initialDataStore.getRootNode().appendChild(localStorageEntry);
-							initialDataStore.findRecord(dataId, localStorageEntry[dataId]).phantom = true;
+
+							
+							if(localStorageEntry.parentId == 'root'){
+								initialDataStore.getRootNode().appendChild(localStorageEntry);
+							}else{
+								var parent = initialDataStore.findRecord('id', localStorageEntry.parentId);
+								if(parent){
+									print("appended parent");
+									parent.appendChild(localStorageEntry).phantom = true;
+									parent.phantom = true;
+									
+									initialDataStore.sync();
+								}else{
+									console.warn("Err - no parent in store yet (initial data sync) - appending child to root");
+									console.warn("there is some bug with duplicating here so i am not adding to root here");
+									//initialDataStore.getRootNode().appendChild(localStorageEntry);
+									
+									
+									
+									// if there will be errors and this else gets executed, maybe use below two options to add
+									/*
+									var data = [];
+									data.push(localStorageEntry);
+									initialDataStore.add(data)[0].phantom = true;
+									
+									
+									initialDataStore.add(localStorageEntry)[0].phantom = true;
+									*/
+								}
+
+							}
+							// below is old example that is adding only to root
+
+							//initialDataStore.getRootNode().appendChild(localStorageEntry); // old try that appends only to root
+							//initialDataStore.findRecord(dataId, localStorageEntry[dataId]).phantom = true;
 						}
 						else{
 							// for all other stores - that are json stores we can add entry normally
@@ -79,23 +113,23 @@ function initialDataSync(storeName, localStorageAttribute, LoadParams, callback,
 
 				// iterate through records and remove them if they have been deleted offline 
 				// first check if record hasnt been deleted in offline
-				
-				
+
+
 				var check = false;
 				if(localStorageAttribute == 'programInfo'){
 					check = localStorageData.removed;
 				}else{
 					check = localStorageData.removed && localStorageData.removed[localStorageAttribute];
 				}
-				
+
 				if(check){
 					var removed = localStorageData.removed;
-					
+
 					if(localStorageAttribute != 'programInfo'){
 						removed = removed[localStorageAttribute];
 					}
-					
-					
+
+
 					for(var i = 0; i < removed.length; i++){
 						var rec = initialDataStore.findRecord(dataId, removed[i]);
 						if(rec){

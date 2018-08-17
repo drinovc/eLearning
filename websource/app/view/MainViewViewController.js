@@ -18,7 +18,7 @@ Ext.define('eLearning.view.MainViewViewController', {
 	alias: 'controller.mainview',
 
 	load: function() {
-		loadLookups();
+
 	},
 
 	onMainViewBoxReady: function(component, width, height, eOpts) {
