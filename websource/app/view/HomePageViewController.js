@@ -50,7 +50,7 @@ Ext.define('eLearning.view.HomePageViewController', {
 			newActiveItem = mainView.setActiveItem('gridPrograms');
 
 		// loading this programs edit slides
-		newActiveItem.getController().load({ person : me.person }); // pass person
+		newActiveItem.getController().load();
 	},
 
 	triggerEditPages: function(id) {
@@ -141,9 +141,8 @@ Ext.define('eLearning.view.HomePageViewController', {
 				program :{
 					data: record,
 					id :id
-				},
-				person: me.person
-			}); //
+				}
+			});
 		}
 	},
 
@@ -151,11 +150,24 @@ Ext.define('eLearning.view.HomePageViewController', {
 		this.getView().up('#mainView').setActiveItem('homePage');
 	},
 
+	showLogin: function(button, e) {
+		var form = this.getReferences().form;
+		form.show();
+
+
+
+		var buttonContainer = this.getReferences().buttonContainer;
+		buttonContainer.hide();
+
+	},
+
 	onSave: function(button, e, eOpts) {
 		var me = this,
 			form = me.getReferences().form,
 			values = form.getForm().getValues(),
-			store = me.getStore('logins');
+			store = me.getStore('logins'),
+			buttonContainer = me.getReferences().buttonContainer;
+
 
 		// Valid
 		if (form.isValid()) {
@@ -179,10 +191,11 @@ Ext.define('eLearning.view.HomePageViewController', {
 					rec = rec[0].data.data[0];
 					if(rec.PIN_CODE_CORRECT){
 						Ext.toast("Welcome " +rec.PERSON_FIRST_NAME + " " + rec.PERSON_LAST_NAME);
-						me.person = rec;
+						App.person = rec;
 						print("printing person", rec);
-						me.personId = rec.PERSON_ID;
+						App.personId = rec.PERSON_ID;
 						form.close();
+						buttonContainer.show();
 					}else{
 						Ext.toast("Wrong username or password");
 					}
@@ -195,6 +208,9 @@ Ext.define('eLearning.view.HomePageViewController', {
 	onCancel: function(button, e, eOpts) {
 		var form = this.getReferences().form;
 		form.close();
+
+		var buttonContainer = this.getReferences().buttonContainer;
+		buttonContainer.show();
 	}
 
 });

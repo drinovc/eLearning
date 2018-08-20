@@ -41,6 +41,7 @@ Ext.define('eLearning.view.HomePage', {
 		{
 			xtype: 'container',
 			flex: 1,
+			reference: 'buttonContainer',
 			defaults: {
 				width: 200,
 				height: 50,
@@ -60,13 +61,6 @@ Ext.define('eLearning.view.HomePage', {
 					text: 'Training Programs'
 				},
 				{
-					xtype: 'button',
-					handler: function(button, e) {
-
-					},
-					text: 'Help'
-				},
-				{
 					xtype: 'label',
 					flex: 0,
 					height: 20,
@@ -78,12 +72,18 @@ Ext.define('eLearning.view.HomePage', {
 						this.up('homepage').getController().redirectTo('edit-pages/' + '-1');
 					},
 					text: 'Edit Pages'
+				},
+				{
+					xtype: 'button',
+					handler: 'showLogin',
+					text: 'Login'
 				}
 			]
 		},
 		{
 			xtype: 'form',
 			reference: 'form',
+			hidden: true,
 			id: 'form',
 			itemId: 'form',
 			bodyPadding: 10,

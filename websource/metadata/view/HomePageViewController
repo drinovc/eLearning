@@ -30,7 +30,7 @@
                     "\tnewActiveItem = mainView.setActiveItem('gridPrograms');",
                     "",
                     "// loading this programs edit slides",
-                    "newActiveItem.getController().load({ person : me.person }); // pass person"
+                    "newActiveItem.getController().load();"
                 ],
                 "name": "routeTrainingPrograms",
                 "url": "training-programs"
@@ -140,13 +140,12 @@
                     "\trecord = localStorageData[id].programInfo;",
                     "",
                     "\tprint(\"reroiting when offline data\", record);",
-                    "\tnewActiveItem.getController().load({ ",
+                    "\tnewActiveItem.getController().load({",
                     "\t\tprogram :{",
                     "\t\t\tdata: record,",
                     "\t\t\tid :id",
-                    "\t\t},",
-                    "\t\tperson: me.person",
-                    "\t}); //",
+                    "\t\t}",
+                    "\t}); ",
                     "}"
                 ],
                 "name": "routeEditPages",

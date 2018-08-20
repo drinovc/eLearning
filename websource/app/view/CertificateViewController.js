@@ -32,7 +32,7 @@ Ext.define('eLearning.view.CertificateViewController', {
 
 		Ext.getCmp('certificateName').setText(me._opts.certificateName);
 		if(me._opts.person){
-			Ext.getCmp('reciever').setText(me._opts.person.PERSON_FIRST_NAME + " " + me._opts.person.PERSON_LAST_NAME);
+			Ext.getCmp('reciever').setText(App.person.PERSON_FIRST_NAME + " " + App.person.PERSON_LAST_NAME);
 
 		}else{
 			console.warn("no person recieved in certificate!");

@@ -46,7 +46,8 @@
                 ],
                 "dock": null,
                 "layout": "vbox",
-                "layout|flex": 1
+                "layout|flex": 1,
+                "reference": "buttonContainer"
             },
             "configAlternates": {
                 "container|align": "string",
@@ -54,7 +55,8 @@
                 "defaults": "object",
                 "dock": "string",
                 "layout": "string",
-                "layout|flex": "number"
+                "layout|flex": "number",
+                "reference": "string"
             },
             "name": "MyContainer1",
             "designerId": "0afa397a-d210-446d-95ba-defd82f19085",
@@ -100,47 +102,6 @@
                             },
                             "name": "handler",
                             "designerId": "e5c1db1e-390e-47a9-ad1b-86c8d6a7d6da"
-                        }
-                    ]
-                },
-                {
-                    "type": "Ext.button.Button",
-                    "reference": {
-                        "name": "items",
-                        "type": "array"
-                    },
-                    "codeClass": null,
-                    "userConfig": {
-                        "text": "Help"
-                    },
-                    "configAlternates": {
-                        "text": "string"
-                    },
-                    "name": "MyButton23",
-                    "designerId": "b83e2dc8-b6f0-4f44-a228-880a6f581858",
-                    "cn": [
-                        {
-                            "type": "fixedfunction",
-                            "reference": {
-                                "name": "items",
-                                "type": "array"
-                            },
-                            "codeClass": null,
-                            "userConfig": {
-                                "designer|params": [
-                                    "button",
-                                    "e"
-                                ],
-                                "fn": "handler",
-                                "implHandler": null
-                            },
-                            "configAlternates": {
-                                "designer|params": "typedarray",
-                                "fn": "string",
-                                "implHandler": "code"
-                            },
-                            "name": "handler",
-                            "designerId": "6d3b26b1-7ce1-4bb9-9510-b85a5392212a"
                         }
                     ]
                 },
@@ -207,6 +168,58 @@
                             "designerId": "07ef4a90-5a43-495d-9458-e591bd8f0c6c"
                         }
                     ]
+                },
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "text": "Login"
+                    },
+                    "configAlternates": {
+                        "text": "string"
+                    },
+                    "name": "MyButton",
+                    "designerId": "f1a7a9e9-f780-4df3-8488-37ac1d5a9062",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "designer|viewControllerFn": "showLogin",
+                                "fn": "handler",
+                                "implHandler": [
+                                    "var form = this.getReferences().form;",
+                                    "form.show();",
+                                    "",
+                                    "",
+                                    "",
+                                    "var buttonContainer = this.getReferences().buttonContainer;",
+                                    "buttonContainer.hide();",
+                                    ""
+                                ]
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "fn": "string",
+                                "implHandler": "code",
+                                "designer|viewControllerFn": "string"
+                            },
+                            "name": "handler",
+                            "designerId": "90a88357-9e4e-4dc0-b86b-284ff56d0b9f"
+                        }
+                    ]
                 }
             ]
         },
@@ -221,6 +234,7 @@
                 "bodyPadding": 10,
                 "container|align": "stretch",
                 "defaultButton": "btnSubmit",
+                "hidden": true,
                 "id": "form",
                 "itemId": "form",
                 "layout": "vbox",
@@ -237,7 +251,8 @@
                 "defaultButton": "string",
                 "id": "string",
                 "itemId": "string",
-                "reference": "string"
+                "reference": "string",
+                "hidden": "boolean"
             },
             "name": "MyForm",
             "designerId": "0ec884e3-5b8a-4738-9958-d359bb4c8c2c",
@@ -352,19 +367,21 @@
                                         "implHandler": [
                                             "var me = this,",
                                             "\tform = me.getReferences().form,",
-                                            "    values = form.getForm().getValues(),",
-                                            "    store = me.getStore('logins');",
+                                            "\tvalues = form.getForm().getValues(),",
+                                            "\tstore = me.getStore('logins'),",
+                                            "\tbuttonContainer = me.getReferences().buttonContainer;",
+                                            "",
                                             "",
                                             "// Valid",
                                             "if (form.isValid()) {",
                                             "",
-                                            "    // TODO: Assign the record's ID from data source",
-                                            "    // Normally, this value would be auto-generated,",
-                                            "    // or returned from the server",
-                                            "    values.id = store.count() + 1;",
-                                            "\t",
+                                            "\t// TODO: Assign the record's ID from data source",
+                                            "\t// Normally, this value would be auto-generated,",
+                                            "\t// or returned from the server",
+                                            "\tvalues.id = store.count() + 1;",
+                                            "",
                                             "\tconsole.warn(\"Todo hash pin after sending on load\");",
-                                            "\t",
+                                            "",
                                             "\tstore.load({",
                                             "\t\tparams:{",
                                             "\t\t\tuser: values.user,",
@@ -377,10 +394,11 @@
                                             "\t\t\trec = rec[0].data.data[0];",
                                             "\t\t\tif(rec.PIN_CODE_CORRECT){",
                                             "\t\t\t\tExt.toast(\"Welcome \" +rec.PERSON_FIRST_NAME + \" \" + rec.PERSON_LAST_NAME);",
-                                            "\t\t\t\tme.person = rec;",
+                                            "\t\t\t\tApp.person = rec;",
                                             "\t\t\t\tprint(\"printing person\", rec);",
-                                            "\t\t\t\tme.personId = rec.PERSON_ID;",
+                                            "\t\t\t\tApp.personId = rec.PERSON_ID;",
                                             "\t\t\t\tform.close();",
+                                            "\t\t\t\tbuttonContainer.show();",
                                             "\t\t\t}else{",
                                             "\t\t\t\tExt.toast(\"Wrong username or password\");",
                                             "\t\t\t}",
@@ -436,7 +454,10 @@
                                         "fn": "onCancel",
                                         "implHandler": [
                                             "var form = this.getReferences().form;",
-                                            "form.close();"
+                                            "form.close();",
+                                            "",
+                                            "var buttonContainer = this.getReferences().buttonContainer;",
+                                            "buttonContainer.show();"
                                         ],
                                         "name": "click",
                                         "scope": "me"

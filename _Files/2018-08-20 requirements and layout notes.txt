@@ -1,0 +1,105 @@
+
+User Dashboard:
+	- bookmarked courses
+		- Not supported in database
+		
+	Crew member dashboard:
+		- Required courses
+			- shows course and its requirements
+			- shows course expiration date
+		- recommended courses
+		- completed courses with certificates - option to print
+		- Delete enrolment button
+		
+	Admin dashboard:
+		- Created courses
+			- All students that are enroled in course:
+				- completion rate
+				- list of users and their attempt at solving
+					- button Edit completion status
+					- Enable an administrator to update a student's transcript data
+					- button Exempt/ whitelist /delete enrolment
+				- interest level
+				- time spent reading, solving..
+		- Enrolment prompts
+			- User, course, delete, accept, whitelist(ban or auto complete course)
+			
+Program editor:
+	- Settings
+		- Save button although autosave is on
+			- small dialog all changes have been saved
+	- inline buttons (duplicate, add theme...) as in ELUDICAT https://youtu.be/QK3OTbN1dVA
+	- Support for drag and drop order, essay, yes/no, fill in the gaps, agreement scale, offline tasks
+Program Quiz Solver / previewer:
+	- Percentage of answers completed when previewing - like EASYGENERATOR
+Couse View:
+	Certificate type
+	
+	User Area:
+		- Is it mandatory to me?
+		- Is it recommended to me?
+		- Completion (percentage)
+		- Enroll button (if not already)
+		- Start couse
+	Admin area:
+		- Close course
+		- Publish course
+		- Preview course
+		- Export
+			- zip
+		- Import
+			- zip
+		- Analysis button for project
+			- device overview
+			- completion rate
+			- activity by day
+			- total learners
+		- Participating persons
+		- Couse notes
+		- couse grades
+Search
+	- Search for course
+Program creation:
+	- Choose name
+	
+	- Choose groups to which this course will be relevant to (checbox mandatory, recommended), (add extra people / add your team members)
+		- Enable automatically assigning content and learning plans based on user criteria (i.e. role, groups/audiences, position, competency assessment). 
+	- Choose expiration date (N days before joining ship)..
+	- Quiz duration
+	- Num tries
+	- Num real quizes
+	- Auto add to hired staff in that department (checkbox)
+		- Ability to mark users exempt from enrollments in learning plans /whitelist
+	- Choose theme (this is basically page setup) - if background or page setup is changed for some slide, its overriding 
+		- not supported in db
+	- Add required courses (linking)
+		- not supported in db
+		- enforce sequence this toggles if all required courses must be completed in order to participate in this one
+	- Max and min enrolment
+		- not supported in db
+	- Choose course certificate
+		- type of certificate
+		- Choose certificate template
+	- Course equivalence (Choose existing closed or open course or select new Course)
+		- Enable course equivalencies (new course is equivalent to old course). 
+		  Especially important for compliance if there is a change to a course, but it meets the same requirement.
+		  We want to know which version the learner took as well as that they are still covered for a requirement/certification." 
+	- Reccurrent training (every N years...)
+		- Must mark current completed couse as invalid after expiration date
+		- Reccurence must be set automatically based on rules
+Program events:
+	- Schedule class over N days (for example 1 day per month for 3 months)
+		- not supported in db
+	- Book a room
+		- not supported in db
+	- Book an instructor
+		- not supporetd in db
+	- launch survey and get feedback
+Program viewer:
+	- On Save - update version or keep the same 
+		- not supported in database
+		- checkbox if commpleted status is maintained when new version is added
+		- manage who gets new version and who doesnt
+	- Type folders 
+	- Program events viewer
+	- Delete prompt

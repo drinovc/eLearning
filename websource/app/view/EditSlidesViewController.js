@@ -22,14 +22,12 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 			refs = me.getReferences();
 
 		opts = Ext.applyIf(opts || {}, {
-			program: null,
-			person: {PERSON_ID: -1}
+			program: null
 		});
 
-		me.person = opts.person;
-		me.personId = opts.person.PERSON_ID;
 
-		if(me.personId == -1){
+		if(!App.personId){
+			App.personId = -1;
 			console.warn("Using mockup test person id");
 		}
 
@@ -58,7 +56,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		if(!localStorageData[me.programId].questions){localStorageData[me.programId].questions = {};}
 		if(!localStorageData[me.programId].answers){localStorageData[me.programId].answers = {};}
 		localStorageData[me.programId].pageSetup = Ext.applyIf(localStorageData[me.programId].pageSetup, me._pageSetup );
-		//if(!localStorageData[me.programId].pageSetup){localSorageData[me.programId].pageSetup = me._pageSetup;}
 
 		localStorage.setItem('mxp_elearning', Ext.encode(localStorageData)); // initializes localstorage if it is empty, otherwise overwrites it with same content
 
@@ -102,7 +99,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 			personProgramsStore.load({
 				params:{
-					personId: me.personId,
+					personId: App.personId,
 					programId: me.programId
 				},
 				callback:function(record){
@@ -170,6 +167,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 		refs.panelContent.removeAll();
 		refs.toolbarPreview.hide();
+
 
 
 	},
@@ -430,7 +428,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		        y: snap * 2,
 		        width: me.round(refs.panelContent.el.getWidth() - 2 * snap * 2),
 		        height: snap * 2
-		    }
+		    };
 
 		Ext.each(refs.panelContent.el.query('.html-component'), function(component) {
 		    pos.y = me.round(Math.max(pos.y, component.y + component.height + snap));
@@ -447,8 +445,6 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		var me = this,
 		    refs = me.getReferences(),
 		    slides = Ext.clone(Ext.pluck(refs.treeSlides.store.getRange(), 'data')).map(function(node) {
-
-				print("printing node", node)
 		        return cleanTreeNodeData(node);
 		    });
 		     // make dict where key is its id
@@ -1519,6 +1515,9 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 		}
 
+
+
+
 	},
 
 	setInitialSlide: function() {
@@ -1624,7 +1623,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 		// Create PersonProgram or update it here
 		personProgramsStore.load({
 			params:{
-				personId: me.personId,
+				personId: App.personId,
 				programId: me.programId
 			},
 			callback:function(record){
@@ -1635,10 +1634,10 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 						if(btn == 'yes') {
 							me.currentPersonProgram = { // store whole record
 								personProgramGuid: createGUID(),
-								personId: me.personId,
+								personId: App.personId,
 								programId: me.programId,
 								programStatusId: App.ProgramStatuses["In Progress"],
-								createdById: me.personId, // TODO - same person is also creating this program? can this be different?
+								createdById: App.personId, // TODO - same person is also creating this program? can this be different?
 								created: new Date(),
 								programStarted: new Date(),
 								lastChanged: new Date(),
@@ -2260,11 +2259,10 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 				scoreResults = App.ProgramStatuses.Passed;
 
 
-				print("User", me.person, "has been awarded certificate", App.CoursesAndCertificates[me.programData.certificateFileName]);
+				print("User", App.person, "has been awarded certificate", App.CoursesAndCertificates[me.programData.certificateFileName]);
 				print("todo- show certificate modal window here");
 
 				me.showCertificate({
-					person:me.person,
 					certificateName: App.CoursesAndCertificates[me.programData.certificateFileName]
 				});
 
@@ -2496,7 +2494,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 
 
 		programsStore.load({
-			params: { personId: me.personId, programId: me.programId },
+			params: { personId: App.personId, programId: me.programId },
 			callback: function(){
 				for(var i = 0; i < programsStore.data.items.length; i++){
 					programsStore.remove(programsStore.data.items[i]);
@@ -2519,7 +2517,7 @@ Ext.define('eLearning.view.EditSlidesViewController', {
 					params:  {programId: me.programId}
 				}),
 				programsStore.load({
-					params: { personId: me.personId, programId: me.programId }
+					params: { personId: App.personId, programId: me.programId }
 				}),
 			]).then(function(results) {
 			print("all promises returned");

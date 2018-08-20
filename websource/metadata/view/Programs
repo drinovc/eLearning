@@ -525,7 +525,8 @@
                             "// Canceling editing of a locally added, unsaved record: remove it",
                             "if (context.record.phantom) {",
                             "    store.remove(context.record);",
-                            "}"
+                            "}",
+                            "me.getView().setSelection(me.getSelection());"
                         ],
                         "name": "canceledit",
                         "scope": "me"
@@ -696,7 +697,7 @@
                                     "",
                                     "//  delete all slides, questions...",
                                     "slidesController.programId = selection.id;",
-                                    "slidesController.personId = me.personId;",
+                                    "slidesController.personId = App.personId;",
                                     "slidesController.clean();",
                                     "",
                                     "//then delete program",

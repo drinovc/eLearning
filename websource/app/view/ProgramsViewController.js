@@ -24,14 +24,12 @@ Ext.define('eLearning.view.ProgramsViewController', {
 
 
 		opts = Ext.applyIf(opts || {}, {
-			program: null,
-			person: {PERSON_ID: -1}
+			program: null
 		});
 
-		me.person = opts.person;
-		me.personId = opts.person.PERSON_ID;
 
-		if(me.personId == -1){
+		if(!App.personId){
+			App.personId = -1;
 			console.warn("Using mockup test person id");
 		}
 
@@ -156,7 +154,7 @@ Ext.define('eLearning.view.ProgramsViewController', {
 		syncIndicatorPrograms.tooltip.html = 'Syncing';
 
 
-		var params = {userId: me.personId}; // Todo - this query by user is unsupported by 2018-08-08
+		var params = {userId: App.personId}; // Todo - this query by user is unsupported by 2018-08-08
 		//initialDataSyncPrograms('StorePrograms', 'programInfo', params, syncStateCallback, 'id', me);
 		initialDataSync('StorePrograms', 'programInfo', params, syncStateCallback, 'id', me);
 
@@ -276,6 +274,7 @@ Ext.define('eLearning.view.ProgramsViewController', {
 		if (context.record.phantom) {
 			store.remove(context.record);
 		}
+		me.getView().setSelection(me.getSelection());
 	},
 
 	onRowEditingEdit: function(editor, context, eOpts) {
@@ -322,7 +321,7 @@ Ext.define('eLearning.view.ProgramsViewController', {
 
 		//  delete all slides, questions...
 		slidesController.programId = selection.id;
-		slidesController.personId = me.personId;
+		slidesController.personId = App.personId;
 		slidesController.clean();
 
 		//then delete program
