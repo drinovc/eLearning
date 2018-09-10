@@ -1,0 +1,368 @@
+[1] 2018-07-10 12:53:07 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-10 12:53:07 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-10 12:53:07 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[1] 2018-07-10 12:58:13 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-10 12:58:13 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-10 12:58:13 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-10 1:00:27 PM # [127.0.0.1] GET Lookups/ProgramPageCategories.json 
+
+_REMOTE_IP=127.0.0.1
+[5] 2018-07-10 1:02:45 PM # [127.0.0.1] GET Lookups/ProgramCategories.json 
+_dc=1531220565206
+_REMOTE_IP=127.0.0.1
+[6] 2018-07-10 1:02:45 PM # [127.0.0.1] GET Lookups/ProgramPageCategories.json 
+_dc=1531220565209
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-10 1:02:45 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates.json 
+_dc=1531220565211
+_REMOTE_IP=127.0.0.1
+[8] 2018-07-10 1:02:45 PM # [127.0.0.1] GET Lookups/ProgramStatuses.json 
+_dc=1531220565216
+_REMOTE_IP=127.0.0.1
+[9] 2018-07-10 1:03:22 PM # [127.0.0.1] GET Lookups/ProgramPageCategories.json 
+_dc=1531220565209
+_REMOTE_IP=127.0.0.1
+[10] 2018-07-10 1:04:22 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531220565209
+_REMOTE_IP=127.0.0.1
+[11] 2018-07-10 1:04:30 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-10 1:05:04 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-10 1:05:04 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-10 1:05:04 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-10 1:05:08 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+
+_REMOTE_IP=127.0.0.1
+[5] 2018-07-10 1:06:09 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531220769857
+_REMOTE_IP=127.0.0.1
+[6] 2018-07-10 1:06:09 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531220769859
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-10 1:06:09 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531220769860
+_REMOTE_IP=127.0.0.1
+[8] 2018-07-10 1:06:09 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531220769861
+_REMOTE_IP=127.0.0.1
+[9] 2018-07-10 1:06:20 PM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[10] 2018-07-10 1:06:25 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531220785413
+_REMOTE_IP=127.0.0.1
+[11] 2018-07-10 1:06:25 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531220785414
+_REMOTE_IP=127.0.0.1
+[12] 2018-07-10 1:06:25 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531220785416
+_REMOTE_IP=127.0.0.1
+[13] 2018-07-10 1:06:25 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531220785416
+_REMOTE_IP=127.0.0.1
+[14] 2018-07-10 1:06:37 PM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[15] 2018-07-10 1:06:49 PM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-10 1:08:34 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-10 1:08:34 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-10 1:08:34 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-10 1:10:43 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531221043281
+_REMOTE_IP=127.0.0.1
+[5] 2018-07-10 1:10:43 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531221043282
+_REMOTE_IP=127.0.0.1
+[6] 2018-07-10 1:10:43 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531221043283
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-10 1:10:43 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531221043284
+_REMOTE_IP=127.0.0.1
+[8] 2018-07-10 1:20:07 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531221607169
+_REMOTE_IP=127.0.0.1
+[9] 2018-07-10 1:20:07 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531221607173
+_REMOTE_IP=127.0.0.1
+[10] 2018-07-10 1:20:07 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531221607174
+_REMOTE_IP=127.0.0.1
+[11] 2018-07-10 1:20:07 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531221607177
+_REMOTE_IP=127.0.0.1
+[12] 2018-07-10 1:21:16 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531221676614
+_REMOTE_IP=127.0.0.1
+[13] 2018-07-10 1:21:16 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531221676616
+_REMOTE_IP=127.0.0.1
+[14] 2018-07-10 1:21:16 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531221676617
+_REMOTE_IP=127.0.0.1
+[15] 2018-07-10 1:21:16 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531221676617
+_REMOTE_IP=127.0.0.1
+[16] 2018-07-10 1:23:26 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531221806822
+_REMOTE_IP=127.0.0.1
+[17] 2018-07-10 1:23:26 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531221806824
+_REMOTE_IP=127.0.0.1
+[18] 2018-07-10 1:23:26 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531221806825
+_REMOTE_IP=127.0.0.1
+[19] 2018-07-10 1:23:26 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531221806828
+_REMOTE_IP=127.0.0.1
+[20] 2018-07-10 1:23:47 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531221827981
+_REMOTE_IP=127.0.0.1
+[21] 2018-07-10 1:23:48 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531221827982
+_REMOTE_IP=127.0.0.1
+[22] 2018-07-10 1:23:48 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531221827983
+_REMOTE_IP=127.0.0.1
+[23] 2018-07-10 1:23:48 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531221827984
+_REMOTE_IP=127.0.0.1
+[24] 2018-07-10 1:24:04 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531221844109
+_REMOTE_IP=127.0.0.1
+[25] 2018-07-10 1:24:04 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531221844178
+_REMOTE_IP=127.0.0.1
+[26] 2018-07-10 1:24:04 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531221844179
+_REMOTE_IP=127.0.0.1
+[27] 2018-07-10 1:24:04 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531221844182
+_REMOTE_IP=127.0.0.1
+[28] 2018-07-10 1:24:27 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531221867696
+_REMOTE_IP=127.0.0.1
+[29] 2018-07-10 1:24:27 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531221867697
+_REMOTE_IP=127.0.0.1
+[30] 2018-07-10 1:24:27 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531221867698
+_REMOTE_IP=127.0.0.1
+[31] 2018-07-10 1:24:27 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531221867700
+_REMOTE_IP=127.0.0.1
+[32] 2018-07-10 1:25:42 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531221942390
+_REMOTE_IP=127.0.0.1
+[33] 2018-07-10 1:25:42 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531221942392
+_REMOTE_IP=127.0.0.1
+[34] 2018-07-10 1:25:42 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531221942393
+_REMOTE_IP=127.0.0.1
+[35] 2018-07-10 1:25:42 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531221942395
+_REMOTE_IP=127.0.0.1
+[36] 2018-07-10 1:29:24 PM # [127.0.0.1] POST eLearning.model.Option 
+
+_REMOTE_IP=127.0.0.1
+correct=false
+id=eLearning.model.Option-1
+text=New Answer 1
+sequence=1
+[37] 2018-07-10 1:29:24 PM # [127.0.0.1] POST eLearning.model.Option 
+
+_REMOTE_IP=127.0.0.1
+[38] 2018-07-10 1:29:26 PM # [127.0.0.1] POST eLearning.model.Option 
+
+_REMOTE_IP=127.0.0.1
+[39] 2018-07-10 1:36:38 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531222598693
+_REMOTE_IP=127.0.0.1
+[40] 2018-07-10 1:36:38 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531222598696
+_REMOTE_IP=127.0.0.1
+[41] 2018-07-10 1:36:38 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531222598703
+_REMOTE_IP=127.0.0.1
+[42] 2018-07-10 1:36:38 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531222598705
+_REMOTE_IP=127.0.0.1
+[43] 2018-07-10 1:37:56 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531222676379
+_REMOTE_IP=127.0.0.1
+[44] 2018-07-10 1:37:56 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531222676381
+_REMOTE_IP=127.0.0.1
+[45] 2018-07-10 1:37:56 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531222676381
+_REMOTE_IP=127.0.0.1
+[46] 2018-07-10 1:37:56 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531222676384
+_REMOTE_IP=127.0.0.1
+[47] 2018-07-10 1:39:15 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531222755973
+_REMOTE_IP=127.0.0.1
+[48] 2018-07-10 1:39:16 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531222755976
+_REMOTE_IP=127.0.0.1
+[49] 2018-07-10 1:39:16 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531222755977
+_REMOTE_IP=127.0.0.1
+[50] 2018-07-10 1:39:16 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531222755978
+_REMOTE_IP=127.0.0.1
+[51] 2018-07-10 1:41:00 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531222859740
+_REMOTE_IP=127.0.0.1
+[52] 2018-07-10 1:41:00 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531222859744
+_REMOTE_IP=127.0.0.1
+[53] 2018-07-10 1:41:00 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531222859745
+_REMOTE_IP=127.0.0.1
+[54] 2018-07-10 1:41:00 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531222859747
+_REMOTE_IP=127.0.0.1
+[55] 2018-07-10 1:43:15 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531222995672
+_REMOTE_IP=127.0.0.1
+[56] 2018-07-10 1:43:16 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531222995670
+_REMOTE_IP=127.0.0.1
+[57] 2018-07-10 1:43:16 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531222995673
+_REMOTE_IP=127.0.0.1
+[58] 2018-07-10 1:43:16 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531222995674
+_REMOTE_IP=127.0.0.1
+[59] 2018-07-10 1:45:51 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531223151821
+_REMOTE_IP=127.0.0.1
+[60] 2018-07-10 1:45:51 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531223151824
+_REMOTE_IP=127.0.0.1
+[61] 2018-07-10 1:45:51 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531223151835
+_REMOTE_IP=127.0.0.1
+[62] 2018-07-10 1:45:51 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531223151837
+_REMOTE_IP=127.0.0.1
+[63] 2018-07-10 1:46:55 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531223215253
+_REMOTE_IP=127.0.0.1
+[64] 2018-07-10 1:46:55 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531223215255
+_REMOTE_IP=127.0.0.1
+[65] 2018-07-10 1:46:55 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531223215256
+_REMOTE_IP=127.0.0.1
+[66] 2018-07-10 1:46:55 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531223215257
+_REMOTE_IP=127.0.0.1
+[67] 2018-07-10 1:47:42 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531223262015
+_REMOTE_IP=127.0.0.1
+[68] 2018-07-10 1:47:42 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531223262017
+_REMOTE_IP=127.0.0.1
+[69] 2018-07-10 1:47:42 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531223262020
+_REMOTE_IP=127.0.0.1
+[70] 2018-07-10 1:47:42 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531223262022
+_REMOTE_IP=127.0.0.1
+[71] 2018-07-10 1:51:37 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531223497115
+_REMOTE_IP=127.0.0.1
+[72] 2018-07-10 1:51:37 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531223497117
+_REMOTE_IP=127.0.0.1
+[73] 2018-07-10 1:51:37 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531223497121
+_REMOTE_IP=127.0.0.1
+[74] 2018-07-10 1:51:37 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531223497122
+_REMOTE_IP=127.0.0.1
+[75] 2018-07-10 1:53:15 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531223595420
+_REMOTE_IP=127.0.0.1
+[76] 2018-07-10 1:53:15 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531223595423
+_REMOTE_IP=127.0.0.1
+[77] 2018-07-10 1:53:15 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531223595430
+_REMOTE_IP=127.0.0.1
+[78] 2018-07-10 1:53:15 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531223595430
+_REMOTE_IP=127.0.0.1
+[79] 2018-07-10 1:53:46 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531223625068
+_REMOTE_IP=127.0.0.1
+[80] 2018-07-10 1:53:46 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531223625072
+_REMOTE_IP=127.0.0.1
+[81] 2018-07-10 1:53:46 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531223625072
+_REMOTE_IP=127.0.0.1
+[82] 2018-07-10 1:53:46 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531223625074
+_REMOTE_IP=127.0.0.1
+[83] 2018-07-10 1:57:02 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531223821999
+_REMOTE_IP=127.0.0.1
+[84] 2018-07-10 1:57:02 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531223822001
+_REMOTE_IP=127.0.0.1
+[85] 2018-07-10 1:57:02 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531223822003
+_REMOTE_IP=127.0.0.1
+[86] 2018-07-10 1:57:02 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531223822005
+_REMOTE_IP=127.0.0.1
+[87] 2018-07-10 1:57:57 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531223876905
+_REMOTE_IP=127.0.0.1
+[88] 2018-07-10 1:57:57 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531223876908
+_REMOTE_IP=127.0.0.1
+[89] 2018-07-10 1:57:57 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531223876912
+_REMOTE_IP=127.0.0.1
+[90] 2018-07-10 1:57:57 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531223876918
+_REMOTE_IP=127.0.0.1
+[91] 2018-07-10 1:59:55 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531223995125
+_REMOTE_IP=127.0.0.1
+[92] 2018-07-10 1:59:55 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531223995128
+_REMOTE_IP=127.0.0.1
+[93] 2018-07-10 1:59:55 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531223995130
+_REMOTE_IP=127.0.0.1
+[94] 2018-07-10 1:59:55 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531223995131
+_REMOTE_IP=127.0.0.1
+[95] 2018-07-10 2:08:28 PM # [127.0.0.1] POST eLearning.model.Option 
+
+_REMOTE_IP=127.0.0.1
+correct=false
+id=eLearning.model.Option-1
+text=New Answer 1
+sequence=1
+[96] 2018-07-10 2:08:28 PM # [127.0.0.1] POST eLearning.model.Option 
+
+_REMOTE_IP=127.0.0.1
+[97] 2018-07-10 2:08:29 PM # [127.0.0.1] POST eLearning.model.Option 
+
+_REMOTE_IP=127.0.0.1

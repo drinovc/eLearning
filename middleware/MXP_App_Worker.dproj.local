@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<BorlandProject>
-	<Transactions>
-    <Transaction>2018/03/14 14:27:56.186.pas,C:\Work\Projekti\eLearning\middleware\Unit1.pas=C:\Work\Projekti\eLearning\middleware\MXP_App_Lookups.pas</Transaction>
-    <Transaction>2018/03/14 14:27:56.186.dfm,C:\Work\Projekti\eLearning\middleware\Unit1.dfm=C:\Work\Projekti\eLearning\middleware\MXP_App_Lookups.dfm</Transaction>
-  </Transactions>
-</BorlandProject>

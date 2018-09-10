@@ -1,0 +1,187 @@
+[1] 8/22/2018 11:07:26 AM # ------ Client version file not found in C:\Users\Jernej\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 8/22/2018 11:07:26 AM # ------ Client version file not found in C:\Users\Jernej\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 8/22/2018 11:07:26 AM # ------ Client version  from C:\Users\Jernej\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 8/22/2018 11:11:00 AM # [127.0.0.1] GET Pub/Programs 
+_dc=1534929060638
+_REMOTE_IP=127.0.0.1
+[5] 8/22/2018 11:11:06 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1534929066019
+_REMOTE_IP=127.0.0.1
+[6] 8/22/2018 11:11:06 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1534929066020
+_REMOTE_IP=127.0.0.1
+[7] 8/22/2018 11:11:06 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1534929066022
+_REMOTE_IP=127.0.0.1
+[8] 8/22/2018 11:11:06 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1534929066023
+_REMOTE_IP=127.0.0.1
+[9] 8/22/2018 11:11:06 AM # [127.0.0.1] GET Pub/Programs 
+userId=-1
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[4] 8/22/2018 11:11:16 AM # ERROR SelectQuery (Pub/Programs): [DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+[DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+(000FE70F){MXP_App_Worker.dll} [03B5F70F] ADODB.TADOConnection.DoConnect (Line 1640, "ADODB.pas" + 1) + $41
+(000E0649){MXP_App_Worker.dll} [03B41649] DB.TCustomConnection.SetConnected (Line 3158, "DB.pas" + 8) + $4
+(00102E68){MXP_App_Worker.dll} [03B63E68] ADODB.TADOCommand.SetConnectionFlag (Line 3217, "ADODB.pas" + 6) + $11
+(00103E99){MXP_App_Worker.dll} [03B64E99] ADODB.TCustomADODataSet.OpenCursor (Line 3592, "ADODB.pas" + 3) + $1
+(000F190D){MXP_App_Worker.dll} [03B5290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03B52754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03C23EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03C66128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+_dc=1534929060638
+_REMOTE_IP=127.0.0.1
+_rowid=
+_environment=D
+_method=GET
+
+[5] 8/22/2018 11:11:21 AM # ERROR SelectQuery (Lookups/ProgramCategories): [DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+[DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+(000FE70F){MXP_App_Worker.dll} [03B5F70F] ADODB.TADOConnection.DoConnect (Line 1640, "ADODB.pas" + 1) + $41
+(000E0649){MXP_App_Worker.dll} [03B41649] DB.TCustomConnection.SetConnected (Line 3158, "DB.pas" + 8) + $4
+(00102E68){MXP_App_Worker.dll} [03B63E68] ADODB.TADOCommand.SetConnectionFlag (Line 3217, "ADODB.pas" + 6) + $11
+(00103E99){MXP_App_Worker.dll} [03B64E99] ADODB.TCustomADODataSet.OpenCursor (Line 3592, "ADODB.pas" + 3) + $1
+(000F190D){MXP_App_Worker.dll} [03B5290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03B52754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03C23EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03C66128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+_dc=1534929066019
+_REMOTE_IP=127.0.0.1
+_rowid=
+_environment=D
+_method=GET
+
+[6] 8/22/2018 11:11:21 AM # ERROR SelectQuery (Lookups/ProgramPageCategories): [DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+[DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+(000FE70F){MXP_App_Worker.dll} [03B5F70F] ADODB.TADOConnection.DoConnect (Line 1640, "ADODB.pas" + 1) + $41
+(000E0649){MXP_App_Worker.dll} [03B41649] DB.TCustomConnection.SetConnected (Line 3158, "DB.pas" + 8) + $4
+(00102E68){MXP_App_Worker.dll} [03B63E68] ADODB.TADOCommand.SetConnectionFlag (Line 3217, "ADODB.pas" + 6) + $11
+(00103E99){MXP_App_Worker.dll} [03B64E99] ADODB.TCustomADODataSet.OpenCursor (Line 3592, "ADODB.pas" + 3) + $1
+(000F190D){MXP_App_Worker.dll} [03B5290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03B52754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03C23EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03C66128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+_dc=1534929066020
+_REMOTE_IP=127.0.0.1
+_rowid=
+_environment=D
+_method=GET
+
+[7] 8/22/2018 11:11:21 AM # ERROR SelectQuery (Lookups/CoursesAndCertificates): [DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+[DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+(000FE70F){MXP_App_Worker.dll} [03B5F70F] ADODB.TADOConnection.DoConnect (Line 1640, "ADODB.pas" + 1) + $41
+(000E0649){MXP_App_Worker.dll} [03B41649] DB.TCustomConnection.SetConnected (Line 3158, "DB.pas" + 8) + $4
+(00102E68){MXP_App_Worker.dll} [03B63E68] ADODB.TADOCommand.SetConnectionFlag (Line 3217, "ADODB.pas" + 6) + $11
+(00103E99){MXP_App_Worker.dll} [03B64E99] ADODB.TCustomADODataSet.OpenCursor (Line 3592, "ADODB.pas" + 3) + $1
+(000F190D){MXP_App_Worker.dll} [03B5290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03B52754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03C23EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03C66128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+_dc=1534929066022
+_REMOTE_IP=127.0.0.1
+_rowid=
+_environment=D
+_method=GET
+
+[8] 8/22/2018 11:11:21 AM # ERROR SelectQuery (Lookups/ProgramStatuses): [DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+[DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+(000FE70F){MXP_App_Worker.dll} [03B5F70F] ADODB.TADOConnection.DoConnect (Line 1640, "ADODB.pas" + 1) + $41
+(000E0649){MXP_App_Worker.dll} [03B41649] DB.TCustomConnection.SetConnected (Line 3158, "DB.pas" + 8) + $4
+(00102E68){MXP_App_Worker.dll} [03B63E68] ADODB.TADOCommand.SetConnectionFlag (Line 3217, "ADODB.pas" + 6) + $11
+(00103E99){MXP_App_Worker.dll} [03B64E99] ADODB.TCustomADODataSet.OpenCursor (Line 3592, "ADODB.pas" + 3) + $1
+(000F190D){MXP_App_Worker.dll} [03B5290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03B52754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03C23EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03C66128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+_dc=1534929066023
+_REMOTE_IP=127.0.0.1
+_rowid=
+_environment=D
+_method=GET
+
+[9] 8/22/2018 11:11:21 AM # ERROR SelectQuery (Pub/Programs): [DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+[DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+(000FE70F){MXP_App_Worker.dll} [03B5F70F] ADODB.TADOConnection.DoConnect (Line 1640, "ADODB.pas" + 1) + $41
+(000E0649){MXP_App_Worker.dll} [03B41649] DB.TCustomConnection.SetConnected (Line 3158, "DB.pas" + 8) + $4
+(00102E68){MXP_App_Worker.dll} [03B63E68] ADODB.TADOCommand.SetConnectionFlag (Line 3217, "ADODB.pas" + 6) + $11
+(00103E99){MXP_App_Worker.dll} [03B64E99] ADODB.TCustomADODataSet.OpenCursor (Line 3592, "ADODB.pas" + 3) + $1
+(000F190D){MXP_App_Worker.dll} [03B5290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03B52754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03C23EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03C66128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+userId=-1
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+_rowid=
+_environment=D
+_method=GET
+
+[16] 8/22/2018 11:11:28 AM # [127.0.0.1] POST Pub/Programs 
+
+_REMOTE_IP=127.0.0.1
+categoryId=0
+active=true
+validFrom=2018-08-17T00:00:00+02:00
+maxAttemptsTrainingMode=1
+validTo=2019-08-17T00:00:00+02:00
+created=1534495051
+completionTime=60
+description=New Training Program Description
+id={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+changed=Y
+lastChangeLogId=191191849
+maxAttemptsScoreMode=1
+name=New Training Program
+passScore=75
+createdById=0
+createdAtId=3
+certificateFileName=10227084
+lastChanged=1534745703
+programId=30000184
+[16] 8/22/2018 11:11:44 AM # ERROR InsertQuery (Pub/Programs): [DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+[DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+(000FE70F){MXP_App_Worker.dll} [03B5F70F] ADODB.TADOConnection.DoConnect (Line 1640, "ADODB.pas" + 1) + $41
+(000E0649){MXP_App_Worker.dll} [03B41649] DB.TCustomConnection.SetConnected (Line 3158, "DB.pas" + 8) + $4
+(00102E68){MXP_App_Worker.dll} [03B63E68] ADODB.TADOCommand.SetConnectionFlag (Line 3217, "ADODB.pas" + 6) + $11
+(00103E99){MXP_App_Worker.dll} [03B64E99] ADODB.TCustomADODataSet.OpenCursor (Line 3592, "ADODB.pas" + 3) + $1
+(000F190D){MXP_App_Worker.dll} [03B5290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03B52754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03C23EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03C66128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+categoryId=0
+active=true
+validFrom=2018-08-17T00:00:00+02:00
+maxAttemptsTrainingMode=1
+validTo=2019-08-17T00:00:00+02:00
+created=1534495051
+completionTime=60
+description=New Training Program Description
+id={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+changed=Y
+lastChangeLogId=191191849
+maxAttemptsScoreMode=1
+name=New Training Program
+passScore=75
+createdById=0
+createdAtId=3
+certificateFileName=10227084
+lastChanged=1534745703
+programId=30000184
+_rowid=
+_environment=D
+_method=POST
+

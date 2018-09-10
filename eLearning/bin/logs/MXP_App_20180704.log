@@ -1,0 +1,142 @@
+[1] 7/4/2018 12:00:38 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 7/4/2018 12:00:38 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 7/4/2018 12:00:38 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[1] 7/4/2018 12:05:30 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 7/4/2018 12:05:30 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 7/4/2018 12:05:30 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 7/4/2018 12:05:39 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1530698739290
+_REMOTE_IP=127.0.0.1
+[5] 7/4/2018 12:05:39 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1530698739291
+_REMOTE_IP=127.0.0.1
+[6] 7/4/2018 12:05:39 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1530698739293
+_REMOTE_IP=127.0.0.1
+[7] 7/4/2018 12:05:39 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1530698739294
+_REMOTE_IP=127.0.0.1
+[8] 7/4/2018 12:05:46 PM # [127.0.0.1] GET GET/Pub/Programs 
+_dc=1530698746278
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[7] 7/4/2018 12:06:34 PM # ERROR SelectQuery (Lookups/ProgramStatuses): [DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+[DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+(000FE70F){MXP_App_Worker.dll} [03D9F70F] ADODB.TADOConnection.DoConnect (Line 1640, "ADODB.pas" + 1) + $41
+(000E021D){MXP_App_Worker.dll} [03D8121D] DB.TCustomConnection.SetConnected (Line 3158, "DB.pas" + 8) + $4
+(00102E68){MXP_App_Worker.dll} [03DA3E68] ADODB.TADOCommand.SetConnectionFlag (Line 3217, "ADODB.pas" + 6) + $11
+(00103E99){MXP_App_Worker.dll} [03DA4E99] ADODB.TCustomADODataSet.OpenCursor (Line 3592, "ADODB.pas" + 3) + $1
+(000F14E1){MXP_App_Worker.dll} [03D924E1] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1328){MXP_App_Worker.dll} [03D92328] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205088){MXP_App_Worker.dll} [03EA6088] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+_dc=1530698739294
+_REMOTE_IP=127.0.0.1
+_rowid=
+_environment=D
+_method=GET
+
+[8] 7/4/2018 12:06:37 PM # ERROR SelectQuery (GET/Pub/Programs): [DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+[DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+(000FE70F){MXP_App_Worker.dll} [03D9F70F] ADODB.TADOConnection.DoConnect (Line 1640, "ADODB.pas" + 1) + $41
+(000E021D){MXP_App_Worker.dll} [03D8121D] DB.TCustomConnection.SetConnected (Line 3158, "DB.pas" + 8) + $4
+(00102E68){MXP_App_Worker.dll} [03DA3E68] ADODB.TADOCommand.SetConnectionFlag (Line 3217, "ADODB.pas" + 6) + $11
+(00103E99){MXP_App_Worker.dll} [03DA4E99] ADODB.TCustomADODataSet.OpenCursor (Line 3592, "ADODB.pas" + 3) + $1
+(000F14E1){MXP_App_Worker.dll} [03D924E1] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1328){MXP_App_Worker.dll} [03D92328] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205088){MXP_App_Worker.dll} [03EA6088] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+_dc=1530698746278
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+_rowid=
+_environment=D
+_method=GET
+
+[4] 7/4/2018 12:06:37 PM # ERROR SelectQuery (Lookups/ProgramCategories): [DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+[DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+(000FE70F){MXP_App_Worker.dll} [03D9F70F] ADODB.TADOConnection.DoConnect (Line 1640, "ADODB.pas" + 1) + $41
+(000E021D){MXP_App_Worker.dll} [03D8121D] DB.TCustomConnection.SetConnected (Line 3158, "DB.pas" + 8) + $4
+(00102E68){MXP_App_Worker.dll} [03DA3E68] ADODB.TADOCommand.SetConnectionFlag (Line 3217, "ADODB.pas" + 6) + $11
+(00103E99){MXP_App_Worker.dll} [03DA4E99] ADODB.TCustomADODataSet.OpenCursor (Line 3592, "ADODB.pas" + 3) + $1
+(000F14E1){MXP_App_Worker.dll} [03D924E1] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1328){MXP_App_Worker.dll} [03D92328] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205088){MXP_App_Worker.dll} [03EA6088] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+_dc=1530698739290
+_REMOTE_IP=127.0.0.1
+_rowid=
+_environment=D
+_method=GET
+
+[6] 7/4/2018 12:06:37 PM # ERROR SelectQuery (Lookups/CoursesAndCertificates): [DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+[DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+(000FE70F){MXP_App_Worker.dll} [03D9F70F] ADODB.TADOConnection.DoConnect (Line 1640, "ADODB.pas" + 1) + $41
+(000E021D){MXP_App_Worker.dll} [03D8121D] DB.TCustomConnection.SetConnected (Line 3158, "DB.pas" + 8) + $4
+(00102E68){MXP_App_Worker.dll} [03DA3E68] ADODB.TADOCommand.SetConnectionFlag (Line 3217, "ADODB.pas" + 6) + $11
+(00103E99){MXP_App_Worker.dll} [03DA4E99] ADODB.TCustomADODataSet.OpenCursor (Line 3592, "ADODB.pas" + 3) + $1
+(000F14E1){MXP_App_Worker.dll} [03D924E1] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1328){MXP_App_Worker.dll} [03D92328] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205088){MXP_App_Worker.dll} [03EA6088] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+_dc=1530698739293
+_REMOTE_IP=127.0.0.1
+_rowid=
+_environment=D
+_method=GET
+
+[5] 7/4/2018 12:06:37 PM # ERROR SelectQuery (Lookups/ProgramPageCategories): [DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+[DBNETLIB][ConnectionOpen (Connect()).]SQL Server does not exist or access denied
+(000FE70F){MXP_App_Worker.dll} [03D9F70F] ADODB.TADOConnection.DoConnect (Line 1640, "ADODB.pas" + 1) + $41
+(000E021D){MXP_App_Worker.dll} [03D8121D] DB.TCustomConnection.SetConnected (Line 3158, "DB.pas" + 8) + $4
+(00102E68){MXP_App_Worker.dll} [03DA3E68] ADODB.TADOCommand.SetConnectionFlag (Line 3217, "ADODB.pas" + 6) + $11
+(00103E99){MXP_App_Worker.dll} [03DA4E99] ADODB.TCustomADODataSet.OpenCursor (Line 3592, "ADODB.pas" + 3) + $1
+(000F14E1){MXP_App_Worker.dll} [03D924E1] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1328){MXP_App_Worker.dll} [03D92328] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205088){MXP_App_Worker.dll} [03EA6088] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+_dc=1530698739291
+_REMOTE_IP=127.0.0.1
+_rowid=
+_environment=D
+_method=GET
+
+[14] 7/4/2018 12:06:37 PM # [127.0.0.1] GET GET/Pub/Programs 
+_dc=1530698771665
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[1] 7/4/2018 12:16:05 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 7/4/2018 12:16:05 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 7/4/2018 12:16:05 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[1] 7/4/2018 12:18:05 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 7/4/2018 12:18:05 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 7/4/2018 12:18:05 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[1] 7/4/2018 12:18:31 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 7/4/2018 12:18:31 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 7/4/2018 12:18:31 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[1] 7/4/2018 12:25:31 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 7/4/2018 12:25:31 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 7/4/2018 12:25:31 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 7/4/2018 12:25:35 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1530699935175
+_REMOTE_IP=127.0.0.1
+[5] 7/4/2018 12:25:35 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1530699935176
+_REMOTE_IP=127.0.0.1
+[6] 7/4/2018 12:25:35 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1530699935177
+_REMOTE_IP=127.0.0.1
+[7] 7/4/2018 12:25:35 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1530699935180
+_REMOTE_IP=127.0.0.1

@@ -1,0 +1,2001 @@
+[1] 2018-08-20 07:36:25 # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-08-20 07:36:25 # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-08-20 07:36:25 # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-08-20 07:46:07 # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1534743966861
+_REMOTE_IP=127.0.0.1
+[5] 2018-08-20 07:46:07 # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1534743966864
+_REMOTE_IP=127.0.0.1
+[6] 2018-08-20 07:46:07 # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1534743966865
+_REMOTE_IP=127.0.0.1
+[7] 2018-08-20 07:46:07 # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1534743966865
+_REMOTE_IP=127.0.0.1
+[8] 2018-08-20 07:46:07 # [127.0.0.1] GET Pub/Programs 
+userId=-1
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[9] 2018-08-20 07:52:09 # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1534744329712
+_REMOTE_IP=127.0.0.1
+[10] 2018-08-20 07:52:09 # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1534744329713
+_REMOTE_IP=127.0.0.1
+[11] 2018-08-20 07:52:09 # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1534744329716
+_REMOTE_IP=127.0.0.1
+[12] 2018-08-20 07:52:09 # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1534744329718
+_REMOTE_IP=127.0.0.1
+[13] 2018-08-20 07:52:09 # [127.0.0.1] GET Pub/Programs 
+userId=-1
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[14] 2018-08-20 07:52:18 # [127.0.0.1] GET Pub/Login 
+user=280
+pin=280
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[15] 2018-08-20 07:52:25 # [127.0.0.1] GET Pub/Programs 
+userId=20016143
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[16] 2018-08-20 07:52:26 # [127.0.0.1] GET Pub/Programs 
+_dc=1534744346598
+_REMOTE_IP=127.0.0.1
+[17] 2018-08-20 07:52:26 # [127.0.0.1] GET Pub/PersonPrograms 
+personId=-1
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[18] 2018-08-20 07:52:27 # [127.0.0.1] GET Pub/Pages/root 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+_REMOTE_IP=127.0.0.1
+[19] 2018-08-20 07:52:27 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[20] 2018-08-20 07:52:27 # [127.0.0.1] GET Pub/Questions 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[21] 2018-08-20 07:52:27 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-17T14:54:14.410","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[22] 2018-08-20 07:52:27 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1028,"pageId":30001028,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","lastChanged":"2018-08-17T14:54:14.510","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[23] 2018-08-20 07:52:27 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:37.000","completionTime":null,"rowCounter":1029,"pageId":30001029,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","lastChanged":"2018-08-17T14:54:14.643","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[24] 2018-08-20 07:52:27 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:47.000","completionTime":null,"rowCounter":1030,"pageId":30001030,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{890A5089-9293-4C51-A5DC-9649117777AA}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","lastChanged":"2018-08-17T14:54:14.740","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[25] 2018-08-20 08:08:48 # [127.0.0.1] GET Pub/Login 
+user=280
+pin=280
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[26] 2018-08-20 08:09:43 # [127.0.0.1] GET Pub/Login 
+user=280
+pin=280
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[27] 2018-08-20 08:11:47 # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1534745507521
+_REMOTE_IP=127.0.0.1
+[28] 2018-08-20 08:11:47 # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1534745507523
+_REMOTE_IP=127.0.0.1
+[29] 2018-08-20 08:11:47 # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1534745507525
+_REMOTE_IP=127.0.0.1
+[30] 2018-08-20 08:11:47 # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1534745507523
+_REMOTE_IP=127.0.0.1
+[31] 2018-08-20 08:11:47 # [127.0.0.1] GET Pub/Programs 
+userId=20016143
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[32] 2018-08-20 08:11:52 # [127.0.0.1] GET Pub/Programs 
+_dc=1534745512574
+_REMOTE_IP=127.0.0.1
+[33] 2018-08-20 08:11:53 # [127.0.0.1] GET Pub/PersonPrograms 
+personId=20016143
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[34] 2018-08-20 08:11:53 # [127.0.0.1] GET Pub/Pages/root 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+_REMOTE_IP=127.0.0.1
+[35] 2018-08-20 08:11:53 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[36] 2018-08-20 08:11:53 # [127.0.0.1] GET Pub/Questions 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[37] 2018-08-20 08:11:53 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T07:52:24.007","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[38] 2018-08-20 08:11:53 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1028,"pageId":30001028,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","lastChanged":"2018-08-20T07:52:24.247","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[39] 2018-08-20 08:11:53 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:37.000","completionTime":null,"rowCounter":1029,"pageId":30001029,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","lastChanged":"2018-08-20T07:52:24.333","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[40] 2018-08-20 08:11:53 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:47.000","completionTime":null,"rowCounter":1030,"pageId":30001030,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{890A5089-9293-4C51-A5DC-9649117777AA}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","lastChanged":"2018-08-20T07:52:24.430","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[41] 2018-08-20 08:14:47 # [127.0.0.1] GET Pub/PersonPrograms 
+personId=20016143
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[42] 2018-08-20 08:14:52 # [127.0.0.1] GET Pub/Programs 
+userId=20016143
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[43] 2018-08-20 08:15:06 # [127.0.0.1] POST Pub/Programs 
+
+_REMOTE_IP=127.0.0.1
+categoryId=0
+active=true
+validFrom=2018-08-17T00:00:00+02:00
+maxAttemptsTrainingMode=1
+validTo=2019-08-17T00:00:00+02:00
+created=1534495052
+completionTime=60
+description=New Training Program Description
+id={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+changed=Y
+lastChangeLogId=191191849
+maxAttemptsScoreMode=1
+name=New Training Program
+passScore=75
+createdById=0
+createdAtId=3
+certificateFileName=10227084
+lastChanged=1534745706
+programId=30000184
+[44] 2018-08-20 08:15:07 # [127.0.0.1] GET Pub/Programs 
+_dc=1534745707562
+_REMOTE_IP=127.0.0.1
+[45] 2018-08-20 08:15:07 # [127.0.0.1] GET Pub/PersonPrograms 
+personId=20016143
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[46] 2018-08-20 08:15:07 # [127.0.0.1] GET Pub/Pages/root 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+_REMOTE_IP=127.0.0.1
+[47] 2018-08-20 08:15:07 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[48] 2018-08-20 08:15:07 # [127.0.0.1] GET Pub/Questions 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[49] 2018-08-20 08:15:08 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:11:50.277","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[50] 2018-08-20 08:15:08 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1028,"pageId":30001028,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","lastChanged":"2018-08-20T08:11:50.460","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[51] 2018-08-20 08:15:08 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:37.000","completionTime":null,"rowCounter":1029,"pageId":30001029,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","lastChanged":"2018-08-20T08:11:50.550","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[52] 2018-08-20 08:15:08 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:47.000","completionTime":null,"rowCounter":1030,"pageId":30001030,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{890A5089-9293-4C51-A5DC-9649117777AA}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","lastChanged":"2018-08-20T08:11:50.643","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[53] 2018-08-20 08:16:00 # [127.0.0.1] PUT POST/Pub/Pages/{717C788C-1145-4112-87EF-DC2E30D1316A} 
+
+_REMOTE_IP=127.0.0.1
+data={"categoryId":2,"created":"2018-08-20T08:15:59","isSlide":true,"id":"{717C788C-1145-4112-87EF-DC2E30D1316A}","content":"","multiSelect":0,"title":"New Page 2","leaf":true,"sequence":1,"parentId":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","lastChanged":"2018-08-20T08:15:59","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[54] 2018-08-20 08:16:43 # [127.0.0.1] PUT POST/Pub/Pages/{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T08:15:04.867","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[55] 2018-08-20 08:16:43 # [127.0.0.1] PUT POST/Pub/Pages/{82E0B175-8C1C-40F4-A287-F0E392EE10B5} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1028,"pageId":30001028,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","lastChanged":"2018-08-20T08:15:05.060","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[56] 2018-08-20 08:16:43 # [127.0.0.1] PUT POST/Pub/Pages/{7F2E3A3C-1622-435B-8EC7-590222EC33C0} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:37.000","completionTime":null,"rowCounter":1029,"pageId":30001029,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","lastChanged":"2018-08-20T08:15:05.160","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[57] 2018-08-20 08:16:43 # [127.0.0.1] PUT POST/Pub/Pages/{890A5089-9293-4C51-A5DC-9649117777AA} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:47.000","completionTime":null,"rowCounter":1030,"pageId":30001030,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{890A5089-9293-4C51-A5DC-9649117777AA}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","lastChanged":"2018-08-20T08:15:05.270","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[58] 2018-08-20 08:16:43 # [127.0.0.1] PUT POST/Pub/Pages/{1C434566-7F21-4068-8275-B487A897889D} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:50.000","completionTime":null,"rowCounter":1031,"pageId":30001031,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{1C434566-7F21-4068-8275-B487A897889D}","content":"{\"components\":{\"{A2060835-DD81-4F91-BD5B-FCAE52B761B3}\":{\"type\":\"Single selection\",\"cls\":[\"selection\"],\"html\":\"trutrutr\",\"options\":[{\"id\":\"1\",\"sequence\":1,\"text\":\"New Answer 1\",\"correct\":false},{\"id\":\"2\",\"sequence\":2,\"text\":\"New Answer 2\",\"correct\":true}],\"multi\":false,\"id\":\"{A2060835-DD81-4F91-BD5B-FCAE52B761B3}\",\"width\":700,\"height\":50,\"x\":50,\"y\":50,\"src\":\"\",\"style\":null,\"score\":0}}}","multiSelect":null,"changed":"Y","title":"New Page 1","sound":null,"leaf":true,"sequence":0,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{890A5089-9293-4C51-A5DC-9649117777AA}","lastChanged":"2018-08-17T14:52:57.373","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[59] 2018-08-20 08:16:43 # [127.0.0.1] PUT POST/Pub/Pages/{717C788C-1145-4112-87EF-DC2E30D1316A} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T08:15:59.000","completionTime":null,"rowCounter":1034,"pageId":30001034,"isSlide":true,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{717C788C-1145-4112-87EF-DC2E30D1316A}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","lastChanged":"2018-08-20T08:15:57.077","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[60] 2018-08-20 08:16:50 # [127.0.0.1] PUT POST/Pub/Pages/{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T08:16:39.890","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[61] 2018-08-20 08:16:50 # [127.0.0.1] PUT POST/Pub/Pages/{82E0B175-8C1C-40F4-A287-F0E392EE10B5} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1028,"pageId":30001028,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","lastChanged":"2018-08-20T08:16:40.010","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[62] 2018-08-20 08:16:50 # [127.0.0.1] PUT POST/Pub/Pages/{7F2E3A3C-1622-435B-8EC7-590222EC33C0} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:37.000","completionTime":null,"rowCounter":1029,"pageId":30001029,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","lastChanged":"2018-08-20T08:16:40.120","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[63] 2018-08-20 08:16:50 # [127.0.0.1] PUT POST/Pub/Pages/{890A5089-9293-4C51-A5DC-9649117777AA} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:47.000","completionTime":null,"rowCounter":1030,"pageId":30001030,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{890A5089-9293-4C51-A5DC-9649117777AA}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","lastChanged":"2018-08-20T08:16:40.233","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[64] 2018-08-20 08:16:50 # [127.0.0.1] PUT POST/Pub/Pages/{1C434566-7F21-4068-8275-B487A897889D} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:50.000","completionTime":null,"rowCounter":1031,"pageId":30001031,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{1C434566-7F21-4068-8275-B487A897889D}","content":"{\"components\":{\"{A2060835-DD81-4F91-BD5B-FCAE52B761B3}\":{\"type\":\"Single selection\",\"cls\":[\"selection\"],\"html\":\"trutrutr\",\"options\":[{\"id\":\"1\",\"sequence\":1,\"text\":\"New Answer 1\",\"correct\":false},{\"id\":\"2\",\"sequence\":2,\"text\":\"New Answer 2\",\"correct\":true}],\"multi\":false,\"id\":\"{A2060835-DD81-4F91-BD5B-FCAE52B761B3}\",\"width\":700,\"height\":50,\"x\":50,\"y\":50,\"src\":\"\",\"style\":null,\"score\":0}}}","multiSelect":null,"changed":"Y","title":"New Page 1","sound":null,"leaf":true,"sequence":0,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{890A5089-9293-4C51-A5DC-9649117777AA}","lastChanged":"2018-08-20T08:16:40.360","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[65] 2018-08-20 08:16:50 # [127.0.0.1] PUT POST/Pub/Pages/{717C788C-1145-4112-87EF-DC2E30D1316A} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T08:15:59.000","completionTime":null,"rowCounter":1034,"pageId":30001034,"isSlide":true,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{717C788C-1145-4112-87EF-DC2E30D1316A}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:16:40.473","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[66] 2018-08-20 08:16:57 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T08:15:59.000","completionTime":null,"rowCounter":1034,"pageId":30001034,"isSlide":true,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{717C788C-1145-4112-87EF-DC2E30D1316A}","content":"{\"components\":{\"{A5DA894E-CDDE-419F-8FB4-D5A60E7E846F}\":{\"type\":\"Single selection\",\"cls\":[\"selection\"],\"html\":\"gsdf\",\"options\":[{\"id\":\"1\",\"sequence\":1,\"text\":\"New Answer 1\",\"correct\":false},{\"id\":\"2\",\"sequence\":2,\"text\":\"New Answer 2\",\"correct\":true}],\"multi\":false,\"id\":\"{A5DA894E-CDDE-419F-8FB4-D5A60E7E846F}\",\"width\":700,\"height\":50,\"x\":50,\"y\":50,\"src\":\"\",\"style\":null}}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T08:16:47.367","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[67] 2018-08-20 08:16:57 # [127.0.0.1] POST Pub/Questions 
+
+_REMOTE_IP=127.0.0.1
+question=gsdf
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-20T08:16:57
+y=0
+x=0
+pageId={717C788C-1145-4112-87EF-DC2E30D1316A}
+width=0
+options=
+fieldType=Single selection
+id={A5DA894E-CDDE-419F-8FB4-D5A60E7E846F}
+height=0
+type=
+text=
+sequence=0
+lastChanged=2018-08-20T08:16:57
+[68] 2018-08-20 08:17:02 # [127.0.0.1] GET Pub/Programs 
+userId=20016143
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[69] 2018-08-20 08:17:05 # [127.0.0.1] DELETE Pub/Programs/{E388983A-BA1D-4813-AFB8-E92C9576343B} 
+
+_REMOTE_IP=127.0.0.1
+id={E388983A-BA1D-4813-AFB8-E92C9576343B}
+[70] 2018-08-20 08:17:05 # [127.0.0.1] GET Pub/Pages/root 
+programId={E388983A-BA1D-4813-AFB8-E92C9576343B}
+_REMOTE_IP=127.0.0.1
+[71] 2018-08-20 08:17:05 # [127.0.0.1] GET Pub/PersonPrograms 
+personId=20016143
+programId={E388983A-BA1D-4813-AFB8-E92C9576343B}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[72] 2018-08-20 08:17:05 # [127.0.0.1] GET Pub/Questions 
+programId={E388983A-BA1D-4813-AFB8-E92C9576343B}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[73] 2018-08-20 08:17:05 # [127.0.0.1] GET Pub/PersonAnswers 
+programId={E388983A-BA1D-4813-AFB8-E92C9576343B}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[74] 2018-08-20 08:17:05 # [127.0.0.1] DELETE Pub/Pages/{2548C894-1E36-4DE5-BADA-B0F16AD5C952} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1032,"pageId":30001032,"soundUrl":null,"videoUrl":null,"video":null,"lastParentId":"root","reviewTime":null,"id":"{2548C894-1E36-4DE5-BADA-B0F16AD5C952}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-17T14:53:07.937","scoreMethod":"A","programId":"{E388983A-BA1D-4813-AFB8-E92C9576343B}"}
+[75] 2018-08-20 08:17:05 # [127.0.0.1] DELETE Pub/Pages/{798C6039-4FD5-43EA-868D-F159B57EB4B7} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1033,"pageId":30001033,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{798C6039-4FD5-43EA-868D-F159B57EB4B7}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":true,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{2548C894-1E36-4DE5-BADA-B0F16AD5C952}","lastChanged":"2018-08-17T14:53:08.077","scoreMethod":"A","programId":"{E388983A-BA1D-4813-AFB8-E92C9576343B}"}
+[76] 2018-08-20 08:17:08 # [127.0.0.1] POST Pub/Programs 
+
+_REMOTE_IP=127.0.0.1
+categoryId=0
+active=true
+validFrom=2018-08-17T00:00:00+02:00
+maxAttemptsTrainingMode=1
+validTo=2019-08-17T00:00:00+02:00
+created=1534495052
+completionTime=60
+description=New Training Program Description
+id={304AB123-FD0A-4F41-AA85-5BF163695E12}
+changed=Y
+lastChangeLogId=191191849
+maxAttemptsScoreMode=1
+name=New Training Program (duplicate)
+passScore=75
+createdById=0
+createdAtId=3
+certificateFileName=10227084
+lastChanged=1534745703
+programId=30000184
+[77] 2018-08-20 08:17:09 # [127.0.0.1] GET Pub/Pages/root 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+_REMOTE_IP=127.0.0.1
+[78] 2018-08-20 08:17:09 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[79] 2018-08-20 08:17:09 # [127.0.0.1] GET Pub/Questions 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[80] 2018-08-20 08:17:09 # [127.0.0.1] GET Pub/Pages/root 
+programId={304AB123-FD0A-4F41-AA85-5BF163695E12}
+_REMOTE_IP=127.0.0.1
+[81] 2018-08-20 08:17:09 # [127.0.0.1] GET Pub/Pages/{EED616A9-737C-4868-B6E6-E091168DDC99} 
+
+_REMOTE_IP=127.0.0.1
+[82] 2018-08-20 08:17:09 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{EED616A9-737C-4868-B6E6-E091168DDC99}","content":"{\"components\":{}}","multiSelect":0,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:16:46.863","scoreMethod":"A","programId":"{304AB123-FD0A-4F41-AA85-5BF163695E12}"}
+[83] 2018-08-20 08:17:09 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[84] 2018-08-20 08:17:09 # [127.0.0.1] GET Pub/Questions 
+programId={304AB123-FD0A-4F41-AA85-5BF163695E12}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[85] 2018-08-20 08:17:09 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1028,"pageId":30001028,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6EB3F889-7A63-410A-B947-2AB339B16C02}","content":"{\"components\":{}}","multiSelect":0,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{EED616A9-737C-4868-B6E6-E091168DDC99}","lastChanged":"2018-08-20T08:16:46.963","scoreMethod":"A","programId":"{304AB123-FD0A-4F41-AA85-5BF163695E12}"}
+[86] 2018-08-20 08:17:09 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1028,"pageId":30001028,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6EB3F889-7A63-410A-B947-2AB339B16C02}","content":"{\"components\":{}}","multiSelect":0,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{EED616A9-737C-4868-B6E6-E091168DDC99}","lastChanged":"2018-08-20T08:16:46.963","scoreMethod":"A","programId":"{304AB123-FD0A-4F41-AA85-5BF163695E12}"}
+[87] 2018-08-20 08:17:09 # [127.0.0.1] POST Pub/Questions 
+
+_REMOTE_IP=127.0.0.1
+question=trutrutr
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-17T14:52:56.000
+y=0
+x=0
+pageId={E176DA25-B02E-4380-9959-07E868DF1659}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={E7037F9D-CC47-42F8-A551-3603F342537F}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-17T14:52:57.387
+[87] 2018-08-20 08:17:10 # ERROR InsertQuery (Pub/Questions): Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+(00103F16){MXP_App_Worker.dll} [03DA4F16] ADODB.TCustomADODataSet.OpenCursor (Line 3594, "ADODB.pas" + 5) + $70
+(000F190D){MXP_App_Worker.dll} [03D9290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03D92754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03EA6128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+question=trutrutr
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-17T14:52:56.000
+y=0
+x=0
+pageId={E176DA25-B02E-4380-9959-07E868DF1659}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={E7037F9D-CC47-42F8-A551-3603F342537F}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-17T14:52:57.387
+_rowid=
+_environment=D
+_method=POST
+
+[89] 2018-08-20 08:17:10 # [127.0.0.1] GET Pub/Pages/root 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+_REMOTE_IP=127.0.0.1
+[90] 2018-08-20 08:17:10 # [127.0.0.1] PUT POST/Pub/Pages/{EED616A9-737C-4868-B6E6-E091168DDC99} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1035,"pageId":30001035,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{EED616A9-737C-4868-B6E6-E091168DDC99}","content":"{\"components\":{\"{A5DA894E-CDDE-419F-8FB4-D5A60E7E846F}\":{\"type\":\"Single selection\",\"cls\":[\"selection\"],\"html\":\"gsdf\",\"options\":[{\"id\":\"1\",\"sequence\":1,\"text\":\"New Answer 1\",\"correct\":false},{\"id\":\"2\",\"sequence\":2,\"text\":\"New Answer 2\",\"correct\":true}],\"multi\":false,\"id\":\"{A5DA894E-CDDE-419F-8FB4-D5A60E7E846F}\",\"width\":700,\"height\":50,\"x\":50,\"y\":50,\"src\":\"\",\"style\":null}}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T08:17:06.253","scoreMethod":"A","programId":"{304AB123-FD0A-4F41-AA85-5BF163695E12}"}
+[91] 2018-08-20 08:17:10 # [127.0.0.1] POST Pub/Questions 
+
+_REMOTE_IP=127.0.0.1
+question=gsdf
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-20T08:16:57
+y=0
+x=0
+pageId={37C33C0B-E725-4BD3-8EA2-0240F2ACF3C0}
+width=0
+options=
+fieldType=Single selection
+id={8990411C-015F-4CCA-8112-25CD2ACE1D08}
+height=0
+type=
+text=
+sequence=0
+lastChanged=2018-08-20T08:16:57
+[91] 2018-08-20 08:17:10 # ERROR InsertQuery (Pub/Questions): Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+(00103F16){MXP_App_Worker.dll} [03DA4F16] ADODB.TCustomADODataSet.OpenCursor (Line 3594, "ADODB.pas" + 5) + $70
+(000F190D){MXP_App_Worker.dll} [03D9290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03D92754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03EA6128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+question=gsdf
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-20T08:16:57
+y=0
+x=0
+pageId={37C33C0B-E725-4BD3-8EA2-0240F2ACF3C0}
+width=0
+options=
+fieldType=Single selection
+id={8990411C-015F-4CCA-8112-25CD2ACE1D08}
+height=0
+type=
+text=
+sequence=0
+lastChanged=2018-08-20T08:16:57
+_rowid=
+_environment=D
+_method=POST
+
+[93] 2018-08-20 08:17:10 # [127.0.0.1] GET Pub/Pages/{EED616A9-737C-4868-B6E6-E091168DDC99} 
+
+_REMOTE_IP=127.0.0.1
+[94] 2018-08-20 08:17:10 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{EED616A9-737C-4868-B6E6-E091168DDC99}","content":"{\"components\":{}}","multiSelect":0,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:16:46.863","scoreMethod":"A","programId":"{304AB123-FD0A-4F41-AA85-5BF163695E12}"}
+[95] 2018-08-20 08:17:10 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[96] 2018-08-20 08:17:10 # [127.0.0.1] GET Pub/Questions 
+programId={304AB123-FD0A-4F41-AA85-5BF163695E12}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[97] 2018-08-20 08:17:10 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1028,"pageId":30001028,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6EB3F889-7A63-410A-B947-2AB339B16C02}","content":"{\"components\":{}}","multiSelect":0,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{EED616A9-737C-4868-B6E6-E091168DDC99}","lastChanged":"2018-08-20T08:16:46.963","scoreMethod":"A","programId":"{304AB123-FD0A-4F41-AA85-5BF163695E12}"}
+[98] 2018-08-20 08:17:19 # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1534745838941
+_REMOTE_IP=127.0.0.1
+[99] 2018-08-20 08:17:19 # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1534745838946
+_REMOTE_IP=127.0.0.1
+[100] 2018-08-20 08:17:19 # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1534745838949
+_REMOTE_IP=127.0.0.1
+[101] 2018-08-20 08:17:19 # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1534745838950
+_REMOTE_IP=127.0.0.1
+[102] 2018-08-20 08:17:19 # [127.0.0.1] GET Pub/Programs 
+userId=-1
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[103] 2018-08-20 08:17:20 # [127.0.0.1] GET Pub/Pages/root 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+_REMOTE_IP=127.0.0.1
+[104] 2018-08-20 08:17:21 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[105] 2018-08-20 08:17:21 # [127.0.0.1] GET Pub/Questions 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[106] 2018-08-20 08:17:28 # [127.0.0.1] GET Pub/Programs 
+_dc=1534745848911
+_REMOTE_IP=127.0.0.1
+[107] 2018-08-20 08:17:29 # [127.0.0.1] GET Pub/PersonPrograms 
+personId=-1
+programId={304AB123-FD0A-4F41-AA85-5BF163695E12}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[108] 2018-08-20 08:17:29 # [127.0.0.1] GET Pub/Pages/root 
+programId={304AB123-FD0A-4F41-AA85-5BF163695E12}
+_REMOTE_IP=127.0.0.1
+[109] 2018-08-20 08:17:29 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[110] 2018-08-20 08:17:29 # [127.0.0.1] GET Pub/Questions 
+programId={304AB123-FD0A-4F41-AA85-5BF163695E12}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[111] 2018-08-20 08:17:29 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1035,"pageId":30001035,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{EED616A9-737C-4868-B6E6-E091168DDC99}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:17:07.007","scoreMethod":"A","programId":"{304AB123-FD0A-4F41-AA85-5BF163695E12}"}
+[112] 2018-08-20 08:17:29 # [127.0.0.1] POST Pub/Questions 
+
+_REMOTE_IP=127.0.0.1
+question=trutrutr
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-17T14:52:56.000
+y=0
+x=0
+pageId={E176DA25-B02E-4380-9959-07E868DF1659}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={E7037F9D-CC47-42F8-A551-3603F342537F}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-17T14:52:57.387
+[113] 2018-08-20 08:17:29 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1036,"pageId":30001036,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6EB3F889-7A63-410A-B947-2AB339B16C02}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":true,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{EED616A9-737C-4868-B6E6-E091168DDC99}","lastChanged":"2018-08-20T08:17:07.197","scoreMethod":"A","programId":"{304AB123-FD0A-4F41-AA85-5BF163695E12}"}
+[112] 2018-08-20 08:17:29 # ERROR InsertQuery (Pub/Questions): Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+(00103F16){MXP_App_Worker.dll} [03DA4F16] ADODB.TCustomADODataSet.OpenCursor (Line 3594, "ADODB.pas" + 5) + $70
+(000F190D){MXP_App_Worker.dll} [03D9290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03D92754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03EA6128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+question=trutrutr
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-17T14:52:56.000
+y=0
+x=0
+pageId={E176DA25-B02E-4380-9959-07E868DF1659}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={E7037F9D-CC47-42F8-A551-3603F342537F}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-17T14:52:57.387
+_rowid=
+_environment=D
+_method=POST
+
+[115] 2018-08-20 08:17:29 # [127.0.0.1] POST Pub/Questions 
+
+_REMOTE_IP=127.0.0.1
+question=gsdf
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-20T08:16:57
+y=0
+x=0
+pageId={37C33C0B-E725-4BD3-8EA2-0240F2ACF3C0}
+width=0
+options=
+fieldType=Single selection
+id={8990411C-015F-4CCA-8112-25CD2ACE1D08}
+height=0
+type=
+text=
+sequence=0
+lastChanged=2018-08-20T08:16:57
+[115] 2018-08-20 08:17:29 # ERROR InsertQuery (Pub/Questions): Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+(00103F16){MXP_App_Worker.dll} [03DA4F16] ADODB.TCustomADODataSet.OpenCursor (Line 3594, "ADODB.pas" + 5) + $70
+(000F190D){MXP_App_Worker.dll} [03D9290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03D92754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03EA6128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+question=gsdf
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-20T08:16:57
+y=0
+x=0
+pageId={37C33C0B-E725-4BD3-8EA2-0240F2ACF3C0}
+width=0
+options=
+fieldType=Single selection
+id={8990411C-015F-4CCA-8112-25CD2ACE1D08}
+height=0
+type=
+text=
+sequence=0
+lastChanged=2018-08-20T08:16:57
+_rowid=
+_environment=D
+_method=POST
+
+[117] 2018-08-20 08:17:34 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T08:15:59.000","completionTime":null,"rowCounter":1034,"pageId":30001034,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{37C33C0B-E725-4BD3-8EA2-0240F2ACF3C0}","content":"{\"components\":{\"{8990411C-015F-4CCA-8112-25CD2ACE1D08}\":{\"type\":\"Single selection\",\"width\":700,\"height\":50,\"x\":50,\"y\":100,\"src\":\"\",\"id\":\"{8990411C-015F-4CCA-8112-25CD2ACE1D08}\",\"html\":\"gsdf\",\"options\":[{\"id\":\"1\",\"sequence\":1,\"text\":\"New Answer 1\",\"correct\":false},{\"id\":\"2\",\"sequence\":2,\"text\":\"New Answer 2\",\"correct\":true}],\"multi\":false,\"cls\":[\"selection\"],\"style\":null,\"score\":0}}}","multiSelect":0,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:17:34","scoreMethod":"A","programId":"{304AB123-FD0A-4F41-AA85-5BF163695E12}"}
+[118] 2018-08-20 08:17:34 # [127.0.0.1] POST Pub/Questions 
+
+_REMOTE_IP=127.0.0.1
+question=trutrutr
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-17T14:52:56.000
+y=0
+x=0
+pageId={E176DA25-B02E-4380-9959-07E868DF1659}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={E7037F9D-CC47-42F8-A551-3603F342537F}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-17T14:52:57.387
+[118] 2018-08-20 08:17:34 # ERROR InsertQuery (Pub/Questions): Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+(00103F16){MXP_App_Worker.dll} [03DA4F16] ADODB.TCustomADODataSet.OpenCursor (Line 3594, "ADODB.pas" + 5) + $70
+(000F190D){MXP_App_Worker.dll} [03D9290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03D92754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03EA6128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+question=trutrutr
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-17T14:52:56.000
+y=0
+x=0
+pageId={E176DA25-B02E-4380-9959-07E868DF1659}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={E7037F9D-CC47-42F8-A551-3603F342537F}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-17T14:52:57.387
+_rowid=
+_environment=D
+_method=POST
+
+[120] 2018-08-20 08:17:34 # [127.0.0.1] POST Pub/Questions 
+
+_REMOTE_IP=127.0.0.1
+question=gsdf
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-20T08:16:57
+y=0
+x=0
+pageId={37C33C0B-E725-4BD3-8EA2-0240F2ACF3C0}
+width=0
+options=
+fieldType=Single selection
+id={8990411C-015F-4CCA-8112-25CD2ACE1D08}
+height=0
+type=
+text=
+sequence=0
+lastChanged=2018-08-20T08:16:57
+[121] 2018-08-20 08:17:35 # [127.0.0.1] GET Pub/Programs 
+userId=-1
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[122] 2018-08-20 08:17:36 # [127.0.0.1] GET Pub/Programs 
+_dc=1534745856451
+_REMOTE_IP=127.0.0.1
+[123] 2018-08-20 08:17:36 # [127.0.0.1] GET Pub/PersonPrograms 
+personId=-1
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[124] 2018-08-20 08:17:36 # [127.0.0.1] GET Pub/Pages/root 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+_REMOTE_IP=127.0.0.1
+[125] 2018-08-20 08:17:36 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[126] 2018-08-20 08:17:36 # [127.0.0.1] GET Pub/Questions 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[127] 2018-08-20 08:17:37 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:16:46.863","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[128] 2018-08-20 08:17:37 # [127.0.0.1] POST Pub/Questions 
+
+_REMOTE_IP=127.0.0.1
+question=gsdf
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-20T08:16:57
+y=0
+x=0
+pageId={717C788C-1145-4112-87EF-DC2E30D1316A}
+width=0
+options=
+fieldType=Single selection
+id={A5DA894E-CDDE-419F-8FB4-D5A60E7E846F}
+height=0
+type=
+text=
+sequence=0
+lastChanged=2018-08-20T08:16:57
+[129] 2018-08-20 08:17:37 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1028,"pageId":30001028,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","lastChanged":"2018-08-20T08:16:46.963","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[130] 2018-08-20 08:17:37 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:37.000","completionTime":null,"rowCounter":1029,"pageId":30001029,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","lastChanged":"2018-08-20T08:16:47.073","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[131] 2018-08-20 08:17:37 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:47.000","completionTime":null,"rowCounter":1030,"pageId":30001030,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{890A5089-9293-4C51-A5DC-9649117777AA}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","lastChanged":"2018-08-20T08:16:47.183","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[132] 2018-08-20 08:17:39 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T08:15:59.000","completionTime":null,"rowCounter":1034,"pageId":30001034,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{717C788C-1145-4112-87EF-DC2E30D1316A}","content":"{\"components\":{\"{A5DA894E-CDDE-419F-8FB4-D5A60E7E846F}\":{\"type\":\"Single selection\",\"cls\":[\"selection\"],\"html\":\"gsdf\",\"options\":[{\"id\":\"1\",\"sequence\":1,\"text\":\"New Answer 1\",\"correct\":false},{\"id\":\"2\",\"sequence\":2,\"text\":\"New Answer 2\",\"correct\":true}],\"multi\":false,\"id\":\"{A5DA894E-CDDE-419F-8FB4-D5A60E7E846F}\",\"width\":700,\"height\":50,\"x\":0,\"y\":75,\"src\":\"\",\"style\":null}}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:17:39","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[133] 2018-08-20 08:17:40 # [127.0.0.1] GET Pub/Programs 
+userId=-1
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[134] 2018-08-20 08:17:41 # [127.0.0.1] GET Pub/Programs 
+_dc=1534745861833
+_REMOTE_IP=127.0.0.1
+[135] 2018-08-20 08:17:42 # [127.0.0.1] GET Pub/PersonPrograms 
+personId=-1
+programId={304AB123-FD0A-4F41-AA85-5BF163695E12}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[136] 2018-08-20 08:17:42 # [127.0.0.1] GET Pub/Pages/root 
+programId={304AB123-FD0A-4F41-AA85-5BF163695E12}
+_REMOTE_IP=127.0.0.1
+[137] 2018-08-20 08:17:42 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[138] 2018-08-20 08:17:42 # [127.0.0.1] GET Pub/Questions 
+programId={304AB123-FD0A-4F41-AA85-5BF163695E12}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[139] 2018-08-20 08:17:42 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1035,"pageId":30001035,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{EED616A9-737C-4868-B6E6-E091168DDC99}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:17:26.337","scoreMethod":"A","programId":"{304AB123-FD0A-4F41-AA85-5BF163695E12}"}
+[140] 2018-08-20 08:17:42 # [127.0.0.1] POST Pub/Questions 
+
+_REMOTE_IP=127.0.0.1
+question=trutrutr
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-17T14:52:56.000
+y=0
+x=0
+pageId={E176DA25-B02E-4380-9959-07E868DF1659}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={E7037F9D-CC47-42F8-A551-3603F342537F}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-17T14:52:57.387
+[140] 2018-08-20 08:17:42 # ERROR InsertQuery (Pub/Questions): Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+(00103F16){MXP_App_Worker.dll} [03DA4F16] ADODB.TCustomADODataSet.OpenCursor (Line 3594, "ADODB.pas" + 5) + $70
+(000F190D){MXP_App_Worker.dll} [03D9290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03D92754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03EA6128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+question=trutrutr
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-17T14:52:56.000
+y=0
+x=0
+pageId={E176DA25-B02E-4380-9959-07E868DF1659}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={E7037F9D-CC47-42F8-A551-3603F342537F}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-17T14:52:57.387
+_rowid=
+_environment=D
+_method=POST
+
+[142] 2018-08-20 08:17:42 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1036,"pageId":30001036,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6EB3F889-7A63-410A-B947-2AB339B16C02}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":true,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{EED616A9-737C-4868-B6E6-E091168DDC99}","lastChanged":"2018-08-20T08:17:26.450","scoreMethod":"A","programId":"{304AB123-FD0A-4F41-AA85-5BF163695E12}"}
+[143] 2018-08-20 08:17:42 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T08:15:59.000","completionTime":null,"rowCounter":1034,"pageId":30001034,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{37C33C0B-E725-4BD3-8EA2-0240F2ACF3C0}","content":"{\"components\":{\"{8990411C-015F-4CCA-8112-25CD2ACE1D08}\":{\"type\":\"Single selection\",\"width\":700,\"height\":50,\"x\":50,\"y\":100,\"src\":\"\",\"score\":0}}}","multiSelect":0,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:17:34","scoreMethod":"A","programId":"{304AB123-FD0A-4F41-AA85-5BF163695E12}"}
+[144] 2018-08-20 08:17:46 # [127.0.0.1] GET Pub/Programs 
+userId=-1
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[145] 2018-08-20 08:17:49 # [127.0.0.1] DELETE Pub/Programs/{304AB123-FD0A-4F41-AA85-5BF163695E12} 
+
+_REMOTE_IP=127.0.0.1
+id={304AB123-FD0A-4F41-AA85-5BF163695E12}
+[146] 2018-08-20 08:17:49 # [127.0.0.1] GET Pub/Pages/root 
+programId={304AB123-FD0A-4F41-AA85-5BF163695E12}
+_REMOTE_IP=127.0.0.1
+[147] 2018-08-20 08:17:49 # [127.0.0.1] GET Pub/PersonPrograms 
+personId=-1
+programId={304AB123-FD0A-4F41-AA85-5BF163695E12}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[148] 2018-08-20 08:17:49 # [127.0.0.1] GET Pub/Questions 
+programId={304AB123-FD0A-4F41-AA85-5BF163695E12}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[149] 2018-08-20 08:17:49 # [127.0.0.1] GET Pub/PersonAnswers 
+programId={304AB123-FD0A-4F41-AA85-5BF163695E12}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[150] 2018-08-20 08:17:49 # [127.0.0.1] DELETE Pub/Pages/{EED616A9-737C-4868-B6E6-E091168DDC99} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1035,"pageId":30001035,"soundUrl":null,"videoUrl":null,"video":null,"lastParentId":"root","reviewTime":null,"id":"{EED616A9-737C-4868-B6E6-E091168DDC99}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T08:17:39.013","scoreMethod":"A","programId":"{304AB123-FD0A-4F41-AA85-5BF163695E12}"}
+[151] 2018-08-20 08:17:49 # [127.0.0.1] DELETE Pub/Questions/{8990411C-015F-4CCA-8112-25CD2ACE1D08} 
+
+_REMOTE_IP=127.0.0.1
+id={8990411C-015F-4CCA-8112-25CD2ACE1D08}
+[152] 2018-08-20 08:17:50 # [127.0.0.1] DELETE Pub/Pages/{6EB3F889-7A63-410A-B947-2AB339B16C02} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1036,"pageId":30001036,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6EB3F889-7A63-410A-B947-2AB339B16C02}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":true,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{EED616A9-737C-4868-B6E6-E091168DDC99}","lastChanged":"2018-08-20T08:17:39.137","scoreMethod":"A","programId":"{304AB123-FD0A-4F41-AA85-5BF163695E12}"}
+[153] 2018-08-20 08:17:50 # [127.0.0.1] POST Pub/Programs 
+
+_REMOTE_IP=127.0.0.1
+categoryId=0
+active=true
+validFrom=2018-08-17T00:00:00+02:00
+maxAttemptsTrainingMode=1
+validTo=2019-08-17T00:00:00+02:00
+created=1534495052
+completionTime=60
+description=New Training Program Description
+id={3616ECDE-6133-44A1-975E-62E75FC6D729}
+changed=Y
+lastChangeLogId=191191849
+maxAttemptsScoreMode=1
+name=New Training Program (duplicate)
+passScore=75
+createdById=0
+createdAtId=3
+certificateFileName=10227084
+lastChanged=1534745703
+programId=30000184
+[154] 2018-08-20 08:17:51 # [127.0.0.1] GET Pub/Pages/root 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+_REMOTE_IP=127.0.0.1
+[155] 2018-08-20 08:17:51 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[156] 2018-08-20 08:17:51 # [127.0.0.1] GET Pub/Questions 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[157] 2018-08-20 08:17:51 # [127.0.0.1] GET Pub/Pages/root 
+programId={3616ECDE-6133-44A1-975E-62E75FC6D729}
+_REMOTE_IP=127.0.0.1
+[158] 2018-08-20 08:17:51 # [127.0.0.1] GET Pub/Pages/{357E9710-EF87-49C4-922E-B69FBFB8462E} 
+
+_REMOTE_IP=127.0.0.1
+[159] 2018-08-20 08:17:51 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T08:15:59.000","completionTime":null,"rowCounter":1034,"pageId":30001034,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{717C788C-1145-4112-87EF-DC2E30D1316A}","content":"{\"components\":{\"{A5DA894E-CDDE-419F-8FB4-D5A60E7E846F}\":{\"type\":\"Single selection\",\"width\":700,\"height\":50,\"x\":0,\"y\":75,\"src\":\"\"}}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:17:39","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[160] 2018-08-20 08:17:51 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[161] 2018-08-20 08:17:51 # [127.0.0.1] GET Pub/Questions 
+programId={3616ECDE-6133-44A1-975E-62E75FC6D729}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[162] 2018-08-20 08:17:51 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{357E9710-EF87-49C4-922E-B69FBFB8462E}","content":"{\"components\":{\"{CCA79B97-88E6-49D5-B351-38A5716E1FE2}\":{\"type\":\"Single selection\",\"width\":700,\"height\":50,\"x\":50,\"y\":100,\"src\":\"\",\"score\":0,\"id\":\"{CCA79B97-88E6-49D5-B351-38A5716E1FE2}\"}}}","multiSelect":0,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:17:33.690","scoreMethod":"A","programId":"{3616ECDE-6133-44A1-975E-62E75FC6D729}"}
+[163] 2018-08-20 08:17:52 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{357E9710-EF87-49C4-922E-B69FBFB8462E}","content":"{\"components\":{\"{8990411C-015F-4CCA-8112-25CD2ACE1D08}\":{\"type\":\"Single selection\",\"width\":700,\"height\":50,\"x\":50,\"y\":100,\"src\":\"\",\"score\":0,\"id\":\"{8990411C-015F-4CCA-8112-25CD2ACE1D08}\",\"html\":\"gsdf\",\"options\":[{\"id\":\"1\",\"sequence\":1,\"text\":\"New Answer 1\",\"correct\":false},{\"id\":\"2\",\"sequence\":2,\"text\":\"New Answer 2\",\"correct\":true}],\"multi\":false,\"cls\":[\"selection\"],\"style\":null}}}","multiSelect":0,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:17:33.690","scoreMethod":"A","programId":"{3616ECDE-6133-44A1-975E-62E75FC6D729}"}
+[164] 2018-08-20 08:17:52 # [127.0.0.1] POST Pub/Questions 
+
+_REMOTE_IP=127.0.0.1
+question=trutrutr
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-17T14:52:56.000
+y=0
+x=0
+pageId={82A8EA26-EAEC-4D2C-9A21-3B0087E6B8EE}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={B4899646-99F6-4774-9434-E6948C09CE1E}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-17T14:52:57.387
+[164] 2018-08-20 08:17:52 # ERROR InsertQuery (Pub/Questions): Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+(00103F16){MXP_App_Worker.dll} [03DA4F16] ADODB.TCustomADODataSet.OpenCursor (Line 3594, "ADODB.pas" + 5) + $70
+(000F190D){MXP_App_Worker.dll} [03D9290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03D92754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03EA6128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+question=trutrutr
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-17T14:52:56.000
+y=0
+x=0
+pageId={82A8EA26-EAEC-4D2C-9A21-3B0087E6B8EE}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={B4899646-99F6-4774-9434-E6948C09CE1E}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-17T14:52:57.387
+_rowid=
+_environment=D
+_method=POST
+
+[166] 2018-08-20 08:17:52 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1028,"pageId":30001028,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{556DA7DF-10EB-45AE-84D8-623351F9B3C2}","content":"{\"components\":{}}","multiSelect":0,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{357E9710-EF87-49C4-922E-B69FBFB8462E}","lastChanged":"2018-08-20T08:17:33.817","scoreMethod":"A","programId":"{3616ECDE-6133-44A1-975E-62E75FC6D729}"}
+[167] 2018-08-20 08:17:52 # [127.0.0.1] GET Pub/Pages/root 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+_REMOTE_IP=127.0.0.1
+[168] 2018-08-20 08:17:52 # [127.0.0.1] POST Pub/Questions 
+
+_REMOTE_IP=127.0.0.1
+question=gsdf
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-20T08:16:57.000
+y=0
+x=0
+pageId={59463C0D-5F16-464B-9DE6-A7A1B09124A8}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={D1DF313A-8029-404F-85E8-CB1EBD230E9A}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-20T08:17:33.713
+[169] 2018-08-20 08:17:52 # [127.0.0.1] PUT POST/Pub/Pages/{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","content":"{\"components\":{\"{8990411C-015F-4CCA-8112-25CD2ACE1D08}\":{\"type\":\"Single selection\",\"width\":700,\"height\":50,\"x\":50,\"y\":100,\"src\":\"\",\"score\":0,\"id\":\"{8990411C-015F-4CCA-8112-25CD2ACE1D08}\",\"html\":\"gsdf\",\"options\":[{\"id\":\"1\",\"sequence\":1,\"text\":\"New Answer 1\",\"correct\":false},{\"id\":\"2\",\"sequence\":2,\"text\":\"New Answer 2\",\"correct\":true}],\"multi\":false,\"cls\":[\"selection\"],\"style\":null}}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:17:33.690","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[168] 2018-08-20 08:17:52 # ERROR InsertQuery (Pub/Questions): Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+(00103F16){MXP_App_Worker.dll} [03DA4F16] ADODB.TCustomADODataSet.OpenCursor (Line 3594, "ADODB.pas" + 5) + $70
+(000F190D){MXP_App_Worker.dll} [03D9290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03D92754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03EA6128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+question=gsdf
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-20T08:16:57.000
+y=0
+x=0
+pageId={59463C0D-5F16-464B-9DE6-A7A1B09124A8}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={D1DF313A-8029-404F-85E8-CB1EBD230E9A}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-20T08:17:33.713
+_rowid=
+_environment=D
+_method=POST
+
+[171] 2018-08-20 08:17:52 # [127.0.0.1] POST Pub/Pages/{556DA7DF-10EB-45AE-84D8-623351F9B3C2} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1039,"pageId":30001039,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{556DA7DF-10EB-45AE-84D8-623351F9B3C2}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{357E9710-EF87-49C4-922E-B69FBFB8462E}","lastChanged":"2018-08-20T08:17:48.823","scoreMethod":"A","programId":"{3616ECDE-6133-44A1-975E-62E75FC6D729}"}
+[172] 2018-08-20 08:17:52 # [127.0.0.1] GET Pub/Pages/{357E9710-EF87-49C4-922E-B69FBFB8462E} 
+
+_REMOTE_IP=127.0.0.1
+[173] 2018-08-20 08:17:52 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{357E9710-EF87-49C4-922E-B69FBFB8462E}","content":"{\"components\":{\"{CCA79B97-88E6-49D5-B351-38A5716E1FE2}\":{\"type\":\"Single selection\",\"width\":700,\"height\":50,\"x\":50,\"y\":100,\"src\":\"\",\"score\":0,\"id\":\"{CCA79B97-88E6-49D5-B351-38A5716E1FE2}\"}}}","multiSelect":0,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:17:33.690","scoreMethod":"A","programId":"{3616ECDE-6133-44A1-975E-62E75FC6D729}"}
+[174] 2018-08-20 08:17:52 # [127.0.0.1] PUT POST/Pub/Pages/{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","content":"{\"components\":{\"{8990411C-015F-4CCA-8112-25CD2ACE1D08}\":{\"type\":\"Single selection\",\"width\":700,\"height\":50,\"x\":50,\"y\":100,\"src\":\"\",\"score\":0,\"id\":\"{8990411C-015F-4CCA-8112-25CD2ACE1D08}\",\"html\":\"gsdf\",\"options\":[{\"id\":\"1\",\"sequence\":1,\"text\":\"New Answer 1\",\"correct\":false},{\"id\":\"2\",\"sequence\":2,\"text\":\"New Answer 2\",\"correct\":true}],\"multi\":false,\"cls\":[\"selection\"],\"style\":null}}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:17:33.690","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[175] 2018-08-20 08:17:52 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[176] 2018-08-20 08:17:52 # [127.0.0.1] GET Pub/Questions 
+programId={3616ECDE-6133-44A1-975E-62E75FC6D729}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[177] 2018-08-20 08:17:52 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1028,"pageId":30001028,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{556DA7DF-10EB-45AE-84D8-623351F9B3C2}","content":"{\"components\":{}}","multiSelect":0,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{357E9710-EF87-49C4-922E-B69FBFB8462E}","lastChanged":"2018-08-20T08:17:33.817","scoreMethod":"A","programId":"{3616ECDE-6133-44A1-975E-62E75FC6D729}"}
+[178] 2018-08-20 08:17:52 # [127.0.0.1] GET Pub/Pages/root 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+_REMOTE_IP=127.0.0.1
+[179] 2018-08-20 08:17:53 # [127.0.0.1] GET Pub/Programs 
+_dc=1534745872958
+_REMOTE_IP=127.0.0.1
+[180] 2018-08-20 08:17:53 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[181] 2018-08-20 08:17:53 # [127.0.0.1] GET Pub/Questions 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[182] 2018-08-20 08:17:53 # [127.0.0.1] GET Pub/PersonPrograms 
+personId=-1
+programId={3616ECDE-6133-44A1-975E-62E75FC6D729}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[183] 2018-08-20 08:17:53 # [127.0.0.1] GET Pub/Pages/root 
+programId={3616ECDE-6133-44A1-975E-62E75FC6D729}
+_REMOTE_IP=127.0.0.1
+[184] 2018-08-20 08:17:53 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[185] 2018-08-20 08:17:53 # [127.0.0.1] GET Pub/Questions 
+programId={3616ECDE-6133-44A1-975E-62E75FC6D729}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[186] 2018-08-20 08:17:53 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1038,"pageId":30001038,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{357E9710-EF87-49C4-922E-B69FBFB8462E}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:17:49.253","scoreMethod":"A","programId":"{3616ECDE-6133-44A1-975E-62E75FC6D729}"}
+[187] 2018-08-20 08:17:53 # [127.0.0.1] POST Pub/Questions 
+
+_REMOTE_IP=127.0.0.1
+question=trutrutr
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-17T14:52:56.000
+y=0
+x=0
+pageId={82A8EA26-EAEC-4D2C-9A21-3B0087E6B8EE}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={B4899646-99F6-4774-9434-E6948C09CE1E}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-17T14:52:57.387
+[187] 2018-08-20 08:17:53 # ERROR InsertQuery (Pub/Questions): Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+(00103F16){MXP_App_Worker.dll} [03DA4F16] ADODB.TCustomADODataSet.OpenCursor (Line 3594, "ADODB.pas" + 5) + $70
+(000F190D){MXP_App_Worker.dll} [03D9290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03D92754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03EA6128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+question=trutrutr
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-17T14:52:56.000
+y=0
+x=0
+pageId={82A8EA26-EAEC-4D2C-9A21-3B0087E6B8EE}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={B4899646-99F6-4774-9434-E6948C09CE1E}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-17T14:52:57.387
+_rowid=
+_environment=D
+_method=POST
+
+[189] 2018-08-20 08:17:53 # [127.0.0.1] POST Pub/Questions 
+
+_REMOTE_IP=127.0.0.1
+question=gsdf
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-20T08:16:57.000
+y=0
+x=0
+pageId={59463C0D-5F16-464B-9DE6-A7A1B09124A8}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={D1DF313A-8029-404F-85E8-CB1EBD230E9A}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-20T08:17:33.713
+[190] 2018-08-20 08:17:53 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1039,"pageId":30001039,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{556DA7DF-10EB-45AE-84D8-623351F9B3C2}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":true,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{357E9710-EF87-49C4-922E-B69FBFB8462E}","lastChanged":"2018-08-20T08:17:49.613","scoreMethod":"A","programId":"{3616ECDE-6133-44A1-975E-62E75FC6D729}"}
+[189] 2018-08-20 08:17:53 # ERROR InsertQuery (Pub/Questions): Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+(00103F16){MXP_App_Worker.dll} [03DA4F16] ADODB.TCustomADODataSet.OpenCursor (Line 3594, "ADODB.pas" + 5) + $70
+(000F190D){MXP_App_Worker.dll} [03D9290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03D92754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03EA6128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+question=gsdf
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-20T08:16:57.000
+y=0
+x=0
+pageId={59463C0D-5F16-464B-9DE6-A7A1B09124A8}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={D1DF313A-8029-404F-85E8-CB1EBD230E9A}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-20T08:17:33.713
+_rowid=
+_environment=D
+_method=POST
+
+[192] 2018-08-20 08:17:55 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T08:15:59.000","completionTime":null,"rowCounter":1034,"pageId":30001034,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{59463C0D-5F16-464B-9DE6-A7A1B09124A8}","content":"{\"components\":{\"{D1DF313A-8029-404F-85E8-CB1EBD230E9A}\":{\"type\":\"Single selection\",\"width\":700,\"height\":50,\"x\":25,\"y\":25,\"src\":\"\",\"id\":\"{D1DF313A-8029-404F-85E8-CB1EBD230E9A}\",\"html\":\"gsdf\",\"options\":[{\"id\":\"1\",\"sequence\":1,\"text\":\"New Answer 1\",\"correct\":false},{\"id\":\"2\",\"sequence\":2,\"text\":\"New Answer 2\",\"correct\":true}],\"multi\":false,\"cls\":[\"selection\"],\"style\":null}}}","multiSelect":0,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:17:55","scoreMethod":"A","programId":"{3616ECDE-6133-44A1-975E-62E75FC6D729}"}
+[193] 2018-08-20 08:17:55 # [127.0.0.1] POST Pub/Questions 
+
+_REMOTE_IP=127.0.0.1
+question=trutrutr
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-17T14:52:56.000
+y=0
+x=0
+pageId={82A8EA26-EAEC-4D2C-9A21-3B0087E6B8EE}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={B4899646-99F6-4774-9434-E6948C09CE1E}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-17T14:52:57.387
+[193] 2018-08-20 08:17:55 # ERROR InsertQuery (Pub/Questions): Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+Cannot insert the value NULL into column 'TRAINING_PROGRAM_PAGE_ID', table 'MarineXProcurement.dbo.Training_Program_Questions'; column does not allow nulls. INSERT fails
+(00103F16){MXP_App_Worker.dll} [03DA4F16] ADODB.TCustomADODataSet.OpenCursor (Line 3594, "ADODB.pas" + 5) + $70
+(000F190D){MXP_App_Worker.dll} [03D9290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03D92754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03EA6128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+question=trutrutr
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-17T14:52:56.000
+y=0
+x=0
+pageId={82A8EA26-EAEC-4D2C-9A21-3B0087E6B8EE}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={B4899646-99F6-4774-9434-E6948C09CE1E}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-17T14:52:57.387
+_rowid=
+_environment=D
+_method=POST
+
+[195] 2018-08-20 08:17:55 # [127.0.0.1] POST Pub/Questions 
+
+_REMOTE_IP=127.0.0.1
+question=gsdf
+deleted=false
+required=true
+active=true
+lookups=[{"id":"1","sequence":1,"text":"New Answer 1","correct":false},{"id":"2","sequence":2,"text":"New Answer 2","correct":true}]
+correctValue=["2"]
+created=2018-08-20T08:16:57.000
+y=0
+x=0
+pageId={59463C0D-5F16-464B-9DE6-A7A1B09124A8}
+width=0
+options=
+fieldType=Single selection
+fieldSize=
+id={D1DF313A-8029-404F-85E8-CB1EBD230E9A}
+height=0
+changed=Y
+score=
+type=
+text=
+sequence=0
+changeLogId=1
+createdById=
+createdAtId=3
+lastChanged=2018-08-20T08:17:33.713
+[196] 2018-08-20 08:17:56 # [127.0.0.1] GET Pub/Programs 
+userId=-1
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[197] 2018-08-20 08:17:58 # [127.0.0.1] GET Pub/Programs 
+_dc=1534745878620
+_REMOTE_IP=127.0.0.1
+[198] 2018-08-20 08:17:58 # [127.0.0.1] GET Pub/PersonPrograms 
+personId=-1
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[199] 2018-08-20 08:17:58 # [127.0.0.1] GET Pub/Pages/root 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+_REMOTE_IP=127.0.0.1
+[200] 2018-08-20 08:17:59 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[201] 2018-08-20 08:17:59 # [127.0.0.1] GET Pub/Questions 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[202] 2018-08-20 08:17:59 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:17:49.170","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[203] 2018-08-20 08:17:59 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1028,"pageId":30001028,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","lastChanged":"2018-08-20T08:17:33.817","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[204] 2018-08-20 08:17:59 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:37.000","completionTime":null,"rowCounter":1029,"pageId":30001029,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","lastChanged":"2018-08-20T08:17:33.923","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[205] 2018-08-20 08:17:59 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:47.000","completionTime":null,"rowCounter":1030,"pageId":30001030,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{890A5089-9293-4C51-A5DC-9649117777AA}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","lastChanged":"2018-08-20T08:17:34.010","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[206] 2018-08-20 08:18:00 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T08:15:59.000","completionTime":null,"rowCounter":1034,"pageId":30001034,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{717C788C-1145-4112-87EF-DC2E30D1316A}","content":"{\"components\":{\"{A5DA894E-CDDE-419F-8FB4-D5A60E7E846F}\":{\"type\":\"Single selection\",\"width\":700,\"height\":50,\"x\":25,\"y\":75,\"src\":\"\",\"id\":\"{A5DA894E-CDDE-419F-8FB4-D5A60E7E846F}\",\"html\":\"gsdf\",\"options\":[{\"id\":\"1\",\"sequence\":1,\"text\":\"New Answer 1\",\"correct\":false},{\"id\":\"2\",\"sequence\":2,\"text\":\"New Answer 2\",\"correct\":true}],\"multi\":false,\"cls\":[\"selection\"],\"style\":null}}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:18:00","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[207] 2018-08-20 08:18:01 # [127.0.0.1] GET Pub/Programs 
+userId=-1
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[208] 2018-08-20 10:41:43 # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1534754503666
+_REMOTE_IP=127.0.0.1
+[209] 2018-08-20 10:41:43 # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1534754503667
+_REMOTE_IP=127.0.0.1
+[210] 2018-08-20 10:41:43 # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1534754503667
+_REMOTE_IP=127.0.0.1
+[208] 2018-08-20 10:41:43 # ERROR SelectQuery (Lookups/ProgramCategories): [DBNETLIB][ConnectionWrite (send()).]General network error. Check your network documentation
+[DBNETLIB][ConnectionWrite (send()).]General network error. Check your network documentation
+(00103F16){MXP_App_Worker.dll} [03DA4F16] ADODB.TCustomADODataSet.OpenCursor (Line 3594, "ADODB.pas" + 5) + $70
+(000F190D){MXP_App_Worker.dll} [03D9290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [03D92754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [03E63EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205128){MXP_App_Worker.dll} [03EA6128] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+_dc=1534754503666
+_REMOTE_IP=127.0.0.1
+_rowid=
+_environment=D
+_method=GET
+
+[212] 2018-08-20 10:41:43 # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1534754503668
+_REMOTE_IP=127.0.0.1
+[213] 2018-08-20 10:41:43 # [127.0.0.1] GET Pub/Programs 
+userId=-1
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[214] 2018-08-20 10:41:53 # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1534754513065
+_REMOTE_IP=127.0.0.1
+[215] 2018-08-20 10:41:53 # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1534754513067
+_REMOTE_IP=127.0.0.1
+[216] 2018-08-20 10:41:53 # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1534754513067
+_REMOTE_IP=127.0.0.1
+[217] 2018-08-20 10:41:53 # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1534754513067
+_REMOTE_IP=127.0.0.1
+[218] 2018-08-20 10:41:53 # [127.0.0.1] GET Pub/Programs 
+userId=-1
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[219] 2018-08-20 12:38:48 # [127.0.0.1] GET Pub/Programs 
+_dc=1534761528212
+_REMOTE_IP=127.0.0.1
+[220] 2018-08-20 12:38:48 # [127.0.0.1] GET Pub/PersonPrograms 
+personId=-1
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[221] 2018-08-20 12:38:48 # [127.0.0.1] GET Pub/Pages/root 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+_REMOTE_IP=127.0.0.1
+[222] 2018-08-20 12:38:49 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[223] 2018-08-20 12:38:49 # [127.0.0.1] GET Pub/Questions 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[224] 2018-08-20 12:38:49 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:17:55.907","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[225] 2018-08-20 12:38:49 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1028,"pageId":30001028,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","lastChanged":"2018-08-20T08:17:56.097","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[226] 2018-08-20 12:38:49 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:37.000","completionTime":null,"rowCounter":1029,"pageId":30001029,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","lastChanged":"2018-08-20T08:17:56.187","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[227] 2018-08-20 12:38:49 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:47.000","completionTime":null,"rowCounter":1030,"pageId":30001030,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{890A5089-9293-4C51-A5DC-9649117777AA}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","lastChanged":"2018-08-20T08:17:56.300","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[228] 2018-08-20 12:38:49 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T08:15:59.000","completionTime":null,"rowCounter":1034,"pageId":30001034,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{717C788C-1145-4112-87EF-DC2E30D1316A}","content":"{\"components\":{\"{A5DA894E-CDDE-419F-8FB4-D5A60E7E846F}\":{\"type\":\"Single selection\",\"width\":700,\"height\":50,\"x\":25,\"y\":75,\"src\":\"\"}}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T08:18:00","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[229] 2018-08-20 12:38:54 # [127.0.0.1] PUT POST/Pub/Pages/{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","content":"{\"components\":{\"{C7182E59-B9C3-4D99-BEC1-E2EA8D9CACDB}\":{\"id\":\"{C7182E59-B9C3-4D99-BEC1-E2EA8D9CACDB}\",\"type\":\"text\",\"cls\":[\"text\"],\"html\":\"Text\",\"height\":200,\"width\":700,\"x\":50,\"y\":50,\"options\":[],\"multi\":false,\"src\":\"\",\"style\":null}}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:38:50.307","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[230] 2018-08-20 12:39:04 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:39:04","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[231] 2018-08-20 12:46:44 # [127.0.0.1] PUT POST/Pub/Pages/{02F01EFB-D9CC-4AF3-B662-234EE5AEAE61} 
+
+_REMOTE_IP=127.0.0.1
+data={"categoryId":2,"created":"2018-08-20T12:46:44","isSlide":true,"id":"{02F01EFB-D9CC-4AF3-B662-234EE5AEAE61}","content":"","multiSelect":0,"title":"New Page 1","leaf":true,"sequence":0,"parentId":"{890A5089-9293-4C51-A5DC-9649117777AA}","lastChanged":"2018-08-20T12:46:44","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[232] 2018-08-20 12:46:47 # [127.0.0.1] PUT POST/Pub/Pages/{02F01EFB-D9CC-4AF3-B662-234EE5AEAE61} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:44.000","completionTime":null,"rowCounter":1041,"pageId":30001041,"isSlide":true,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{02F01EFB-D9CC-4AF3-B662-234EE5AEAE61}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Page 1","sound":null,"leaf":true,"sequence":0,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T12:46:45.867","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[233] 2018-08-20 12:46:51 # [127.0.0.1] PUT POST/Pub/Pages/{0056E6D0-3069-4709-8E4D-E9083ED55B25} 
+
+_REMOTE_IP=127.0.0.1
+data={"categoryId":1,"created":"2018-08-20T12:46:51","id":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","content":"{\"components\":{}}","multiSelect":0,"title":"New Section","leaf":false,"sequence":1234,"parentId":"root","lastChanged":"2018-08-20T12:46:51","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[234] 2018-08-20 12:46:54 # [127.0.0.1] PUT POST/Pub/Pages/{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F} 
+
+_REMOTE_IP=127.0.0.1
+data={"categoryId":2,"created":"2018-08-20T12:46:54","isSlide":true,"id":"{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F}","content":"","multiSelect":0,"title":"New Page 2","leaf":true,"sequence":1,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:46:54","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[235] 2018-08-20 12:46:55 # [127.0.0.1] PUT POST/Pub/Pages/{01003629-6F83-4063-BC87-6B2745BE4C8E} 
+
+_REMOTE_IP=127.0.0.1
+data={"categoryId":1,"created":"2018-08-20T12:46:55","id":"{01003629-6F83-4063-BC87-6B2745BE4C8E}","content":"{\"components\":{}}","multiSelect":0,"title":"New Section","leaf":false,"sequence":1234,"parentId":"root","lastChanged":"2018-08-20T12:46:55","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[236] 2018-08-20 12:46:57 # [127.0.0.1] PUT POST/Pub/Pages/{0056E6D0-3069-4709-8E4D-E9083ED55B25} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:51.000","completionTime":null,"rowCounter":1042,"pageId":30001042,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:46:52.617","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[237] 2018-08-20 12:46:57 # [127.0.0.1] PUT POST/Pub/Pages/{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:54.000","completionTime":null,"rowCounter":1043,"pageId":30001043,"isSlide":true,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F}","content":"","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:46:55.450","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[238] 2018-08-20 12:46:57 # [127.0.0.1] PUT POST/Pub/Pages/{01003629-6F83-4063-BC87-6B2745BE4C8E} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:55.000","completionTime":null,"rowCounter":1044,"pageId":30001044,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{01003629-6F83-4063-BC87-6B2745BE4C8E}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:46:56.627","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[239] 2018-08-20 12:47:00 # [127.0.0.1] PUT POST/Pub/Pages/{7EA5EBA3-9882-4B8A-86FE-7FC80D42E339} 
+
+_REMOTE_IP=127.0.0.1
+data={"categoryId":2,"created":"2018-08-20T12:46:59","isSlide":true,"id":"{7EA5EBA3-9882-4B8A-86FE-7FC80D42E339}","content":"","multiSelect":0,"title":"New Page 2","leaf":true,"sequence":1,"parentId":"{01003629-6F83-4063-BC87-6B2745BE4C8E}","lastChanged":"2018-08-20T12:46:59","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[240] 2018-08-20 12:47:01 # [127.0.0.1] PUT POST/Pub/Pages/{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:54.000","completionTime":null,"rowCounter":1043,"pageId":30001043,"isSlide":true,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:46:58.533","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[241] 2018-08-20 12:47:02 # [127.0.0.1] PUT POST/Pub/Pages/{0056E6D0-3069-4709-8E4D-E9083ED55B25} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:51.000","completionTime":null,"rowCounter":1042,"pageId":30001042,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:46:58.293","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[242] 2018-08-20 12:47:02 # [127.0.0.1] PUT POST/Pub/Pages/{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:54.000","completionTime":null,"rowCounter":1043,"pageId":30001043,"isSlide":true,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:47:02.580","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[243] 2018-08-20 12:47:03 # [127.0.0.1] PUT POST/Pub/Pages/{01003629-6F83-4063-BC87-6B2745BE4C8E} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:55.000","completionTime":null,"rowCounter":1044,"pageId":30001044,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{01003629-6F83-4063-BC87-6B2745BE4C8E}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:46:58.653","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[244] 2018-08-20 12:47:03 # [127.0.0.1] PUT POST/Pub/Pages/{7EA5EBA3-9882-4B8A-86FE-7FC80D42E339} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:59.000","completionTime":null,"rowCounter":1045,"pageId":30001045,"isSlide":true,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7EA5EBA3-9882-4B8A-86FE-7FC80D42E339}","content":"","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{01003629-6F83-4063-BC87-6B2745BE4C8E}","lastChanged":"2018-08-20T12:47:01.103","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[245] 2018-08-20 12:47:05 # [127.0.0.1] PUT POST/Pub/Pages/{0056E6D0-3069-4709-8E4D-E9083ED55B25} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:51.000","completionTime":null,"rowCounter":1042,"pageId":30001042,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:47:03.903","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[246] 2018-08-20 12:47:05 # [127.0.0.1] PUT POST/Pub/Pages/{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:54.000","completionTime":null,"rowCounter":1043,"pageId":30001043,"isSlide":true,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:47:04.023","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[247] 2018-08-20 12:47:05 # [127.0.0.1] PUT POST/Pub/Pages/{01003629-6F83-4063-BC87-6B2745BE4C8E} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:55.000","completionTime":null,"rowCounter":1044,"pageId":30001044,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{01003629-6F83-4063-BC87-6B2745BE4C8E}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:47:04.163","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[248] 2018-08-20 12:47:05 # [127.0.0.1] PUT POST/Pub/Pages/{7EA5EBA3-9882-4B8A-86FE-7FC80D42E339} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:59.000","completionTime":null,"rowCounter":1045,"pageId":30001045,"isSlide":true,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7EA5EBA3-9882-4B8A-86FE-7FC80D42E339}","content":"","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{01003629-6F83-4063-BC87-6B2745BE4C8E}","lastChanged":"2018-08-20T12:47:04.350","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[249] 2018-08-20 12:47:07 # [127.0.0.1] PUT POST/Pub/Pages/{0056E6D0-3069-4709-8E4D-E9083ED55B25} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:51.000","completionTime":null,"rowCounter":1042,"pageId":30001042,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:47:06.143","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[250] 2018-08-20 12:47:07 # [127.0.0.1] PUT POST/Pub/Pages/{01003629-6F83-4063-BC87-6B2745BE4C8E} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:55.000","completionTime":null,"rowCounter":1044,"pageId":30001044,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{01003629-6F83-4063-BC87-6B2745BE4C8E}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:47:06.387","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[251] 2018-08-20 12:47:07 # [127.0.0.1] PUT POST/Pub/Pages/{7EA5EBA3-9882-4B8A-86FE-7FC80D42E339} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:59.000","completionTime":null,"rowCounter":1045,"pageId":30001045,"isSlide":true,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7EA5EBA3-9882-4B8A-86FE-7FC80D42E339}","content":"","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{01003629-6F83-4063-BC87-6B2745BE4C8E}","lastChanged":"2018-08-20T12:47:06.510","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[252] 2018-08-20 12:47:07 # [127.0.0.1] PUT POST/Pub/Pages/{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:54.000","completionTime":null,"rowCounter":1043,"pageId":30001043,"isSlide":true,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T12:47:06.260","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[253] 2018-08-20 12:47:11 # [127.0.0.1] PUT POST/Pub/Pages/{0056E6D0-3069-4709-8E4D-E9083ED55B25} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:51.000","completionTime":null,"rowCounter":1042,"pageId":30001042,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:47:08.270","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[254] 2018-08-20 12:47:11 # [127.0.0.1] PUT POST/Pub/Pages/{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:54.000","completionTime":null,"rowCounter":1043,"pageId":30001043,"isSlide":true,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:47:08.590","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[255] 2018-08-20 12:47:12 # [127.0.0.1] PUT POST/Pub/Pages/{01003629-6F83-4063-BC87-6B2745BE4C8E} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:55.000","completionTime":null,"rowCounter":1044,"pageId":30001044,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{01003629-6F83-4063-BC87-6B2745BE4C8E}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:47:08.390","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[256] 2018-08-20 12:47:12 # [127.0.0.1] PUT POST/Pub/Pages/{7EA5EBA3-9882-4B8A-86FE-7FC80D42E339} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:59.000","completionTime":null,"rowCounter":1045,"pageId":30001045,"isSlide":true,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7EA5EBA3-9882-4B8A-86FE-7FC80D42E339}","content":"","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{01003629-6F83-4063-BC87-6B2745BE4C8E}","lastChanged":"2018-08-20T12:47:08.510","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[257] 2018-08-20 12:47:13 # [127.0.0.1] PUT POST/Pub/Pages/{0056E6D0-3069-4709-8E4D-E9083ED55B25} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:51.000","completionTime":null,"rowCounter":1042,"pageId":30001042,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:47:12.930","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[258] 2018-08-20 12:47:13 # [127.0.0.1] PUT POST/Pub/Pages/{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:54.000","completionTime":null,"rowCounter":1043,"pageId":30001043,"isSlide":true,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:47:13.007","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[259] 2018-08-20 12:47:13 # [127.0.0.1] PUT POST/Pub/Pages/{01003629-6F83-4063-BC87-6B2745BE4C8E} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:55.000","completionTime":null,"rowCounter":1044,"pageId":30001044,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{01003629-6F83-4063-BC87-6B2745BE4C8E}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:47:13.300","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[260] 2018-08-20 12:47:13 # [127.0.0.1] PUT POST/Pub/Pages/{7EA5EBA3-9882-4B8A-86FE-7FC80D42E339} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:59.000","completionTime":null,"rowCounter":1045,"pageId":30001045,"isSlide":true,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7EA5EBA3-9882-4B8A-86FE-7FC80D42E339}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:47:13.597","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[261] 2018-08-20 12:47:18 # [127.0.0.1] GET Pub/Programs 
+_dc=1534762038285
+_REMOTE_IP=127.0.0.1
+[262] 2018-08-20 12:47:18 # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1534762038703
+_REMOTE_IP=127.0.0.1
+[263] 2018-08-20 12:47:18 # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1534762038704
+_REMOTE_IP=127.0.0.1
+[264] 2018-08-20 12:47:18 # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1534762038704
+_REMOTE_IP=127.0.0.1
+[265] 2018-08-20 12:47:18 # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1534762038705
+_REMOTE_IP=127.0.0.1
+[266] 2018-08-20 12:47:18 # [127.0.0.1] GET Pub/PersonPrograms 
+personId=-1
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[267] 2018-08-20 12:47:18 # [127.0.0.1] GET Pub/Pages/root 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+_REMOTE_IP=127.0.0.1
+[268] 2018-08-20 12:47:19 # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[269] 2018-08-20 12:47:19 # [127.0.0.1] GET Pub/Questions 
+programId={0EA4B816-12F2-4BE7-A61F-426091783CE2}
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[270] 2018-08-20 12:47:19 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T12:39:05.613","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[271] 2018-08-20 12:47:19 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1028,"pageId":30001028,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","lastChanged":"2018-08-20T12:38:50.430","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[272] 2018-08-20 12:47:19 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:37.000","completionTime":null,"rowCounter":1029,"pageId":30001029,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","lastChanged":"2018-08-20T12:38:50.543","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[273] 2018-08-20 12:47:19 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:47.000","completionTime":null,"rowCounter":1030,"pageId":30001030,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{890A5089-9293-4C51-A5DC-9649117777AA}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","lastChanged":"2018-08-20T12:38:50.663","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[274] 2018-08-20 12:47:19 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:51.000","completionTime":null,"rowCounter":1042,"pageId":30001042,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T12:47:14.390","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[275] 2018-08-20 12:47:19 # [127.0.0.1] POST Pub/Pages 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:55.000","completionTime":null,"rowCounter":1044,"pageId":30001044,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{01003629-6F83-4063-BC87-6B2745BE4C8E}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":true,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:47:14.720","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[276] 2018-08-20 12:47:24 # [127.0.0.1] PUT POST/Pub/Pages/{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:47:20.260","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[277] 2018-08-20 12:47:24 # [127.0.0.1] PUT POST/Pub/Pages/{717C788C-1145-4112-87EF-DC2E30D1316A} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T08:15:59.000","completionTime":null,"rowCounter":1034,"pageId":30001034,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{717C788C-1145-4112-87EF-DC2E30D1316A}","content":"{\"components\":{\"{A5DA894E-CDDE-419F-8FB4-D5A60E7E846F}\":{\"type\":\"Single selection\",\"width\":700,\"height\":50,\"x\":25,\"y\":75,\"src\":\"\"}}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T12:38:50.783","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[278] 2018-08-20 12:47:24 # [127.0.0.1] PUT POST/Pub/Pages/{02F01EFB-D9CC-4AF3-B662-234EE5AEAE61} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:44.000","completionTime":null,"rowCounter":1041,"pageId":30001041,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{02F01EFB-D9CC-4AF3-B662-234EE5AEAE61}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Page 1","sound":null,"leaf":true,"sequence":0,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T12:46:48.400","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[279] 2018-08-20 12:47:24 # [127.0.0.1] PUT POST/Pub/Pages/{0056E6D0-3069-4709-8E4D-E9083ED55B25} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:51.000","completionTime":null,"rowCounter":1042,"pageId":30001042,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:47:20.753","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[280] 2018-08-20 12:47:24 # [127.0.0.1] PUT POST/Pub/Pages/{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:54.000","completionTime":null,"rowCounter":1043,"pageId":30001043,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T12:47:14.597","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[281] 2018-08-20 12:47:25 # [127.0.0.1] PUT POST/Pub/Pages/{01003629-6F83-4063-BC87-6B2745BE4C8E} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:55.000","completionTime":null,"rowCounter":1044,"pageId":30001044,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{01003629-6F83-4063-BC87-6B2745BE4C8E}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:47:20.870","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[282] 2018-08-20 12:47:25 # [127.0.0.1] PUT POST/Pub/Pages/{7EA5EBA3-9882-4B8A-86FE-7FC80D42E339} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:59.000","completionTime":null,"rowCounter":1045,"pageId":30001045,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7EA5EBA3-9882-4B8A-86FE-7FC80D42E339}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:47:14.857","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[283] 2018-08-20 12:47:25 # [127.0.0.1] PUT POST/Pub/Pages/{82E0B175-8C1C-40F4-A287-F0E392EE10B5} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1028,"pageId":30001028,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:47:20.433","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[284] 2018-08-20 12:47:25 # [127.0.0.1] PUT POST/Pub/Pages/{7F2E3A3C-1622-435B-8EC7-590222EC33C0} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:37.000","completionTime":null,"rowCounter":1029,"pageId":30001029,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","lastChanged":"2018-08-20T12:47:20.560","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[285] 2018-08-20 12:47:25 # [127.0.0.1] PUT POST/Pub/Pages/{890A5089-9293-4C51-A5DC-9649117777AA} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:47.000","completionTime":null,"rowCounter":1030,"pageId":30001030,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{890A5089-9293-4C51-A5DC-9649117777AA}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","lastChanged":"2018-08-20T12:47:20.680","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[286] 2018-08-20 12:47:25 # [127.0.0.1] PUT POST/Pub/Pages/{1C434566-7F21-4068-8275-B487A897889D} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:50.000","completionTime":null,"rowCounter":1031,"pageId":30001031,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{1C434566-7F21-4068-8275-B487A897889D}","content":"{\"components\":{\"{A2060835-DD81-4F91-BD5B-FCAE52B761B3}\":{\"type\":\"Single selection\",\"cls\":[\"selection\"],\"html\":\"trutrutr\",\"options\":[{\"id\":\"1\",\"sequence\":1,\"text\":\"New Answer 1\",\"correct\":false},{\"id\":\"2\",\"sequence\":2,\"text\":\"New Answer 2\",\"correct\":true}],\"multi\":false,\"id\":\"{A2060835-DD81-4F91-BD5B-FCAE52B761B3}\",\"width\":700,\"height\":50,\"x\":50,\"y\":50,\"src\":\"\",\"style\":null,\"score\":0}}}","multiSelect":null,"changed":"Y","title":"New Page 1","sound":null,"leaf":true,"sequence":0,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{890A5089-9293-4C51-A5DC-9649117777AA}","lastChanged":"2018-08-20T08:16:47.287","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[287] 2018-08-20 12:47:27 # [127.0.0.1] PUT POST/Pub/Pages/{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:35.000","completionTime":null,"rowCounter":1027,"pageId":30001027,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{6F2F9CDA-B41C-4D2E-AEF3-7D00319F7765}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:47:25.560","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[288] 2018-08-20 12:47:27 # [127.0.0.1] PUT POST/Pub/Pages/{717C788C-1145-4112-87EF-DC2E30D1316A} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T08:15:59.000","completionTime":null,"rowCounter":1034,"pageId":30001034,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{717C788C-1145-4112-87EF-DC2E30D1316A}","content":"{\"components\":{\"{A5DA894E-CDDE-419F-8FB4-D5A60E7E846F}\":{\"type\":\"Single selection\",\"width\":700,\"height\":50,\"x\":25,\"y\":75,\"src\":\"\"}}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:47:25.787","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[289] 2018-08-20 12:47:27 # [127.0.0.1] PUT POST/Pub/Pages/{02F01EFB-D9CC-4AF3-B662-234EE5AEAE61} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:44.000","completionTime":null,"rowCounter":1041,"pageId":30001041,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{02F01EFB-D9CC-4AF3-B662-234EE5AEAE61}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Page 1","sound":null,"leaf":true,"sequence":0,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:47:25.867","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[290] 2018-08-20 12:47:27 # [127.0.0.1] PUT POST/Pub/Pages/{0056E6D0-3069-4709-8E4D-E9083ED55B25} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:51.000","completionTime":null,"rowCounter":1042,"pageId":30001042,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:47:25.943","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[291] 2018-08-20 12:47:27 # [127.0.0.1] PUT POST/Pub/Pages/{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:54.000","completionTime":null,"rowCounter":1043,"pageId":30001043,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{0EF5411F-08CD-4C9D-878D-4D9F9A81FA4F}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"","lastChanged":"2018-08-20T12:47:26.020","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[292] 2018-08-20 12:47:27 # [127.0.0.1] PUT POST/Pub/Pages/{01003629-6F83-4063-BC87-6B2745BE4C8E} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:55.000","completionTime":null,"rowCounter":1044,"pageId":30001044,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{01003629-6F83-4063-BC87-6B2745BE4C8E}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:47:26.143","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[293] 2018-08-20 12:47:27 # [127.0.0.1] PUT POST/Pub/Pages/{7EA5EBA3-9882-4B8A-86FE-7FC80D42E339} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-20T12:46:59.000","completionTime":null,"rowCounter":1045,"pageId":30001045,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7EA5EBA3-9882-4B8A-86FE-7FC80D42E339}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Page 2","sound":null,"leaf":true,"sequence":1,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{0056E6D0-3069-4709-8E4D-E9083ED55B25}","lastChanged":"2018-08-20T12:47:26.260","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[294] 2018-08-20 12:47:27 # [127.0.0.1] PUT POST/Pub/Pages/{82E0B175-8C1C-40F4-A287-F0E392EE10B5} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:36.000","completionTime":null,"rowCounter":1028,"pageId":30001028,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"root","lastChanged":"2018-08-20T12:47:26.387","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[295] 2018-08-20 12:47:27 # [127.0.0.1] PUT POST/Pub/Pages/{7F2E3A3C-1622-435B-8EC7-590222EC33C0} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:37.000","completionTime":null,"rowCounter":1029,"pageId":30001029,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{82E0B175-8C1C-40F4-A287-F0E392EE10B5}","lastChanged":"2018-08-20T12:47:26.513","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[296] 2018-08-20 12:47:28 # [127.0.0.1] PUT POST/Pub/Pages/{890A5089-9293-4C51-A5DC-9649117777AA} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":1,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:47.000","completionTime":null,"rowCounter":1030,"pageId":30001030,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{890A5089-9293-4C51-A5DC-9649117777AA}","content":"{\"components\":{}}","multiSelect":null,"changed":"Y","title":"New Section","sound":null,"leaf":false,"sequence":1234,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{7F2E3A3C-1622-435B-8EC7-590222EC33C0}","lastChanged":"2018-08-20T12:47:26.633","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}
+[297] 2018-08-20 12:47:28 # [127.0.0.1] PUT POST/Pub/Pages/{1C434566-7F21-4068-8275-B487A897889D} 
+
+_REMOTE_IP=127.0.0.1
+data={"deleted":false,"categoryId":2,"active":true,"canPrevPage":null,"lastChangedLog":null,"templateId":null,"created":"2018-08-17T14:52:50.000","completionTime":null,"rowCounter":1031,"pageId":30001031,"soundUrl":null,"videoUrl":null,"video":null,"reviewTime":null,"id":"{1C434566-7F21-4068-8275-B487A897889D}","content":"{\"components\":{\"{A2060835-DD81-4F91-BD5B-FCAE52B761B3}\":{\"type\":\"Single selection\",\"cls\":[\"selection\"],\"html\":\"trutrutr\",\"options\":[{\"id\":\"1\",\"sequence\":1,\"text\":\"New Answer 1\",\"correct\":false},{\"id\":\"2\",\"sequence\":2,\"text\":\"New Answer 2\",\"correct\":true}],\"multi\":false,\"id\":\"{A2060835-DD81-4F91-BD5B-FCAE52B761B3}\",\"width\":700,\"height\":50,\"x\":50,\"y\":50,\"src\":\"\",\"style\":null,\"score\":0}}}","multiSelect":null,"changed":"Y","title":"New Page 1","sound":null,"leaf":true,"sequence":0,"canNextPage":null,"createdById":null,"createdAtId":3,"parentId":"{890A5089-9293-4C51-A5DC-9649117777AA}","lastChanged":"2018-08-20T12:47:26.753","scoreMethod":"A","programId":"{0EA4B816-12F2-4BE7-A61F-426091783CE2}"}

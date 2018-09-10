@@ -1,0 +1,2008 @@
+[1] 2018-07-12 8:09:32 AM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 8:09:32 AM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 8:09:32 AM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 8:13:31 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531376011587
+_REMOTE_IP=127.0.0.1
+[5] 2018-07-12 8:13:31 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531376011590
+_REMOTE_IP=127.0.0.1
+[6] 2018-07-12 8:13:31 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531376011592
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-12 8:13:31 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531376011595
+_REMOTE_IP=127.0.0.1
+[8] 2018-07-12 8:14:00 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531376040690
+_REMOTE_IP=127.0.0.1
+[9] 2018-07-12 8:14:00 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531376040691
+_REMOTE_IP=127.0.0.1
+[10] 2018-07-12 8:14:00 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531376040693
+_REMOTE_IP=127.0.0.1
+[11] 2018-07-12 8:14:00 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531376040697
+_REMOTE_IP=127.0.0.1
+[12] 2018-07-12 8:29:35 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531376975203
+_REMOTE_IP=127.0.0.1
+[13] 2018-07-12 8:29:35 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531376975206
+_REMOTE_IP=127.0.0.1
+[14] 2018-07-12 8:29:35 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531376975209
+_REMOTE_IP=127.0.0.1
+[15] 2018-07-12 8:29:35 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531376975213
+_REMOTE_IP=127.0.0.1
+[16] 2018-07-12 8:36:06 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531377366901
+_REMOTE_IP=127.0.0.1
+[17] 2018-07-12 8:36:07 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531377366910
+_REMOTE_IP=127.0.0.1
+[18] 2018-07-12 8:36:07 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531377366917
+_REMOTE_IP=127.0.0.1
+[19] 2018-07-12 8:36:07 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531377366934
+_REMOTE_IP=127.0.0.1
+[20] 2018-07-12 8:40:24 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531377624758
+_REMOTE_IP=127.0.0.1
+[21] 2018-07-12 8:40:24 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531377624761
+_REMOTE_IP=127.0.0.1
+[22] 2018-07-12 8:40:24 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531377624764
+_REMOTE_IP=127.0.0.1
+[23] 2018-07-12 8:40:24 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531377624765
+_REMOTE_IP=127.0.0.1
+[24] 2018-07-12 8:50:51 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531378251542
+_REMOTE_IP=127.0.0.1
+[25] 2018-07-12 8:50:51 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531378251544
+_REMOTE_IP=127.0.0.1
+[26] 2018-07-12 8:50:51 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531378251545
+_REMOTE_IP=127.0.0.1
+[27] 2018-07-12 8:50:51 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531378251546
+_REMOTE_IP=127.0.0.1
+[28] 2018-07-12 9:05:22 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531379122794
+_REMOTE_IP=127.0.0.1
+[29] 2018-07-12 9:05:22 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531379122796
+_REMOTE_IP=127.0.0.1
+[30] 2018-07-12 9:05:22 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531379122796
+_REMOTE_IP=127.0.0.1
+[31] 2018-07-12 9:05:22 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531379122805
+_REMOTE_IP=127.0.0.1
+[32] 2018-07-12 9:06:05 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531379165021
+_REMOTE_IP=127.0.0.1
+[33] 2018-07-12 9:06:05 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531379165024
+_REMOTE_IP=127.0.0.1
+[34] 2018-07-12 9:06:05 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531379165024
+_REMOTE_IP=127.0.0.1
+[35] 2018-07-12 9:06:05 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531379165028
+_REMOTE_IP=127.0.0.1
+[36] 2018-07-12 9:07:12 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531379232631
+_REMOTE_IP=127.0.0.1
+[37] 2018-07-12 9:07:12 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531379232633
+_REMOTE_IP=127.0.0.1
+[38] 2018-07-12 9:07:12 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531379232653
+_REMOTE_IP=127.0.0.1
+[39] 2018-07-12 9:07:12 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531379232654
+_REMOTE_IP=127.0.0.1
+[40] 2018-07-12 9:07:45 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531379265790
+_REMOTE_IP=127.0.0.1
+[41] 2018-07-12 9:07:45 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531379265792
+_REMOTE_IP=127.0.0.1
+[42] 2018-07-12 9:07:45 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531379265797
+_REMOTE_IP=127.0.0.1
+[43] 2018-07-12 9:07:45 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531379265799
+_REMOTE_IP=127.0.0.1
+[44] 2018-07-12 9:09:43 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531379383182
+_REMOTE_IP=127.0.0.1
+[45] 2018-07-12 9:09:43 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531379383184
+_REMOTE_IP=127.0.0.1
+[46] 2018-07-12 9:09:43 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531379383185
+_REMOTE_IP=127.0.0.1
+[47] 2018-07-12 9:09:43 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531379383186
+_REMOTE_IP=127.0.0.1
+[48] 2018-07-12 9:10:34 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531379434458
+_REMOTE_IP=127.0.0.1
+[49] 2018-07-12 9:10:34 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531379434460
+_REMOTE_IP=127.0.0.1
+[50] 2018-07-12 9:10:34 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531379434462
+_REMOTE_IP=127.0.0.1
+[51] 2018-07-12 9:10:34 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531379434464
+_REMOTE_IP=127.0.0.1
+[52] 2018-07-12 9:11:56 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531379516153
+_REMOTE_IP=127.0.0.1
+[53] 2018-07-12 9:11:56 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531379516155
+_REMOTE_IP=127.0.0.1
+[54] 2018-07-12 9:11:56 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531379516157
+_REMOTE_IP=127.0.0.1
+[55] 2018-07-12 9:11:56 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531379516158
+_REMOTE_IP=127.0.0.1
+[56] 2018-07-12 9:12:21 AM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[57] 2018-07-12 9:12:22 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531379542893
+_REMOTE_IP=127.0.0.1
+[58] 2018-07-12 9:12:22 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531379542894
+_REMOTE_IP=127.0.0.1
+[59] 2018-07-12 9:12:22 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531379542894
+_REMOTE_IP=127.0.0.1
+[60] 2018-07-12 9:12:22 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531379542896
+_REMOTE_IP=127.0.0.1
+[61] 2018-07-12 9:26:10 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531380370021
+_REMOTE_IP=127.0.0.1
+[62] 2018-07-12 9:26:10 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531380370023
+_REMOTE_IP=127.0.0.1
+[63] 2018-07-12 9:26:10 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531380370029
+_REMOTE_IP=127.0.0.1
+[64] 2018-07-12 9:26:10 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531380370027
+_REMOTE_IP=127.0.0.1
+[65] 2018-07-12 9:32:10 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531380730745
+_REMOTE_IP=127.0.0.1
+[66] 2018-07-12 9:32:10 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531380730749
+_REMOTE_IP=127.0.0.1
+[67] 2018-07-12 9:32:10 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531380730751
+_REMOTE_IP=127.0.0.1
+[68] 2018-07-12 9:32:10 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531380730759
+_REMOTE_IP=127.0.0.1
+[69] 2018-07-12 9:38:34 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531381114305
+_REMOTE_IP=127.0.0.1
+[70] 2018-07-12 9:38:34 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531381114310
+_REMOTE_IP=127.0.0.1
+[71] 2018-07-12 9:38:34 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531381114313
+_REMOTE_IP=127.0.0.1
+[72] 2018-07-12 9:38:34 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531381114314
+_REMOTE_IP=127.0.0.1
+[73] 2018-07-12 9:40:23 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531381223443
+_REMOTE_IP=127.0.0.1
+[74] 2018-07-12 9:40:23 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531381223450
+_REMOTE_IP=127.0.0.1
+[75] 2018-07-12 9:40:23 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531381223451
+_REMOTE_IP=127.0.0.1
+[76] 2018-07-12 9:40:23 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531381223453
+_REMOTE_IP=127.0.0.1
+[77] 2018-07-12 9:41:28 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531381287760
+_REMOTE_IP=127.0.0.1
+[78] 2018-07-12 9:41:28 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531381287765
+_REMOTE_IP=127.0.0.1
+[79] 2018-07-12 9:41:28 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531381287770
+_REMOTE_IP=127.0.0.1
+[80] 2018-07-12 9:41:28 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531381287778
+_REMOTE_IP=127.0.0.1
+[81] 2018-07-12 9:43:51 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531381431077
+_REMOTE_IP=127.0.0.1
+[82] 2018-07-12 9:43:51 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531381431080
+_REMOTE_IP=127.0.0.1
+[83] 2018-07-12 9:43:51 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531381431082
+_REMOTE_IP=127.0.0.1
+[84] 2018-07-12 9:43:51 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531381431087
+_REMOTE_IP=127.0.0.1
+[85] 2018-07-12 10:21:31 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531383690866
+_REMOTE_IP=127.0.0.1
+[86] 2018-07-12 10:21:31 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531383690870
+_REMOTE_IP=127.0.0.1
+[87] 2018-07-12 10:21:31 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531383690871
+_REMOTE_IP=127.0.0.1
+[88] 2018-07-12 10:21:31 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531383690868
+_REMOTE_IP=127.0.0.1
+[89] 2018-07-12 10:41:17 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531384876937
+_REMOTE_IP=127.0.0.1
+[90] 2018-07-12 10:41:17 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531384876946
+_REMOTE_IP=127.0.0.1
+[91] 2018-07-12 10:41:17 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531384876950
+_REMOTE_IP=127.0.0.1
+[92] 2018-07-12 10:41:17 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531384876955
+_REMOTE_IP=127.0.0.1
+[93] 2018-07-12 10:41:32 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531384892214
+_REMOTE_IP=127.0.0.1
+[94] 2018-07-12 10:41:32 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531384892217
+_REMOTE_IP=127.0.0.1
+[95] 2018-07-12 10:41:32 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531384892218
+_REMOTE_IP=127.0.0.1
+[96] 2018-07-12 10:41:32 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531384892221
+_REMOTE_IP=127.0.0.1
+[97] 2018-07-12 10:45:26 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531385126410
+_REMOTE_IP=127.0.0.1
+[98] 2018-07-12 10:45:26 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531385126413
+_REMOTE_IP=127.0.0.1
+[99] 2018-07-12 10:45:26 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531385126431
+_REMOTE_IP=127.0.0.1
+[100] 2018-07-12 10:45:26 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531385126434
+_REMOTE_IP=127.0.0.1
+[101] 2018-07-12 10:59:08 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531385948883
+_REMOTE_IP=127.0.0.1
+[102] 2018-07-12 10:59:08 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531385948888
+_REMOTE_IP=127.0.0.1
+[103] 2018-07-12 10:59:08 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531385948892
+_REMOTE_IP=127.0.0.1
+[104] 2018-07-12 10:59:09 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531385948894
+_REMOTE_IP=127.0.0.1
+[105] 2018-07-12 10:59:11 AM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[106] 2018-07-12 11:01:34 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531386094908
+_REMOTE_IP=127.0.0.1
+[107] 2018-07-12 11:01:35 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531386094912
+_REMOTE_IP=127.0.0.1
+[108] 2018-07-12 11:01:35 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531386094913
+_REMOTE_IP=127.0.0.1
+[109] 2018-07-12 11:01:35 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531386094915
+_REMOTE_IP=127.0.0.1
+[110] 2018-07-12 11:01:35 AM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[111] 2018-07-12 11:01:41 AM # [127.0.0.1] PUT Pub/Programs/{9FA02E17-91C4-4DD5-B229-B38199E1CCEF} 
+
+_REMOTE_IP=127.0.0.1
+id={9FA02E17-91C4-4DD5-B229-B38199E1CCEF}
+name=New Training Program 2
+[111] 2018-07-12 11:01:41 AM # ERROR UpdateComponent: UpdateQuery: Missing SQL property
+UpdateQuery: Missing SQL property
+(000DFEBF){MXP_App_Worker.dll} [04680EBF] DB.DatabaseError (Line 2884, "DB.pas" + 2) + $36
+(000DFF49){MXP_App_Worker.dll} [04680F49] DB.DatabaseErrorFmt (Line 2891, "DB.pas" + 1) + $15
+(00102E0D){MXP_App_Worker.dll} [046A3E0D] ADODB.TADOCommand.CheckCommandText (Line 3206, "ADODB.pas" + 2) + $25
+(001030EF){MXP_App_Worker.dll} [046A40EF] ADODB.TADOCommand.Initialize (Line 3285, "ADODB.pas" + 1) + $2
+(0010302B){MXP_App_Worker.dll} [046A402B] ADODB.TADOCommand.Execute (Line 3272, "ADODB.pas" + 3) + $7
+(0010C61B){MXP_App_Worker.dll} [046AD61B] ADODB.TADOQuery.ExecSQL (Line 6351, "ADODB.pas" + 2) + $16
+(001C07C2){MXP_App_Worker.dll} [047617C2] mxDataADO.handleADOMethod (Line 1019, "mxDataADO.pas" + 99) + $9
+(001C2EB8){MXP_App_Worker.dll} [04763EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(00205088){MXP_App_Worker.dll} [047A6088] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+id={9FA02E17-91C4-4DD5-B229-B38199E1CCEF}
+name=New Training Program 2
+_rowid={9FA02E17-91C4-4DD5-B229-B38199E1CCEF}
+_environment=D
+_method=PUT
+
+[113] 2018-07-12 11:09:53 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531386593868
+_REMOTE_IP=127.0.0.1
+[114] 2018-07-12 11:09:53 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531386593873
+_REMOTE_IP=127.0.0.1
+[115] 2018-07-12 11:09:54 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531386593876
+_REMOTE_IP=127.0.0.1
+[116] 2018-07-12 11:09:54 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531386593887
+_REMOTE_IP=127.0.0.1
+[117] 2018-07-12 11:10:05 AM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[118] 2018-07-12 11:14:15 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531386855792
+_REMOTE_IP=127.0.0.1
+[119] 2018-07-12 11:14:15 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531386855795
+_REMOTE_IP=127.0.0.1
+[120] 2018-07-12 11:14:15 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531386855798
+_REMOTE_IP=127.0.0.1
+[121] 2018-07-12 11:14:15 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531386855799
+_REMOTE_IP=127.0.0.1
+[122] 2018-07-12 11:14:19 AM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[123] 2018-07-12 11:14:40 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531386880073
+_REMOTE_IP=127.0.0.1
+[124] 2018-07-12 11:14:40 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531386880076
+_REMOTE_IP=127.0.0.1
+[125] 2018-07-12 11:14:40 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531386880077
+_REMOTE_IP=127.0.0.1
+[126] 2018-07-12 11:14:40 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531386880080
+_REMOTE_IP=127.0.0.1
+[127] 2018-07-12 11:14:41 AM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[128] 2018-07-12 11:14:50 AM # [127.0.0.1] PUT POST/Pub/Programs/{9FA02E17-91C4-4DD5-B229-B38199E1CCEF} 
+
+_REMOTE_IP=127.0.0.1
+id={9FA02E17-91C4-4DD5-B229-B38199E1CCEF}
+name=New Training Program2
+[129] 2018-07-12 11:20:47 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531387247239
+_REMOTE_IP=127.0.0.1
+[130] 2018-07-12 11:20:47 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531387247241
+_REMOTE_IP=127.0.0.1
+[131] 2018-07-12 11:20:47 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531387247244
+_REMOTE_IP=127.0.0.1
+[132] 2018-07-12 11:20:47 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531387247246
+_REMOTE_IP=127.0.0.1
+[133] 2018-07-12 11:20:50 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531387250526
+_REMOTE_IP=127.0.0.1
+[134] 2018-07-12 11:20:50 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531387250528
+_REMOTE_IP=127.0.0.1
+[135] 2018-07-12 11:20:50 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531387250529
+_REMOTE_IP=127.0.0.1
+[136] 2018-07-12 11:20:50 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531387250531
+_REMOTE_IP=127.0.0.1
+[137] 2018-07-12 11:32:30 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531387950125
+_REMOTE_IP=127.0.0.1
+[138] 2018-07-12 11:32:30 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531387950129
+_REMOTE_IP=127.0.0.1
+[139] 2018-07-12 11:32:30 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531387950131
+_REMOTE_IP=127.0.0.1
+[140] 2018-07-12 11:32:30 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531387950133
+_REMOTE_IP=127.0.0.1
+[141] 2018-07-12 11:32:32 AM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[142] 2018-07-12 11:32:33 AM # [127.0.0.1] POST Pub/Programs 
+
+_REMOTE_IP=127.0.0.1
+categoryId=-1
+active=true
+validFrom=2018-07-12T11:32:33+02:00
+maxAttemptsTrainingMode=1
+validTo=2019-07-12T11:32:33+02:00
+created=
+completionTime=60
+description=New Training Program Description
+id={AE723E4D-586F-4288-BB37-5E7AF6ED82D2}
+lastChangeLogId=0
+maxAttemptsScoreMode=1
+name=New Training Program
+passScore=75
+createdById=0
+createdAtId=0
+lastChanges=
+programId=0
+[143] 2018-07-12 11:32:49 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531387969254
+_REMOTE_IP=127.0.0.1
+[144] 2018-07-12 11:32:49 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531387969256
+_REMOTE_IP=127.0.0.1
+[145] 2018-07-12 11:32:49 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531387969259
+_REMOTE_IP=127.0.0.1
+[146] 2018-07-12 11:32:49 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531387969261
+_REMOTE_IP=127.0.0.1
+[147] 2018-07-12 11:32:50 AM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[148] 2018-07-12 11:33:06 AM # [127.0.0.1] POST Pub/Programs 
+
+_REMOTE_IP=127.0.0.1
+categoryId=-1
+active=true
+validFrom=2018-07-12T11:33:06+02:00
+maxAttemptsTrainingMode=1
+validTo=2019-07-12T11:33:06+02:00
+created=
+completionTime=60
+description=New Training Program Description
+id={8D72EF74-3BDD-4E4B-99FA-0DC511AAA3DD}
+lastChangeLogId=0
+maxAttemptsScoreMode=1
+name=New Training Program
+passScore=75
+createdById=0
+createdAtId=0
+lastChanges=
+programId=0
+[149] 2018-07-12 11:34:49 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531388089335
+_REMOTE_IP=127.0.0.1
+[150] 2018-07-12 11:34:49 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531388089338
+_REMOTE_IP=127.0.0.1
+[151] 2018-07-12 11:34:49 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531388089342
+_REMOTE_IP=127.0.0.1
+[152] 2018-07-12 11:34:49 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531388089340
+_REMOTE_IP=127.0.0.1
+[153] 2018-07-12 11:34:51 AM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[154] 2018-07-12 11:34:54 AM # [127.0.0.1] POST Pub/Programs 
+
+_REMOTE_IP=127.0.0.1
+categoryId=-1
+active=true
+validFrom=2018-07-12T11:34:54+02:00
+maxAttemptsTrainingMode=1
+validTo=2019-07-12T11:34:54+02:00
+created=
+completionTime=60
+description=New Training Program Description
+id={A728F06F-F0EB-4BF4-9F32-E36983DBAF79}
+lastChangeLogId=0
+maxAttemptsScoreMode=1
+name=New Training Program
+passScore=75
+createdById=0
+createdAtId=0
+lastChanges=
+programId=0
+[155] 2018-07-12 11:35:29 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531388129238
+_REMOTE_IP=127.0.0.1
+[156] 2018-07-12 11:35:29 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531388129240
+_REMOTE_IP=127.0.0.1
+[157] 2018-07-12 11:35:29 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531388129242
+_REMOTE_IP=127.0.0.1
+[158] 2018-07-12 11:35:29 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531388129245
+_REMOTE_IP=127.0.0.1
+[159] 2018-07-12 11:35:30 AM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[160] 2018-07-12 11:35:37 AM # [127.0.0.1] PUT POST/Pub/Programs/{A728F06F-F0EB-4BF4-9F32-E36983DBAF79} 
+
+_REMOTE_IP=127.0.0.1
+validFrom=2018-07-12T00:00:00+02:00
+validTo=2019-07-12T00:00:00+02:00
+id={A728F06F-F0EB-4BF4-9F32-E36983DBAF79}
+name=New Training Program34
+certificateFileName=
+[161] 2018-07-12 11:35:43 AM # [127.0.0.1] POST Pub/Programs 
+
+_REMOTE_IP=127.0.0.1
+categoryId=-1
+active=true
+validFrom=2018-07-12T00:00:00+02:00
+maxAttemptsTrainingMode=1
+validTo=2019-07-12T00:00:00+02:00
+created=
+completionTime=60
+description=New Training Program Description
+id={A06DB4C9-E790-41B6-AC7F-9259314438A1}
+lastChangeLogId=0
+maxAttemptsScoreMode=1
+name=New Training Programiuui
+passScore=75
+createdById=0
+createdAtId=0
+certificateFileName=
+lastChanges=
+programId=0
+[162] 2018-07-12 11:39:41 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531388381567
+_REMOTE_IP=127.0.0.1
+[163] 2018-07-12 11:39:41 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531388381568
+_REMOTE_IP=127.0.0.1
+[164] 2018-07-12 11:39:41 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531388381570
+_REMOTE_IP=127.0.0.1
+[165] 2018-07-12 11:39:41 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531388381573
+_REMOTE_IP=127.0.0.1
+[166] 2018-07-12 11:39:49 AM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[167] 2018-07-12 11:40:21 AM # [127.0.0.1] DELETE Pub/Programs/{AE723E4D-586F-4288-BB37-5E7AF6ED82D2} 
+
+_REMOTE_IP=127.0.0.1
+id={AE723E4D-586F-4288-BB37-5E7AF6ED82D2}
+[168] 2018-07-12 11:40:22 AM # [127.0.0.1] DELETE Pub/Programs/{8D72EF74-3BDD-4E4B-99FA-0DC511AAA3DD} 
+
+_REMOTE_IP=127.0.0.1
+id={8D72EF74-3BDD-4E4B-99FA-0DC511AAA3DD}
+[169] 2018-07-12 11:40:23 AM # [127.0.0.1] DELETE Pub/Programs/{A728F06F-F0EB-4BF4-9F32-E36983DBAF79} 
+
+_REMOTE_IP=127.0.0.1
+id={A728F06F-F0EB-4BF4-9F32-E36983DBAF79}
+[170] 2018-07-12 11:40:24 AM # [127.0.0.1] DELETE Pub/Programs/{A06DB4C9-E790-41B6-AC7F-9259314438A1} 
+
+_REMOTE_IP=127.0.0.1
+id={A06DB4C9-E790-41B6-AC7F-9259314438A1}
+[171] 2018-07-12 11:40:32 AM # [127.0.0.1] POST Pub/Programs 
+
+_REMOTE_IP=127.0.0.1
+categoryId=0
+active=true
+validFrom=2018-07-12T00:00:00+02:00
+maxAttemptsTrainingMode=1
+validTo=2019-07-12T00:00:00+02:00
+created=
+completionTime=60
+description=New Training Program Description
+id={441C5933-7DD6-45F2-A19D-6273C817FA29}
+lastChangeLogId=0
+maxAttemptsScoreMode=1
+name=New Training Program44
+passScore=75
+createdById=0
+createdAtId=0
+certificateFileName=
+lastChanges=
+programId=0
+[172] 2018-07-12 11:40:40 AM # [127.0.0.1] POST Pub/Programs 
+
+_REMOTE_IP=127.0.0.1
+categoryId=30231143
+active=true
+validFrom=2018-07-12T00:00:00+02:00
+maxAttemptsTrainingMode=1
+validTo=2019-07-12T00:00:00+02:00
+created=
+completionTime=60
+description=New Training Program Description
+id={8900B0D4-2DC6-4783-B8B4-4256D2505917}
+lastChangeLogId=0
+maxAttemptsScoreMode=1
+name=New Training Program
+passScore=75
+createdById=0
+createdAtId=0
+certificateFileName=
+lastChanges=
+programId=0
+[173] 2018-07-12 11:42:03 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531388523933
+_REMOTE_IP=127.0.0.1
+[174] 2018-07-12 11:42:03 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531388523936
+_REMOTE_IP=127.0.0.1
+[175] 2018-07-12 11:42:04 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531388523939
+_REMOTE_IP=127.0.0.1
+[176] 2018-07-12 11:42:04 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531388523941
+_REMOTE_IP=127.0.0.1
+[177] 2018-07-12 11:42:04 AM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[178] 2018-07-12 11:42:25 AM # [127.0.0.1] POST Pub/Programs 
+
+_REMOTE_IP=127.0.0.1
+categoryId=0
+active=true
+validFrom=2018-07-12T00:00:00+02:00
+maxAttemptsTrainingMode=1
+validTo=2019-07-12T00:00:00+02:00
+created=
+completionTime=60
+description=New Training Program Description
+id={9FEFAD85-A7B5-489A-A583-23146EB1AE2C}
+lastChangeLogId=0
+maxAttemptsScoreMode=1
+name=New Training Program
+passScore=75
+createdById=0
+createdAtId=0
+certificateFileName=
+lastChanges=
+programId=0
+[179] 2018-07-12 11:42:28 AM # [127.0.0.1] POST Pub/Programs 
+
+_REMOTE_IP=127.0.0.1
+categoryId=30231143
+active=true
+validFrom=2018-07-12T00:00:00+02:00
+maxAttemptsTrainingMode=1
+validTo=2019-07-12T00:00:00+02:00
+created=
+completionTime=60
+description=New Training Program Description
+id={639EEE05-048D-485A-9C18-6819971EF38C}
+lastChangeLogId=0
+maxAttemptsScoreMode=1
+name=New Training Program
+passScore=75
+createdById=0
+createdAtId=0
+certificateFileName=
+lastChanges=
+programId=0
+[1] 2018-07-12 11:49:05 AM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 11:49:05 AM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 11:49:05 AM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 11:51:28 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531389088242
+_REMOTE_IP=127.0.0.1
+[5] 2018-07-12 11:51:28 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531389088246
+_REMOTE_IP=127.0.0.1
+[6] 2018-07-12 11:51:28 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531389088247
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-12 11:51:28 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531389088248
+_REMOTE_IP=127.0.0.1
+[8] 2018-07-12 11:56:58 AM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531389417520
+_REMOTE_IP=127.0.0.1
+[9] 2018-07-12 11:56:58 AM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531389417510
+_REMOTE_IP=127.0.0.1
+[10] 2018-07-12 11:56:58 AM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531389417500
+_REMOTE_IP=127.0.0.1
+[11] 2018-07-12 11:56:58 AM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531389417491
+_REMOTE_IP=127.0.0.1
+[12] 2018-07-12 11:58:07 AM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 12:00:28 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 12:00:28 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 12:00:28 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 12:00:58 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531389658630
+_REMOTE_IP=127.0.0.1
+[5] 2018-07-12 12:00:58 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531389658632
+_REMOTE_IP=127.0.0.1
+[6] 2018-07-12 12:00:58 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531389658633
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-12 12:00:58 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531389658635
+_REMOTE_IP=127.0.0.1
+[8] 2018-07-12 12:01:12 PM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[9] 2018-07-12 12:01:16 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531389676643
+_REMOTE_IP=127.0.0.1
+[10] 2018-07-12 12:01:16 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531389676645
+_REMOTE_IP=127.0.0.1
+[11] 2018-07-12 12:01:16 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531389676646
+_REMOTE_IP=127.0.0.1
+[12] 2018-07-12 12:01:17 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[13] 2018-07-12 12:01:17 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531389676648
+_REMOTE_IP=127.0.0.1
+[14] 2018-07-12 12:02:15 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531389735096
+_REMOTE_IP=127.0.0.1
+[15] 2018-07-12 12:02:15 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531389735098
+_REMOTE_IP=127.0.0.1
+[16] 2018-07-12 12:02:15 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531389735100
+_REMOTE_IP=127.0.0.1
+[17] 2018-07-12 12:02:15 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531389735101
+_REMOTE_IP=127.0.0.1
+[18] 2018-07-12 12:02:21 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 12:04:19 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 12:04:19 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 12:04:19 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 12:06:59 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531390019636
+_REMOTE_IP=127.0.0.1
+[5] 2018-07-12 12:06:59 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531390019640
+_REMOTE_IP=127.0.0.1
+[6] 2018-07-12 12:07:00 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531390019642
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-12 12:07:00 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531390019648
+_REMOTE_IP=127.0.0.1
+[8] 2018-07-12 12:07:04 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[9] 2018-07-12 12:10:13 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531390213646
+_REMOTE_IP=127.0.0.1
+[10] 2018-07-12 12:10:13 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531390213651
+_REMOTE_IP=127.0.0.1
+[11] 2018-07-12 12:10:13 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531390213653
+_REMOTE_IP=127.0.0.1
+[12] 2018-07-12 12:10:13 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531390213660
+_REMOTE_IP=127.0.0.1
+[13] 2018-07-12 12:10:53 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531390253303
+_REMOTE_IP=127.0.0.1
+[14] 2018-07-12 12:10:53 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531390253305
+_REMOTE_IP=127.0.0.1
+[15] 2018-07-12 12:10:53 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531390253306
+_REMOTE_IP=127.0.0.1
+[16] 2018-07-12 12:10:53 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531390253307
+_REMOTE_IP=127.0.0.1
+[17] 2018-07-12 12:10:55 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[18] 2018-07-12 12:11:56 PM # [127.0.0.1] GET Pub/Programs 
+page=1
+start=0
+limit=25
+_REMOTE_IP=127.0.0.1
+[19] 2018-07-12 12:12:04 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531390324226
+_REMOTE_IP=127.0.0.1
+[20] 2018-07-12 12:12:04 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531390324226
+_REMOTE_IP=127.0.0.1
+[21] 2018-07-12 12:12:04 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531390324227
+_REMOTE_IP=127.0.0.1
+[22] 2018-07-12 12:12:04 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531390324228
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 12:15:45 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 12:15:45 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 12:15:45 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 12:15:55 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531390555086
+_REMOTE_IP=127.0.0.1
+[5] 2018-07-12 12:15:55 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531390555087
+_REMOTE_IP=127.0.0.1
+[6] 2018-07-12 12:15:55 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531390555088
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-12 12:15:55 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531390555090
+_REMOTE_IP=127.0.0.1
+[8] 2018-07-12 12:16:05 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[9] 2018-07-12 12:16:39 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531390598645
+_REMOTE_IP=127.0.0.1
+[10] 2018-07-12 12:16:39 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531390598641
+_REMOTE_IP=127.0.0.1
+[11] 2018-07-12 12:16:39 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531390598638
+_REMOTE_IP=127.0.0.1
+[12] 2018-07-12 12:16:39 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531390598648
+_REMOTE_IP=127.0.0.1
+[13] 2018-07-12 12:16:40 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[14] 2018-07-12 12:16:44 PM # [127.0.0.1] PUT POST/Pub/Pages/{C24D12B1-1B89-4DE1-9724-DA83DD555C0B} 
+
+_REMOTE_IP=127.0.0.1
+id={C24D12B1-1B89-4DE1-9724-DA83DD555C0B}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[15] 2018-07-12 12:16:44 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[16] 2018-07-12 12:16:44 PM # [127.0.0.1] PUT POST/Pub/Pages/{C24D12B1-1B89-4DE1-9724-DA83DD555C0B} 
+
+_REMOTE_IP=127.0.0.1
+id={C24D12B1-1B89-4DE1-9724-DA83DD555C0B}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[14] 2018-07-12 12:17:34 PM # ERROR InsertQuery (POST/Pub/Pages/{C24D12B1-1B89-4DE1-9724-DA83DD555C0B}): Cannot insert the value NULL into column 'TRAINING_PROGRAM_NAME', table 'MarineXProcurement.dbo.Training_Programs'; column does not allow nulls. INSERT fails
+Cannot insert the value NULL into column 'TRAINING_PROGRAM_NAME', table 'MarineXProcurement.dbo.Training_Programs'; column does not allow nulls. INSERT fails
+(00103F16){MXP_App_Worker.dll} [04754F16] ADODB.TCustomADODataSet.OpenCursor (Line 3594, "ADODB.pas" + 5) + $70
+(000F190D){MXP_App_Worker.dll} [0474290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [04742754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [04813EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(002050A8){MXP_App_Worker.dll} [048560A8] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+id={C24D12B1-1B89-4DE1-9724-DA83DD555C0B}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+_rowid={C24D12B1-1B89-4DE1-9724-DA83DD555C0B}
+_environment=D
+_method=POST
+
+[16] 2018-07-12 12:17:37 PM # ERROR InsertQuery (POST/Pub/Pages/{C24D12B1-1B89-4DE1-9724-DA83DD555C0B}): Cannot insert the value NULL into column 'TRAINING_PROGRAM_NAME', table 'MarineXProcurement.dbo.Training_Programs'; column does not allow nulls. INSERT fails
+Cannot insert the value NULL into column 'TRAINING_PROGRAM_NAME', table 'MarineXProcurement.dbo.Training_Programs'; column does not allow nulls. INSERT fails
+(00103F16){MXP_App_Worker.dll} [04754F16] ADODB.TCustomADODataSet.OpenCursor (Line 3594, "ADODB.pas" + 5) + $70
+(000F190D){MXP_App_Worker.dll} [0474290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [04742754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [04813EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(002050A8){MXP_App_Worker.dll} [048560A8] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+id={C24D12B1-1B89-4DE1-9724-DA83DD555C0B}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+_rowid={C24D12B1-1B89-4DE1-9724-DA83DD555C0B}
+_environment=D
+_method=POST
+
+[1] 2018-07-12 1:01:24 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 1:01:24 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 1:01:24 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 1:02:08 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531393328978
+_REMOTE_IP=127.0.0.1
+[5] 2018-07-12 1:02:09 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531393328980
+_REMOTE_IP=127.0.0.1
+[6] 2018-07-12 1:02:09 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531393328981
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-12 1:02:10 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531393328982
+_REMOTE_IP=127.0.0.1
+[8] 2018-07-12 1:02:16 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[9] 2018-07-12 1:03:57 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[10] 2018-07-12 1:04:06 PM # [127.0.0.1] PUT POST/Pub/Pages/{1BE21022-F5E0-47EB-B334-6855B3B8218F} 
+
+_REMOTE_IP=127.0.0.1
+id={1BE21022-F5E0-47EB-B334-6855B3B8218F}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[11] 2018-07-12 1:04:06 PM # [127.0.0.1] PUT POST/Pub/Pages/{1BE21022-F5E0-47EB-B334-6855B3B8218F} 
+
+_REMOTE_IP=127.0.0.1
+id={1BE21022-F5E0-47EB-B334-6855B3B8218F}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[12] 2018-07-12 1:04:06 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 1:08:15 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 1:08:15 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 1:08:15 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 1:08:22 PM # [127.0.0.1] PUT POST/Pub/Pages/{5266D7F3-34DF-40C4-8DD1-721163668F7B} 
+
+_REMOTE_IP=127.0.0.1
+id={5266D7F3-34DF-40C4-8DD1-721163668F7B}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 1:08:22 PM # [127.0.0.1] PUT POST/Pub/Pages/{5266D7F3-34DF-40C4-8DD1-721163668F7B} 
+
+_REMOTE_IP=127.0.0.1
+id={5266D7F3-34DF-40C4-8DD1-721163668F7B}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 1:08:23 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 1:13:51 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 1:13:51 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 1:13:51 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 1:14:06 PM # [127.0.0.1] PUT POST/Pub/Pages/{8282F77D-FD48-4584-8DA2-7DCC64B7BB36} 
+
+_REMOTE_IP=127.0.0.1
+id={8282F77D-FD48-4584-8DA2-7DCC64B7BB36}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 1:14:06 PM # [127.0.0.1] PUT POST/Pub/Pages/{8282F77D-FD48-4584-8DA2-7DCC64B7BB36} 
+
+_REMOTE_IP=127.0.0.1
+id={8282F77D-FD48-4584-8DA2-7DCC64B7BB36}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 1:14:06 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-12 1:14:07 PM # [127.0.0.1] PUT POST/Pub/Pages/{E981B063-B900-45AD-AB50-B7E67505520E} 
+
+_REMOTE_IP=127.0.0.1
+id={E981B063-B900-45AD-AB50-B7E67505520E}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[8] 2018-07-12 1:14:07 PM # [127.0.0.1] PUT POST/Pub/Pages/{E981B063-B900-45AD-AB50-B7E67505520E} 
+
+_REMOTE_IP=127.0.0.1
+id={E981B063-B900-45AD-AB50-B7E67505520E}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[1] 2018-07-12 1:17:02 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 1:17:02 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 1:17:02 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 1:17:09 PM # [127.0.0.1] PUT POST/Pub/Pages/{E981B063-B900-45AD-AB50-B7E67505520E} 
+
+_REMOTE_IP=127.0.0.1
+id={E981B063-B900-45AD-AB50-B7E67505520E}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 1:17:09 PM # [127.0.0.1] PUT POST/Pub/Pages/{E981B063-B900-45AD-AB50-B7E67505520E} 
+
+_REMOTE_IP=127.0.0.1
+id={E981B063-B900-45AD-AB50-B7E67505520E}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 1:17:09 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 1:20:31 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 1:20:31 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 1:20:31 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 1:20:43 PM # [127.0.0.1] PUT POST/Pub/Pages/{17DBA200-E4B1-4BF3-96B6-7A7FDD9F6A3D} 
+
+_REMOTE_IP=127.0.0.1
+id={17DBA200-E4B1-4BF3-96B6-7A7FDD9F6A3D}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 1:20:43 PM # [127.0.0.1] PUT POST/Pub/Pages/{17DBA200-E4B1-4BF3-96B6-7A7FDD9F6A3D} 
+
+_REMOTE_IP=127.0.0.1
+id={17DBA200-E4B1-4BF3-96B6-7A7FDD9F6A3D}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 1:20:43 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 1:25:45 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 1:25:45 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 1:25:45 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 1:25:57 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531394757703
+_REMOTE_IP=127.0.0.1
+[5] 2018-07-12 1:25:57 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531394757706
+_REMOTE_IP=127.0.0.1
+[6] 2018-07-12 1:25:57 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531394757706
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-12 1:25:58 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531394757709
+_REMOTE_IP=127.0.0.1
+[8] 2018-07-12 1:26:13 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[9] 2018-07-12 1:26:27 PM # [127.0.0.1] PUT POST/Pub/Pages/{4771121C-EF4C-473E-AD15-373758C0D788} 
+
+_REMOTE_IP=127.0.0.1
+id={4771121C-EF4C-473E-AD15-373758C0D788}
+parentId=root
+[10] 2018-07-12 1:26:27 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 1:30:21 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 1:30:21 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 1:30:21 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 1:30:28 PM # [127.0.0.1] PUT POST/Pub/Pages/{7ACDBE67-4663-4AB6-9314-FF5B2BE95B56} 
+
+_REMOTE_IP=127.0.0.1
+id={7ACDBE67-4663-4AB6-9314-FF5B2BE95B56}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 1:30:28 PM # [127.0.0.1] PUT POST/Pub/Pages/{7ACDBE67-4663-4AB6-9314-FF5B2BE95B56} 
+
+_REMOTE_IP=127.0.0.1
+id={7ACDBE67-4663-4AB6-9314-FF5B2BE95B56}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 1:30:28 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 1:55:59 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 1:55:59 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 1:55:59 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 1:56:13 PM # [127.0.0.1] PUT POST/Pub/Pages/{5EDA1006-374A-4BDE-9B95-720B34D58EC8} 
+
+_REMOTE_IP=127.0.0.1
+id={5EDA1006-374A-4BDE-9B95-720B34D58EC8}
+parentId=root
+[5] 2018-07-12 1:56:13 PM # [127.0.0.1] PUT POST/Pub/Pages/{5EDA1006-374A-4BDE-9B95-720B34D58EC8} 
+
+_REMOTE_IP=127.0.0.1
+id={5EDA1006-374A-4BDE-9B95-720B34D58EC8}
+parentId=root
+[6] 2018-07-12 1:56:13 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:01:52 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:01:52 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:01:52 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:01:58 PM # [127.0.0.1] PUT POST/Pub/Pages/{85D45E1B-E36B-4E27-B3E2-8461B508114E} 
+
+_REMOTE_IP=127.0.0.1
+id={85D45E1B-E36B-4E27-B3E2-8461B508114E}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:01:58 PM # [127.0.0.1] PUT POST/Pub/Pages/{85D45E1B-E36B-4E27-B3E2-8461B508114E} 
+
+_REMOTE_IP=127.0.0.1
+id={85D45E1B-E36B-4E27-B3E2-8461B508114E}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:01:58 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:03:58 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:03:58 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:03:58 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:04:02 PM # [127.0.0.1] PUT POST/Pub/Pages/{4561275F-99E1-4786-9864-E8B829E5C143} 
+
+_REMOTE_IP=127.0.0.1
+id={4561275F-99E1-4786-9864-E8B829E5C143}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:04:02 PM # [127.0.0.1] PUT POST/Pub/Pages/{4561275F-99E1-4786-9864-E8B829E5C143} 
+
+_REMOTE_IP=127.0.0.1
+id={4561275F-99E1-4786-9864-E8B829E5C143}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:04:02 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:04:37 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:04:37 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:04:37 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:04:45 PM # [127.0.0.1] GET Lookups/ProgramCategories 
+_dc=1531397085053
+_REMOTE_IP=127.0.0.1
+[5] 2018-07-12 2:04:45 PM # [127.0.0.1] GET Lookups/ProgramPageCategories 
+_dc=1531397085055
+_REMOTE_IP=127.0.0.1
+[6] 2018-07-12 2:04:45 PM # [127.0.0.1] GET Lookups/CoursesAndCertificates 
+_dc=1531397085057
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-12 2:04:45 PM # [127.0.0.1] GET Lookups/ProgramStatuses 
+_dc=1531397085057
+_REMOTE_IP=127.0.0.1
+[8] 2018-07-12 2:04:46 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:05:20 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:05:20 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:05:20 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:05:29 PM # [127.0.0.1] PUT POST/Pub/Pages/{B8684646-0568-4659-8524-D557A4BB424B} 
+
+_REMOTE_IP=127.0.0.1
+id={B8684646-0568-4659-8524-D557A4BB424B}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:05:29 PM # [127.0.0.1] PUT POST/Pub/Pages/{B8684646-0568-4659-8524-D557A4BB424B} 
+
+_REMOTE_IP=127.0.0.1
+id={B8684646-0568-4659-8524-D557A4BB424B}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:05:29 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:06:07 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:06:07 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:06:07 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:06:11 PM # [127.0.0.1] PUT POST/Pub/Pages/{4CCBD499-8E3F-45EB-8A9F-96D624B15EE7} 
+
+_REMOTE_IP=127.0.0.1
+id={4CCBD499-8E3F-45EB-8A9F-96D624B15EE7}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:06:11 PM # [127.0.0.1] PUT POST/Pub/Pages/{4CCBD499-8E3F-45EB-8A9F-96D624B15EE7} 
+
+_REMOTE_IP=127.0.0.1
+id={4CCBD499-8E3F-45EB-8A9F-96D624B15EE7}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:06:11 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:06:37 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:06:37 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:06:37 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:06:40 PM # [127.0.0.1] PUT POST/Pub/Pages/{6306C739-F419-4FFD-83C6-5BDEF956585A} 
+
+_REMOTE_IP=127.0.0.1
+id={6306C739-F419-4FFD-83C6-5BDEF956585A}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:06:40 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[6] 2018-07-12 2:06:40 PM # [127.0.0.1] PUT POST/Pub/Pages/{6306C739-F419-4FFD-83C6-5BDEF956585A} 
+
+_REMOTE_IP=127.0.0.1
+id={6306C739-F419-4FFD-83C6-5BDEF956585A}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[1] 2018-07-12 2:08:05 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:08:05 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:08:05 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:08:08 PM # [127.0.0.1] PUT POST/Pub/Pages/{3B6F8EDD-265C-470D-9158-90EC8A55C30B} 
+
+_REMOTE_IP=127.0.0.1
+id={3B6F8EDD-265C-470D-9158-90EC8A55C30B}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:08:08 PM # [127.0.0.1] PUT POST/Pub/Pages/{3B6F8EDD-265C-470D-9158-90EC8A55C30B} 
+
+_REMOTE_IP=127.0.0.1
+id={3B6F8EDD-265C-470D-9158-90EC8A55C30B}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:08:08 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:09:36 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:09:36 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:09:36 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:09:48 PM # [127.0.0.1] PUT POST/Pub/Pages/{5932676F-F029-4353-BE76-8AD044D448BF} 
+
+_REMOTE_IP=127.0.0.1
+id={5932676F-F029-4353-BE76-8AD044D448BF}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:09:48 PM # [127.0.0.1] PUT POST/Pub/Pages/{5932676F-F029-4353-BE76-8AD044D448BF} 
+
+_REMOTE_IP=127.0.0.1
+id={5932676F-F029-4353-BE76-8AD044D448BF}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:09:48 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:14:03 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:14:03 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:14:03 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:14:07 PM # [127.0.0.1] PUT POST/Pub/Pages/{2FAA1E23-3B8D-4D3C-85F1-5683457FD5AD} 
+
+_REMOTE_IP=127.0.0.1
+id={2FAA1E23-3B8D-4D3C-85F1-5683457FD5AD}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:14:07 PM # [127.0.0.1] PUT POST/Pub/Pages/{2FAA1E23-3B8D-4D3C-85F1-5683457FD5AD} 
+
+_REMOTE_IP=127.0.0.1
+id={2FAA1E23-3B8D-4D3C-85F1-5683457FD5AD}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:14:07 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:16:04 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:16:04 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:16:04 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:16:06 PM # [127.0.0.1] PUT POST/Pub/Pages/{765ACB45-F05A-46EC-80AC-948C56E59106} 
+
+_REMOTE_IP=127.0.0.1
+id={765ACB45-F05A-46EC-80AC-948C56E59106}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:16:06 PM # [127.0.0.1] PUT POST/Pub/Pages/{765ACB45-F05A-46EC-80AC-948C56E59106} 
+
+_REMOTE_IP=127.0.0.1
+id={765ACB45-F05A-46EC-80AC-948C56E59106}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:16:06 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-12 2:16:10 PM # [127.0.0.1] PUT POST/Pub/Pages/{36010E34-6006-4D50-8174-15F7D5D6F62C} 
+
+_REMOTE_IP=127.0.0.1
+id={36010E34-6006-4D50-8174-15F7D5D6F62C}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[8] 2018-07-12 2:16:10 PM # [127.0.0.1] PUT POST/Pub/Pages/{36010E34-6006-4D50-8174-15F7D5D6F62C} 
+
+_REMOTE_IP=127.0.0.1
+id={36010E34-6006-4D50-8174-15F7D5D6F62C}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[9] 2018-07-12 2:16:10 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:17:42 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:17:42 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:17:42 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:17:47 PM # [127.0.0.1] PUT POST/Pub/Pages/{87166A1C-2D2A-473F-8F43-EE941225673F} 
+
+_REMOTE_IP=127.0.0.1
+id={87166A1C-2D2A-473F-8F43-EE941225673F}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:17:47 PM # [127.0.0.1] PUT POST/Pub/Pages/{87166A1C-2D2A-473F-8F43-EE941225673F} 
+
+_REMOTE_IP=127.0.0.1
+id={87166A1C-2D2A-473F-8F43-EE941225673F}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:17:47 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:18:11 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:18:11 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:18:11 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:18:19 PM # [127.0.0.1] PUT POST/Pub/Pages/{A9550E96-DA6E-4914-9FD3-36E309D84B45} 
+
+_REMOTE_IP=127.0.0.1
+id={A9550E96-DA6E-4914-9FD3-36E309D84B45}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:18:19 PM # [127.0.0.1] PUT POST/Pub/Pages/{A9550E96-DA6E-4914-9FD3-36E309D84B45} 
+
+_REMOTE_IP=127.0.0.1
+id={A9550E96-DA6E-4914-9FD3-36E309D84B45}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:18:19 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:20:31 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:20:31 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:20:31 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:20:38 PM # [127.0.0.1] PUT POST/Pub/Pages/{9064E200-29A7-4674-A937-5F4BCC518297} 
+
+_REMOTE_IP=127.0.0.1
+id={9064E200-29A7-4674-A937-5F4BCC518297}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:20:38 PM # [127.0.0.1] PUT POST/Pub/Pages/{9064E200-29A7-4674-A937-5F4BCC518297} 
+
+_REMOTE_IP=127.0.0.1
+id={9064E200-29A7-4674-A937-5F4BCC518297}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:20:38 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:21:48 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:21:48 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:21:48 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:21:51 PM # [127.0.0.1] PUT POST/Pub/Pages/{AA550D31-0766-4996-8633-505CBA6FC848} 
+
+_REMOTE_IP=127.0.0.1
+id={AA550D31-0766-4996-8633-505CBA6FC848}
+parentId=root
+[5] 2018-07-12 2:21:51 PM # [127.0.0.1] PUT POST/Pub/Pages/{AA550D31-0766-4996-8633-505CBA6FC848} 
+
+_REMOTE_IP=127.0.0.1
+id={AA550D31-0766-4996-8633-505CBA6FC848}
+parentId=root
+[6] 2018-07-12 2:21:51 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:27:50 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:27:50 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:27:50 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:29:02 PM # [127.0.0.1] PUT POST/Pub/Pages/{0AFAFA71-DD0B-4080-9DD0-F2BC95F2820D} 
+
+_REMOTE_IP=127.0.0.1
+id={0AFAFA71-DD0B-4080-9DD0-F2BC95F2820D}
+parentId=root
+[5] 2018-07-12 2:29:02 PM # [127.0.0.1] PUT POST/Pub/Pages/{0AFAFA71-DD0B-4080-9DD0-F2BC95F2820D} 
+
+_REMOTE_IP=127.0.0.1
+id={0AFAFA71-DD0B-4080-9DD0-F2BC95F2820D}
+parentId=root
+[6] 2018-07-12 2:29:02 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:30:32 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:30:32 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:30:32 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:30:37 PM # [127.0.0.1] PUT POST/Pub/Pages/{887B76C6-1D5A-423F-AC4B-F27E0C90B183} 
+
+_REMOTE_IP=127.0.0.1
+id={887B76C6-1D5A-423F-AC4B-F27E0C90B183}
+parentId=root
+[5] 2018-07-12 2:30:37 PM # [127.0.0.1] PUT POST/Pub/Pages/{887B76C6-1D5A-423F-AC4B-F27E0C90B183} 
+
+_REMOTE_IP=127.0.0.1
+id={887B76C6-1D5A-423F-AC4B-F27E0C90B183}
+parentId=root
+[6] 2018-07-12 2:30:37 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:31:18 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:31:18 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:31:18 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:31:26 PM # [127.0.0.1] PUT POST/Pub/Pages/{EEF7E437-4D79-4B96-88DC-ED38D3C3F7A4} 
+
+_REMOTE_IP=127.0.0.1
+id={EEF7E437-4D79-4B96-88DC-ED38D3C3F7A4}
+parentId=root
+[5] 2018-07-12 2:31:26 PM # [127.0.0.1] PUT POST/Pub/Pages/{EEF7E437-4D79-4B96-88DC-ED38D3C3F7A4} 
+
+_REMOTE_IP=127.0.0.1
+id={EEF7E437-4D79-4B96-88DC-ED38D3C3F7A4}
+parentId=root
+[6] 2018-07-12 2:31:26 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:37:17 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:37:17 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:37:17 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:37:20 PM # [127.0.0.1] PUT POST/Pub/Pages/{96249C31-B7B9-449A-A4E2-994177AD75FE} 
+
+_REMOTE_IP=127.0.0.1
+id={96249C31-B7B9-449A-A4E2-994177AD75FE}
+parentId=root
+[5] 2018-07-12 2:37:21 PM # [127.0.0.1] PUT POST/Pub/Pages/{96249C31-B7B9-449A-A4E2-994177AD75FE} 
+
+_REMOTE_IP=127.0.0.1
+id={96249C31-B7B9-449A-A4E2-994177AD75FE}
+parentId=root
+[6] 2018-07-12 2:37:21 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-12 2:37:23 PM # [127.0.0.1] PUT POST/Pub/Pages/{D5DA1870-2B75-488B-ACAF-28FB44B94FD9} 
+
+_REMOTE_IP=127.0.0.1
+id={D5DA1870-2B75-488B-ACAF-28FB44B94FD9}
+parentId=root
+[8] 2018-07-12 2:37:23 PM # [127.0.0.1] PUT POST/Pub/Pages/{D5DA1870-2B75-488B-ACAF-28FB44B94FD9} 
+
+_REMOTE_IP=127.0.0.1
+id={D5DA1870-2B75-488B-ACAF-28FB44B94FD9}
+parentId=root
+[9] 2018-07-12 2:37:23 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[10] 2018-07-12 2:37:23 PM # [127.0.0.1] PUT POST/Pub/Pages/{B603C085-2B25-414D-9FEE-EEA6886A4D78} 
+
+_REMOTE_IP=127.0.0.1
+id={B603C085-2B25-414D-9FEE-EEA6886A4D78}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[11] 2018-07-12 2:37:23 PM # [127.0.0.1] PUT POST/Pub/Pages/{B603C085-2B25-414D-9FEE-EEA6886A4D78} 
+
+_REMOTE_IP=127.0.0.1
+id={B603C085-2B25-414D-9FEE-EEA6886A4D78}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[12] 2018-07-12 2:37:23 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[13] 2018-07-12 2:37:25 PM # [127.0.0.1] PUT POST/Pub/Pages/{3111C7C2-9D79-433F-947C-5DC497CB96C9} 
+
+_REMOTE_IP=127.0.0.1
+id={3111C7C2-9D79-433F-947C-5DC497CB96C9}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[14] 2018-07-12 2:37:25 PM # [127.0.0.1] PUT POST/Pub/Pages/{3111C7C2-9D79-433F-947C-5DC497CB96C9} 
+
+_REMOTE_IP=127.0.0.1
+id={3111C7C2-9D79-433F-947C-5DC497CB96C9}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[15] 2018-07-12 2:37:25 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[16] 2018-07-12 2:37:26 PM # [127.0.0.1] PUT POST/Pub/Pages/{42A82480-BE3A-40EB-9218-4B9FD3A09351} 
+
+_REMOTE_IP=127.0.0.1
+id={42A82480-BE3A-40EB-9218-4B9FD3A09351}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[17] 2018-07-12 2:37:26 PM # [127.0.0.1] PUT POST/Pub/Pages/{42A82480-BE3A-40EB-9218-4B9FD3A09351} 
+
+_REMOTE_IP=127.0.0.1
+id={42A82480-BE3A-40EB-9218-4B9FD3A09351}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[18] 2018-07-12 2:37:26 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:38:30 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:38:30 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:38:30 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:38:34 PM # [127.0.0.1] PUT POST/Pub/Pages/{5293AF54-0C4C-498C-A284-2ECBCC70EF6E} 
+
+_REMOTE_IP=127.0.0.1
+id={5293AF54-0C4C-498C-A284-2ECBCC70EF6E}
+parentId=root
+[5] 2018-07-12 2:38:34 PM # [127.0.0.1] PUT POST/Pub/Pages/{5293AF54-0C4C-498C-A284-2ECBCC70EF6E} 
+
+_REMOTE_IP=127.0.0.1
+id={5293AF54-0C4C-498C-A284-2ECBCC70EF6E}
+parentId=root
+[6] 2018-07-12 2:38:34 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:39:39 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:39:39 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:39:39 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:39:46 PM # [127.0.0.1] PUT POST/Pub/Pages/{62523F97-F3DF-495A-98FC-EE9346B9CFAF} 
+
+_REMOTE_IP=127.0.0.1
+id={62523F97-F3DF-495A-98FC-EE9346B9CFAF}
+parentId=root
+[5] 2018-07-12 2:39:46 PM # [127.0.0.1] PUT POST/Pub/Pages/{62523F97-F3DF-495A-98FC-EE9346B9CFAF} 
+
+_REMOTE_IP=127.0.0.1
+id={62523F97-F3DF-495A-98FC-EE9346B9CFAF}
+parentId=root
+[6] 2018-07-12 2:39:46 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:41:01 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:41:01 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:41:01 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:41:12 PM # [127.0.0.1] PUT POST/Pub/Pages/{E85ED67E-BFD2-432A-B8C7-8D74B9768E60} 
+
+_REMOTE_IP=127.0.0.1
+id={E85ED67E-BFD2-432A-B8C7-8D74B9768E60}
+parentId=root
+[5] 2018-07-12 2:41:12 PM # [127.0.0.1] PUT POST/Pub/Pages/{E85ED67E-BFD2-432A-B8C7-8D74B9768E60} 
+
+_REMOTE_IP=127.0.0.1
+id={E85ED67E-BFD2-432A-B8C7-8D74B9768E60}
+parentId=root
+[6] 2018-07-12 2:41:12 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:43:21 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:43:21 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:43:21 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:43:23 PM # [127.0.0.1] PUT POST/Pub/Pages/{B00898DD-94E4-4B0B-9022-A93037C738CB} 
+
+_REMOTE_IP=127.0.0.1
+id={B00898DD-94E4-4B0B-9022-A93037C738CB}
+parentId=root
+[5] 2018-07-12 2:43:23 PM # [127.0.0.1] PUT POST/Pub/Pages/{B00898DD-94E4-4B0B-9022-A93037C738CB} 
+
+_REMOTE_IP=127.0.0.1
+id={B00898DD-94E4-4B0B-9022-A93037C738CB}
+parentId=root
+[6] 2018-07-12 2:43:23 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-12 2:43:47 PM # [127.0.0.1] PUT POST/Pub/Pages/{A99C366A-36E7-4687-865A-40A732D9816A} 
+
+_REMOTE_IP=127.0.0.1
+id={A99C366A-36E7-4687-865A-40A732D9816A}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[8] 2018-07-12 2:43:47 PM # [127.0.0.1] PUT POST/Pub/Pages/{A99C366A-36E7-4687-865A-40A732D9816A} 
+
+_REMOTE_IP=127.0.0.1
+id={A99C366A-36E7-4687-865A-40A732D9816A}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[9] 2018-07-12 2:43:47 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:46:45 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:46:45 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:46:45 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:46:59 PM # [127.0.0.1] PUT POST/Pub/Pages/{FEB2E43C-AC39-497E-9349-F73A4F209F78} 
+
+_REMOTE_IP=127.0.0.1
+id={FEB2E43C-AC39-497E-9349-F73A4F209F78}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:46:59 PM # [127.0.0.1] PUT POST/Pub/Pages/{FEB2E43C-AC39-497E-9349-F73A4F209F78} 
+
+_REMOTE_IP=127.0.0.1
+id={FEB2E43C-AC39-497E-9349-F73A4F209F78}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:46:59 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:47:18 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:47:18 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:47:18 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:47:20 PM # [127.0.0.1] PUT POST/Pub/Pages/{1726E1A4-5539-4042-B709-52A85581012E} 
+
+_REMOTE_IP=127.0.0.1
+id={1726E1A4-5539-4042-B709-52A85581012E}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:47:20 PM # [127.0.0.1] PUT POST/Pub/Pages/{1726E1A4-5539-4042-B709-52A85581012E} 
+
+_REMOTE_IP=127.0.0.1
+id={1726E1A4-5539-4042-B709-52A85581012E}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:47:20 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:48:42 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:48:42 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:48:42 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:48:44 PM # [127.0.0.1] PUT POST/Pub/Pages/{FFC65712-E7AE-47FF-9CB6-77B65E372601} 
+
+_REMOTE_IP=127.0.0.1
+id={FFC65712-E7AE-47FF-9CB6-77B65E372601}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:48:44 PM # [127.0.0.1] PUT POST/Pub/Pages/{FFC65712-E7AE-47FF-9CB6-77B65E372601} 
+
+_REMOTE_IP=127.0.0.1
+id={FFC65712-E7AE-47FF-9CB6-77B65E372601}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:48:44 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:51:21 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:51:21 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:51:21 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:51:28 PM # [127.0.0.1] PUT POST/Pub/Pages/{AEA0DC90-D06A-4F0F-91C4-3AC0AA37A8EB} 
+
+_REMOTE_IP=127.0.0.1
+id={AEA0DC90-D06A-4F0F-91C4-3AC0AA37A8EB}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:51:28 PM # [127.0.0.1] PUT POST/Pub/Pages/{AEA0DC90-D06A-4F0F-91C4-3AC0AA37A8EB} 
+
+_REMOTE_IP=127.0.0.1
+id={AEA0DC90-D06A-4F0F-91C4-3AC0AA37A8EB}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:51:28 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:52:25 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:52:25 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:52:25 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:52:34 PM # [127.0.0.1] PUT POST/Pub/Pages/{01E58D21-6DD5-49F6-B4D7-8F161FC965C1} 
+
+_REMOTE_IP=127.0.0.1
+id={01E58D21-6DD5-49F6-B4D7-8F161FC965C1}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:52:34 PM # [127.0.0.1] PUT POST/Pub/Pages/{01E58D21-6DD5-49F6-B4D7-8F161FC965C1} 
+
+_REMOTE_IP=127.0.0.1
+id={01E58D21-6DD5-49F6-B4D7-8F161FC965C1}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:52:34 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:56:56 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:56:56 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:56:56 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:57:02 PM # [127.0.0.1] PUT POST/Pub/Pages/{B2664BF3-CF1E-4B97-8508-CDF4EB08BD20} 
+
+_REMOTE_IP=127.0.0.1
+id={B2664BF3-CF1E-4B97-8508-CDF4EB08BD20}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:57:02 PM # [127.0.0.1] PUT POST/Pub/Pages/{B2664BF3-CF1E-4B97-8508-CDF4EB08BD20} 
+
+_REMOTE_IP=127.0.0.1
+id={B2664BF3-CF1E-4B97-8508-CDF4EB08BD20}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:57:02 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-12 2:57:19 PM # [127.0.0.1] PUT POST/Pub/Pages/{4C7FA94C-CEA4-472C-9C9C-A880F9D2D53C} 
+
+_REMOTE_IP=127.0.0.1
+id={4C7FA94C-CEA4-472C-9C9C-A880F9D2D53C}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[8] 2018-07-12 2:57:19 PM # [127.0.0.1] PUT POST/Pub/Pages/{4C7FA94C-CEA4-472C-9C9C-A880F9D2D53C} 
+
+_REMOTE_IP=127.0.0.1
+id={4C7FA94C-CEA4-472C-9C9C-A880F9D2D53C}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[9] 2018-07-12 2:57:19 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:58:26 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:58:26 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:58:26 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 2:58:29 PM # [127.0.0.1] PUT POST/Pub/Pages/{2809EDFD-B022-44D9-B568-DE879928F3F3} 
+
+_REMOTE_IP=127.0.0.1
+id={2809EDFD-B022-44D9-B568-DE879928F3F3}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 2:58:29 PM # [127.0.0.1] PUT POST/Pub/Pages/{2809EDFD-B022-44D9-B568-DE879928F3F3} 
+
+_REMOTE_IP=127.0.0.1
+id={2809EDFD-B022-44D9-B568-DE879928F3F3}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 2:58:29 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 2:59:55 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 2:59:55 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 2:59:55 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 3:00:11 PM # [127.0.0.1] PUT POST/Pub/Pages/{FAF8A557-952C-470F-A73E-265D491231F6} 
+
+_REMOTE_IP=127.0.0.1
+id={FAF8A557-952C-470F-A73E-265D491231F6}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 3:00:11 PM # [127.0.0.1] PUT POST/Pub/Pages/{FAF8A557-952C-470F-A73E-265D491231F6} 
+
+_REMOTE_IP=127.0.0.1
+id={FAF8A557-952C-470F-A73E-265D491231F6}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 3:00:11 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 3:00:54 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 3:00:54 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 3:00:54 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 3:00:58 PM # [127.0.0.1] PUT POST/Pub/Pages/{3C2D8C18-DF1E-4FB0-BD30-C0BD2326A3E2} 
+
+_REMOTE_IP=127.0.0.1
+id={3C2D8C18-DF1E-4FB0-BD30-C0BD2326A3E2}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 3:00:58 PM # [127.0.0.1] PUT POST/Pub/Pages/{3C2D8C18-DF1E-4FB0-BD30-C0BD2326A3E2} 
+
+_REMOTE_IP=127.0.0.1
+id={3C2D8C18-DF1E-4FB0-BD30-C0BD2326A3E2}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 3:00:58 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 3:04:05 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 3:04:05 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 3:04:05 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 3:04:10 PM # [127.0.0.1] PUT POST/Pub/Pages/{369EC239-6948-443B-BE54-170A4F6009B0} 
+
+_REMOTE_IP=127.0.0.1
+id={369EC239-6948-443B-BE54-170A4F6009B0}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 3:04:10 PM # [127.0.0.1] PUT POST/Pub/Pages/{369EC239-6948-443B-BE54-170A4F6009B0} 
+
+_REMOTE_IP=127.0.0.1
+id={369EC239-6948-443B-BE54-170A4F6009B0}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 3:04:10 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 3:05:43 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 3:05:43 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 3:05:43 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 3:05:50 PM # [127.0.0.1] PUT POST/Pub/Pages/{EA2E4DDA-4595-468C-B562-FFC79B1AEA17} 
+
+_REMOTE_IP=127.0.0.1
+id={EA2E4DDA-4595-468C-B562-FFC79B1AEA17}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 3:05:50 PM # [127.0.0.1] PUT POST/Pub/Pages/{EA2E4DDA-4595-468C-B562-FFC79B1AEA17} 
+
+_REMOTE_IP=127.0.0.1
+id={EA2E4DDA-4595-468C-B562-FFC79B1AEA17}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 3:05:50 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 3:08:20 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 3:08:20 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 3:08:20 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 3:08:24 PM # [127.0.0.1] PUT POST/Pub/Pages/{5CA1F91D-2AF6-4B7B-ADA9-D6714FC25BFD} 
+
+_REMOTE_IP=127.0.0.1
+id={5CA1F91D-2AF6-4B7B-ADA9-D6714FC25BFD}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 3:08:24 PM # [127.0.0.1] PUT POST/Pub/Pages/{5CA1F91D-2AF6-4B7B-ADA9-D6714FC25BFD} 
+
+_REMOTE_IP=127.0.0.1
+id={5CA1F91D-2AF6-4B7B-ADA9-D6714FC25BFD}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 3:08:24 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 3:13:12 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 3:13:12 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 3:13:12 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 3:13:16 PM # [127.0.0.1] PUT POST/Pub/Pages/{EF432AF6-C579-4504-8749-7D611052D5FC} 
+
+_REMOTE_IP=127.0.0.1
+id={EF432AF6-C579-4504-8749-7D611052D5FC}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 3:13:16 PM # [127.0.0.1] PUT POST/Pub/Pages/{EF432AF6-C579-4504-8749-7D611052D5FC} 
+
+_REMOTE_IP=127.0.0.1
+id={EF432AF6-C579-4504-8749-7D611052D5FC}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 3:13:16 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[4] 2018-07-12 3:13:27 PM # ERROR InsertQuery (POST/Pub/Pages/{EF432AF6-C579-4504-8749-7D611052D5FC}): Parameter object is improperly defined. Inconsistent or incomplete information was provided
+Parameter object is improperly defined. Inconsistent or incomplete information was provided
+(00101206){MXP_App_Worker.dll} [046C2206] ADODB.TParameters.AppendParameters (Line 2583, "ADODB.pas" + 13) + $2A
+(001031E4){MXP_App_Worker.dll} [046C41E4] ADODB.TADOCommand.Initialize (Line 3303, "ADODB.pas" + 19) + $3
+(00103B94){MXP_App_Worker.dll} [046C4B94] ADODB.InitializeConnection (Line 3548, "ADODB.pas" + 10) + $C
+(00103E99){MXP_App_Worker.dll} [046C4E99] ADODB.TCustomADODataSet.OpenCursor (Line 3592, "ADODB.pas" + 3) + $1
+(000F190D){MXP_App_Worker.dll} [046B290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [046B2754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [04783EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(002050A8){MXP_App_Worker.dll} [047C60A8] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+id={EF432AF6-C579-4504-8749-7D611052D5FC}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+_rowid={EF432AF6-C579-4504-8749-7D611052D5FC}
+_environment=D
+_method=POST
+
+[5] 2018-07-12 3:13:27 PM # ERROR InsertQuery (POST/Pub/Pages/{EF432AF6-C579-4504-8749-7D611052D5FC}): OLE error 800A0E7C
+OLE error 800A0E7C
+(00101206){MXP_App_Worker.dll} [046C2206] ADODB.TParameters.AppendParameters (Line 2583, "ADODB.pas" + 13) + $2A
+(001031E4){MXP_App_Worker.dll} [046C41E4] ADODB.TADOCommand.Initialize (Line 3303, "ADODB.pas" + 19) + $3
+(00103B94){MXP_App_Worker.dll} [046C4B94] ADODB.InitializeConnection (Line 3548, "ADODB.pas" + 10) + $C
+(00103E99){MXP_App_Worker.dll} [046C4E99] ADODB.TCustomADODataSet.OpenCursor (Line 3592, "ADODB.pas" + 3) + $1
+(000F190D){MXP_App_Worker.dll} [046B290D] DB.TDataSet.SetActive (Line 11310, "DB.pas" + 12) + $7
+(000F1754){MXP_App_Worker.dll} [046B2754] DB.TDataSet.Open (Line 11266, "DB.pas" + 0) + $4
+(001C2EB8){MXP_App_Worker.dll} [04783EB8] mxDataRequest.HandleAppRequest (Line 544, "mxDataRequest.pas" + 86) + $1D
+(002050A8){MXP_App_Worker.dll} [047C60A8] MXP_App_Worker.HandleRequest (Line 146, "MXP_App_Worker.dpr" + 12) + $36
+
+
+_REMOTE_IP=127.0.0.1
+id={EF432AF6-C579-4504-8749-7D611052D5FC}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+_rowid={EF432AF6-C579-4504-8749-7D611052D5FC}
+_environment=D
+_method=POST
+
+[1] 2018-07-12 3:17:04 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 3:17:04 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 3:17:04 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 3:17:05 PM # [127.0.0.1] PUT POST/Pub/Pages/{34603D9B-33D1-492D-AAFC-5FDE7FE23D70} 
+
+_REMOTE_IP=127.0.0.1
+id={34603D9B-33D1-492D-AAFC-5FDE7FE23D70}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 3:17:05 PM # [127.0.0.1] PUT POST/Pub/Pages/{34603D9B-33D1-492D-AAFC-5FDE7FE23D70} 
+
+_REMOTE_IP=127.0.0.1
+id={34603D9B-33D1-492D-AAFC-5FDE7FE23D70}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 3:17:05 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 3:19:08 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 3:19:08 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 3:19:08 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 3:19:10 PM # [127.0.0.1] PUT POST/Pub/Pages/{8AB6EAED-4EE9-4F05-8C25-50762161CD56} 
+
+_REMOTE_IP=127.0.0.1
+id={8AB6EAED-4EE9-4F05-8C25-50762161CD56}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 3:19:11 PM # [127.0.0.1] PUT POST/Pub/Pages/{8AB6EAED-4EE9-4F05-8C25-50762161CD56} 
+
+_REMOTE_IP=127.0.0.1
+id={8AB6EAED-4EE9-4F05-8C25-50762161CD56}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 3:19:11 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 3:21:59 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 3:21:59 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 3:21:59 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 3:22:10 PM # [127.0.0.1] PUT POST/Pub/Pages/{4AFBC48B-0B85-45EE-A361-1C2BB7939B30} 
+
+_REMOTE_IP=127.0.0.1
+id={4AFBC48B-0B85-45EE-A361-1C2BB7939B30}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 3:22:10 PM # [127.0.0.1] PUT POST/Pub/Pages/{4AFBC48B-0B85-45EE-A361-1C2BB7939B30} 
+
+_REMOTE_IP=127.0.0.1
+id={4AFBC48B-0B85-45EE-A361-1C2BB7939B30}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 3:22:10 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 3:24:39 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 3:24:39 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 3:24:39 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 3:24:44 PM # [127.0.0.1] PUT POST/Pub/Pages/{491BFB99-11E9-4982-A011-D9BFCF644893} 
+
+_REMOTE_IP=127.0.0.1
+id={491BFB99-11E9-4982-A011-D9BFCF644893}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 3:24:44 PM # [127.0.0.1] PUT POST/Pub/Pages/{491BFB99-11E9-4982-A011-D9BFCF644893} 
+
+_REMOTE_IP=127.0.0.1
+id={491BFB99-11E9-4982-A011-D9BFCF644893}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 3:24:44 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[7] 2018-07-12 3:25:02 PM # [127.0.0.1] PUT POST/Pub/Pages/{CB4B822A-A22D-48AD-974A-6F0AD6F9A920} 
+
+_REMOTE_IP=127.0.0.1
+id={CB4B822A-A22D-48AD-974A-6F0AD6F9A920}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[8] 2018-07-12 3:25:02 PM # [127.0.0.1] PUT POST/Pub/Pages/{CB4B822A-A22D-48AD-974A-6F0AD6F9A920} 
+
+_REMOTE_IP=127.0.0.1
+id={CB4B822A-A22D-48AD-974A-6F0AD6F9A920}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[9] 2018-07-12 3:25:02 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 3:28:23 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 3:28:23 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 3:28:23 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 3:28:28 PM # [127.0.0.1] PUT POST/Pub/Pages/{03C914D3-1E32-4142-8821-63808E22A81C} 
+
+_REMOTE_IP=127.0.0.1
+id={03C914D3-1E32-4142-8821-63808E22A81C}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 3:28:28 PM # [127.0.0.1] PUT POST/Pub/Pages/{03C914D3-1E32-4142-8821-63808E22A81C} 
+
+_REMOTE_IP=127.0.0.1
+id={03C914D3-1E32-4142-8821-63808E22A81C}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 3:28:28 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
+[1] 2018-07-12 3:30:12 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[2] 2018-07-12 3:30:12 PM # ------ Client version file not found in C:\Users\jerne\Documents\GitHub\eLearning\bin\..\websource\compile\deploy\pkg-mx-it.js
+[3] 2018-07-12 3:30:12 PM # ------ Client version  from C:\Users\jerne\Documents\GitHub\eLearning\bin\pkg-mx-it.js
+[4] 2018-07-12 3:30:14 PM # [127.0.0.1] PUT POST/Pub/Pages/{5DCFB2C3-3ECF-41F5-837C-7300F8E52274} 
+
+_REMOTE_IP=127.0.0.1
+id={5DCFB2C3-3ECF-41F5-837C-7300F8E52274}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[5] 2018-07-12 3:30:14 PM # [127.0.0.1] PUT POST/Pub/Pages/{5DCFB2C3-3ECF-41F5-837C-7300F8E52274} 
+
+_REMOTE_IP=127.0.0.1
+id={5DCFB2C3-3ECF-41F5-837C-7300F8E52274}
+content={"components":[{"type":"title","cls":["title"],"html":"Section New Section","height":50,"width":700,"x":50,"y":50,"options":[],"multi":false,"src":"","style":null}]}
+parentId=root
+[6] 2018-07-12 3:30:14 PM # [127.0.0.1] GET Pub/Pages/root 
+
+_REMOTE_IP=127.0.0.1
