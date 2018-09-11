@@ -1,0 +1,20 @@
+{
+    "type": "jsresource",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userClassName": "js_kqw5p4dk",
+        "includeInBundle": true,
+        "url": "functions/lz-string.js"
+    },
+    "configAlternates": {
+        "designer|userClassName": "string",
+        "includeInBundle": "boolean",
+        "url": "uri"
+    },
+    "name": "js4",
+    "designerId": "53f7ed97-700b-40b3-8218-506dfcfa2412"
+}

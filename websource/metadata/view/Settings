@@ -1,0 +1,80 @@
+{
+    "type": "Ext.window.Window",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "settings",
+        "designer|userClassName": "Settings",
+        "layout": "fit",
+        "modal": true,
+        "title": "Settings",
+        "width": 500
+    },
+    "configAlternates": {
+        "designer|userAlias": "string",
+        "designer|userClassName": "string",
+        "title": "string",
+        "layout": "string",
+        "modal": "boolean",
+        "width": "auto"
+    },
+    "name": "MyWindow",
+    "designerId": "a06f4a81-3d08-44cc-96ce-55a30c1537ab",
+    "viewControllerInstanceId": "1f47b75a-2b62-4c50-afcd-3d14b8bbcd6c",
+    "viewModelInstanceId": "b35f598b-7457-4f3b-b1a8-4255980009bb",
+    "cn": [
+        {
+            "type": "Ext.grid.property.Grid",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "padding": 20,
+                "reference": "pageSetup",
+                "source": [
+                    "{\"Property 1\":\"String\",\"Property 2\":true,\"Property 3\":\"2018-03-08T14:09:40\",\"Property 4\":123}"
+                ],
+                "title": "Page Setup"
+            },
+            "configAlternates": {
+                "source": "object",
+                "title": "string",
+                "padding": "auto",
+                "reference": "string"
+            },
+            "name": "MyPropertyGrid",
+            "designerId": "51e28c7f-2745-4e12-a173-b027b3a4da9b",
+            "cn": [
+                {
+                    "type": "viewcontrollereventbinding",
+                    "reference": {
+                        "name": "listeners",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "fn": "onPropertygridPropertyChange",
+                        "implHandler": [
+                            "this._opts.scope.getController().saveState();"
+                        ],
+                        "name": "propertychange",
+                        "scope": "me"
+                    },
+                    "configAlternates": {
+                        "fn": "string",
+                        "name": "string",
+                        "scope": "string",
+                        "implHandler": "code"
+                    },
+                    "name": "onPropertygridPropertyChange",
+                    "designerId": "4af30fae-92a8-474b-996a-b3a7fc31e665"
+                }
+            ]
+        }
+    ]
+}

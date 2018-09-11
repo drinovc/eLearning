@@ -1,0 +1,245 @@
+{
+    "type": "Ext.window.Window",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "certificate",
+        "designer|userClassName": "Certificate",
+        "dock": null,
+        "height": 400,
+        "layout": "fit",
+        "maximizable": true,
+        "modal": true,
+        "title": "Certificate",
+        "width": 500
+    },
+    "configAlternates": {
+        "designer|userAlias": "string",
+        "designer|userClassName": "string",
+        "height": "auto",
+        "width": "auto",
+        "container|align": "string",
+        "container|pack": "string",
+        "layout": "string",
+        "modal": "boolean",
+        "dock": "string",
+        "title": "string",
+        "maximizable": "boolean"
+    },
+    "designerId": "8f49ec7c-b00a-4f5c-aae7-9675502e1985",
+    "viewControllerInstanceId": "e4fbc0c4-75dd-4fec-be7e-766c987563bf",
+    "viewModelInstanceId": "9b49ddb7-5d60-465f-9ffc-7a8b8075297b",
+    "cn": [
+        {
+            "type": "Ext.toolbar.Toolbar",
+            "reference": {
+                "name": "dockedItems",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dock": "top"
+            },
+            "configAlternates": {
+                "dock": "string"
+            },
+            "name": "MyToolbar1",
+            "designerId": "dc861d16-33ec-4ba2-8a0d-38a359bf1747",
+            "cn": [
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "layout|flex": null,
+                        "text": "Print"
+                    },
+                    "configAlternates": {
+                        "layout|flex": "number",
+                        "text": "string"
+                    },
+                    "name": "MyButton24",
+                    "designerId": "74551f9e-93d9-4dd1-8bbe-948b5df84fe4",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "designer|viewControllerFn": "printCertificate",
+                                "fn": "handler",
+                                "implHandler": [
+                                    "var prtContent = Ext.getCmp('certificateContainer');",
+                                    "var WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');",
+                                    "//WinPrint.document.write(prtContent.el.dom.innerHTML);",
+                                    "",
+                                    "",
+                                    "/*",
+                                    "html2canvas(refs.panelContent.el.dom,",
+                                    "\t\t\t{",
+                                    "\tscale:0.1",
+                                    "}).then(canvas => {",
+                                    "",
+                                    "    //document.body.appendChild(canvas);",
+                                    "\t//print(\"canvas\",   btoa(canvas.toDataURL('image/png', 0.1)));",
+                                    "\tvar dataURL = canvas.toDataURL('image/jpeg', 0.5);",
+                                    "",
+                                    "\tvar currentSlide = me.getCurrentSlide();",
+                                    "\tvar rec = me.getStore(\"TreeStoreSlides\").findRecord('id', currentSlide.data.id);",
+                                    "",
+                                    "\tvar content =  Ext.decode(rec.data.content);",
+                                    "\tcontent.thumbnail = LZString.compressToEncodedURIComponent(dataURL);",
+                                    "\trec.data.content = Ext.encode(content);",
+                                    "",
+                                    "\trec.phantom = true;",
+                                    "",
+                                    "\tprint(\"printing record\", rec);",
+                                    "",
+                                    "",
+                                    "\tvar blob = dataURItoBlob(dataURL);",
+                                    "",
+                                    "",
+                                    "\t",
+                                    "\tvar img = new Image();",
+                                    "\timg.src = URL.createObjectURL(blob);",
+                                    "\tWinPrint.document.write(img);",
+                                    "",
+                                    "});",
+                                    "*/",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "//example of writing",
+                                    "WinPrint.document.write('<link rel=\"stylesheet\" type=\"text/css\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\">');",
+                                    "//Our css??",
+                                    "//WinPrint.document.write('<link rel=\"stylesheet\" type=\"text/css\" href=\"http://localhost:98/build/development/eLearning/resources/eLearning-all.css\">');",
+                                    "",
+                                    "",
+                                    "WinPrint.document.close();",
+                                    "WinPrint.focus();",
+                                    "WinPrint.print();",
+                                    "//WinPrint.close();",
+                                    "",
+                                    "//Be careful if the div that you're printing with this code requires any CSS to render they way you want.",
+                                    "//If it does you'll have to make sure you add it to the page as well using WinPrint.document.write(cssLinkTag)",
+                                    ""
+                                ]
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "designer|viewControllerFn": "string",
+                                "fn": "string",
+                                "implHandler": "code"
+                            },
+                            "name": "handler",
+                            "designerId": "e8fc4799-6f6a-4fc8-ac00-ff7924c62013"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "Ext.container.Container",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "container|align": "center",
+                "container|pack": "center",
+                "id": "certificateContainer",
+                "itemId": "certificateContainer",
+                "layout": "vbox"
+            },
+            "configAlternates": {
+                "container|align": "string",
+                "container|pack": "string",
+                "id": "string",
+                "itemId": "string",
+                "layout": "string"
+            },
+            "name": "MyContainer6",
+            "designerId": "3421746f-41db-40fc-a162-780dc8b7e3d0",
+            "cn": [
+                {
+                    "type": "Ext.form.Label",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "text": "Certificate"
+                    },
+                    "configAlternates": {
+                        "text": "string"
+                    },
+                    "name": "MyLabel1",
+                    "designerId": "6c7e5a0f-5955-4a34-8cfa-e48fe2697b0d"
+                },
+                {
+                    "type": "Ext.form.Label",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "id": "reciever",
+                        "itemId": "reciever",
+                        "text": "Name Surname"
+                    },
+                    "configAlternates": {
+                        "text": "string",
+                        "id": "string",
+                        "itemId": "string"
+                    },
+                    "name": "MyLabel2",
+                    "designerId": "b88e2425-1878-4a4b-b060-5292a8893583"
+                },
+                {
+                    "type": "Ext.form.Label",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "id": "certificateName",
+                        "itemId": "certificateName",
+                        "text": "Certificate Name"
+                    },
+                    "configAlternates": {
+                        "text": "string",
+                        "id": "string",
+                        "itemId": "string"
+                    },
+                    "name": "MyLabel3",
+                    "designerId": "3eeca34d-ffa0-4d71-9dea-aec22ba57e2a"
+                }
+            ]
+        }
+    ]
+}

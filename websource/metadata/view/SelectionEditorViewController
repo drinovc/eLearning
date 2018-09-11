@@ -1,0 +1,62 @@
+{
+    "type": "Ext.app.ViewController",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "selectioneditor",
+        "designer|userClassName": "SelectionEditorViewController"
+    },
+    "configAlternates": {
+        "designer|userAlias": "string",
+        "designer|userClassName": "string"
+    },
+    "designerId": "fd4364a5-1e7b-4c05-9cb2-de79648c2469",
+    "cn": [
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "opts"
+                ],
+                "fn": "show",
+                "implHandler": [
+                    "opts = Ext.applyIf(opts, {",
+                    "    text: '',",
+                    "    options: [],",
+                    "    callback: function(value) { console.warn('Please specify a callback!', value); },",
+                    "    scope: this",
+                    "});",
+                    "",
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    view = me.getView();",
+                    "",
+                    "me._opts = opts;",
+                    "",
+                    "if(opts.options) {",
+                    "    me.getStore('StoreOptions').setData(Ext.clone(opts.options));",
+                    "}",
+                    "refs.text.setValue(opts.text);",
+                    "",
+                    "view.show();",
+                    "opts.scope.currentlyEditing = true;"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "show",
+            "designerId": "2f8d92d2-4163-489c-97ac-094d234a8bce"
+        }
+    ]
+}

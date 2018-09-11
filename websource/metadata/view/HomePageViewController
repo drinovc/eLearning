@@ -1,0 +1,221 @@
+{
+    "type": "Ext.app.ViewController",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "homepage",
+        "designer|userClassName": "HomePageViewController"
+    },
+    "configAlternates": {
+        "designer|userAlias": "string",
+        "designer|userClassName": "string"
+    },
+    "designerId": "fab9b3e0-2e83-416b-805f-a20803425381",
+    "cn": [
+        {
+            "type": "Ext.route.Route",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "triggerTrainingPrograms",
+                "implHandler": [
+                    "var me = this,",
+                    "\tmainView = me.getView().up('#mainView'),",
+                    "\tnewActiveItem = mainView.setActiveItem('gridPrograms');",
+                    "",
+                    "// loading this programs edit slides",
+                    "newActiveItem.getController().load();"
+                ],
+                "name": "routeTrainingPrograms",
+                "url": "training-programs"
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code",
+                "name": "string",
+                "url": "string"
+            },
+            "name": "triggerTrainingPrograms",
+            "designerId": "fcc68265-15b9-4c12-b98a-c929b13c2ee2"
+        },
+        {
+            "type": "Ext.route.Route",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "id"
+                ],
+                "fn": "triggerEditPages",
+                "implHandler": [
+                    "var me = this;",
+                    "",
+                    "if(navigator.onLine){",
+                    "Ext.Promise.all([",
+                    "\tgetAjax('/Pub/Programs', {}, 'Programs')",
+                    "]).then(function(data) {",
+                    "",
+                    "\tvar records = data[0].data;",
+                    "",
+                    "\tid = ('{' + id + '}') || (records.length? records[0].id : \"{BA8780A3-9D57-40D5-8623-7033A31323D8}\");",
+                    "",
+                    "\tvar record;",
+                    "\tfor(var i = 0; i < records.length; i++){",
+                    "\t\tif(records[i].id == id){",
+                    "\t\t\trecord = records[i];",
+                    "\t\t}",
+                    "\t}",
+                    "\tif(!record){",
+                    "\t\tconsole.warn(\"Record doesn't exist - debug program. Refresh page to keep data in localstorage, not everything supported\");",
+                    "\t\trecord = {};",
+                    "\t\trecord.data ={",
+                    "\t\t\t\"active\":true,",
+                    "\t\t\t\"categoryId\":30231143,",
+                    "\t\t\t\"certificateFileName\":\"\",",
+                    "\t\t\t\"changed\":\"Y\",",
+                    "\t\t\t\"completionTime\":60,",
+                    "\t\t\t\"created\":\"2018-07-23T12:04:00\",",
+                    "\t\t\t\"createdAtId\":5,",
+                    "\t\t\t\"createdById\":0,",
+                    "\t\t\t\"description\":\"New Training Program Description\",",
+                    "\t\t\t\"id\":id,",
+                    "\t\t\t\"lastChangeLogId\":191175066,",
+                    "\t\t\t\"lastChanges\":\"2018-07-23T12:04:00\",",
+                    "\t\t\t\"maxAttemptsScoreMode\":1000,",
+                    "\t\t\t\"maxAttemptsTrainingMode\":1000,",
+                    "\t\t\t\"name\":\"First program\",",
+                    "\t\t\t\"passScore\":2,",
+                    "\t\t\t\"programId\":50000026,",
+                    "\t\t\t\"validFrom\":\"2018-07-23T00:00:00\",",
+                    "\t\t\t\"validTo\":\"2019-07-23T00:00:00\"",
+                    "\t\t};",
+                    "",
+                    "\t}",
+                    "\tvar mainView = me.getView().up('#mainView');",
+                    "\tvar newActiveItem = mainView.setActiveItem('editSlides');",
+                    "",
+                    "",
+                    "\t// initiating localstorage data for this program if it hasn't been yet",
+                    "\tvar localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));",
+                    "\tif(!localStorageData){",
+                    "\t\tlocalStorageData = {};",
+                    "\t}",
+                    "\tif(!localStorageData[id]){",
+                    "\t\tlocalStorageData[id] = {};",
+                    "\t}",
+                    "\tfor (var key in localStorageData[id]) {",
+                    "\t\tif(!localStorageData[id][key]){",
+                    "\t\t\tlocalStorageData[id][key]={};",
+                    "\t\t}",
+                    "\t}",
+                    "\tlocalStorage.setItem('mxp_elearning', Ext.encode(localStorageData));",
+                    "",
+                    "\tprint(\"reroiting when online data\", record);",
+                    "",
+                    "",
+                    "\t// loading this programs edit slides",
+                    "\tnewActiveItem.getController().load({ program :{",
+                    "\t\tdata: record,",
+                    "\t\tid :id",
+                    "\t} }); // with programId",
+                    "});",
+                    "}else{",
+                    "\t// if we are offline - get data from localStorage",
+                    "",
+                    "",
+                    "\tvar localStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),",
+                    "\t\tmainView = me.getView().up('#mainView'),",
+                    "\t\tnewActiveItem = mainView.setActiveItem('editSlides'),",
+                    "\t\tid = ('{' + id + '}'),",
+                    "",
+                    "\trecord = localStorageData[id].programInfo;",
+                    "",
+                    "\tprint(\"reroiting when offline data\", record);",
+                    "\tnewActiveItem.getController().load({",
+                    "\t\tprogram :{",
+                    "\t\t\tdata: record,",
+                    "\t\t\tid :id",
+                    "\t\t}",
+                    "\t}); ",
+                    "}"
+                ],
+                "name": "routeEditPages",
+                "url": "edit-pages/:id"
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code",
+                "name": "string",
+                "url": "string",
+                "designer|params": "typedarray"
+            },
+            "name": "triggerEditPages",
+            "designerId": "f4a03561-b8bd-4873-bc69-b008ed57bc0c",
+            "cn": [
+                {
+                    "type": "fixedfunction",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "designer|params": [
+                            "id",
+                            "action"
+                        ],
+                        "fn": "before",
+                        "implHandler": [
+                            "// insert check if user can access this program id",
+                            "",
+                            "",
+                            "// action.stop();",
+                            "// action.stop(true);",
+                            "action.resume();"
+                        ]
+                    },
+                    "configAlternates": {
+                        "designer|params": "typedarray",
+                        "fn": "string",
+                        "implHandler": "code"
+                    },
+                    "name": "before",
+                    "designerId": "19049ca0-ee1f-4bd3-9c08-3b19f8760c2c"
+                }
+            ]
+        },
+        {
+            "type": "Ext.route.Route",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "triggerHome",
+                "implHandler": [
+                    "this.getView().up('#mainView').setActiveItem('homePage');"
+                ],
+                "name": "routeHome",
+                "url": "home"
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code",
+                "name": "string",
+                "url": "string"
+            },
+            "name": "triggerHome",
+            "designerId": "fc295504-dca8-469a-a83d-4ca2cf29568d"
+        }
+    ]
+}

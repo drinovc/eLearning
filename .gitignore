@@ -1,5 +1,5 @@
 /build
-bootstrap.*
+
 classic.json*
 modern.json*
 .sencha
@@ -7,6 +7,14 @@ modern.json*
 /bin/logs
 
 
+
+
+
+/websource/build
+/websource/bootstrap.css
+/websource/classic.json*
+/websource/modern.json*
+/websource/.sencha
 
 
 # Uncomment these types if you want even more clean repository. But be careful.

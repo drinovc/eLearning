@@ -1,0 +1,524 @@
+{
+    "type": "Ext.window.Window",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "fileupload",
+        "designer|userClassName": "FileUpload",
+        "modal": true,
+        "title": "File Upload",
+        "width": 500
+    },
+    "configAlternates": {
+        "designer|userAlias": "string",
+        "designer|userClassName": "string",
+        "modal": "boolean",
+        "title": "string",
+        "width": "auto"
+    },
+    "name": "MyWindow",
+    "designerId": "79cefd09-2064-4b1b-b571-a7a34b3c3dfc",
+    "viewControllerInstanceId": "d8bc60af-8bda-4b05-95f4-005098638c92",
+    "viewModelInstanceId": "5ca88f9a-5089-41fb-94e9-45cd1b48dbff",
+    "cn": [
+        {
+            "type": "Ext.tab.Panel",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "activeTab": 0
+            },
+            "configAlternates": {
+                "activeTab": "auto"
+            },
+            "name": "MyTabPanel",
+            "designerId": "931294d2-477a-4190-81d9-599024db9ae3",
+            "cn": [
+                {
+                    "type": "Ext.panel.Panel",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "title": "From Computer"
+                    },
+                    "configAlternates": {
+                        "title": "string"
+                    },
+                    "name": "MyPanel",
+                    "designerId": "6c547831-1ce0-4359-af1b-515c9943fdcb",
+                    "cn": [
+                        {
+                            "type": "Ext.tab.Tab",
+                            "reference": {
+                                "name": "tabConfig",
+                                "type": "object"
+                            },
+                            "codeClass": null,
+                            "name": "TabConfig",
+                            "designerId": "cb679821-8194-42e5-9d35-9368e075a15b"
+                        },
+                        {
+                            "type": "Ext.form.Panel",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "bodyPadding": 10,
+                                "title": ""
+                            },
+                            "configAlternates": {
+                                "bodyPadding": "auto",
+                                "title": "string"
+                            },
+                            "name": "MyForm",
+                            "designerId": "e88afd46-6703-437e-952d-7b45ca875599",
+                            "cn": [
+                                {
+                                    "type": "Ext.form.field.Text",
+                                    "reference": {
+                                        "name": "items",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "anchor": "1",
+                                        "fieldLabel": "Name",
+                                        "name": "name"
+                                    },
+                                    "configAlternates": {
+                                        "anchor": "string",
+                                        "fieldLabel": "string",
+                                        "name": "string"
+                                    },
+                                    "name": "MyTextField",
+                                    "designerId": "0b1d6b83-204f-42ad-b00c-bd463f849d76"
+                                },
+                                {
+                                    "type": "Ext.form.field.File",
+                                    "reference": {
+                                        "name": "items",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "emptyText": "Select a file",
+                                        "fieldLabel": "File",
+                                        "layout|anchor": "100%",
+                                        "name": "file"
+                                    },
+                                    "configAlternates": {
+                                        "emptyText": "string",
+                                        "fieldLabel": "string",
+                                        "layout|anchor": "string",
+                                        "name": "string"
+                                    },
+                                    "name": "MyFileUpload",
+                                    "designerId": "cc684ded-9773-4379-ba5c-7c95153e36a7",
+                                    "cn": [
+                                        {
+                                            "type": "Ext.form.field.FileButton",
+                                            "reference": {
+                                                "name": "buttonConfig",
+                                                "type": "object"
+                                            },
+                                            "codeClass": null,
+                                            "userConfig": {
+                                                "iconCls": "x-fa fa-paperclip",
+                                                "text": ""
+                                            },
+                                            "configAlternates": {
+                                                "iconCls": "string",
+                                                "text": "string"
+                                            },
+                                            "name": "MyFileButton",
+                                            "designerId": "8a057a90-d0ae-4af2-851f-8c2f82206f7c"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Ext.toolbar.Toolbar",
+                            "reference": {
+                                "name": "dockedItems",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "container|pack": "center",
+                                "designer|uiInterfaceName": "footer",
+                                "dock": "bottom",
+                                "ui": "footer"
+                            },
+                            "configAlternates": {
+                                "container|pack": "string",
+                                "designer|uiInterfaceName": "string",
+                                "dock": "string",
+                                "ui": "string"
+                            },
+                            "name": "MyToolbar5",
+                            "designerId": "47d723e7-4b48-42a8-8f06-52d250e9f918",
+                            "cn": [
+                                {
+                                    "type": "Ext.button.Button",
+                                    "reference": {
+                                        "name": "items",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "itemId": "btnSave",
+                                        "layout|flex": null,
+                                        "minWidth": 100,
+                                        "text": "Upload"
+                                    },
+                                    "configAlternates": {
+                                        "itemId": "string",
+                                        "layout|flex": "number",
+                                        "text": "string",
+                                        "minWidth": "number"
+                                    },
+                                    "name": "MyButton",
+                                    "designerId": "359ee0fe-ee3e-40e0-bf16-099ab40750cb",
+                                    "cn": [
+                                        {
+                                            "type": "fixedfunction",
+                                            "reference": {
+                                                "name": "items",
+                                                "type": "array"
+                                            },
+                                            "codeClass": null,
+                                            "userConfig": {
+                                                "designer|params": [
+                                                    "button",
+                                                    "e"
+                                                ],
+                                                "designer|viewControllerFn": "btnSaveHandler",
+                                                "fn": "handler",
+                                                "implHandler": [
+                                                    "var me = this,",
+                                                    "    refs = me.getReferences(),",
+                                                    "    view = me.getView(),",
+                                                    "    opts = view._opts,",
+                                                    "    form = view.down('form').getForm();",
+                                                    "",
+                                                    "if(form.isValid()) {",
+                                                    "    form.submit({",
+                                                    "        url: opts.uploadUrl,",
+                                                    "        waitMsg: 'Uploading...',",
+                                                    "        success: function(form, action) {",
+                                                    "            print(\"success upload arguments\", arguments);",
+                                                    "            opts.callback.call(view.opts);",
+                                                    "            view.close();",
+                                                    "        },",
+                                                    "        failure: function(form, action) {",
+                                                    "            print(\"failure upload arguments\", arguments);",
+                                                    "        }",
+                                                    "    });",
+                                                    "}"
+                                                ]
+                                            },
+                                            "configAlternates": {
+                                                "designer|params": "typedarray",
+                                                "designer|viewControllerFn": "string",
+                                                "fn": "string",
+                                                "implHandler": "code"
+                                            },
+                                            "name": "handler",
+                                            "designerId": "d0bb5e0c-d278-40be-9ab4-a6f126da61fa"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "Ext.button.Button",
+                                    "reference": {
+                                        "name": "items",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "itemId": "btnCancel",
+                                        "layout|flex": null,
+                                        "minWidth": 100,
+                                        "text": "Cancel"
+                                    },
+                                    "configAlternates": {
+                                        "itemId": "string",
+                                        "layout|flex": "number",
+                                        "text": "string",
+                                        "minWidth": "number"
+                                    },
+                                    "name": "MyButton4",
+                                    "designerId": "79acad98-e4a5-43ac-91a5-ac78592d29b0",
+                                    "cn": [
+                                        {
+                                            "type": "fixedfunction",
+                                            "reference": {
+                                                "name": "items",
+                                                "type": "array"
+                                            },
+                                            "codeClass": null,
+                                            "userConfig": {
+                                                "designer|params": [
+                                                    "button",
+                                                    "e"
+                                                ],
+                                                "designer|viewControllerFn": "btnCancelHandler",
+                                                "fn": "handler",
+                                                "implHandler": [
+                                                    "var me = this,",
+                                                    "    refs = me.getReferences(),",
+                                                    "    view = me.getView();",
+                                                    "",
+                                                    "view.close();"
+                                                ]
+                                            },
+                                            "configAlternates": {
+                                                "designer|params": "typedarray",
+                                                "designer|viewControllerFn": "string",
+                                                "fn": "string",
+                                                "implHandler": "code"
+                                            },
+                                            "name": "handler",
+                                            "designerId": "bcc4e9f6-fb27-4903-a2af-d5799c99aaa3"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.panel.Panel",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "title": "From URL"
+                    },
+                    "configAlternates": {
+                        "title": "string"
+                    },
+                    "name": "MyPanel3",
+                    "designerId": "d2cfe2d8-d706-4ea4-8244-aa6c397306af",
+                    "cn": [
+                        {
+                            "type": "Ext.tab.Tab",
+                            "reference": {
+                                "name": "tabConfig",
+                                "type": "object"
+                            },
+                            "codeClass": null,
+                            "name": "TabConfig",
+                            "designerId": "4fa706f9-aa5f-484d-83b3-a2e3109fa4c5"
+                        },
+                        {
+                            "type": "Ext.form.Panel",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "bodyPadding": 10,
+                                "title": ""
+                            },
+                            "configAlternates": {
+                                "bodyPadding": "auto",
+                                "title": "string"
+                            },
+                            "name": "MyForm",
+                            "designerId": "b8f1a896-14bd-4c5d-9386-31232081436c",
+                            "cn": [
+                                {
+                                    "type": "Ext.form.field.Text",
+                                    "reference": {
+                                        "name": "items",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "anchor": "1",
+                                        "fieldLabel": "URL",
+                                        "name": "url"
+                                    },
+                                    "configAlternates": {
+                                        "anchor": "string",
+                                        "fieldLabel": "string",
+                                        "name": "string"
+                                    },
+                                    "name": "MyTextField",
+                                    "designerId": "16908385-767a-48d7-8128-1527f5033b08"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Ext.toolbar.Toolbar",
+                            "reference": {
+                                "name": "dockedItems",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "container|pack": "center",
+                                "designer|uiInterfaceName": "footer",
+                                "dock": "bottom",
+                                "ui": "footer"
+                            },
+                            "configAlternates": {
+                                "container|pack": "string",
+                                "designer|uiInterfaceName": "string",
+                                "dock": "string",
+                                "ui": "string"
+                            },
+                            "name": "MyToolbar5",
+                            "designerId": "ce724f76-ad88-4d68-8455-d763cdd45498",
+                            "cn": [
+                                {
+                                    "type": "Ext.button.Button",
+                                    "reference": {
+                                        "name": "items",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "itemId": "btnSelect",
+                                        "layout|flex": null,
+                                        "minWidth": 100,
+                                        "text": "Select"
+                                    },
+                                    "configAlternates": {
+                                        "itemId": "string",
+                                        "layout|flex": "number",
+                                        "text": "string",
+                                        "minWidth": "number"
+                                    },
+                                    "name": "MyButton",
+                                    "designerId": "b4b10df5-8579-40e8-b4b2-d4bf1e98947a",
+                                    "cn": [
+                                        {
+                                            "type": "fixedfunction",
+                                            "reference": {
+                                                "name": "items",
+                                                "type": "array"
+                                            },
+                                            "codeClass": null,
+                                            "userConfig": {
+                                                "designer|params": [
+                                                    "button",
+                                                    "e"
+                                                ],
+                                                "designer|viewControllerFn": "btnSelectHandler",
+                                                "fn": "handler",
+                                                "implHandler": [
+                                                    "var me = this,",
+                                                    "    refs = me.getReferences(),",
+                                                    "    view = me.getView(),",
+                                                    "    opts = view._opts,",
+                                                    "    form = view.down('form').getForm();",
+                                                    "",
+                                                    "if(form.isValid()) {",
+                                                    "    //form.submit({",
+                                                    "    //    url: opts.uploadUrl,",
+                                                    "    //    waitMsg: 'Uploading...',",
+                                                    "    //    success: function(form, action) {",
+                                                    "    //        console.log(arguments);",
+                                                    "    //        opts.callback.call(view.opts);",
+                                                    "    //        view.close();",
+                                                    "    //    },",
+                                                    "    //    failure: function(form, action) {",
+                                                    "    //        console.log(arguments);",
+                                                    "    //    }",
+                                                    "    //});",
+                                                    "",
+                                                    "    console.warn(\"URL upload unsupported\");",
+                                                    "}"
+                                                ]
+                                            },
+                                            "configAlternates": {
+                                                "designer|params": "typedarray",
+                                                "designer|viewControllerFn": "string",
+                                                "fn": "string",
+                                                "implHandler": "code"
+                                            },
+                                            "name": "handler",
+                                            "designerId": "7d2ff904-69fd-4530-9331-2d93bec0e2b6"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "Ext.button.Button",
+                                    "reference": {
+                                        "name": "items",
+                                        "type": "array"
+                                    },
+                                    "codeClass": null,
+                                    "userConfig": {
+                                        "itemId": "btnCancel",
+                                        "layout|flex": null,
+                                        "minWidth": 100,
+                                        "text": "Cancel"
+                                    },
+                                    "configAlternates": {
+                                        "itemId": "string",
+                                        "layout|flex": "number",
+                                        "text": "string",
+                                        "minWidth": "number"
+                                    },
+                                    "name": "MyButton4",
+                                    "designerId": "3ea0aa91-bf3f-46d9-8a5e-45c89f49ecb2",
+                                    "cn": [
+                                        {
+                                            "type": "fixedfunction",
+                                            "reference": {
+                                                "name": "items",
+                                                "type": "array"
+                                            },
+                                            "codeClass": null,
+                                            "userConfig": {
+                                                "designer|params": [
+                                                    "button",
+                                                    "e"
+                                                ],
+                                                "designer|viewControllerFn": "btnCancelHandler",
+                                                "fn": "handler",
+                                                "implHandler": [
+                                                    "var me = this,",
+                                                    "    refs = me.getReferences(),",
+                                                    "    view = me.getView();",
+                                                    "",
+                                                    "view.close();"
+                                                ]
+                                            },
+                                            "configAlternates": {
+                                                "designer|params": "typedarray",
+                                                "designer|viewControllerFn": "string",
+                                                "fn": "string",
+                                                "implHandler": "code"
+                                            },
+                                            "name": "handler",
+                                            "designerId": "7d2ae5ba-e3bc-4647-8926-bed0de8cf4b6"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

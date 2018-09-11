@@ -1,0 +1,425 @@
+{
+    "type": "Ext.app.ViewController",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "programs",
+        "designer|userClassName": "ProgramsViewController"
+    },
+    "configAlternates": {
+        "designer|userAlias": "string",
+        "designer|userClassName": "string"
+    },
+    "designerId": "7505be33-76ed-445e-9f35-0430bf2fbbee",
+    "cn": [
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "opts"
+                ],
+                "fn": "load",
+                "implHandler": [
+                    "",
+                    "",
+                    "var me = this;",
+                    "",
+                    "",
+                    "opts = Ext.applyIf(opts || {}, {",
+                    "\tprogram: null",
+                    "});",
+                    "",
+                    "",
+                    "if(!App.personId){",
+                    "\tApp.personId = -1;",
+                    "\tconsole.warn(\"Using mockup test person id\");",
+                    "}",
+                    "",
+                    "var callback = function(){",
+                    "\tme.saveState(); // save ALL data that is after all initial data syncs to localstorage",
+                    "};",
+                    "",
+                    "if(navigator.onLine){",
+                    "\t// sync with server",
+                    "\tme.serverSync(callback); // calls sync of everything (slides, questions, answers, pageConfig...) - it retrieves data and pushes latest data to server",
+                    "}else{",
+                    "\t// store data from localstorage",
+                    "\tvar store = me.getStore('StorePrograms');",
+                    "",
+                    "\tvar localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));",
+                    "\t// init store",
+                    "\tvar localStorageEntries = [];",
+                    "\tfor (var key in localStorageData){",
+                    "\t\tlocalStorageEntries.push(localStorageData[key].programInfo);",
+                    "\t}",
+                    "\tstore.setData(localStorageEntries);",
+                    "",
+                    "\tme.updateDataStatusIndicator();",
+                    "",
+                    "}",
+                    "",
+                    "",
+                    ""
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code",
+                "designer|params": "typedarray"
+            },
+            "name": "load",
+            "designerId": "ddd2ccd5-bf92-4c21-9a78-77456a8020f1"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "getCurrentState",
+                "implHandler": [
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    store = me.getStore('StorePrograms'),",
+                    "    data = Ext.clone(Ext.pluck(store.getRange(), 'data'));",
+                    "",
+                    "var programs = {};",
+                    "for (var i = 0; i < data.length; i++){",
+                    "    var entry = data[i];",
+                    "    programs[entry.id] = {programInfo: entry};",
+                    "}",
+                    "",
+                    "return programs;"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "getCurrentState",
+            "designerId": "afc753bc-be30-4331-b028-ef4d4b315cb1"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "saveState",
+                "implHandler": [
+                    "var me = this,",
+                    "\tdata = me.getCurrentState(),",
+                    "\tsyncIndicatorPrograms = Ext.getCmp('syncIndicatorPrograms'),",
+                    "\tlocalStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));",
+                    "",
+                    "// init store",
+                    "if(!localStorageData){",
+                    "\tlocalStorageData = {};",
+                    "}",
+                    "",
+                    "var newLocalStorageData = {};",
+                    "for (var key in data){",
+                    "\t// init program id",
+                    "\tif(!localStorageData[data[key].programInfo.id]){",
+                    "\t\tlocalStorageData[data[key].programInfo.id] = {};",
+                    "\t}// add program info to this program id",
+                    "\tlocalStorageData[data[key].programInfo.id].programInfo = data[key].programInfo;",
+                    "\tnewLocalStorageData[key] = localStorageData[key]; // takes localstorage entries that their programs are avaliable in programs store",
+                    "}",
+                    "if(localStorageData.removed){",
+                    "\tnewLocalStorageData.removed = localStorageData.removed;",
+                    "}",
+                    "",
+                    "",
+                    "// sets current state to localstorage and calls update with server",
+                    "localStorage.setItem('mxp_elearning', Ext.encode(newLocalStorageData));",
+                    "",
+                    "if(navigator.onLine){",
+                    "\t// sync all stores",
+                    "\tme.getStore('StorePrograms').sync();",
+                    "",
+                    "",
+                    "\t// after syncing everything - we can delete current programs' removed entries",
+                    "",
+                    "\tlocalStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));",
+                    "\tif(localStorageData.removed){",
+                    "\t\tdelete localStorageData.removed;",
+                    "\t}",
+                    "\tlocalStorage.setItem('mxp_elearning', Ext.encode(localStorageData));",
+                    "",
+                    "",
+                    "\tme.updateStatusIndicator(true, syncIndicatorPrograms);",
+                    "\tme.saveProgramsData();",
+                    "",
+                    "}else{",
+                    "\tme.updateStatusIndicator(false, syncIndicatorPrograms);",
+                    "}",
+                    "",
+                    "var editButton = Ext.getCmp('btnEdit');",
+                    "if(!me.getSelection()){",
+                    "\teditButton.disable();",
+                    "\teditButton.setText('Edit Slides (No Programs)');",
+                    "}",
+                    "else{",
+                    "\teditButton.enable();",
+                    "\teditButton.setText('Edit Slides');",
+                    "}"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code",
+                "designer|params": "typedarray"
+            },
+            "name": "saveState",
+            "designerId": "89f60217-9afa-494b-8f45-b336c4795b47"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "callback"
+                ],
+                "fn": "serverSync",
+                "implHandler": [
+                    "// calls sync of everything - it retrieves data and pushes latest data to server",
+                    "// syncs all data with server - this is called on program load and on navigator onLine",
+                    "var me = this,",
+                    "\tstore = me.getStore('StorePrograms'),",
+                    "\tsyncIndicatorPrograms = Ext.getCmp('syncIndicatorPrograms'),",
+                    "\tsyncStateCallback = function(){",
+                    "",
+                    "\t\tme.getView().setSelection(me.getSelection());",
+                    "\t\tExt.getCmp('gridPrograms').getView().refresh();",
+                    "\t\tif(callback){ callback(); }",
+                    "\t};",
+                    "",
+                    "",
+                    "syncIndicatorPrograms.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');",
+                    "syncIndicatorPrograms.addCls(\"fa-spin fa-refresh warning\");",
+                    "syncIndicatorPrograms.tooltip.html = 'Syncing';",
+                    "",
+                    "",
+                    "var params = {userId: App.personId}; // Todo - this query by user is unsupported by 2018-08-08",
+                    "//initialDataSyncPrograms('StorePrograms', 'programInfo', params, syncStateCallback, 'id', me);",
+                    "initialDataSync('StorePrograms', 'programInfo', params, syncStateCallback, 'id', me);",
+                    "",
+                    "",
+                    "me.saveProgramsData();"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "serverSync",
+            "designerId": "532f2aac-dfff-4c29-a93d-0584ec741e4b"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "unload",
+                "implHandler": [
+                    "// unload page",
+                    "",
+                    "// unload store data silently",
+                    "",
+                    "var me = this;",
+                    "me.getStore('StorePrograms').loadData([],false);",
+                    "me.getStore('StoreProgramCategories').loadData([],false);",
+                    "me.getStore('StoreProgramCertificates').loadData([],false);",
+                    "",
+                    "// remove all listeners so they are not interfering with other views",
+                    "window.removeEventListener('online',  me.connectionChange);",
+                    "window.removeEventListener('offline',  me.connectionChange);",
+                    ""
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "unload",
+            "designerId": "8c4be369-9087-4389-a665-41d1203ac4df"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "getSelection",
+                "implHandler": [
+                    "var me = this,",
+                    "\tstore = me.getStore('StorePrograms'),",
+                    "\tselection =  me.getView().getSelection()[0] || store.first(); // backup is store first - this is usefull when initially loading data;",
+                    "",
+                    "return selection;",
+                    "",
+                    ""
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "getSelection",
+            "designerId": "d132e90a-a7a2-4e4c-8b4d-18f10410b481"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "saveProgramsData",
+                "implHandler": [
+                    "var me = this,",
+                    "\tlocalStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),",
+                    "\tprogramsStore = me.getStore('StorePrograms'),",
+                    "\tslidesController = me.getView().up('mainview').down('#editSlides').getController();",
+                    "",
+                    "var callback = function(){",
+                    "\tme.updateDataStatusIndicator();",
+                    "};",
+                    "",
+                    "for(var i = 0; i < programsStore.data.items.length; i++){",
+                    "\tvar programId =programsStore.data.items[i].data.id;",
+                    "\tif(!localStorageData[programId]){",
+                    "\t\t// Maybe its not initialized yet when reloading in editSlides and going to trainingPrograms",
+                    "\t\tlocalStorageData[programId] = {};",
+                    "\t}",
+                    "\tif(localStorageData[programId].pageSetup && localStorageData[programId].pageSetup.programSynced === false){",
+                    "\t\tprint(\"this program data is not synced\");",
+                    "\t\tslidesController.programId = programId;",
+                    "\t\tslidesController.serverSync(callback);",
+                    "\t}",
+                    "}",
+                    "me.updateDataStatusIndicator();",
+                    ""
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "saveProgramsData",
+            "designerId": "69baa648-e100-4572-95a6-cff195c87035"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "synced",
+                    "indicator"
+                ],
+                "fn": "updateStatusIndicator",
+                "implHandler": [
+                    "var me = this;",
+                    "",
+                    "if(synced){",
+                    "\tindicator.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');",
+                    "\tindicator.addCls(\"fa-check success\");",
+                    "\tindicator.tooltip.html = 'Synced';",
+                    "}else{",
+                    "\tindicator.removeCls('fa-check fa-refresh fa-spin fa-exclamation-triangle warning success');",
+                    "\tindicator.addCls(\"fa-exclamation-triangle warning\");",
+                    "\tindicator.tooltip.html = 'Not Synced';",
+                    "}",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "updateStatusIndicator",
+            "designerId": "490cdbac-af80-48b3-892f-60e5fa9082d0"
+        },
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "updateDataStatusIndicator",
+                "implHandler": [
+                    "// also update data status indicator",
+                    "",
+                    "",
+                    "// Count how many program data changes have been made - if any are made, update data status indicator to 'unsynced' and set tooltip text",
+                    "var me = this,",
+                    "\tprogramsStore = me.getStore('StorePrograms'),",
+                    "\tsyncDataIndicator = Ext.getCmp('syncIndicatorProgramsData'),",
+                    "\tlocalStorageData = Ext.decode(localStorage.getItem('mxp_elearning')),",
+                    "\tunsyncedProgramsData = 0;",
+                    "for(var i = 0; i < programsStore.data.items.length; i++){",
+                    "\tvar programId =programsStore.data.items[i].data.id;",
+                    "\t// this may not be initialized because of program duplicate",
+                    "\tif(!localStorageData[programId]){",
+                    "\t\tlocalStorageData[programId] = {};",
+                    "\t}",
+                    "\tif(localStorageData[programId].pageSetup &&  localStorageData[programId].pageSetup.programSynced === false){",
+                    "\t\tprint(\"this program data is not synced\");",
+                    "\t\tunsyncedProgramsData++;",
+                    "\t}",
+                    "}",
+                    "",
+                    "if(unsyncedProgramsData){",
+                    "\tme.updateStatusIndicator(false, syncDataIndicator);",
+                    "\tsyncDataIndicator.tooltip.html = 'Not Synced ' + unsyncedProgramsData + ' Programs Data';",
+                    "}else{",
+                    "\tme.updateStatusIndicator(true, syncDataIndicator);",
+                    "\tsyncDataIndicator.tooltip.html = 'Synced programs Data';",
+                    "}"
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "updateDataStatusIndicator",
+            "designerId": "c131b5a3-eabc-4f87-837d-79dd42714dd7"
+        }
+    ]
+}

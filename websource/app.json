@@ -1,0 +1,167 @@
+{
+   "name": "eLearning",
+   "namespace": "eLearning",
+   "version": "1.0.0.0",
+   "framework": "ext",
+   "toolkit": "classic",
+   "theme": "theme-triton-b879178c-fc84-4884-b934-bcb78d02c77d",
+   "requires": [
+      "font-awesome"
+   ],
+   "indexHtmlPath": "index.html",
+   "classpath": "${app.dir}/app,${app.dir}/functions/",
+   "overrides": [
+      "overrides"
+   ],
+   "fashion": {
+      "missingParameters": "error",
+      "inliner": {
+         "enable": false
+      }
+   },
+   "sass": {
+      "namespace": "eLearning",
+      "generated": {
+         "var": "sass/save.scss",
+         "src": "sass/save"
+      },
+      "etc": [
+         "sass/etc/all.scss"
+      ],
+      "var": [
+         "sass/var/all.scss",
+         "sass/var"
+      ],
+      "src": [
+         "sass/src"
+      ]
+   },
+   "js": [
+      {
+         "path": "${framework.dir}/build/ext-all-rtl-debug.js"
+      },
+      {
+         "path": "functions/overrides.js",
+         "includeInBundle": true
+      },
+      {
+         "path": "functions/functions.js",
+         "includeInBundle": true
+      },
+      {
+         "path": "functions/database.js",
+         "includeInBundle": true
+      },
+      {
+         "path": "functions/indexedDbProxy.js",
+         "includeInBundle": true
+      },
+      {
+         "path": "functions/IndexedDB.js",
+         "includeInBundle": true
+      },
+      {
+         "path": "functions/syncing.js",
+         "includeInBundle": true
+      },
+      {
+         "path": "functions/html2canvas.js",
+         "includeInBundle": true
+      },
+      {
+         "path": "functions/lz-string.js",
+         "includeInBundle": true
+      },
+      {
+         "path": "app.js",
+         "bundle": true
+      }
+   ],
+   "css": [
+      {
+         "path": "${build.out.css.path}",
+         "bundle": true,
+         "exclude": [
+            "fashion"
+         ]
+      }
+   ],
+   "loader": {
+      "cache": false,
+      "cacheParam": "_dc"
+   },
+   "production": {
+      "output": {
+         "appCache": {
+            "enable": true,
+            "path": "cache.appcache"
+         }
+      },
+      "loader": {
+         "cache": "${build.timestamp}"
+      },
+      "cache": {
+         "enable": true
+      },
+      "compressor": {
+         "type": "yui"
+      }
+   },
+   "testing": {},
+   "development": {
+      "watch": {
+         "delay": 250
+      }
+   },
+   "bootstrap": {
+      "base": "${app.dir}",
+      "microloader": "bootstrap.js",
+      "css": "bootstrap.css"
+   },
+   "output": {
+      "base": "${workspace.build.dir}/${build.environment}/${app.name}",
+      "appCache": {
+         "enable": false
+      }
+   },
+   "cache": {
+      "enable": false,
+      "deltas": true
+   },
+   "appCache": {
+      "cache": [
+         "index.html"
+      ],
+      "network": [
+         "*"
+      ],
+      "fallback": []
+   },
+   "resources": [
+      {
+         "path": "resources",
+         "output": "shared"
+      }
+   ],
+   "archivePath": "archive",
+   "slicer": {
+      "js": [
+         {
+            "path": "sass/example/custom.js",
+            "isWidgetManifest": true
+         }
+      ],
+      "output": {
+         "appCache": {
+            "enable": false
+         }
+      },
+      "cache": {
+         "enable": false
+      }
+   },
+   "ignore": [
+      "(^|/)CVS(/?$|/.*?$)"
+   ],
+   "id": "49372114-575b-4fe1-8974-0363129394a7"
+}

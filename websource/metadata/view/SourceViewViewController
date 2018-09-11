@@ -1,0 +1,56 @@
+{
+    "type": "Ext.app.ViewController",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "sourceview",
+        "designer|userClassName": "SourceViewViewController"
+    },
+    "configAlternates": {
+        "designer|userAlias": "string",
+        "designer|userClassName": "string"
+    },
+    "designerId": "42521718-807e-4b60-aaa7-3542c08f97d4",
+    "cn": [
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "opts"
+                ],
+                "fn": "show",
+                "implHandler": [
+                    "opts = Ext.applyIf(opts, {",
+                    "    value: '',",
+                    "    callback: function(value) { console.warn('Please specify callback!', value); },",
+                    "    scope: this",
+                    "});",
+                    "",
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    view = me.getView();",
+                    "",
+                    "me._opts = opts;",
+                    "",
+                    "view.refs.source.update('<pre class=\"code\">' + opts.value + '</pre>');",
+                    "view.show();"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "show",
+            "designerId": "54ccaed7-744d-44d1-9d7c-21581bff06de"
+        }
+    ]
+}

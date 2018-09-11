@@ -1,0 +1,83 @@
+{
+    "type": "Ext.container.Viewport",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "mainview",
+        "designer|userClassName": "MainView",
+        "itemId": "mainView",
+        "layout": "card"
+    },
+    "configAlternates": {
+        "designer|initialView": "boolean",
+        "designer|userAlias": "string",
+        "designer|userClassName": "string",
+        "itemId": "string",
+        "layout": "string"
+    },
+    "designerId": "ccf11f1b-c72a-44fc-9803-344ace6f3349",
+    "viewControllerInstanceId": "4611ed12-d628-4ff4-91cd-baa29154d036",
+    "viewModelInstanceId": "f4941368-9963-4383-b809-d66d6516ffe3",
+    "cn": [
+        {
+            "type": "linkedinstance",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "name": "homepage",
+            "designerId": "13831be8-d144-4cee-aade-80e3193fb605",
+            "masterInstanceId": "fcc654c8-e279-40ad-a9c8-0460d1b03871"
+        },
+        {
+            "type": "linkedinstance",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "name": "programs",
+            "designerId": "9e47a45a-5bde-4919-be36-386425420d16",
+            "masterInstanceId": "021f8bd2-ddcc-4d3c-8e48-905c69773429"
+        },
+        {
+            "type": "linkedinstance",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "name": "editslides",
+            "designerId": "425392b5-ff2e-4981-9e79-3ebe4219688a",
+            "masterInstanceId": "ca8be6c6-947e-43ac-b6ff-a38941f862d4"
+        },
+        {
+            "type": "viewcontrollereventbinding",
+            "reference": {
+                "name": "listeners",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "onMainViewBoxReady",
+                "implHandler": [
+                    "this.load();"
+                ],
+                "name": "boxready",
+                "scope": "me"
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code",
+                "name": "string",
+                "scope": "string"
+            },
+            "name": "onMainViewBoxReady",
+            "designerId": "c44f5daf-8b74-461f-b9a5-e2bcc765fbea"
+        }
+    ]
+}

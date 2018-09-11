@@ -1,0 +1,168 @@
+.red-bg {
+    background-color: red;
+}
+.green-bg {
+    background-color: green;
+}
+.blue-bg {
+    background-color: blue;
+}
+
+.slide-container {
+    background-color: #ececec;
+}
+
+.slide {
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    background-color: white;
+}
+
+.component {
+    background-repeat: no-repeat;
+    background-size: contain;
+    img {
+        height: 100%;
+        width: 100%;
+    }
+}
+
+.draggable {
+    border: dotted 1px silver;
+    cursor: move;
+
+    &.selected {
+        border-color: orange;
+    }
+}
+
+.edit {
+    .correct {
+        .x-form-cb-label {
+            font-weight: bold !important;
+        }
+    }
+}
+
+.preview {
+    .draggable {
+        border-color: transparent !important;
+    }
+}
+
+.active-program {
+    background-color: #F9CF00 !important;
+    background-image: none;
+    color: white;
+}
+
+pre {
+    outline: 1px solid #ccc;
+    padding: 5px;
+    margin: 5px;
+}
+.string {
+    color: green;
+}
+.number {
+    color: darkorange;
+}
+.boolean {
+    color: blue;
+}
+.null {
+    color: magenta;
+}
+.key {
+    color: black;
+}
+#html-slide {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.html-component {
+    /* all */
+    position: absolute;
+    line-height: initial;
+
+/*     background-color: rgba(222,222,222,0.3); */
+    border: dotted 1px silver;
+    overflow: hidden;
+
+    &.selected {
+        border-color: orange;
+    }
+
+    .html-content {
+        height: 100%;
+        width: 100%;
+
+        &.title {
+
+        }
+
+        &.text {
+
+        }
+
+        &.image {
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+        }
+
+        &.selection {
+            .text {
+
+            }
+            .option {
+                padding: 0.5em 0.5em;
+                margin-left: 1.5em;
+                cursor: pointer;
+
+                &.correct {
+                    color: #1b7ed6;
+                }
+                &.check:before, &.radio:before {
+                    font-family: FontAwesome !important;
+                    position: absolute;
+                    left: 0.5em;
+                }
+                &.check:before {
+                    content: "\f096" !important; /* .fa-square-o */
+                }
+                &.check.selected:before {
+                    content: "\f046" !important; /* .fa-check-square-o */
+                }
+                &.radio:before {
+                    content: "\f10c" !important; /* .fa-circle-o */
+                }
+                &.radio.selected:before {
+                    content: "\f192" !important; /* .fa-dot-circle-o */
+                }
+            }
+        }
+    }
+}
+
+.preview {
+    .html-component {
+        border: none !important;
+        background-color: none;
+    }
+}
+
+.warning {
+	color: orange;
+}
+.success {
+	color: green;
+}
+.error {
+	color: red;
+}
+
+
+

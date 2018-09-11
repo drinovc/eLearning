@@ -1,0 +1,36 @@
+{
+    "type": "Ext.data.Model",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userClassName": "PersonAnswers",
+        "idProperty": "questionGuid"
+    },
+    "configAlternates": {
+        "designer|userClassName": "string",
+        "idProperty": "string"
+    },
+    "name": "MyModel",
+    "designerId": "56d3e327-5b8a-4edb-814d-a061bd6cae04",
+    "cn": [
+        {
+            "type": "Ext.data.field.String",
+            "reference": {
+                "name": "fields",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "name": "questionGuid"
+            },
+            "configAlternates": {
+                "name": "string"
+            },
+            "name": "MyString11",
+            "designerId": "06d18638-5ead-4032-9291-d431310c33ff"
+        }
+    ]
+}

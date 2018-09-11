@@ -1,0 +1,78 @@
+{
+    "type": "Ext.app.Application",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "controllers": [
+            "CApp"
+        ],
+        "defaultToken": "home",
+        "models": [
+            "Slide",
+            "Option",
+            "LookupCategories",
+            "Program",
+            "Question",
+            "PersonAnswers",
+            "PersonPrograms",
+            "Login",
+            "LookupCertificates"
+        ],
+        "name": "eLearning",
+        "views": [
+            "MainView",
+            "TextEditor",
+            "SelectionEditor",
+            "SourceView",
+            "Settings",
+            "Templates",
+            "FileUpload",
+            "Programs",
+            "HomePage",
+            "EditTools",
+            "EditSlides",
+            "SlideNavigation",
+            "Certificate"
+        ]
+    },
+    "configAlternates": {
+        "name": "string",
+        "views": "typedarray",
+        "models": "typedarray",
+        "stores": "typedarray",
+        "controllers": "typedarray",
+        "defaultToken": "string"
+    },
+    "name": "Application",
+    "designerId": "application",
+    "cn": [
+        {
+            "type": "fixedfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "launch",
+                "implHandler": [
+                    "// All functions from Application were moved to controller CApp but they can be called as they are directly on Application",
+                    "// EXAMPLE: function App.CApp.mask() can be called App.mask()",
+                    "",
+                    "this.getController(\"CApp\").appLaunch.call(this);",
+                    "",
+                    ""
+                ]
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "launch",
+            "designerId": "3d333db8-1e58-4718-8366-b92f4e1f692d"
+        }
+    ]
+}

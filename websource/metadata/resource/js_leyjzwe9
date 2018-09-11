@@ -1,0 +1,20 @@
+{
+    "type": "jsresource",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userClassName": "js_leyjzwe9",
+        "includeInBundle": true,
+        "url": "functions/html2canvas.js"
+    },
+    "configAlternates": {
+        "designer|userClassName": "string",
+        "includeInBundle": "boolean",
+        "url": "uri"
+    },
+    "name": "js4",
+    "designerId": "0adb2a51-bb08-4f04-aa43-cb017b244a36"
+}

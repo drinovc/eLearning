@@ -1,0 +1,56 @@
+{
+    "type": "Ext.app.ViewController",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "settings",
+        "designer|userClassName": "SettingsViewController"
+    },
+    "configAlternates": {
+        "designer|userAlias": "string",
+        "designer|userClassName": "string"
+    },
+    "designerId": "1f47b75a-2b62-4c50-afcd-3d14b8bbcd6c",
+    "cn": [
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "opts"
+                ],
+                "fn": "show",
+                "implHandler": [
+                    "opts = Ext.applyIf(opts, {",
+                    "    data: {},",
+                    "    callback: function(value) { console.warn('Please specify callback!', value); },",
+                    "    scope: this",
+                    "});",
+                    "",
+                    "var me = this,",
+                    "    refs = me.getReferences(),",
+                    "    view = me.getView();",
+                    "",
+                    "me._opts = opts;",
+                    "",
+                    "view.refs.pageSetup.setSource(opts.data.pageSetup);",
+                    "view.show();"
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "show",
+            "designerId": "03963976-28da-4743-81f6-757b41511a37"
+        }
+    ]
+}

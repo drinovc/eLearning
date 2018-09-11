@@ -1,0 +1,1237 @@
+{
+    "type": "Ext.grid.Panel",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "programs",
+        "designer|userClassName": "Programs",
+        "id": "gridPrograms",
+        "itemId": "gridPrograms",
+        "store": [
+            "{StorePrograms}"
+        ],
+        "title": "Training Programs"
+    },
+    "configAlternates": {
+        "store": "binding",
+        "designer|userAlias": "string",
+        "designer|userClassName": "string",
+        "itemId": "string",
+        "reference": "string",
+        "title": "string",
+        "id": "string"
+    },
+    "name": "MyGridPanel",
+    "designerId": "021f8bd2-ddcc-4d3c-8e48-905c69773429",
+    "viewControllerInstanceId": "7505be33-76ed-445e-9f35-0430bf2fbbee",
+    "viewModelInstanceId": "cb1c4559-680c-4a57-a5e2-fac805bf0d68",
+    "cn": [
+        {
+            "type": "Ext.view.Table",
+            "reference": {
+                "name": "viewConfig",
+                "type": "object"
+            },
+            "codeClass": null,
+            "name": "MyTable",
+            "designerId": "f9166ba0-e7a0-4187-b0c7-9cb8388ed603"
+        },
+        {
+            "type": "Ext.grid.column.Column",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "cellWrap": true,
+                "dataIndex": "name",
+                "flex": 1,
+                "minWidth": 150,
+                "text": "Name"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "text": "string",
+                "flex": "number",
+                "minWidth": "number",
+                "cellWrap": "boolean"
+            },
+            "name": "MyColumn3",
+            "designerId": "625f64b4-1c1a-46b5-a48c-a2af5a52fcec",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Text",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyTextField4",
+                    "designerId": "48d8c5f9-150c-46c2-8761-66e145f51fe0"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Column",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "cellWrap": true,
+                "dataIndex": "categoryId",
+                "minWidth": 150,
+                "text": "Category"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "format": "string",
+                "text": "string",
+                "minWidth": "number",
+                "cellWrap": "boolean"
+            },
+            "name": "MyColumn",
+            "designerId": "68027162-69bf-47aa-89a0-dce35ed7418d",
+            "cn": [
+                {
+                    "type": "Ext.form.field.ComboBox",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "queryMode": "local",
+                        "store": [
+                            "{StoreProgramCategories}"
+                        ],
+                        "valueField": "id"
+                    },
+                    "configAlternates": {
+                        "value": "string",
+                        "store": "binding",
+                        "queryMode": "string",
+                        "valueField": "datafield"
+                    },
+                    "name": "MyComboBox",
+                    "designerId": "a9e1debf-aed9-45f6-a63e-91536f82c679"
+                },
+                {
+                    "type": "fixedfunction",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "designer|params": [
+                            "value",
+                            "metaData",
+                            "record",
+                            "rowIndex",
+                            "colIndex",
+                            "store",
+                            "view"
+                        ],
+                        "fn": "renderer",
+                        "implHandler": [
+                            "return !value ? '' : App.lookups.ProgramCategories.filter(function(item) {return item.id == value; })[0].text;"
+                        ]
+                    },
+                    "configAlternates": {
+                        "designer|params": "typedarray",
+                        "fn": "string",
+                        "implHandler": "code"
+                    },
+                    "name": "renderer",
+                    "designerId": "a2283452-ec7e-45c9-ae0d-f05a03ef7360"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Column",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "cellWrap": true,
+                "dataIndex": "description",
+                "flex": 2,
+                "minWidth": 200,
+                "text": "Description"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "text": "string",
+                "flex": "number",
+                "minWidth": "number",
+                "cellWrap": "boolean"
+            },
+            "name": "MyColumn4",
+            "designerId": "f2d0d089-27b9-4b0d-8f4c-33eebaba1ae8",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Text",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyTextField3",
+                    "designerId": "c6268bb2-a702-42bd-afc4-380f13bd2ff5"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Date",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "validFrom",
+                "format": "m/j/Y",
+                "minWidth": 150,
+                "text": "Valid From"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "format": "string",
+                "text": "string",
+                "minWidth": "number"
+            },
+            "name": "MyDateColumn1",
+            "designerId": "20bbd578-fc8d-430b-82d6-05de681c4943",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Date",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyDateField",
+                    "designerId": "0aefe3d8-6778-4b49-9d02-76a48b6e4314"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Date",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "validTo",
+                "format": "m/j/Y",
+                "minWidth": 150,
+                "text": "Valid To"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "format": "string",
+                "text": "string",
+                "minWidth": "number"
+            },
+            "name": "MyDateColumn2",
+            "designerId": "2906ec75-c963-4fb5-aad5-4a74d3ba7a8f",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Date",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyDateField1",
+                    "designerId": "dabd7b3e-b711-40c9-87f9-9d68ca656465"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Number",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "completionTime",
+                "minWidth": 150,
+                "text": "Completion Time"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "text": "string",
+                "minWidth": "number"
+            },
+            "name": "MyNumberColumn3",
+            "designerId": "27c4beec-d23b-4c57-a26e-0354db34fb98",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Number",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyNumberField",
+                    "designerId": "fcedd0e5-e914-4f76-8c5c-c3124a38565b"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Number",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "maxAttemptsTrainingMode",
+                "format": "00",
+                "text": "Max Attempts Training Mode"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "format": "string",
+                "text": "string"
+            },
+            "name": "MyNumberColumn4",
+            "designerId": "93520924-35a4-4f30-9362-e511094427b4",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Number",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyNumberField1",
+                    "designerId": "f5ff5292-06e8-4c58-a0cc-dfcce2571308"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Number",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "maxAttemptsScoreMode",
+                "format": "00",
+                "text": "Max Attempts Score Mode"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "format": "string",
+                "text": "string"
+            },
+            "name": "MyNumberColumn5",
+            "designerId": "af165829-7cbd-4aa2-b0a9-82b9201521b7",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Number",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyNumberField2",
+                    "designerId": "5476f610-7988-4539-aa3f-442a663592ef"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Column",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "passScore",
+                "text": "Pass Score"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "text": "string"
+            },
+            "name": "MyColumn5",
+            "designerId": "425f5a1d-8cf2-4ee9-84ff-b7cea1606a28",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Number",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyNumberField4",
+                    "designerId": "becf755d-2ba5-4809-aea2-04d6200a9701"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Column",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "cellWrap": true,
+                "dataIndex": "certificateFileName",
+                "minWidth": 250,
+                "text": "Certificate"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "format": "string",
+                "text": "string",
+                "minWidth": "number",
+                "cellWrap": "boolean"
+            },
+            "name": "MyColumn1",
+            "designerId": "66751a26-660e-483b-962a-bb5e3356d26e",
+            "cn": [
+                {
+                    "type": "Ext.form.field.ComboBox",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "queryMode": "local",
+                        "store": [
+                            "{StoreProgramCertificates}"
+                        ],
+                        "valueField": "id"
+                    },
+                    "configAlternates": {
+                        "value": "string",
+                        "store": "binding",
+                        "queryMode": "string",
+                        "valueField": "datafield"
+                    },
+                    "name": "MyComboBox",
+                    "designerId": "7740c723-5182-449a-bcb5-33d6c749aa04"
+                },
+                {
+                    "type": "fixedfunction",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "designer|params": [
+                            "value",
+                            "metaData",
+                            "record",
+                            "rowIndex",
+                            "colIndex",
+                            "store",
+                            "view"
+                        ],
+                        "fn": "renderer",
+                        "implHandler": [
+                            "return !value ? '' : App.lookups.CoursesAndCertificates.filter(function(item) {return item.id == value; })[0].text;",
+                            ""
+                        ]
+                    },
+                    "configAlternates": {
+                        "designer|params": "typedarray",
+                        "fn": "string",
+                        "implHandler": "code"
+                    },
+                    "name": "renderer",
+                    "designerId": "7aaf4e14-7be0-4435-bf05-d5ccf688f5a6"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.column.Check",
+            "reference": {
+                "name": "columns",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dataIndex": "active",
+                "text": "Active"
+            },
+            "configAlternates": {
+                "dataIndex": "datafield",
+                "text": "string"
+            },
+            "name": "MyCheck1",
+            "designerId": "014da150-a739-45d2-a09e-e78d9bf35fd0",
+            "cn": [
+                {
+                    "type": "Ext.form.field.Checkbox",
+                    "reference": {
+                        "name": "editor",
+                        "type": "object"
+                    },
+                    "codeClass": null,
+                    "name": "MyCheckbox",
+                    "designerId": "c70aaacb-34be-49b5-9102-336f40b1a281"
+                }
+            ]
+        },
+        {
+            "type": "Ext.grid.plugin.RowEditing",
+            "reference": {
+                "name": "plugins",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "pluginId": "rowEditing"
+            },
+            "configAlternates": {
+                "pluginId": "string"
+            },
+            "name": "MyRowEditingPlugin",
+            "designerId": "d2fca51d-9e3c-46a2-b1f5-76970e48d489",
+            "cn": [
+                {
+                    "type": "viewcontrollereventbinding",
+                    "reference": {
+                        "name": "listeners",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "fn": "onRowEditingCanceledit",
+                        "implHandler": [
+                            "var me = this,",
+                            "    refs = me.getReferences(),",
+                            "    store = me.getStore('StorePrograms');",
+                            "",
+                            "// Canceling editing of a locally added, unsaved record: remove it",
+                            "if (context.record.phantom) {",
+                            "    store.remove(context.record);",
+                            "}",
+                            "me.getView().setSelection(me.getSelection());"
+                        ],
+                        "name": "canceledit",
+                        "scope": "me"
+                    },
+                    "configAlternates": {
+                        "fn": "string",
+                        "implHandler": "code",
+                        "name": "string",
+                        "scope": "string"
+                    },
+                    "name": "onRowEditingCanceledit",
+                    "designerId": "35b6805c-1c02-43c2-b178-86a9890ab433"
+                },
+                {
+                    "type": "viewcontrollereventbinding",
+                    "reference": {
+                        "name": "listeners",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "fn": "onRowEditingEdit",
+                        "implHandler": [
+                            "context.record.phantom = true;",
+                            "context.record.data.lastChanged = new Date();",
+                            "this.saveState();"
+                        ],
+                        "name": "edit",
+                        "scope": "me"
+                    },
+                    "configAlternates": {
+                        "fn": "string",
+                        "implHandler": "code",
+                        "name": "string",
+                        "scope": "string"
+                    },
+                    "name": "onRowEditingEdit",
+                    "designerId": "44d71bb7-d223-4209-9601-dfc9ec8b74e2"
+                }
+            ]
+        },
+        {
+            "type": "Ext.toolbar.Toolbar",
+            "reference": {
+                "name": "dockedItems",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "dock": "top"
+            },
+            "configAlternates": {
+                "dock": "string"
+            },
+            "name": "MyToolbar6",
+            "designerId": "ab67d5fb-cb03-4188-8fda-ff416e80bc52",
+            "cn": [
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "layout|flex": null,
+                        "text": "Add"
+                    },
+                    "configAlternates": {
+                        "layout|flex": "number",
+                        "text": "string"
+                    },
+                    "name": "MyButton19",
+                    "designerId": "50fd4d93-2052-4130-86e4-24075277f845",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "designer|viewControllerFn": "add",
+                                "fn": "handler",
+                                "implHandler": [
+                                    "var me = this,",
+                                    "    refs = me.getReferences(),",
+                                    "    store = me.getStore('StorePrograms'),",
+                                    "    editor = me.getView().getPlugin('rowEditing'),",
+                                    "    data = {",
+                                    "        id: createGUID(),",
+                                    "        name: 'New Training Program',",
+                                    "        categoryId: null,",
+                                    "        description: 'New Training Program Description',",
+                                    "        validFrom: new Date(),",
+                                    "        validTo: Ext.Date.add(new Date(), Ext.Date.YEAR, 1),",
+                                    "        completionTime: 60,",
+                                    "        maxAttemptsTrainingMode: 1,",
+                                    "        maxAttemptsScoreMode: 1,",
+                                    "        passScore: 75,",
+                                    "        active: true",
+                                    "    };",
+                                    "",
+                                    "var rec = store.add(data)[0];",
+                                    "rec.phantom = true;",
+                                    "editor.startEdit(rec);"
+                                ]
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "designer|viewControllerFn": "string",
+                                "fn": "string",
+                                "implHandler": "code"
+                            },
+                            "name": "handler",
+                            "designerId": "fa986d19-33f1-4252-a361-61addd7d0eeb"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "layout|flex": null,
+                        "text": "Remove"
+                    },
+                    "configAlternates": {
+                        "layout|flex": "number",
+                        "text": "string"
+                    },
+                    "name": "MyButton21",
+                    "designerId": "95061cec-72c2-45ed-b4b4-6848a7e9e4ff",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "designer|viewControllerFn": "remove",
+                                "fn": "handler",
+                                "implHandler": [
+                                    "var me = this,",
+                                    "\tstore = me.getStore('StorePrograms'),",
+                                    "\tcurrentProgram = me.getSelection(),",
+                                    "\tnextProgramIdx = store.indexOf(currentProgram) + 1,",
+                                    "\tnextProgram = store.getAt(nextProgramIdx),",
+                                    "\tprevProgramIdx = store.indexOf(currentProgram) - 1,",
+                                    "\tprevProgram = store.getAt(prevProgramIdx),",
+                                    "\tselection = me.getSelection(),",
+                                    "\tslidesController = me.getView().up('mainview').down('#editSlides').getController();",
+                                    "",
+                                    "",
+                                    "//  delete all slides, questions...",
+                                    "slidesController.programId = selection.id;",
+                                    "slidesController.personId = App.personId;",
+                                    "slidesController.clean();",
+                                    "",
+                                    "//then delete program",
+                                    "",
+                                    "store.remove(selection);",
+                                    "me.saveState();",
+                                    "me.getView().setSelection(nextProgram || prevProgram || store.first()); // set new selection",
+                                    "",
+                                    "",
+                                    "",
+                                    ""
+                                ]
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "designer|viewControllerFn": "string",
+                                "fn": "string",
+                                "implHandler": "code"
+                            },
+                            "name": "handler",
+                            "designerId": "316dd8c4-7302-46ca-87dd-2abd7ec145c0"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "layout|flex": null,
+                        "text": "Duplicate"
+                    },
+                    "configAlternates": {
+                        "layout|flex": "number",
+                        "text": "string"
+                    },
+                    "name": "MyButton2",
+                    "designerId": "aa418fe0-c0c4-4358-bfa6-49f06a25618a",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "designer|viewControllerFn": "duplicate",
+                                "fn": "handler",
+                                "implHandler": [
+                                    "var REPLICATE_ANSWERS = true, // we might not want to replicate answers",
+                                    "\tme = this,",
+                                    "\tstore = me.getStore('StorePrograms'),",
+                                    "\tselection = me.getView().getSelection()[0],",
+                                    "\tslidesController = me.getView().up('mainview').down('#editSlides').getController();",
+                                    "",
+                                    "var duplicateProgram = me.getCurrentState()[selection.id].programInfo;",
+                                    "//change its id",
+                                    "Ext.toast(\"Duplicate not fully supported - some bugs with questions.\");",
+                                    "",
+                                    "duplicateProgram.id = createGUID();",
+                                    "duplicateProgram.name = duplicateProgram.name + \" (duplicate)\";",
+                                    "",
+                                    "store.add(duplicateProgram)[0].phantom = true;",
+                                    "me.getView().setSelection(store.last());",
+                                    "",
+                                    "var ORG_programId = me.programId;",
+                                    "",
+                                    "store.sync({",
+                                    "\tcallback:function(){",
+                                    "",
+                                    "\t\t// todo iterate through its original programs slides, questions, answers and personProgram",
+                                    "\t\t// programs view model doesn't have all the other needed stores, so i will have to access editSlides' stores somehow",
+                                    "",
+                                    "\t\t// ko mam duplicatan program id",
+                                    "\t\t// nardim serverSync editSlides s tastarmu idjam,",
+                                    "\t\t// potem poišem v localstorage ta tastar id",
+                                    "\t\t// ga preimenujem v tanov id od programa",
+                                    "\t\t// stisnem še enkrat serverSync in bo vse postal na tanov guid",
+                                    "",
+                                    "",
+                                    "",
+                                    "\t\t// save to localstorage this new program",
+                                    "\t\tme.saveState();",
+                                    "\t\tvar serverSyncCallback2 = function(){",
+                                    "\t\t\t// then save everything and set new selection to newly duplicated slide",
+                                    "\t\t\t// save all changes that have been made to duplicated program",
+                                    "\t\t\t",
+                                    "\t\t\tme.saveState();",
+                                    "",
+                                    "\t\t\t// save everything for duplicated program",
+                                    "\t\t\tslidesController.programId = duplicateProgram.id;",
+                                    "\t\t\tslidesController.saveState();",
+                                    "\t\t\tslidesController.clean(true);",
+                                    "",
+                                    "\t\t};",
+                                    "",
+                                    "",
+                                    "\t\tvar serverSyncCallback1 = function(){",
+                                    "\t\t\tslidesController.saveState(true); // save everything to localstorage",
+                                    "",
+                                    "\t\t\t// copy localstorage data into new id",
+                                    "\t\t\tvar localStorageData = Ext.decode(localStorage.getItem('mxp_elearning'));",
+                                    "\t\t\tlocalStorageData[duplicateProgram.id] = Ext.clone(localStorageData[selection.id]);",
+                                    "",
+                                    "\t\t\tvar slides = localStorageData[duplicateProgram.id].slides,",
+                                    "\t\t\t\tquestions = localStorageData[duplicateProgram.id].questions,",
+                                    "\t\t\t\tanswers = localStorageData[duplicateProgram.id].answers,",
+                                    "\t\t\t\tpersonProgram = localStorageData[duplicateProgram.id].personProgram,",
+                                    "\t\t\t\tslidesNew = {},",
+                                    "\t\t\t\tquestionsNew = {},",
+                                    "\t\t\t\tanswersNew = {};",
+                                    "",
+                                    "\t\t\t// reparent everything",
+                                    "",
+                                    "\t\t\tfor(var slideKey in slides){",
+                                    "\t\t\t\tvar slide = slides[slideKey];",
+                                    "",
+                                    "\t\t\t\t// memorize",
+                                    "\t\t\t\tslideOldId = slide.id;",
+                                    "\t\t\t\t// create new guid",
+                                    "\t\t\t\tslide.id = createGUID();",
+                                    "\t\t\t\tslide.programId = duplicateProgram.id;",
+                                    "",
+                                    "\t\t\t\t// iterate through all slides and check if anyone has set parent this slide",
+                                    "\t\t\t\tfor(var childSlideKey in slides){",
+                                    "\t\t\t\t\tvar childSlide = slides[childSlideKey];",
+                                    "",
+                                    "\t\t\t\t\tif(childSlide.parentId == slideOldId){",
+                                    "\t\t\t\t\t\t// reparent",
+                                    "\t\t\t\t\t\tchildSlide.parentId = slide.id;",
+                                    "\t\t\t\t\t}",
+                                    "\t\t\t\t}",
+                                    "",
+                                    "",
+                                    "\t\t\t\tif(!slide.content){",
+                                    "\t\t\t\t\tcontinue;",
+                                    "\t\t\t\t}",
+                                    "",
+                                    "\t\t\t\tvar slideComps = Ext.decode(slide.content);",
+                                    "\t\t\t\tvar slideNewComponents = {components:{}};",
+                                    "",
+                                    "\t\t\t\tfor(var compKey in slideComps.components){",
+                                    "\t\t\t\t\tvar comp = slideComps.components[compKey];",
+                                    "\t\t\t\t\tcomp.id = createGUID();",
+                                    "",
+                                    "\t\t\t\t\t// questions",
+                                    "\t\t\t\t\tfor(var questionKey in questions){",
+                                    "\t\t\t\t\t\tvar question = questions[questionKey];",
+                                    "",
+                                    "\t\t\t\t\t\t//if(slideOldId == questions.pageId){ // WITH THIS WORKED BUT ITS WRONG",
+                                    "\t\t\t\t\t\tif(slideOldId == question.pageId){",
+                                    "\t\t\t\t\t\t\t// first reparent",
+                                    "\t\t\t\t\t\t\tquestion.pageId = slide.id;",
+                                    "",
+                                    "\t\t\t\t\t\t\t// memorize",
+                                    "\t\t\t\t\t\t\tquestionOldId = question.id;",
+                                    "\t\t\t\t\t\t\t// use guid from component",
+                                    "\t\t\t\t\t\t\tquestion.id = comp.id;",
+                                    "",
+                                    "\t\t\t\t\t\t\tif(REPLICATE_ANSWERS){",
+                                    "\t\t\t\t\t\t\t\tfor(var answerKey in answers){",
+                                    "\t\t\t\t\t\t\t\t\tvar answer = answers[answerKey];",
+                                    "",
+                                    "\t\t\t\t\t\t\t\t\tif(questionOldId == answer.questionId){",
+                                    "\t\t\t\t\t\t\t\t\t\t// first reparent",
+                                    "\t\t\t\t\t\t\t\t\t\tanswer.questionId = question.id;",
+                                    "",
+                                    "\t\t\t\t\t\t\t\t\t\t// memorize",
+                                    "\t\t\t\t\t\t\t\t\t\tanswerOldId = answer.id;",
+                                    "\t\t\t\t\t\t\t\t\t\t// create new guid",
+                                    "\t\t\t\t\t\t\t\t\t\tanswer.id = createGUID();",
+                                    "\t\t\t\t\t\t\t\t\t}",
+                                    "\t\t\t\t\t\t\t\t\tanswersNew[answer.id] = answer;",
+                                    "\t\t\t\t\t\t\t\t}",
+                                    "\t\t\t\t\t\t\t}",
+                                    "\t\t\t\t\t\t\tquestionsNew[question.id] = question;",
+                                    "\t\t\t\t\t\t}",
+                                    "\t\t\t\t\t}",
+                                    "\t\t\t\t\tslideNewComponents.components[comp.id] = comp;",
+                                    "\t\t\t\t}",
+                                    "\t\t\t\tslide.content = Ext.encode(slideNewComponents);",
+                                    "\t\t\t\tslidesNew[slide.id] = slide;",
+                                    "\t\t\t}",
+                                    "\t\t\tlocalStorageData[duplicateProgram.id].slides = slidesNew;",
+                                    "\t\t\tlocalStorageData[duplicateProgram.id].questions = questionsNew;",
+                                    "\t\t\tlocalStorageData[duplicateProgram.id].answers = answersNew;",
+                                    "",
+                                    "\t\t\t// dont replicate person program",
+                                    "",
+                                    "\t\t\t// set data back to localstorage",
+                                    "\t\t\tlocalStorage.setItem('mxp_elearning', Ext.encode(localStorageData));",
+                                    "",
+                                    "",
+                                    "\t\t\t// call server sync to upload all data for this program id from localstorage to database",
+                                    "",
+                                    "\t\t\tslidesController.clean(true);",
+                                    "",
+                                    "\t\t\tslidesController.programId = duplicateProgram.id;",
+                                    "\t\t\tslidesController.serverSync(serverSyncCallback2);",
+                                    "\t\t};",
+                                    "",
+                                    "\t\t// first call save state to save everything from old program to localstorage",
+                                    "\t\tslidesController.programId = selection.id;",
+                                    "\t\tslidesController.serverSync(serverSyncCallback1);",
+                                    "",
+                                    "\t}",
+                                    "});",
+                                    "",
+                                    ""
+                                ]
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "designer|viewControllerFn": "string",
+                                "fn": "string",
+                                "implHandler": "code"
+                            },
+                            "name": "handler",
+                            "designerId": "79f83b33-65b9-47a2-b97f-3efcf5dca88b"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.toolbar.Separator",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "layout|flex": null
+                    },
+                    "configAlternates": {
+                        "layout|flex": "number"
+                    },
+                    "name": "MySeparator2",
+                    "designerId": "611e29e4-b99d-4137-a74f-04f505f6ba6f"
+                },
+                {
+                    "type": "Ext.button.Button",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "id": "btnEdit",
+                        "layout|flex": null,
+                        "text": "Edit Program Data"
+                    },
+                    "configAlternates": {
+                        "layout|flex": "number",
+                        "text": "string",
+                        "id": "string"
+                    },
+                    "name": "MyButton20",
+                    "designerId": "9c77c0ec-8184-4fc6-ad3e-51017caea8af",
+                    "cn": [
+                        {
+                            "type": "fixedfunction",
+                            "reference": {
+                                "name": "items",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "designer|params": [
+                                    "button",
+                                    "e"
+                                ],
+                                "designer|viewControllerFn": "editProgramData",
+                                "fn": "handler",
+                                "implHandler": [
+                                    "var me = this,",
+                                    "\tview = me.getView(),",
+                                    "\tselection = me.getSelection(),",
+                                    "\tmainView = view.up('#mainView');",
+                                    "",
+                                    "me.saveState();",
+                                    "me.unload();",
+                                    "",
+                                    "this.redirectTo('edit-pages/' + selection.id.slice(1, -1)); // passing id without surrounding curly brackets { }",
+                                    ""
+                                ]
+                            },
+                            "configAlternates": {
+                                "designer|params": "typedarray",
+                                "designer|viewControllerFn": "string",
+                                "fn": "string",
+                                "implHandler": "code"
+                            },
+                            "name": "handler",
+                            "designerId": "daa71325-b580-464b-bf11-7039a8a27a78"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.toolbar.TextItem",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "cls": [
+                            "x-fa fa-exclamation-triangle warning"
+                        ],
+                        "id": "syncIndicatorPrograms",
+                        "layout|flex": null
+                    },
+                    "configAlternates": {
+                        "cls": "typedarray",
+                        "id": "string",
+                        "layout|flex": "number"
+                    },
+                    "name": "MyTextItem4",
+                    "designerId": "cf7295ed-88c1-454d-8126-e57de1d9133a",
+                    "cn": [
+                        {
+                            "type": "viewcontrollereventbinding",
+                            "reference": {
+                                "name": "listeners",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "fn": "createTooltip",
+                                "implHandler": [
+                                    "// this function could be basic binding but if it is, defaultListenerScope becomes true and then store bindings dont work!!!!!!!!",
+                                    "",
+                                    "component.tooltip = Ext.create('Ext.tip.ToolTip', {",
+                                    "    target: component.id,",
+                                    "    html: 'Not Synced'",
+                                    "});"
+                                ],
+                                "name": "afterrender",
+                                "scope": "me"
+                            },
+                            "configAlternates": {
+                                "fn": "string",
+                                "implHandler": "code",
+                                "name": "string",
+                                "scope": "string"
+                            },
+                            "name": "createTooltip",
+                            "designerId": "9b24e6b5-70e1-4869-9aa8-e5a75188adae"
+                        }
+                    ]
+                },
+                {
+                    "type": "Ext.toolbar.Separator",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "layout|flex": null
+                    },
+                    "configAlternates": {
+                        "layout|flex": "number"
+                    },
+                    "name": "MySeparator4",
+                    "designerId": "e5796f38-87b9-437f-8a9e-3fc0d307c81d"
+                },
+                {
+                    "type": "Ext.toolbar.TextItem",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "cls": [
+                            "x-fa fa-check success"
+                        ],
+                        "id": "syncIndicatorProgramsData",
+                        "layout|flex": null
+                    },
+                    "configAlternates": {
+                        "cls": "typedarray",
+                        "id": "string",
+                        "layout|flex": "number"
+                    },
+                    "name": "MyTextItem5",
+                    "designerId": "24cef681-4b15-4db2-95d7-ee1fdc00778e",
+                    "cn": [
+                        {
+                            "type": "viewcontrollereventbinding",
+                            "reference": {
+                                "name": "listeners",
+                                "type": "array"
+                            },
+                            "codeClass": null,
+                            "userConfig": {
+                                "fn": "createTooltipData",
+                                "implHandler": [
+                                    "// this function could be basic binding but if it is, defaultListenerScope becomes true and then store bindings dont work!!!!!!!!",
+                                    "",
+                                    "component.tooltip = Ext.create('Ext.tip.ToolTip', {",
+                                    "    target: component.id,",
+                                    "    html: 'Synced Programs Data'",
+                                    "});"
+                                ],
+                                "name": "afterrender",
+                                "scope": "me"
+                            },
+                            "configAlternates": {
+                                "fn": "string",
+                                "implHandler": "code",
+                                "name": "string",
+                                "scope": "string"
+                            },
+                            "name": "createTooltipData",
+                            "designerId": "02177442-6af4-4119-b2e2-7bc247b83121"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "Ext.panel.Tool",
+            "reference": {
+                "name": "tools",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "iconCls": "x-fa fa-close"
+            },
+            "configAlternates": {
+                "iconCls": "string"
+            },
+            "name": "MyTool",
+            "designerId": "96532c47-f408-4a2d-bdff-b85685c5c21b",
+            "cn": [
+                {
+                    "type": "fixedfunction",
+                    "reference": {
+                        "name": "items",
+                        "type": "array"
+                    },
+                    "codeClass": null,
+                    "userConfig": {
+                        "designer|params": [
+                            "owner",
+                            "tool",
+                            "event"
+                        ],
+                        "designer|viewControllerFn": "close",
+                        "fn": "callback",
+                        "implHandler": [
+                            "this.unload();",
+                            "this.redirectTo('home');"
+                        ]
+                    },
+                    "configAlternates": {
+                        "designer|params": "typedarray",
+                        "designer|viewControllerFn": "string",
+                        "fn": "string",
+                        "implHandler": "code"
+                    },
+                    "name": "callback",
+                    "designerId": "876290d6-c68f-49cb-bd65-8792d9621d2a"
+                }
+            ]
+        },
+        {
+            "type": "viewcontrollereventbinding",
+            "reference": {
+                "name": "listeners",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "fn": "onGridProgramsActivate",
+                "implHandler": [
+                    "var me = this;",
+                    "",
+                    "// if we reloaded page on training programs, we have to reload lookups and refresh grid",
+                    "var callback = function(){",
+                    "\tprint(\"recieved callback grid programsActivate\");",
+                    "\tme.getStore('StoreProgramCategories').setData(App.lookups.ProgramCategories);",
+                    "\tme.getStore('StoreProgramCertificates').setData(App.lookups.CoursesAndCertificates);",
+                    "\tExt.getCmp('gridPrograms').getView().refresh();",
+                    "};",
+                    "loadLookups(callback);",
+                    "",
+                    "",
+                    "// Update the online status icon based on connectivity",
+                    "window.addEventListener('online',  me.connectionChange);",
+                    "window.addEventListener('offline', me.connectionChange);",
+                    "",
+                    "",
+                    "",
+                    "// create online / offline event listenere - when coming back online, we want to sync localstorage with database",
+                    "me.connectionChange = function() {",
+                    "\tif (navigator.onLine){",
+                    "\t\tvar callback = function(){",
+                    "\t\t\tExt.toast('Welcome back online! Content saved on server.');",
+                    "\t\t\tme.saveState();",
+                    "",
+                    "\t\t};",
+                    "",
+                    "",
+                    "\t\tme.serverSync(callback); // calls sync of everything (slides, questions, answers, pageConfig...) - it retrieves data and pushes latest data to server",
+                    "",
+                    "\t}else{",
+                    "\t\tExt.toast('We went offline! Content is still saved locally. Reconnect to save content with server.');",
+                    "\t}",
+                    "};",
+                    "",
+                    "//this.load();",
+                    ""
+                ],
+                "name": "activate",
+                "scope": "me"
+            },
+            "configAlternates": {
+                "fn": "string",
+                "implHandler": "code",
+                "name": "string",
+                "scope": "string"
+            },
+            "name": "onGridProgramsActivate",
+            "designerId": "3a80f2b1-3b5b-45d2-90f5-3c77be228f3a"
+        }
+    ]
+}

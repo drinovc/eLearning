@@ -1,0 +1,74 @@
+{
+    "type": "Ext.app.ViewController",
+    "reference": {
+        "name": "items",
+        "type": "array"
+    },
+    "codeClass": null,
+    "userConfig": {
+        "designer|userAlias": "edittools",
+        "designer|userClassName": "EditToolsViewController"
+    },
+    "configAlternates": {
+        "designer|userAlias": "string",
+        "designer|userClassName": "string"
+    },
+    "designerId": "093741d7-7ba2-4cf4-a2a4-dccbbf4730ac",
+    "cn": [
+        {
+            "type": "basicfunction",
+            "reference": {
+                "name": "items",
+                "type": "array"
+            },
+            "codeClass": null,
+            "userConfig": {
+                "designer|params": [
+                    "opts"
+                ],
+                "fn": "show",
+                "implHandler": [
+                    "opts = Ext.applyIf(opts || {}, {",
+                    "    components: []",
+                    "});",
+                    "",
+                    "var me = this,",
+                    "    view = me.getView();",
+                    "",
+                    "me._opts = opts;",
+                    "",
+                    "if(opts.components.length > 1){",
+                    "    Ext.getCmp('btn_Edit').disable();",
+                    "    Ext.getCmp('nfScore').disable();",
+                    "    Ext.getCmp('chRequired').disable();",
+                    "",
+                    "    view.down('#nfScore').setValue(0);",
+                    "    view.down('#chRequired').setValue(false);",
+                    "",
+                    "    view.showBy(opts.components[0], 'tl-tr?'); // TODO temp - later find middle of all components",
+                    "}else{",
+                    "    Ext.getCmp('btn_Edit').enable();",
+                    "    Ext.getCmp('nfScore').enable();",
+                    "    Ext.getCmp('chRequired').enable();",
+                    "",
+                    "    view.down('#nfScore').setValue(opts.components[0]._opts.score || 0);",
+                    "    view.down('#chRequired').setValue(opts.components[0]._opts.required || false);",
+                    "",
+                    "",
+                    "    view.showBy(opts.components[0], 'tl-tr?');",
+                    "}",
+                    "",
+                    "//view.showBy(opts.component, 'tl-tr?');",
+                    ""
+                ]
+            },
+            "configAlternates": {
+                "designer|params": "typedarray",
+                "fn": "string",
+                "implHandler": "code"
+            },
+            "name": "show",
+            "designerId": "f57492e7-847b-4468-b327-8f5cf6fb98a2"
+        }
+    ]
+}
