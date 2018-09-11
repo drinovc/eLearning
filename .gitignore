@@ -7,7 +7,7 @@ modern.json*
 /bin/logs
 
 
-
+.svn
 /websource/build
 /websource/.arch-internal-preview.css
 /websource/.architect
