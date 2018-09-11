@@ -8,8 +8,10 @@ modern.json*
 
 
 
-
-
+/websource/build
+/websource/.arch-internal-preview.css
+/websource/.architect
+/websource/sass
 /websource/build
 /websource/bootstrap.css
 /websource/classic.json*
@@ -83,3 +85,7 @@ __recovery/
 
 # Castalia statistics file (since XE7 Castalia is distributed with Delphi)
 *.stat
+bin/MXP_App_DataServer.log
+websource/.arch-internal-preview.css
+websource/.architect
+websource/sass/example/custom.js
